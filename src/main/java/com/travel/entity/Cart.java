@@ -22,7 +22,7 @@ public class Cart {
 
 	@Id
 	@Column(name="cart_id") 
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long cartId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

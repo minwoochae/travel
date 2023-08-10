@@ -21,7 +21,7 @@ public class TouristImg extends BaseEntity{
 
 	@Id
 	@Column(name = "item_img_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String imgName; // 이미지 이름

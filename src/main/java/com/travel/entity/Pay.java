@@ -23,7 +23,7 @@ public class Pay extends BaseEntity{
 	
 	@Id
 	@Column(name="pay_id") 
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
 	
 	@Column(name="price") 

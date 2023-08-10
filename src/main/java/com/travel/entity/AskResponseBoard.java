@@ -24,16 +24,16 @@ public class AskResponseBoard extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@Column(name="ask_response_id") 
+	@Column(name="ask_response_title") 
 	private String askResponseTitle;
 	
-	@Column(name="ask_response_id") 
+	@Column(name="ask_response_content") 
 	private String askResponseContent;
 	
-	@Column(name="ask_response_id") 
+	@Column(name="ask_response_img") 
 	private String askResponseImg;
 	
 	@OneToOne
-	@JoinColumn(name="ask_board_id")
+	@JoinColumn(name="ask_board")
 	private AskBoard askBoard;
 }

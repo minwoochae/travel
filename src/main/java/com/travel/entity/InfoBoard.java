@@ -22,7 +22,7 @@ public class InfoBoard extends BaseEntity{
 
 	@Id
 	@Column(name = "info_board_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	// 공지사항 식별자
 	
 	@Column(name = "info_title")

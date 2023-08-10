@@ -26,7 +26,7 @@ public class AskBoard extends BaseEntity{
 	
 	@Id
 	@Column(name="ask_board_id") //테이블로 생성될 때 컬럼이름을 지정해준다. 
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
 	
 	@Column(name = "ask_title")

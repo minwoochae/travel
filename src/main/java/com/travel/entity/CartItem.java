@@ -21,7 +21,7 @@ public class CartItem {
 	
 	@Id
 	@Column(name="cart_item_id")
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long cartItemId;
 	
 	@Column(name="count")

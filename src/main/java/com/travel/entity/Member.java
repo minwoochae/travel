@@ -15,7 +15,7 @@ public class Member {
 	
 	@Id
 	@Column(name="member_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; //멤버 아이디
 	
 	@Column(unique = true, length=255)

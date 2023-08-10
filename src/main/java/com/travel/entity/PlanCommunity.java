@@ -22,20 +22,20 @@ public class PlanCommunity extends BaseEntity{
 
 	@Id
 	@Column(name="plan_community_id") 
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="plan_community_id") 
+	@Column(name="plan_community_title") 
 	private String communityTitle;
 	
-	@Column(name="plan_community_id") 
+	@Column(name="plan_community_content") 
 	private String communityContent;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "member")
 	private Member member;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "plan_id")
+	@JoinColumn(name = "plan")
 	private Plan plan;
 }

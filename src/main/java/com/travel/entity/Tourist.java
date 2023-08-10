@@ -23,7 +23,7 @@ public class Tourist extends BaseEntity{
 
 	@Id
 	@Column(name="tourist_id") 
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;	// 추천관광지 식별자
 	
 	@Column(name = "tourist_title")
