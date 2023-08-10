@@ -37,7 +37,7 @@
 
 ### [간트 차트](https://docs.google.com/spreadsheets/d/1WsOu9WPZ1T770cEXPiNKnxmyKw5zxnEFisGoHuBn0dU/edit?pli=1#gid=1115838130)
 
-### [ERD](https://www.erdcloud.com/d/AJECkdDa5fRg4ioaw)
+### [ERD](https://www.erdcloud.com/d/rK5xCRNKjYrEiHbsX)
 
 ### [화면설계](https://www.figma.com/file/JXdW6QzP7QEJbPIjqog2jp/Untitled?type=design&node-id=0-1&mode=design&t=Fxcg4JCad8AJw5UW-0)
 
