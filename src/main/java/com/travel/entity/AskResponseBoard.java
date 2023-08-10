@@ -21,7 +21,7 @@ public class AskResponseBoard extends BaseEntity{
 	
 	@Id
 	@Column(name="ask_response_id") 
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
 	
 	@Column(name="ask_response_title") 
