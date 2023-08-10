@@ -1,6 +1,9 @@
 package com.travel.service;
 
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,21 @@ public class MemberService implements UserDetailsService{
 			return "일치하는 사용자가 없습니다";
 		}
 		return member.getEmail();
+	}
+
+
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		// 사용자가 입력한 email이 DB에 있는지 쿼리문을 사용한다.
+		Member member = memberRepository.findByEmail(email);
+
+		if (member == null) {
+			throw new UsernameNotFoundException(email);
+		}
+
+		// 사용자가 있다면 DB에서 가져온 값으로 userDetails 객체를 만들어서 반환
+		return User.builder().username(member.getEmail()).password(member.getPassword())
+				.roles(member.getRole().toString()).build();
 	}
 
 }
