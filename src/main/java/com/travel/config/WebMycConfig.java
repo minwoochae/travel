@@ -19,4 +19,8 @@ public class WebMycConfig implements WebMvcConfigurer {
 	}
 	
 	
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1f9fff599f297638e4fd132c0a4d0634c26c6e34
