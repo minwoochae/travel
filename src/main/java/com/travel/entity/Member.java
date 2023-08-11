@@ -49,7 +49,7 @@ public class Member {
 		member.setPhoneNumber(memberFormDto.getPhoneNumber());
 		member.setPassword(password);
 		member.setRole(Role.USER);
-		
+		member.setDivision(Division.NORMAL);
 		return member;
 		
 	}
