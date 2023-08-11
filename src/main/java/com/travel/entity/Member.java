@@ -1,5 +1,8 @@
 package com.travel.entity;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.travel.Dto.MemberFormDto;
 import com.travel.constant.Division;
 import com.travel.constant.Role;
 
@@ -7,7 +10,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name="memeber")
+@Table(name="member")
 @Getter
 @Setter
 @ToString
@@ -36,4 +39,18 @@ public class Member {
 	
 	@Enumerated(EnumType.STRING)
 	private Division division; //역할
+	
+	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
+		String password = passwordEncoder.encode(memberFormDto.getPassword());
+		
+		Member member = new Member();
+		member.setName(memberFormDto.getName());
+		member.setEmail(memberFormDto.getEmail());
+		member.setPhoneNumber(memberFormDto.getPhoneNumber());
+		member.setPassword(password);
+		member.setRole(Role.USER);
+		
+		return member;
+		
+	}
 }
