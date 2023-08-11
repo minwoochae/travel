@@ -37,11 +37,11 @@ public class MemberService implements UserDetailsService{
 	
 	public String emailFind(String name, String phone) {
 		Member member = memberRepository.findByNameAndPhoneNumber(name, phone);
-
+		
 		if (member == null) {
 			return "일치하는 사용자가 없습니다";
 		}
-		return member.getEmail();
+		return "고객님의 아이디는 " + member.getEmail() + " 입니다";
 	}
 
 

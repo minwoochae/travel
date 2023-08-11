@@ -71,7 +71,7 @@ public class MemberController {
 	@GetMapping(value = "/account/search")
 	public String search_id(Model model) {
 		model.addAttribute("memberFormDto", new MemberFormDto());
-		return "members/LoginForm";
+		return "member/LoginForm";
 	}
 	@PostMapping("/account/search")
 	@ResponseBody
