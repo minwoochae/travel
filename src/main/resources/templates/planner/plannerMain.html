@@ -325,34 +325,23 @@
   		</li>
 	</ul>
 	
+
+
+
 	<div class="tab-content" id="myTabContent">
   		<div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
 
 <div class="list-group list-group-flush border-bottom scrollarea">
       <div class="d-flex w-100 align-items-center border-bottom" style="width:100%; height:192px; background-color:white;">
 		  <div style="margin-left:15px;">
-			  <select class="form-select" aria-label="Select example">
-  				<option selected>도시 또는 지방 선택</option>
-  					<option value="1">서울특별시</option>
-  					<option value="2">부산광역시</option>
-  					<option value="인천">인천광역시</option>
-  					<option value="경기">경기도</option>
-  					<option value="강원">강원도</option>
-  					<option value="충북">충청북도</option>
-  					<option value="충남">충청남도</option>
-  					<option value="전북">전라북도</option>
-  					<option value="전남">전라남도</option>
-  					<option value="경북">경상북도</option>
-  					<option value="경남">경상남도</option>
+			  <select id="areaCodeSelect" class="form-select" aria-label="Select example">
+  					
 			  </select>
 		  </div>
 		  
 		  <div style="margin-left:15px;">
 			  <select class="form-select" aria-label="Select example">
-  				<option selected>시 / 도</option>
-  				<option value="1">Option 1</option>
-  				<option value="2">Option 2</option>
-  				<option value="3">Option 3</option>
+  				
 			  </select>
 		  </div>
 		  
@@ -387,7 +376,42 @@
 		</div>
 		
   		<div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-			  
+			<div class="d-flex w-100 align-items-center border-bottom" style="width:100%; height:192px; background-color:white;">
+                <div style="margin-left:15px;">
+                    <select class="form-select" aria-label="Select example">
+                        <option selected>도시 또는 지방 선택</option>
+                            <option value="1">서울특별시</option>
+                            <option value="2">부산광역시</option>
+                            <option value="인천">인천광역시</option>
+                            <option value="경기">경기도</option>
+                            <option value="강원">강원도</option>
+                            <option value="충북">충청북도</option>
+                            <option value="충남">충청남도</option>
+                            <option value="전북">전라북도</option>
+                            <option value="전남">전라남도</option>
+                            <option value="경북">경상북도</option>
+                            <option value="경남">경상남도</option>
+                    </select>
+                </div>
+                
+                <div style="margin-left:15px;">
+                    <select class="form-select" aria-label="Select example">
+                        <option selected>시 / 도</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                    </select>
+                </div>
+                
+                <div class="d-flex w-100 align-items-center">
+                    <input type="text">
+                    <input type="submit" value="검색">
+                </div>
+                
+            </div>  
+
+
+
 			  <div class="list-group list-group-flush border-bottom scrollarea">
       <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
         <div class="d-flex w-100 align-items-center justify-content-between">
@@ -416,7 +440,42 @@
 		</div>
 		
   		<div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-			  
+			<div class="d-flex w-100 align-items-center border-bottom" style="width:100%; height:192px; background-color:white;">
+                <div style="margin-left:15px;">
+                    <select class="form-select" aria-label="Select example">
+                        <option selected>도시 또는 지방 선택</option>
+                            <option value="1">서울특별시</option>
+                            <option value="2">부산광역시</option>
+                            <option value="인천">인천광역시</option>
+                            <option value="경기">경기도</option>
+                            <option value="강원">강원도</option>
+                            <option value="충북">충청북도</option>
+                            <option value="충남">충청남도</option>
+                            <option value="전북">전라북도</option>
+                            <option value="전남">전라남도</option>
+                            <option value="경북">경상북도</option>
+                            <option value="경남">경상남도</option>
+                    </select>
+                </div>
+                
+                <div style="margin-left:15px;">
+                    <select class="form-select" aria-label="Select example">
+                        <option selected>시 / 도</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                    </select>
+                </div>
+                
+                <div class="d-flex w-100 align-items-center">
+                    <input type="text">
+                    <input type="submit" value="검색">
+                </div>
+                
+            </div>  
+
+
+
 			  <div class="list-group list-group-flush border-bottom scrollarea">
       <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
         <div class="d-flex w-100 align-items-center justify-content-between">
@@ -458,5 +517,8 @@
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <script src="/js/sidebars.js"></script>
+<script src="/js/planapi.js"></script>
+
+
 </body>
 </html>
