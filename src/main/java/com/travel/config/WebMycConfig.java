@@ -17,6 +17,11 @@ public class WebMycConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/images/**")
 		.addResourceLocations(uploadPath);
 	}
+<<<<<<< HEAD
 	
 	
 }
+=======
+
+}
+>>>>>>> be57870aa53021c5701a13b7ef145365fd263bea

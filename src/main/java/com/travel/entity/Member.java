@@ -49,8 +49,16 @@ public class Member {
 		member.setPhoneNumber(memberFormDto.getPhoneNumber());
 		member.setPassword(password);
 		member.setRole(Role.USER);
-		
+		member.setDivision(Division.NORMAL);
 		return member;
 		
 	}
+<<<<<<< HEAD
 }
+=======
+
+}
+
+
+
+>>>>>>> be57870aa53021c5701a13b7ef145365fd263bea
