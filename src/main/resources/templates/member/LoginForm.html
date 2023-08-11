@@ -128,7 +128,9 @@ button:hover {
 				dataType : "json",
 				cache : false,
 				success : function(param) {
+					"고객님의 아이디는 " + 
 					$(".idpwResult").text(`${param.message}`)
+						+	"입니다"
 					//location.href = '/';
 				},
 				error : function(jqXHR, status, error) {
