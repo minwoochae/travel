@@ -228,16 +228,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
       </div>
       <div class="modal-body">
-        <label for="inputTravelNm" class="form-label">이번 여행의 이름을 정해주세요.</label>
+        <label for="inputTravelNm" class="form-label" style="color: black;">이번 여행의 이름을 정해주세요.</label>
 			<input type="text" id="inputTravelNm" class="form-control" aria-describedby="passwordHelpBlock">
 			<div id="passwordHelpBlock" class="form-text"></div>
-		<label for="inputDate" class="form-label">며칠동안 여행을 하시나요?</label>
+		<label for="inputDate" class="form-label" style="color: black;">며칠동안 여행을 하시나요?</label>
 			<input type="number" min="1" max="15" id="inputDate" class="form-control" placeholder="최대 15일" aria-describedby="passwordHelpBlock">
 			<div id="passwordHelpBlock" class="form-text"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        <button type="button" class="btn btn-primary">플랜 만들기</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border: 1.5px solid #FF4A52; background-color: white; color: black;">닫기</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='/planner'" style="background-color: #FF4A52; border: none;">플랜 만들기</button>
       </div>
     </div>
   </div>

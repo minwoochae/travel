@@ -9,10 +9,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlannerController {
 
-	@GetMapping(value = "/planner")
-	public String main() {
-		return "/planner/plannerMain";
+
+	@GetMapping(value ="/planner")
+	public String plannerMain() {
+		return "planner/plannerMain";
 	}
-	
+
 	
 }
