@@ -26,6 +26,7 @@
                                         <ul id="navigation">
                                             <li><a class="active" href="/">홈</a></li>
                                             <li><a href="about.html">플랜 둘러보기</a></li>
+                                            <li><a href="about.html">여행상품 주문</a></li>
                                             <li><a class="" href="travel_destination.html">공지사항</a></li>
                                             <li><a href="#">문의사항</a></li>
                                             <li><a href="#" sec:authorize="isAuthenticated()">마이페이지</a></li>
@@ -38,8 +39,8 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li><a class="active" href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
-                                            <li><a class="active" href="/members/login" sec:authorize="isAuthenticated()">로그아웃</a></li>
-                                            <li><a href="/members/new" sec:authorize="isAnonymous()">회원가입</a></li>
+                                            <li><a class="active" href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
+                                            <li><a href="/members/new"  sec:authorize="isAnonymous()">회원가입</a></li>
                                         </ul>
                                     </nav>
                                 </div>             

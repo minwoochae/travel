@@ -19,14 +19,29 @@ public class MemberService implements UserDetailsService{
 	
 	private final MemberRepository memberRepository ;
 	
+	public Member saveMember(Member member) {
+		validateDuplicatMember(member);
+		Member savedMember = memberRepository.save(member);
+		return savedMember;
+	}
+	
+	private void validateDuplicatMember(Member member) {
+		Member findMember = memberRepository.findByEmail(member.getEmail());
+		
+		if (findMember != null) {
+			throw new IllegalStateException("이미 사용중인 Email 입니다");
+		}
+	}
+	
+
 	
 	public String emailFind(String name, String phone) {
 		Member member = memberRepository.findByNameAndPhoneNumber(name, phone);
-
+		
 		if (member == null) {
 			return "일치하는 사용자가 없습니다";
 		}
-		return member.getEmail();
+		return "고객님의 아이디는 " + member.getEmail() + " 입니다";
 	}
 
 

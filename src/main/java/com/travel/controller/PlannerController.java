@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class MainController {
+public class PlannerController {
 
-	@GetMapping(value = "/")
-	public String main() {
-		return "/main";
+
+	@GetMapping(value ="/planner")
+	public String plannerMain() {
+		return "planner/plannerMain";
 	}
+
+	
 }
