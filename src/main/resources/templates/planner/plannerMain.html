@@ -405,21 +405,21 @@
 			style="width: 380px;">
 			<ul class="nav nav-tabs " id="myTab" role="tablist">
 				<li class="nav-item " role="presentation" style="width: 33.3333%;">
-					<button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+					<button class="nav-link active" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#home-tab-pane" type="button" role="tab"
-						aria-controls="home-tab-pane" aria-selected="true"
+						aria-controls="home-tab-pane" aria-selected="true" value="2"
 						style="width: 100%;">숙소</button>
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
-					<button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+					<button class="nav-link" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#profile-tab-pane" type="button" role="tab"
-						aria-controls="profile-tab-pane" aria-selected="false"
+						aria-controls="profile-tab-pane" aria-selected="false" value="3"
 						style="width: 100%;">관광지</button>
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
-					<button class="nav-link" id="contact-tab" data-bs-toggle="tab"
+					<button class="nav-link" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#contact-tab-pane" type="button" role="tab"
-						aria-controls="contact-tab-pane" aria-selected="false"
+						aria-controls="contact-tab-pane" aria-selected="false" value="1"
 						style="width: 100%;">식당</button>
 				</li>
 			</ul>
@@ -432,38 +432,29 @@
 						<div class="d-flex w-100 align-items-center border-bottom"
 							style="width: 100%; height: 192px; background-color: white;">
 
-							<select id="areaCodeSelect" aria-label="Select example">
-							</select> <select id="contentTypeIdSelect">
+							<select id="areaCodeSelect">
 							</select>
+							
+							<!--  <select id="contentTypeIdSelect">
+							     <option value="1">식당</option>
+							     <option value="2">숙소</option>
+							     <option value="3">관광지</option>
+							</select> -->
 
 
 							<div class="d-flex w-100 align-items-center">
-								<input type="text"> <input type="submit" value="검색">
+								<button id="searchButton">검색</button>
 							</div>
 
 						</div>
 
 
 
-						<a href="#"
-							class="list-group-item list-group-item-action py-3 lh-sm">
-							<div
-								class="d-flex w-100 align-items-center justify-content-between">
+						<div id="results" href="#">
 								<strong class="mb-1">List group item heading</strong> <small
 									class="text-body-secondary">Tues</small>
 							</div>
-							<div class="col-10 mb-1 small">Some placeholder content in
-								a paragraph below the heading and date.</div>
-						</a> <a href="#"
-							class="list-group-item list-group-item-action py-3 lh-sm">
-							<div
-								class="d-flex w-100 align-items-center justify-content-between">
-								<strong class="mb-1">List group item heading</strong> <small
-									class="text-body-secondary">Mon</small>
-							</div>
-							<div class="col-10 mb-1 small">Some placeholder content in
-								a paragraph below the heading and date.</div>
-						</a>
+
 
 
 					</div>
@@ -562,5 +553,6 @@
 		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
 		crossorigin="anonymous"></script>
 	<script src="/js/sidebars.js"></script>
+	<script src="/js/plan.js"></script>
 </body>
 </html>
