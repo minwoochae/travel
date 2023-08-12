@@ -53,12 +53,8 @@ public class Member {
 		return member;
 		
 	}
-<<<<<<< HEAD
-}
-=======
-
 }
 
 
 
->>>>>>> be57870aa53021c5701a13b7ef145365fd263bea
+
