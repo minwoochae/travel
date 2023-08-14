@@ -24,6 +24,7 @@ public class AdminController {
 		return "/admin/adminMain";
 	}
 	
+<<<<<<< HEAD
 		@GetMapping(value = {"/admin/list", "/admin/list/{page}"})
 		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model ) {
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 10); 
@@ -40,6 +41,12 @@ public class AdminController {
 			
 			
 			return "admin/profile";
+=======
+	@GetMapping(value="/adminShop")
+	public String adminShop() {
+		return "/admin/itemRegist";
+	}
+>>>>>>> 9031e6198176e6e486025a9c8350a6d8bac0c485
 }
 	 
 		

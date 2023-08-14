@@ -18,4 +18,9 @@ public class ItemController {
 	public String itemDtl() {
 		return "/item/itemDtl";
 	}
+	
+	@GetMapping(value = "/cart")
+	public String cart() {
+		return "/item/cart";
+	}
 }

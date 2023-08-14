@@ -93,7 +93,7 @@
 			<ul class="nav nav-pills">
 				<!--<li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>-->
 				<button type="button" class="btn btn-danger"
-					style="margin-right: 20px;">저장하기</button>
+					style="margin-right: 20px;" onclick="location.href='/planComplete'">저장하기</button>
 				<button type="button" class="btn btn-dark"
 					style="margin-right: 40px;">여행가지말기</button>
 			</ul>
@@ -171,16 +171,16 @@
 					<button class="nav-link active" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#home-tab-pane" type="button" role="tab"
 						aria-controls="home-tab-pane" aria-selected="true" value="2"
-						style="width: 100%; height: 63px;">숙소</button>
+						style="width: 100%; height: 63px;">숙소</button>	
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
-					<button class="nav-link" id="contentTypeIdSelect" data-bs-toggle="tab"
+					<button class="nav-link" id="contentTypeIdSelect2" data-bs-toggle="tab"
 						data-bs-target="#profile-tab-pane" type="button" role="tab"
 						aria-controls="profile-tab-pane" aria-selected="false" value="3"
 						style="width: 100%; height: 63px;">관광지</button>
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
-					<button class="nav-link" id="contentTypeIdSelect" data-bs-toggle="tab"
+					<button class="nav-link" id="contentTypeIdSelect3" data-bs-toggle="tab"
 						data-bs-target="#contact-tab-pane" type="button" role="tab"
 						aria-controls="contact-tab-pane" aria-selected="false" value="1"
 						style="width: 100%; height: 63px;">식당</button>
@@ -287,23 +287,28 @@
 
 		<div id="resultDetail">
 			
-			
 		</div>
+		
+			
 
 
 
 
 	</main>
+	<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ee9b96c7d1552cd4abbb0bc765fe5023"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
 		crossorigin="anonymous">
 		</script>
 	<script src="/js/sidebars.js"></script>
-	<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ee9b96c7d1552cd4abbb0bc765fe5023"></script>
+
 	<script src="/js/plan.js"></script>
+	<script src="/js/plan2.js"></script>
+	<script src="/js/plan3.js"></script>
 
 	<script>
+
 	    var urlParams = new URLSearchParams(window.location.search);
 	    var input1 = urlParams.get('travelNm');
 	    var input2 = urlParams.get('date');
@@ -313,15 +318,11 @@
         
         if (input1) {
             output1Element.innerHTML = decodeURIComponent(input1);
-        } else {
-            output1Element.innerHTML = "No input 1 provided.";
         }
 
         if (input2) {
             output2Element.textContent = decodeURIComponent(input2);
-        } else {
-            output2Element.textContent = "No input 2 provided.";
-        }
+        } 
         
         // Number of days
         var numberOfDays = urlParams.get('date');
@@ -366,6 +367,9 @@
             tabPane.innerHTML = content;
             tabContent.appendChild(tabPane);
         }
+        
+        
+        
 	</script>
 </body>
 </html>

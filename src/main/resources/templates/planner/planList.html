@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<th:block layout:fragment="css">
+		<style>
+		.item-cover {
+			width: 100%;
+			height: 400px;
+			background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url("/img/planListBg.jpg");
+			background-repeat: no-repeat;
+			background-size: cover;
+			margin-bottom: 50px;
+			background-position: center;
+			display: flex;
+		}
+
+		.cover-text {
+			font-size: 40px;
+			text-decoration: underline;
+			margin: auto;
+			text-underline-position: under;
+			color: white;
+			font-weight: 600;
+			letter-spacing: 5px;
+			text-decoration-thickness: 5px;
+		}
+	</style>
+</th:block>
+
+<div layout:fragment="content">
+	<div class="item-cover">
+		<h1 class="cover-text">플랜 둘러보기</h1>
+	</div> <!--백그라운드 이미지 활용  -->
+	    <div class="popular_places_area">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_place">
+                        <div class="thumb">
+                            <img src="img/place/1.png" alt="">
+                        </div>
+                        <div class="place_info">
+                            <a href="destination_details.html"><h3>California</h3></a>
+                            <p>United State of America</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_place">
+                        <div class="thumb">
+                            <img src="img/place/2.png" alt="">
+                        </div>
+                        <div class="place_info">
+                            <a href="destination_details.html"><h3>Korola Megna</h3></a>
+                            <p>United State of America</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_place">
+                        <div class="thumb">
+                            <img src="img/place/3.png" alt="">
+                        </div>
+                        <div class="place_info">
+                            <a href="destination_details.html"><h3>London</h3></a>
+                            <p>United State of America</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_place">
+                        <div class="thumb">
+                            <img src="img/place/4.png" alt="">
+                        </div>
+                        <div class="place_info">
+                            <a href="destination_details.html"><h3>Miami Beach</h3></a>
+                            <p>United State of America</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_place">
+                        <div class="thumb">
+                            <img src="img/place/5.png" alt="">
+                        </div>
+                        <div class="place_info">
+                            <a href="destination_details.html"><h3>California</h3></a>
+                            <p>United State of America</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_place">
+                        <div class="thumb">
+                            <img src="img/place/6.png" alt="">
+                        </div>
+                        <div class="place_info">
+                            <a href="destination_details.html"><h3>Saintmartine Iceland</h3></a>
+                            <p>United State of America</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</html>
