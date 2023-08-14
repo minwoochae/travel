@@ -313,15 +313,11 @@
         
         if (input1) {
             output1Element.innerHTML = decodeURIComponent(input1);
-        } else {
-            output1Element.innerHTML = "No input 1 provided.";
         }
 
         if (input2) {
             output2Element.textContent = decodeURIComponent(input2);
-        } else {
-            output2Element.textContent = "No input 2 provided.";
-        }
+        } 
         
         // Number of days
         var numberOfDays = urlParams.get('date');
