@@ -13,4 +13,9 @@ public class AdminController {
 	public String admin() {
 		return "/admin/adminMain";
 	}
+	
+	@GetMapping(value="/adminShop")
+	public String adminShop() {
+		return "/admin/itemRegist";
+	}
 }

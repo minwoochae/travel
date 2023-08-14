@@ -237,7 +237,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border: 1.5px solid #FF4A52; background-color: white; color: black;">닫기</button>
-        <button type="button" class="btn btn-primary" onclick="location.href='/planner'; sendData();" style="background-color: #FF4A52; border: none;">플랜 만들기</button>
+        <button type="button" class="btn btn-primary" onclick="sendData()" style="background-color: #FF4A52; border: none;">플랜 만들기</button>
       </div>
     </div>
   </div>
@@ -252,10 +252,17 @@
             var input1 = document.getElementById("travelNm").value;
             var input2 = document.getElementById("date").value;
             
-            var queryParams = "?travelNm=" + encodeURIComponent(input1) + "&date=" + encodeURIComponent(input2);
-
-            window.location.href = "/planner" + queryParams;
+    		if(input1 == null || input1 == "") {
+    			alert("여행 이름을 입력해주세요.");
+    		} else if(input2 < 1 || input2 > 15) {
+    			alert("최대 여행일수는 15일 입니다.");
+    		} else {
+	            var queryParams = "?travelNm=" + encodeURIComponent(input1) + "&date=" + encodeURIComponent(input2);
+	            window.location.href = "/planner" + queryParams;    			
+    		}
 		}
+		
+
 	</script>
 </th:block>
 </html>

@@ -53,7 +53,7 @@ public class Member extends BaseEntity {
 		return member;
 		
 	}
-	
+
 	public  void updateMember(MemberFormDto memberFormDto) {
 		this.password = memberFormDto.getPassword();
 	}
