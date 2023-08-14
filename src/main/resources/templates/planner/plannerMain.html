@@ -51,6 +51,10 @@
 	margin-bottom: 0;
 	list-style: none;
 }
+
+.nav-link {
+	height: 81px;
+}
 </style>
 
 
@@ -81,10 +85,11 @@
 	<div class="container" style="width: 100%; max-width: 100%;">
 		<header
 			class="d-flex flex-wrap justify-content-center py-3 border-bottom">
-			<a href="/"
-				class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-				<span class="fs-4" style="margin-left: 20px;">채민우님의 ○○ 플랜</span>
-			</a>
+ 			<div
+				class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+				<span class="fs-4" style="margin-left: 20px;" id="outputTravelNm"></span>
+				<span id="outputDate" style="display:none;"></span>
+ 			</div>
 			<ul class="nav nav-pills">
 				<!--<li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>-->
 				<button type="button" class="btn btn-danger"
@@ -135,126 +140,20 @@
 
 
 		<div class="d-flex flex-column flex-shrink-0 bg-body-tertiary"
-			style="width: 4.5rem; background-color: #f0f0f0; min-height: 100vh; overflow: hidden;">
+			style="width: 6rem; background-color: #f0f0f0; min-height: 100vh; overflow: auto;">
 			<div
 				class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
 				<span class="fs-5 fw-semibold">전체 일정</span>
 			</div>
-			<ul class="nav nav-pills nav-flush flex-column mb-auto text-center"
-				id="pills-tab" role="tablist">
-				<li class="nav-item" role="presentation">
-					<button class="nav-link active py-3 border-bottom rounded-0"
-						type="button" id="pills-home-tab" aria-current="page" title="Home"
-						data-bs-target="#day1" data-bs-toggle="pill"
-						aria-controls="pills-home" aria-selected="true">DAY 1
-				</li>
-				<li>
-					<button class="nav-link py-3 border-bottom rounded-0" type="button"
-						id="pills-profile-tab" aria-current="page" title="Home"
-						data-bs-target="#day2" data-bs-toggle="pill"
-						aria-controls="pills-profile" aria-selected="false">DAY 2
-					
-				</li>
-				<li>
-					<button class="nav-link py-3 border-bottom rounded-0" type="button"
-						id="pills-home-tab" aria-current="page" title="Home"
-						data-bs-target="#day3" data-bs-toggle="pill"
-						aria-controls="pills-home" aria-selected="true">DAY 3
-				</li>
-				<li>
-					<button class="nav-link py-3 border-bottom rounded-0" type="button"
-						id="pills-home-tab" aria-current="page" title="Home"
-						data-bs-target="#day4" data-bs-toggle="pill"
-						aria-controls="pills-home" aria-selected="true">DAY 4
-				</li>
-				<li>
-					<button class="nav-link py-3 border-bottom rounded-0" type="button"
-						id="pills-home-tab" aria-current="page" title="Home"
-						data-bs-target="#day5" data-bs-toggle="pill"
-						aria-controls="pills-home" aria-selected="true">DAY 5
-				</li>
-			</ul>
+		    <ul class="nav nav-pills nav-flush flex-column mb-auto text-center" id="pills-tab" role="tablist">
+		        <!-- JavaScript will add <li> elements here -->
+		    </ul>
 
 
 
 		</div>
 
 		<div class="tab-content" id="pills-tabContent">
-
-
-			<div class="tab-pane fade show active" id="day1" role="tabpanel"
-				aria-labelledby="pills-home-tab" tabindex="0">
-				<div
-					class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-					style="width: 340px;">
-					<div
-						class="d-flex align-items-center flex-shrink-0 text-decoration-none border-bottom"
-						style="height: 42px;">
-						<span class="fs-5 fw-semibold" style="margin-left: 10px;">DAY
-							1 일정</span>
-					</div>
-					<div class="list-group list-group-flush border-bottom scrollarea">
-						
-
-
-					</div>
-				</div>
-
-
-			</div>
-
-
-			<div class="tab-pane fade" id="day2" role="tabpanel"
-				aria-labelledby="pills-profile-tab" tabindex="0">
-				<div
-					class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-					style="width: 340px;">
-					<a href="/"
-						class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
-						<span class="fs-5 fw-semibold">DAY 2 일정</span>
-					</a>
-					<div class="list-group list-group-flush border-bottom scrollarea">
-						
-
-
-					</div>
-				</div>
-
-			</div>
-
-			<div class="tab-pane fade" id="day3" role="tabpanel"
-				aria-labelledby="pills-contact-tab" tabindex="0">
-				<div
-					class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-					style="width: 340px;">
-					<a href="/"
-						class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
-						<span class="fs-5 fw-semibold">DAY 3 일정</span>
-					</a>
-					<div class="list-group list-group-flush border-bottom scrollarea">
-						
-
-
-					</div>
-				</div>
-
-			</div>
-
-			<div class="tab-pane fade" id="day4" role="tabpanel"
-				aria-labelledby="pills-disabled-tab" tabindex="0">
-				<div
-					class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-					style="width: 340px;">
-					<a href="/"
-						class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
-						<span class="fs-5 fw-semibold">DAY 4 일정</span>
-					</a>
-					<div class="list-group list-group-flush border-bottom scrollarea">
-						
-
-
-					</div>
-				</div>
 
 			</div>
 
@@ -272,19 +171,19 @@
 					<button class="nav-link active" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#home-tab-pane" type="button" role="tab"
 						aria-controls="home-tab-pane" aria-selected="true" value="2"
-						style="width: 100%;">숙소</button>
+						style="width: 100%; height: 63px;">숙소</button>
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
 					<button class="nav-link" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#profile-tab-pane" type="button" role="tab"
 						aria-controls="profile-tab-pane" aria-selected="false" value="3"
-						style="width: 100%;">관광지</button>
+						style="width: 100%; height: 63px;">관광지</button>
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
 					<button class="nav-link" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#contact-tab-pane" type="button" role="tab"
 						aria-controls="contact-tab-pane" aria-selected="false" value="1"
-						style="width: 100%;">식당</button>
+						style="width: 100%; height: 63px;">식당</button>
 				</li>
 			</ul>
 
@@ -399,5 +298,69 @@
 		crossorigin="anonymous"></script>
 	<script src="/js/sidebars.js"></script>
 	<script src="/js/plan.js"></script>
+	<script>
+	    var urlParams = new URLSearchParams(window.location.search);
+	    var input1 = urlParams.get('travelNm');
+	    var input2 = urlParams.get('date');
+	    
+        var output1Element = document.getElementById("outputTravelNm");
+        var output2Element = document.getElementById("outputDate");
+        
+        if (input1) {
+            output1Element.innerHTML = decodeURIComponent(input1);
+        } else {
+            output1Element.innerHTML = "No input 1 provided.";
+        }
+
+        if (input2) {
+            output2Element.textContent = decodeURIComponent(input2);
+        } else {
+            output2Element.textContent = "No input 2 provided.";
+        }
+        
+        // Number of days
+        var numberOfDays = urlParams.get('date');
+
+        // Get the <ul> element
+        var ulElement = document.getElementById("pills-tab");
+
+        // Loop to create <li> elements
+        for (var i = 1; i <= numberOfDays; i++) {
+            var liElement = document.createElement("li");
+            liElement.innerHTML = `
+                <button class="nav-link py-3 border-bottom rounded-0" type="button"
+                    id="pills-home-tab${i}" aria-current="page" title="Home"
+                    data-bs-target="#day${i}" data-bs-toggle="pill"
+                    aria-controls="pills-home" aria-selected="true">DAY ${i}
+            `;
+            ulElement.appendChild(liElement);
+        }
+        
+        var tabContent = document.getElementById("pills-tabContent");
+
+        for (var i = 1; i <= numberOfDays; i++) {
+            var tabPane = document.createElement("div");
+            tabPane.className = "tab-pane fade";
+            if (i === 1) {
+                tabPane.className += " show active"; // Show the first day's content
+            }
+            tabPane.id = "day" + i;
+            tabPane.role = "tabpanel";
+
+            var content = `
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 340px;">
+                    <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
+                        <span class="fs-5 fw-semibold">DAY ${i} 일정</span>
+                    </a>
+                    <div class="list-group list-group-flush border-bottom scrollarea">
+                        <!-- Your content for DAY ${i} goes here -->
+                    </div>
+                </div>
+            `;
+
+            tabPane.innerHTML = content;
+            tabContent.appendChild(tabPane);
+        }
+	</script>
 </body>
 </html>
