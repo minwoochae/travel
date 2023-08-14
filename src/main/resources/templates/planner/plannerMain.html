@@ -285,6 +285,10 @@
 		</div>
 
 
+		<div id="resultDetail">
+			
+			
+		</div>
 
 
 
@@ -293,9 +297,12 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-		crossorigin="anonymous"></script>
+		crossorigin="anonymous">
+		</script>
 	<script src="/js/sidebars.js"></script>
+	<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ee9b96c7d1552cd4abbb0bc765fe5023"></script>
 	<script src="/js/plan.js"></script>
+
 	<script>
 	    var urlParams = new URLSearchParams(window.location.search);
 	    var input1 = urlParams.get('travelNm');
@@ -324,15 +331,15 @@
 
         // Loop to create <li> elements
         for (var i = 1; i <= numberOfDays; i++) {
-            var liElement = document.createElement("li");
-            liElement.innerHTML = `
-                <button class="nav-link py-3 border-bottom rounded-0" type="button"
-                    id="pills-home-tab${i}" aria-current="page" title="Home"
-                    data-bs-target="#day${i}" data-bs-toggle="pill"
-                    aria-controls="pills-home" aria-selected="true">DAY ${i}
-            `;
-            ulElement.appendChild(liElement);
-        }
+    var liElement = document.createElement("li");
+    liElement.innerHTML = `
+        <button class="nav-link py-3 border-bottom rounded-0 ${i === 1 ? 'active' : ''}" type="button"
+            id="pills-home-tab${i}" aria-current="page" title="Home"
+            data-bs-target="#day${i}" data-bs-toggle="pill"
+            aria-controls="pills-home" aria-selected="${i === 1 ? 'true' : 'false'}">DAY ${i}
+    `;
+    ulElement.appendChild(liElement);
+}
         
         var tabContent = document.getElementById("pills-tabContent");
 
