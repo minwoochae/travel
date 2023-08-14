@@ -53,6 +53,19 @@ public class Member {
 		return member;
 		
 	}
+<<<<<<< HEAD
+	
+	public  void updateMember(MemberFormDto memberFormDto) {
+		this.password = memberFormDto.getPassword();
+	}
+	public String  updatePassword(String pass,PasswordEncoder passwordEncoder) {
+		String password = passwordEncoder.encode(pass);
+		this.password = password;
+
+		return password;
+	}
+=======
+>>>>>>> 86d43cb507849259bebe70a681fb9f0cc1cee376
 }
 
 

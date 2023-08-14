@@ -1,5 +1,6 @@
 package com.travel.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,7 +74,7 @@ public class MemberController {
 	@GetMapping(value = "/account/search")
 	public String search_id(Model model) {
 		model.addAttribute("memberFormDto", new MemberFormDto());
-		return "members/LoginForm";
+		return "member/LoginForm";
 	}
 	@PostMapping("/account/search")
 	@ResponseBody
@@ -90,5 +91,41 @@ public class MemberController {
 		msg.put("message", email);
 		return msg;
 	}
+	
+	// 비번찾기
+		@GetMapping(value = "/account/pssearch")
+		public String search_ps(Model model) {
+			model.addAttribute("memberFormDto", new MemberFormDto());
+
+			return "member/psLoginForm";
+		}
+
+		// 비밀번호 찾고 난수생성기로 랜덤비밀번호 생성
+		@PostMapping("/account/pssearch")
+		@ResponseBody
+		public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata , Principal principal) {
+			String email = (String) psdata.get("memberEmail");
+
+			HashMap<String, String> msg = new HashMap<>();
+			String pass = memberservice.passwordFind( email);
+			// pass 암호화된 비밀번호
+			String ramdomps = memberservice.getRamdomPassword(12);
+
+			// ramdomps 를 view에 출력
+			String password = memberservice.updatePassword(ramdomps, email, passwordEncoder);
+			
+			memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps);
+			String asd = "이메일로 임시 비밀번호가 발송되었습니다.";
+			msg.put("message", asd);
+			return msg ;
+		}
+	
+		//mypage
+		 @GetMapping(value = "/member/mypage")
+		 public String mainMypage (Model model) {
+			 
+			 return "member/MyPage";
+		 }
+	
 	
 }
