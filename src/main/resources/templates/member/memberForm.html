@@ -58,7 +58,7 @@
 							<div class="form-group row">
 								<div class="col-md-12">
 									<input type="text" class="form-control"
-										placeholder="PhoneNumber" th:field="*{phoneNumber}">
+										placeholder="번호는 - 를 제외하고 입력해주세요" th:field="*{phoneNumber}">
 									<p th:if="${#fields.hasErrors('phoneNumber')}"
 										th:errors="*{phoneNumber}" class="fieldError"></p>
 								</div>
