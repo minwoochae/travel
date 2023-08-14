@@ -134,7 +134,7 @@ function updateResults() {
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `
                     <div style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;">
-                        <img src="${firstImage}" style="width:150px; height:120px; background-size: cover;" alt="${title} Image">
+                        <img src="${firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${title} Image">
                         <h4 style="margin-left:15px;">${title}</h4>
                     </div>
                 `;
@@ -155,55 +155,40 @@ function addClickListener(element, title, address, tel, firstImage) {
 // 상세 정보 표시 함수
 function showDetail(title, address, tel, firstImage) {
     resultDetailDiv.innerHTML = `
-        <h3>${title}</h3>
-        <img src="${firstImage}" alt="${title} Image">
-        <p>Address: ${address}</p>
-        <p>Tel: ${tel}</p>
+    <div style="min-width:880px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
+    	<div style="flex-shrink: 0;"> 
+    		<!-- 이미지는 flex-shrink 속성을 0으로 지정해서 줄어들지 않게 합니다 -->
+        	<img src="${firstImage}" alt="${title} Image" style="width:360px; height:240px;">
+    	</div>
+    	<div style="margin-left:20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+        	<!-- flex: 1은 이 div가 가능한 모든 공간을 차지하게 합니다 -->
+        	<h3 style="align-self: flex-start; letter-spacing: 0.1em; font-weight: bold;">${title}</h3>
+        	<div style="align-self: flex-start;">
+            	<p>Address: ${address}</p>
+            	<p>Tel: ${tel}</p>
+        	</div>
+    	</div>
+	</div>
+	<div id="map" style="width:80%; height:350px;"></div>
     `;
 }
 
 
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
 
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
+// 마커가 표시될 위치입니다 
+var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667); 
 
+// 마커를 생성합니다
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
 
-
-
-
-
-var map;
-
-// 카카오맵 생성
-function initMap() {
-  var center = new kakao.maps.LatLng(37.5665, 126.978); // 초기 중심 좌표
-  map = new kakao.maps.Map(document.getElementById("map"), {
-    center: center,
-    level: 8,
-  });
-}
-
-// 마커 생성 및 추가
-function addMarker(mapx, mapy) {
-  var markerPosition = new kakao.maps.LatLng(mapy, mapx);
-  var marker = new kakao.maps.Marker({
-    position: markerPosition,
-  });
-  marker.setMap(map);
-}
-
-// 결과 이미지 클릭 시 마커 추가
-function addMarkerOnClick(imageElement) {
-  imageElement.addEventListener("click", function () {
-    var mapx = parseFloat(imageElement.getAttribute("data-mapx"));
-    var mapy = parseFloat(imageElement.getAttribute("data-mapy"));
-    addMarker(mapx, mapy);
-  });
-}
-
-window.onload = function () {
-  initMap();
-  var imageElements = document.querySelectorAll(".result-image");
-  imageElements.forEach(function (element) {
-    addMarkerOnClick(element);
-  });
-};
+// 마커가 지도 위에 표시되도록 설정합니다
+marker.setMap(map);
