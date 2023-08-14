@@ -3,6 +3,8 @@ package com.travel.service;
 import java.security.SecureRandom;
 import java.util.Date;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.User;
@@ -119,6 +121,13 @@ public class MemberService implements UserDetailsService{
 				.roles(member.getRole().toString()).build();
 	}
 	
+	@Transactional(readOnly = true)
+	public Page<Member> getAdminlistPage(Pageable pageable){
+		return memberRepository.findAll(pageable);
+	}
+	
+
+
 	
 
 }

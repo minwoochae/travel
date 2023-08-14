@@ -129,17 +129,6 @@ public class MemberController {
 		 }
 		
 		 
-		 //memberlist
-		 @GetMapping(value ="/admin/member/list")
-		 public String memberList(Model model, MemberFormDto memberFormDto , Optional<Integer> page) {
-			 Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 6);
-			 
-			 
-			 model.addAttribute("ais",pageable);
-			 model.addAttribute("memberFormDto", memberFormDto);
-			 model.addAttribute("maxPage", 5);
-			 
-			 return "member/memberlist";
-		 }
+
 	
 }
