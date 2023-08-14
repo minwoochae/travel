@@ -53,6 +53,7 @@ public class Member {
 		return member;
 		
 	}
+<<<<<<< HEAD
 	
 	public  void updateMember(MemberFormDto memberFormDto) {
 		this.password = memberFormDto.getPassword();
@@ -63,7 +64,10 @@ public class Member {
 
 		return password;
 	}
+=======
+>>>>>>> 86d43cb507849259bebe70a681fb9f0cc1cee376
 }
+
 
 
 

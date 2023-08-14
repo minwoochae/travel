@@ -1,4 +1,4 @@
-// SELECT BOX 선택
+// 숙소 SELECT BOX 선택
 var areaCodeSelect = document.getElementById("areaCodeSelect");
 var contentTypeIdSelect = document.getElementById("contentTypeIdSelect");
 
@@ -7,6 +7,7 @@ var resultsDiv = document.getElementById("results");
 
 // 검색 버튼 선택
 var searchButton = document.getElementById("searchButton");
+
 
 // 사용자가 지역 코드 선택할 때의 이벤트 리스너 추가
 // areaCodeSelect.addEventListener("change", updateContentTypes);
@@ -29,6 +30,9 @@ fetch(
       var item = items[i];
       var code = item.getElementsByTagName("code")[0].textContent;
       var name = item.getElementsByTagName("name")[0].textContent;
+      
+      console.log(item);
+      
 
       // OPTION 요소 생성 및 추가
       var option = document.createElement("option");
@@ -78,6 +82,8 @@ function updateContentTypes() {
     option.value = contentTypes[i].id;
     option.text = contentTypes[i].name;
     contentTypeIdSelect.appendChild(option);
+    
+    
   }
 
   // 초기 로드시 콘텐츠 결과 업데이트
@@ -113,6 +119,8 @@ function updateResults() {
         var address = item.getElementsByTagName("addr1")[0].textContent;
         var tel = item.getElementsByTagName("tel")[0].textContent;
         var firstImage = item.getElementsByTagName("firstimage")[0].textContent;
+        
+        console.log(title);
 
         //위도 경도
         //  var mapx = item.getElementsByTagName("mapx")[0].textContent;
@@ -122,10 +130,10 @@ function updateResults() {
 
         var resultElement = document.createElement("div");
         resultElement.innerHTML = `
-                    <h3>${title}</h3>
-                    <p>${address}</p>
-                    <p>Tel: ${tel}</p>
-                    <img src="${firstImage}" style="width:500px; height:300px;" alt="${title} Image">
+        			<div style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black;">
+                    	<img src="${firstImage}" style="width:150px; height:120px; background-size: cover;" alt="${title} Image">
+                    	<h4 style="margin-left:15px;">${title}</h4>
+                    </div>
                 `;
 
         resultsDiv.appendChild(resultElement);
@@ -133,6 +141,18 @@ function updateResults() {
     })
     .catch((error) => console.error("API 호출 오류:", error));
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 var map;
 
