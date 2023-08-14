@@ -3,7 +3,6 @@ var areaCodeSelect2 = document.getElementById("areaCodeSelect2");
 var contentTypeIdSelect2 = document.getElementById("contentTypeIdSelect2");
 var resultsDiv2 = document.getElementById("results2");
 var resultDetailDiv2 = document.getElementById("resultDetail2");
-var mapDiv = document.getElementById("map");
 
 var searchButton2 = document.getElementById("searchButton2");
 
@@ -48,7 +47,29 @@ function updateContentTypes2() {
 
   var selectedAreaCode = areaCodeSelect2.value;
   var contentTypes = [
-    // ... 새로운 영역을 위한 콘텐츠 유형 정보
+    {
+      id: 1,
+      name: "식당",
+      url:
+        "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&arrange=O&contentTypeId=39&areaCode=" +
+        selectedAreaCode +
+        "&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D",
+    },
+    {
+      id: 2,
+      name: "숙소",
+      url:
+        "https://apis.data.go.kr/B551011/KorService1/searchStay1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&areaCode=" +
+        selectedAreaCode +
+        "&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D",
+    },
+    {
+      id: 3,
+      name: "관광지",
+      url:
+        "https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&listYN=Y&arrange=A&contentTypeId=12&areaCode=" +
+        selectedAreaCode,
+    },
   ];
 
   for (var i = 0; i < contentTypes.length; i++) {
@@ -99,7 +120,15 @@ function updateResults2() {
                 let firstImageElement = item.getElementsByTagName("firstimage")[0];
                 let firstImage = firstImageElement ? firstImageElement.textContent : "";
 
+                //위도 경도
+        		let mapx = item.getElementsByTagName("mapx")[0].textContent;
+        		let mapy = item.getElementsByTagName("mapy")[0].textContent;
+        		//<p>Mapx: ${mapx}</p>
+        		//<p>Mapy: ${mapy}</p>
+        		
                 console.log(title);
+                console.log(mapx);
+                console.log(mapy);
 
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `
@@ -109,23 +138,23 @@ function updateResults2() {
                     </div>
                 `;
 
-                addClickListener2(resultElement, title, address, tel, firstImage);
+                addClickListener2(resultElement, title, address, tel, firstImage, mapx, mapy);
                 resultsDiv2.appendChild(resultElement);
             }
         })
         .catch((error) => console.error("API 호출 오류:", error));
 }
 
-function addClickListener2(element, title, address, tel, firstImage) {
+function addClickListener2(element, title, address, tel, firstImage, mapx, mapy) {
     element.addEventListener("click", function() {
-        showDetail2(title, address, tel, firstImage);
+        showDetail2(title, address, tel, firstImage, mapx, mapy);
     });
 }
 
 // 상세 정보 표시 함수
-function showDetail2(title, address, tel, firstImage) {
-    resultDetailDiv2.innerHTML = `
-    <div style="min-width:880px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
+function showDetail2(title, address, tel, firstImage, mapx, mapy) {
+    resultDetailDiv.innerHTML = `
+    <div style="min-width:950px; max-width:950px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
     	<div style="flex-shrink: 0;"> 
     		<!-- 이미지는 flex-shrink 속성을 0으로 지정해서 줄어들지 않게 합니다 -->
         	<img src="${firstImage}" alt="${title} Image" style="width:360px; height:240px;">
@@ -134,24 +163,29 @@ function showDetail2(title, address, tel, firstImage) {
         	<!-- flex: 1은 이 div가 가능한 모든 공간을 차지하게 합니다 -->
         	<h3 style="align-self: flex-start; letter-spacing: 0.1em; font-weight: bold;">${title}</h3>
         	<div style="align-self: flex-start;">
-            	<p>Address: ${address}</p>
+            	<p>주소: ${address}</p>
             	<p>Tel: ${tel}</p>
         	</div>
+        	
+        	<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:20px;">
+    			<button type="button" class="btn btn-outline-danger">일정 추가하기</button>
+    		</div>
+    		
     	</div>
 	</div>
-	<div id="map" style="width:80%; height:350px;"></div>
+	<div id="map2" style="width:880px; height:570px; margin-left:60px;"></div>
     `;
 
 var mapContainer = document.getElementById("map2"), // 지도를 표시할 div
         mapOption = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
+          center: new kakao.maps.LatLng(mapy, mapx), // 지도의 중심좌표
+          level: 2, // 지도의 확대 레벨
         };
 
       var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
       // 마커가 표시될 위치입니다
-      var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
+      var markerPosition = new kakao.maps.LatLng(mapy, mapx);
 
       // 마커를 생성합니다
       var marker = new kakao.maps.Marker({

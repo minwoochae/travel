@@ -181,8 +181,8 @@ function showDetail(title, address, tel, firstImage, mapx, mapy) {
         	</div>
         	
         	<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:20px;">
-    	<button type="button" class="btn btn-outline-danger">일정 추가하기</button>
-    </div>
+    			<button type="button" class="btn btn-outline-danger">일정 추가하기</button>
+    		</div>
     	
     	</div>
 	</div>
