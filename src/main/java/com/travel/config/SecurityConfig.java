@@ -22,20 +22,8 @@ public class SecurityConfig{
 		
 				//모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
 				.requestMatchers("/css/**","/js/**","/img/**","/images/**", "/fonts/**").permitAll()
-<<<<<<< HEAD
-=======
 				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
-				.requestMatchers("/","/members/**","/ai/**", "/account/**", "/account/pssearch/**" ).permitAll()
-				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
->>>>>>> 86d43cb507849259bebe70a681fb9f0cc1cee376
-				.requestMatchers("/","/members/**","/ai/**", "/account/**", "/account/pssearch/**" ).permitAll()
-				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
-
-				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
-
-				.requestMatchers("/","/members/**","/ai/**", "/account/**", "/account/pssearch/**" ).permitAll()
-				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
-
+				
 				.requestMatchers("favicon.ico","/error").permitAll()
 				//'admin' 으로 시작하는 경로로 관리자만 접근가능하도록 설정
 				.requestMatchers("/admin/**").hasRole("ADMIN")
