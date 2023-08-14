@@ -7,11 +7,10 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class MainController {
-
-	@GetMapping(value = "/")
-	public String main() {
-		return "/main";
+public class AdminController {
+	
+	@GetMapping(value = "/admin")
+	public String admin() {
+		return "/admin/adminMain";
 	}
-
 }
