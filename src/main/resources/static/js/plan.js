@@ -17,6 +17,27 @@ var searchButton = document.getElementById("searchButton");
 // 검색 버튼 클릭 시 결과 업데이트
 searchButton.addEventListener("click", updateResults);
 
+
+
+var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+        mapOption = {
+          center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+          level: 3, // 지도의 확대 레벨
+        };
+
+      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+      // 마커가 표시될 위치입니다
+      var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
+
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+        position: markerPosition,
+      });
+
+      // 마커가 지도 위에 표시되도록 설정합니다
+      marker.setMap(map);
+
 // 초기 로드시 지역 코드 목록을 가져옴
 fetch(
   "https://apis.data.go.kr/B551011/KorService1/areaCode1?numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D"
@@ -167,27 +188,12 @@ function showDetail(title, address, tel, firstImage) {
             	<p>Address: ${address}</p>
             	<p>Tel: ${tel}</p>
         	</div>
+    	
     	</div>
 	</div>
+    	
 	
     `;
 }
 
-var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-        mapOption = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
-        };
 
-      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-      // 마커가 표시될 위치입니다
-      var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
-        position: markerPosition,
-      });
-
-      // 마커가 지도 위에 표시되도록 설정합니다
-      marker.setMap(map);
