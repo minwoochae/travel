@@ -171,7 +171,7 @@
 					<button class="nav-link active" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#home-tab-pane" type="button" role="tab"
 						aria-controls="home-tab-pane" aria-selected="true" value="2"
-						style="width: 100%;">숙소</button>	
+						style="width: 100%; height: 63px;">숙소</button>	
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
 					<button class="nav-link" id="contentTypeIdSelect2" data-bs-toggle="tab"
@@ -287,8 +287,9 @@
 
 		<div id="resultDetail">
 			
-			<div id="map" style="width:80%; height:350px;"></div>
 		</div>
+		
+			
 
 
 
@@ -307,6 +308,7 @@
 	<script src="/js/plan3.js"></script>
 
 	<script>
+
 	    var urlParams = new URLSearchParams(window.location.search);
 	    var input1 = urlParams.get('travelNm');
 	    var input2 = urlParams.get('date');
@@ -365,6 +367,7 @@
             tabPane.innerHTML = content;
             tabContent.appendChild(tabPane);
         }
+        
         
         
 	</script>
