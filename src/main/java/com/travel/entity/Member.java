@@ -14,7 +14,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class Member {
+public class Member extends BaseEntity {
 	
 	@Id
 	@Column(name="member_id")
@@ -53,6 +53,26 @@ public class Member {
 		return member;
 		
 	}
+<<<<<<< HEAD
+	
+=======
+
+>>>>>>> 5b998b143eac6a50683f5116407ba779dc1702fc
+	public  void updateMember(MemberFormDto memberFormDto) {
+		this.password = memberFormDto.getPassword();
+	}
+	public String  updatePassword(String pass,PasswordEncoder passwordEncoder) {
+		String password = passwordEncoder.encode(pass);
+		this.password = password;
+
+		return password;
+	}
+<<<<<<< HEAD
+	
+	
+=======
+
+>>>>>>> 5b998b143eac6a50683f5116407ba779dc1702fc
 }
 
 

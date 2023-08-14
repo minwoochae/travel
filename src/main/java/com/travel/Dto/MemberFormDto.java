@@ -29,7 +29,7 @@ public class MemberFormDto {
 	private String password;
 	
 	@NotBlank(message = "전화번호는 필수 입력 값 입니다.")
-	@Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "유효한 전화번호 형식을 입력해주세요.") 
+	@Pattern(regexp = "^\\d{3}\\d{3,4}\\d{4}$", message = "유효한 전화번호 형식을 입력해주세요.") 
 	private String phoneNumber;
 private static ModelMapper modelMapper = new ModelMapper();
 	
@@ -43,5 +43,10 @@ private static ModelMapper modelMapper = new ModelMapper();
 		return modelMapper.map(member, MemberFormDto.class);
 	}
 	
+	/*
+	 * public MemberFormDto(Long id, String name, String email, String phoneNumber)
+	 * { this.id = id; this.name = name ; this.email = email; this.phoneNumber =
+	 * phoneNumber; }
+	 */
 	
 }

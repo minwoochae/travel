@@ -1,7 +1,9 @@
 package com.travel.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.data.domain.*;
 import com.travel.Dto.MemberFormDto;
 import com.travel.entity.Member;
 import com.travel.service.MemberService;
@@ -73,7 +75,7 @@ public class MemberController {
 	@GetMapping(value = "/account/search")
 	public String search_id(Model model) {
 		model.addAttribute("memberFormDto", new MemberFormDto());
-		return "members/LoginForm";
+		return "member/LoginForm";
 	}
 	@PostMapping("/account/search")
 	@ResponseBody
@@ -90,5 +92,54 @@ public class MemberController {
 		msg.put("message", email);
 		return msg;
 	}
+	
+	// 비번찾기
+		@GetMapping(value = "/account/pssearch")
+		public String search_ps(Model model) {
+			model.addAttribute("memberFormDto", new MemberFormDto());
+
+			return "member/psLoginForm";
+		}
+
+		// 비밀번호 찾고 난수생성기로 랜덤비밀번호 생성
+		@PostMapping("/account/pssearch")
+		@ResponseBody
+		public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata , Principal principal) {
+			String email = (String) psdata.get("memberEmail");
+
+			HashMap<String, String> msg = new HashMap<>();
+			String pass = memberservice.passwordFind( email);
+			// pass 암호화된 비밀번호
+			String ramdomps = memberservice.getRamdomPassword(12);
+
+			// ramdomps 를 view에 출력
+			String password = memberservice.updatePassword(ramdomps, email, passwordEncoder);
+			
+			memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps);
+			String asd = "이메일로 임시 비밀번호가 발송되었습니다.";
+			msg.put("message", asd);
+			return msg ;
+		}
+	
+		//mypage
+		 @GetMapping(value = "/member/mypage")
+		 public String mainMypage (Model model) {
+			 
+			 return "member/MyPage";
+		 }
+		
+		 
+		 //memberlist
+		 @GetMapping(value ="/admin/member/list")
+		 public String memberList(Model model, MemberFormDto memberFormDto , Optional<Integer> page) {
+			 Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 6);
+			 
+			 
+			 model.addAttribute("ais",pageable);
+			 model.addAttribute("memberFormDto", memberFormDto);
+			 model.addAttribute("maxPage", 5);
+			 
+			 return "member/memberlist";
+		 }
 	
 }
