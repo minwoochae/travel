@@ -17,5 +17,13 @@ public class PlannerController {
 		return "planner/plannerMain";
 	}
 
+	@GetMapping(value = "/planList")
+	public String planList() {
+		return "planner/planList";
+	}
 	
+	@GetMapping(value="/planComplete")
+	public String planComp() {
+		return "planner/planComp";
+	}
 }
