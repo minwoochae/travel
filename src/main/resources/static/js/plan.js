@@ -5,6 +5,8 @@ var contentTypeIdSelect = document.getElementById("contentTypeIdSelect");
 // 결과를 표시할 영역 선택
 var resultsDiv = document.getElementById("results");
 
+var resultDetailDiv = document.getElementById("resultDetail");
+
 // 검색 버튼 선택
 var searchButton = document.getElementById("searchButton");
 
@@ -92,58 +94,73 @@ function updateContentTypes() {
 
 // 콘텐츠 유형 선택 시 결과 업데이트
 function updateResults() {
-  resultsDiv.innerHTML = ""; // 결과 영역 초기화
+    resultsDiv.innerHTML = ""; // 결과 영역 초기화
 
-  var selectedContentTypeId = contentTypeIdSelect.value;
-  var selectedAreaCode = areaCodeSelect.value;
+    let selectedContentTypeId = contentTypeIdSelect.value;
+    let selectedAreaCode = areaCodeSelect.value;
 
-  var contentTypes = {
-    1: "39",
-    2: "32",
-    3: "12",
-  };
+    let contentTypes = {
+        1: "39",
+        2: "32",
+        3: "12",
+    };
 
-  var apiUrl = `https://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&arrange=O&contentTypeId=${contentTypes[selectedContentTypeId]}&areaCode=${selectedAreaCode}&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D`;
+    let apiUrl = `https://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&arrange=O&contentTypeId=${contentTypes[selectedContentTypeId]}&areaCode=${selectedAreaCode}&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D`;
 
-  fetch(apiUrl)
-    .then((response) => response.text())
-    .then((data) => {
-      var parser = new DOMParser();
-      var xmlDoc = parser.parseFromString(data, "text/xml");
+    fetch(apiUrl)
+        .then((response) => response.text())
+        .then((data) => {
+            let parser = new DOMParser();
+            let xmlDoc = parser.parseFromString(data, "text/xml");
 
-      var items = xmlDoc.getElementsByTagName("item");
+            let items = xmlDoc.getElementsByTagName("item");
 
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        var title = item.getElementsByTagName("title")[0].textContent;
-        var address = item.getElementsByTagName("addr1")[0].textContent;
-        var tel = item.getElementsByTagName("tel")[0].textContent;
-        var firstImage = item.getElementsByTagName("firstimage")[0].textContent;
-        
-        console.log(title);
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
+                let titleElement = item.getElementsByTagName("title")[0];
+                let title = titleElement ? titleElement.textContent : "";
 
-        //위도 경도
-        //  var mapx = item.getElementsByTagName("mapx")[0].textContent;
-        //  var mapy = item.getElementsByTagName("mapy")[0].textContent;
-        //   <p>Mapx: ${mapx}</p>
-        //   <p>Mapy: ${mapy}</p>
+                let addressElement = item.getElementsByTagName("addr1")[0];
+                let address = addressElement ? addressElement.textContent : "";
 
-        var resultElement = document.createElement("div");
-        resultElement.innerHTML = `
-        			<div style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black;">
-                    	<img src="${firstImage}" style="width:150px; height:120px; background-size: cover;" alt="${title} Image">
-                    	<h4 style="margin-left:15px;">${title}</h4>
+                let telElement = item.getElementsByTagName("tel")[0];
+                let tel = telElement ? telElement.textContent : "";
+
+                let firstImageElement = item.getElementsByTagName("firstimage")[0];
+                let firstImage = firstImageElement ? firstImageElement.textContent : "";
+
+                console.log(title);
+
+                let resultElement = document.createElement("div");
+                resultElement.innerHTML = `
+                    <div style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;">
+                        <img src="${firstImage}" style="width:150px; height:120px; background-size: cover;" alt="${title} Image">
+                        <h4 style="margin-left:15px;">${title}</h4>
                     </div>
                 `;
 
-        resultsDiv.appendChild(resultElement);
-      }
-    })
-    .catch((error) => console.error("API 호출 오류:", error));
+                addClickListener(resultElement, title, address, tel, firstImage);
+                resultsDiv.appendChild(resultElement);
+            }
+        })
+        .catch((error) => console.error("API 호출 오류:", error));
 }
 
+function addClickListener(element, title, address, tel, firstImage) {
+    element.addEventListener("click", function() {
+        showDetail(title, address, tel, firstImage);
+    });
+}
 
-
+// 상세 정보 표시 함수
+function showDetail(title, address, tel, firstImage) {
+    resultDetailDiv.innerHTML = `
+        <h3>${title}</h3>
+        <img src="${firstImage}" alt="${title} Image">
+        <p>Address: ${address}</p>
+        <p>Tel: ${tel}</p>
+    `;
+}
 
 
 
