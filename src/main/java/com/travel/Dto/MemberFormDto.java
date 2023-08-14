@@ -43,5 +43,10 @@ private static ModelMapper modelMapper = new ModelMapper();
 		return modelMapper.map(member, MemberFormDto.class);
 	}
 	
+	/*
+	 * public MemberFormDto(Long id, String name, String email, String phoneNumber)
+	 * { this.id = id; this.name = name ; this.email = email; this.phoneNumber =
+	 * phoneNumber; }
+	 */
 	
 }

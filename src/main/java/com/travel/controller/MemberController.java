@@ -3,6 +3,7 @@ package com.travel.controller;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.data.domain.*;
 import com.travel.Dto.MemberFormDto;
 import com.travel.entity.Member;
 import com.travel.service.MemberService;
@@ -126,6 +127,19 @@ public class MemberController {
 			 
 			 return "member/MyPage";
 		 }
-	
+		
+		 
+		 //memberlist
+		 @GetMapping(value ="/admin/member/list")
+		 public String memberList(Model model, MemberFormDto memberFormDto , Optional<Integer> page) {
+			 Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 6);
+			 
+			 
+			 model.addAttribute("ais",pageable);
+			 model.addAttribute("memberFormDto", memberFormDto);
+			 model.addAttribute("maxPage", 5);
+			 
+			 return "member/memberlist";
+		 }
 	
 }
