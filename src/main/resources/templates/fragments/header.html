@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <header th:fragment="header">
+    	<div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
+    		<div style="margin-right: 40px;">
+	    		<button class="boxed-btn3" style="height: 40px; display:flex; align-items: center;" onclick="location.href='/admin'">관리자페이지로 이동</button>    		    		
+    		</div>
+    	</div>
+        <div class="header-area ">
+            <div id="sticky-header" class="main-header-area">
+                <div class="container-fluid">
+                    <div class="header_bottom_border">
+                        <div class="row align-items-center">
+                            <div class="col-xl-2 col-lg-2">
+                                <div class="logo">
+                                    <a href="/">
+                                        <img src="/img/이젠로고.png" alt="/" width="150px" height="60px">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="main-menu  d-none d-lg-block">
+                                    <nav>
+                                        <ul id="navigation">
+                                            <li><a class="active" href="/">홈</a></li>
+                                            <li><a href="about.html">플랜 둘러보기</a></li>
+                                            <li><a href="about.html">여행상품 주문</a></li>
+                                            <li><a class="" href="travel_destination.html">공지사항</a></li>
+                                            <li><a href="#">문의사항</a></li>
+                                            <li><a href="#" sec:authorize="isAuthenticated()">마이페이지</a></li>
+		                                    <li style=""><a class="active" href="/members/login" sec:authorize="isAuthenticated()">장바구니</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 d-none d-lg-block" >
+                                <div class="main-menu  d-none d-lg-block" style="float: right;">
+                                    <nav>
+                                        <ul id="navigation">
+                                            <li><a class="active" href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
+                                            <li><a class="active" href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
+                                            <li><a href="/members/new"  sec:authorize="isAnonymous()">회원가입</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>             
+                            </div>
+
+                            <div class="col-12">
+                                <div class="mobile_menu d-block d-lg-none">
+              
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+    
+</html>
