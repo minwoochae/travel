@@ -29,7 +29,6 @@ fetch(
       var code = item.getElementsByTagName("code")[0].textContent;
       var name = item.getElementsByTagName("name")[0].textContent;
 
-      console.log(item);
 
       // OPTION 요소 생성 및 추가
       var option = document.createElement("option");

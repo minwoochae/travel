@@ -19,24 +19,6 @@ searchButton.addEventListener("click", updateResults);
 
 
 
-var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-        mapOption = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
-        };
-
-      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-      // 마커가 표시될 위치입니다
-      var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
-        position: markerPosition,
-      });
-
-      // 마커가 지도 위에 표시되도록 설정합니다
-      marker.setMap(map);
 
 // 초기 로드시 지역 코드 목록을 가져옴
 fetch(
@@ -54,7 +36,6 @@ fetch(
       var code = item.getElementsByTagName("code")[0].textContent;
       var name = item.getElementsByTagName("name")[0].textContent;
       
-      console.log(item);
       
 
       // OPTION 요소 생성 및 추가
@@ -150,7 +131,16 @@ function updateResults() {
                 let firstImageElement = item.getElementsByTagName("firstimage")[0];
                 let firstImage = firstImageElement ? firstImageElement.textContent : "";
 
+				//위도 경도
+        		let mapx = item.getElementsByTagName("mapx")[0].textContent;
+        		let mapy = item.getElementsByTagName("mapy")[0].textContent;
+        		//<p>Mapx: ${mapx}</p>
+        		//<p>Mapy: ${mapy}</p>
+        		
                 console.log(title);
+                console.log(mapx);
+                console.log(mapy);
+                
 
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `
@@ -160,23 +150,24 @@ function updateResults() {
                     </div>
                 `;
 
-                addClickListener(resultElement, title, address, tel, firstImage);
+                addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy);
                 resultsDiv.appendChild(resultElement);
             }
         })
         .catch((error) => console.error("API 호출 오류:", error));
 }
 
-function addClickListener(element, title, address, tel, firstImage) {
+function addClickListener(element, title, address, tel, firstImage, mapx, mapy) {
     element.addEventListener("click", function() {
-        showDetail(title, address, tel, firstImage);
+        showDetail(title, address, tel, firstImage, mapx, mapy);
     });
 }
 
 // 상세 정보 표시 함수
-function showDetail(title, address, tel, firstImage) {
+function showDetail(title, address, tel, firstImage, mapx, mapy) {
     resultDetailDiv.innerHTML = `
-    <div style="min-width:880px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
+    
+    <div style="min-width:950px; max-width:950px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
     	<div style="flex-shrink: 0;"> 
     		<!-- 이미지는 flex-shrink 속성을 0으로 지정해서 줄어들지 않게 합니다 -->
         	<img src="${firstImage}" alt="${title} Image" style="width:360px; height:240px;">
@@ -185,15 +176,39 @@ function showDetail(title, address, tel, firstImage) {
         	<!-- flex: 1은 이 div가 가능한 모든 공간을 차지하게 합니다 -->
         	<h3 style="align-self: flex-start; letter-spacing: 0.1em; font-weight: bold;">${title}</h3>
         	<div style="align-self: flex-start;">
-            	<p>Address: ${address}</p>
+            	<p>주소: ${address}</p>
             	<p>Tel: ${tel}</p>
         	</div>
+        	
+        	<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:20px;">
+    	<button type="button" class="btn btn-outline-danger">일정 추가하기</button>
+    </div>
     	
     	</div>
 	</div>
-    	
+    <div id="map" style="width:880px; height:570px; margin-left:60px;"></div>
 	
     `;
+    
+    
+    var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+        mapOption = {
+          center: new kakao.maps.LatLng(mapy, mapx), // 지도의 중심좌표
+          level: 2, // 지도의 확대 레벨
+        };
+
+      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+      // 마커가 표시될 위치입니다
+      var markerPosition = new kakao.maps.LatLng(mapy, mapx);
+
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+        position: markerPosition,
+      });
+
+      // 마커가 지도 위에 표시되도록 설정합니다
+      marker.setMap(map);
 }
 
 
