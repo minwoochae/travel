@@ -155,81 +155,6 @@
 
 		<div class="tab-content" id="pills-tabContent">
 
-
-			<div class="tab-pane fade show active" id="day1" role="tabpanel"
-				aria-labelledby="pills-home-tab" tabindex="0">
-				<div
-					class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-					style="width: 340px;">
-					<div
-						class="d-flex align-items-center flex-shrink-0 text-decoration-none border-bottom"
-						style="height: 42px;">
-						<span class="fs-5 fw-semibold" style="margin-left: 10px;">DAY
-							1 일정</span>
-					</div>
-					<div class="list-group list-group-flush border-bottom scrollarea">
-						
-
-
-					</div>
-				</div>
-
-
-			</div>
-
-
-			<div class="tab-pane fade" id="day2" role="tabpanel"
-				aria-labelledby="pills-profile-tab" tabindex="0">
-				<div
-					class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-					style="width: 340px;">
-					<a href="/"
-						class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
-						<span class="fs-5 fw-semibold">DAY 2 일정</span>
-					</a>
-					<div class="list-group list-group-flush border-bottom scrollarea">
-						
-
-
-					</div>
-				</div>
-
-			</div>
-
-			<div class="tab-pane fade" id="day3" role="tabpanel"
-				aria-labelledby="pills-contact-tab" tabindex="0">
-				<div
-					class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-					style="width: 340px;">
-					<a href="/"
-						class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
-						<span class="fs-5 fw-semibold">DAY 3 일정</span>
-					</a>
-					<div class="list-group list-group-flush border-bottom scrollarea">
-						
-
-
-					</div>
-				</div>
-
-			</div>
-
-			<div class="tab-pane fade" id="day4" role="tabpanel"
-				aria-labelledby="pills-disabled-tab" tabindex="0">
-				<div
-					class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-					style="width: 340px;">
-					<a href="/"
-						class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
-						<span class="fs-5 fw-semibold">DAY 4 일정</span>
-					</a>
-					<div class="list-group list-group-flush border-bottom scrollarea">
-						
-
-
-					</div>
-				</div>
-
 			</div>
 
 
@@ -246,19 +171,19 @@
 					<button class="nav-link active" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#home-tab-pane" type="button" role="tab"
 						aria-controls="home-tab-pane" aria-selected="true" value="2"
-						style="width: 100%;">숙소</button>
+						style="width: 100%; height: 63px;">숙소</button>
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
 					<button class="nav-link" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#profile-tab-pane" type="button" role="tab"
 						aria-controls="profile-tab-pane" aria-selected="false" value="3"
-						style="width: 100%;">관광지</button>
+						style="width: 100%; height: 63px;">관광지</button>
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
 					<button class="nav-link" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#contact-tab-pane" type="button" role="tab"
 						aria-controls="contact-tab-pane" aria-selected="false" value="1"
-						style="width: 100%;">식당</button>
+						style="width: 100%; height: 63px;">식당</button>
 				</li>
 			</ul>
 
@@ -407,6 +332,32 @@
                     aria-controls="pills-home" aria-selected="true">DAY ${i}
             `;
             ulElement.appendChild(liElement);
+        }
+        
+        var tabContent = document.getElementById("pills-tabContent");
+
+        for (var i = 1; i <= numberOfDays; i++) {
+            var tabPane = document.createElement("div");
+            tabPane.className = "tab-pane fade";
+            if (i === 1) {
+                tabPane.className += " show active"; // Show the first day's content
+            }
+            tabPane.id = "day" + i;
+            tabPane.role = "tabpanel";
+
+            var content = `
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 340px;">
+                    <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
+                        <span class="fs-5 fw-semibold">DAY ${i} 일정</span>
+                    </a>
+                    <div class="list-group list-group-flush border-bottom scrollarea">
+                        <!-- Your content for DAY ${i} goes here -->
+                    </div>
+                </div>
+            `;
+
+            tabPane.innerHTML = content;
+            tabContent.appendChild(tabPane);
         }
 	</script>
 </body>
