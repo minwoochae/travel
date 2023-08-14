@@ -12,6 +12,8 @@ public class PlannerController {
 
 	@GetMapping(value ="/planner")
 	public String plannerMain() {
+		
+		
 		return "planner/plannerMain";
 	}
 
