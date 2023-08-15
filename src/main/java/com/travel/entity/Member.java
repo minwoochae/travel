@@ -60,10 +60,6 @@ public class Member extends BaseEntity {
 		return member;
 		
 	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> 9031e6198176e6e486025a9c8350a6d8bac0c485
 
 	public  void updateMember(MemberFormDto memberFormDto) {
 		this.password = memberFormDto.getPassword();
@@ -74,9 +70,6 @@ public class Member extends BaseEntity {
 
 		return password;
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> 9031e6198176e6e486025a9c8350a6d8bac0c485
 }
 

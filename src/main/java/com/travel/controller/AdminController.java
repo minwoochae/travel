@@ -1,10 +1,13 @@
 package com.travel.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
+import com.travel.Dto.MemberFormDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ import com.travel.entity.Member;
 import com.travel.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,8 +27,7 @@ public class AdminController {
 	public String admin() {
 		return "/admin/adminMain";
 	}
-	
-<<<<<<< HEAD
+
 		@GetMapping(value = {"/admin/list", "/admin/list/{page}"})
 		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model ) {
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 10); 
@@ -37,18 +40,19 @@ public class AdminController {
 		
 		
 		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
-		public String  Profilemember(Model model) {
-			
-			
+		public String  Profilemember(@PathVariable("memberId") Long memberId,
+									 Model model) {
+		/*	MemberFormDto memberFormDto =memberService.g(memberId);*/
+			/*	model.addAttribute("member", memberFormDto);*/
 			return "admin/profile";
-=======
+}
 	@GetMapping(value="/adminShop")
 	public String adminShop() {
 		return "/admin/itemRegist";
 	}
->>>>>>> 9031e6198176e6e486025a9c8350a6d8bac0c485
+
 }
 	 
 		
-}
+
 	
