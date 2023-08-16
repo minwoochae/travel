@@ -2,6 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+
 <th:block layout:fragment="css">
 </th:block>
 
@@ -115,6 +120,34 @@
 
     </div>
   </div>
+	
+	<form method="post" >
+    <button id="apibtn">카카오페이로 결제하기</button>
+</form>
+	
 </div>
-</div>
+
+<th:block layout:fragment="script">
+
+	<script>
+	// 카카오결제
+	$(function(){
+		$('#apibtn').click(function(){
+			alert("욍ㅇ");
+			$.ajax({
+				url:'/kakao' ,
+				dataType:'json' ,
+				success:function(data){
+					var box = data.next_redirect_pc_url;
+					window.open(box);
+				} ,
+				error:function(error){
+					alert(error);
+				}
+			})
+		})
+	})
+</script>
+</th:block>
+
 </html>
