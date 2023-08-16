@@ -15,9 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.travel.Dto.MemberFormDto;
 import com.travel.Repository.MemberRepository;
 import com.travel.entity.Member;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -106,6 +108,24 @@ public class MemberService implements UserDetailsService{
 		javaMailSender.send(message);
 	}
 
+	//회원 상세정보
+	@Transactional(readOnly =  true)
+	public MemberFormDto getmemberDtl(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+					.orElseThrow(EntityNotFoundException::new);
+	MemberFormDto memberFormDto = MemberFormDto.of(member);
+ 	
+	
+     return	memberFormDto ;
+		
+	}
+	
+	public void deleteMember(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+				   .orElseThrow(EntityNotFoundException::new);
+		
+		memberRepository.delete(member);
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
