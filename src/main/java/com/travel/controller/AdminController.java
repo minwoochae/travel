@@ -35,7 +35,6 @@ public class AdminController {
 	}
 	
 	//회원 리스트
-
 		@GetMapping(value = {"/admin/list", "/admin/list/{page}"})
 		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model ) {
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 10); 
@@ -48,6 +47,7 @@ public class AdminController {
 		}
 		
 		
+		//회원 리스트(회원 프로필)
 		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
 		public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
 			
