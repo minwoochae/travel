@@ -1,12 +1,16 @@
-package com.travel.Dto;
+	package com.travel.Dto;
+
+import java.time.LocalDateTime;
 
 import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.travel.entity.Member;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +32,11 @@ public class MemberFormDto {
 	private String password;
 	
 	@NotBlank(message = "전화번호는 필수 입력 값 입니다.")
+	@Pattern(regexp = "^\\d{3}\\d{3,4}\\d{4}$", message = "유효한 전화번호 형식을 입력해주세요.") 
 	private String phoneNumber;
+	
+	
+	private LocalDateTime regtime;
 private static ModelMapper modelMapper = new ModelMapper();
 	
 	

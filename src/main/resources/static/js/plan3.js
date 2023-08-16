@@ -1,24 +1,16 @@
-// 숙소 SELECT BOX 선택
-var areaCodeSelect = document.getElementById("areaCodeSelect");
-var contentTypeIdSelect = document.getElementById("contentTypeIdSelect");
+// 새로운 영역을 위한 변수들
+var areaCodeSelect3 = document.getElementById("areaCodeSelect3");
+var contentTypeIdSelect3 = document.getElementById("contentTypeIdSelect3");
+var resultsDiv3 = document.getElementById("results3");
+var resultDetailDiv3 = document.getElementById("resultDetail3");
 
-// 결과를 표시할 영역 선택
-var resultsDiv = document.getElementById("results");
-
-var resultDetailDiv = document.getElementById("resultDetail");
-
-// 검색 버튼 선택
-var searchButton = document.getElementById("searchButton");
-
+var searchButton2 = document.getElementById("searchButton3");
 
 // 사용자가 지역 코드 선택할 때의 이벤트 리스너 추가
-// areaCodeSelect.addEventListener("change", updateContentTypes);
+// areaCodeSelect3.addEventListener("change", updateContentTypes3);
 
 // 검색 버튼 클릭 시 결과 업데이트
-searchButton.addEventListener("click", updateResults);
-
-
-
+searchButton3.addEventListener("click", updateResults3);
 
 // 초기 로드시 지역 코드 목록을 가져옴
 fetch(
@@ -35,26 +27,25 @@ fetch(
       var item = items[i];
       var code = item.getElementsByTagName("code")[0].textContent;
       var name = item.getElementsByTagName("name")[0].textContent;
-      
-      
+
 
       // OPTION 요소 생성 및 추가
       var option = document.createElement("option");
       option.value = code;
       option.text = name;
-      areaCodeSelect.appendChild(option);
+      areaCodeSelect3.appendChild(option);
     }
 
     // 초기 로드시 지역 코드를 기반으로 콘텐츠 유형 업데이트
-    // updateContentTypes();
+    // updateContentTypes2();
   })
   .catch((error) => console.error("지역 코드 호출 오류:", error));
 
 // 지역 코드 선택 시 콘텐츠 유형 목록을 가져오고 셀렉트 박스 업데이트
-function updateContentTypes() {
-  contentTypeIdSelect.innerHTML = ""; // 콘텐츠 유형 목록 초기화
+function updateContentTypes3() {
+  contentTypeIdSelect3.innerHTML = ""; // 콘텐츠 유형 목록 초기화
 
-  var selectedAreaCode = areaCodeSelect.value;
+  var selectedAreaCode = areaCodeSelect3.value;
   var contentTypes = [
     {
       id: 1,
@@ -85,21 +76,19 @@ function updateContentTypes() {
     var option = document.createElement("option");
     option.value = contentTypes[i].id;
     option.text = contentTypes[i].name;
-    contentTypeIdSelect.appendChild(option);
-    
-    
+    contentTypeIdSelect3.appendChild(option);
   }
 
   // 초기 로드시 콘텐츠 결과 업데이트
-  //   updateResults();
+  // updateResults2();
 }
 
 // 콘텐츠 유형 선택 시 결과 업데이트
-function updateResults() {
-    resultsDiv.innerHTML = ""; // 결과 영역 초기화
+function updateResults3() {
+    resultsDiv3.innerHTML = ""; // 결과 영역 초기화
 
-    let selectedContentTypeId = contentTypeIdSelect.value;
-    let selectedAreaCode = areaCodeSelect.value;
+    let selectedContentTypeId = contentTypeIdSelect3.value;
+    let selectedAreaCode = areaCodeSelect3.value;
 
     let contentTypes = {
         1: "39",
@@ -131,7 +120,7 @@ function updateResults() {
                 let firstImageElement = item.getElementsByTagName("firstimage")[0];
                 let firstImage = firstImageElement ? firstImageElement.textContent : "";
 
-				//위도 경도
+                //위도 경도
         		let mapx = item.getElementsByTagName("mapx")[0].textContent;
         		let mapy = item.getElementsByTagName("mapy")[0].textContent;
         		//<p>Mapx: ${mapx}</p>
@@ -140,7 +129,6 @@ function updateResults() {
                 console.log(title);
                 console.log(mapx);
                 console.log(mapy);
-                
 
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `
@@ -150,21 +138,21 @@ function updateResults() {
                     </div>
                 `;
 
-                addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy);
-                resultsDiv.appendChild(resultElement);
+                addClickListener3(resultElement, title, address, tel, firstImage, mapx, mapy);
+                resultsDiv3.appendChild(resultElement);
             }
         })
         .catch((error) => console.error("API 호출 오류:", error));
 }
 
-function addClickListener(element, title, address, tel, firstImage, mapx, mapy) {
+function addClickListener3(element, title, address, tel, firstImage, mapx, mapy) {
     element.addEventListener("click", function() {
-        showDetail(title, address, tel, firstImage, mapx, mapy);
+        showDetail3(title, address, tel, firstImage, mapx, mapy);
     });
 }
 
 // 상세 정보 표시 함수
-function showDetail(title, address, tel, firstImage, mapx, mapy) {
+function showDetail3(title, address, tel, firstImage, mapx, mapy) {
     resultDetailDiv.innerHTML = `
     
     <div style="min-width:950px; max-width:950px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
@@ -187,11 +175,9 @@ function showDetail(title, address, tel, firstImage, mapx, mapy) {
     	</div>
 	</div>
     <div id="map" style="width:880px; height:570px; margin-left:60px;"></div>
-	
     `;
-    
-    
-    var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+
+var mapContainer = document.getElementById("map"), // 지도를 표시할 div
         mapOption = {
           center: new kakao.maps.LatLng(mapy, mapx), // 지도의 중심좌표
           level: 2, // 지도의 확대 레벨
@@ -210,5 +196,3 @@ function showDetail(title, address, tel, firstImage, mapx, mapy) {
       // 마커가 지도 위에 표시되도록 설정합니다
       marker.setMap(map);
 }
-
-

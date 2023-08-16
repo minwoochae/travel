@@ -22,10 +22,6 @@ public class SecurityConfig{
 		
 				//모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
 				.requestMatchers("/css/**","/js/**","/img/**","/images/**", "/fonts/**").permitAll()
-
-				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
-
-				.requestMatchers("/","/members/**","/ai/**", "/account/**", "/account/pssearch/**" ).permitAll()
 				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
 
 				.requestMatchers("favicon.ico","/error").permitAll()
