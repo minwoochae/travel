@@ -40,6 +40,7 @@ public class AdminController {
 		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model ) {
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 10); 
 			Page<Member> travel = memberService.getAdminlistPage(pageable);
+			
 			model.addAttribute("travel", travel);
 			model.addAttribute("maxPage", 5); 
 			
