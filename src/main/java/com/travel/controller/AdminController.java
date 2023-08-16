@@ -1,15 +1,22 @@
 package com.travel.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.travel.Dto.MemberFormDto;
 import com.travel.entity.Member;
 import com.travel.service.MemberService;
 
@@ -24,7 +31,7 @@ public class AdminController {
 		return "/admin/adminMain";
 	}
 	
-<<<<<<< HEAD
+	//회원 리스트
 		@GetMapping(value = {"/admin/list", "/admin/list/{page}"})
 		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model ) {
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 10); 
@@ -37,18 +44,30 @@ public class AdminController {
 		
 		
 		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
-		public String  Profilemember(Model model) {
+		public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
 			
 			
+			
+				MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
+				
+				model.addAttribute("member", memberFormDto);
 			return "admin/profile";
-=======
+		}
 	@GetMapping(value="/adminShop")
 	public String adminShop() {
 		return "/admin/itemRegist";
 	}
->>>>>>> 9031e6198176e6e486025a9c8350a6d8bac0c485
+	
+	//회원 탈퇴시키기
+	@DeleteMapping(value ="admin/{memberId}/delete")
+	public @ResponseBody ResponseEntity  deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
+			Principal principal) {
+		
+		memberService.deleteMember(memberId);
+		
+		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+	}
 }
 	 
 		
-}
 	
