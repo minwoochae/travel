@@ -12,11 +12,11 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 	Member findByEmail(String email);
 	
 	
-	Member findByRole(String role);
-	
 	Member findByNameAndPhoneNumber(String name, String  phoneNumber);
 	
 	Member findByNameAndPhoneNumberAndEmail(String name, String  phoneNumber, String email);
+	
+	Member findByRole(String role);
 	
 	Page<Member> findAll(Pageable pageable);
 	
