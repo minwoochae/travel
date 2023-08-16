@@ -4,95 +4,132 @@
 	layout:decorate="~{layouts/layout1}">
 
 <head>
-	<meta name="_csrf" th:content="${_csrf.token}" />
-	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
 <!-- 각 페이지의 CSS가 작성될 위치 -->
 <th:block layout:fragment="css">
 	<style>
+.main {
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+}
 
-	</style>
+p {
+	text-align: center;
+	padding: 40px 0;
+}
+</style>
 </th:block>
 
 <div layout:fragment="content">
-	
-			<div class="row" style="justify-content: center; align-items: center; margin: 0 auto; width: 60%; padding: 20px 0 50px 0;">
-				
-				<div class="col-md-12">
-					<form th:action="@{'/admin/profile/' + ${member.id}}" method="get" th:object="${member}">
-						<table class="table table-responsive-md">
-						
-						  <tbody>
-						  	<!-- 초기화된 데이터를 출력한다. -->
-						    <tr th:each="member, status: ${member.getContent()}">
-						      <th th:text="${member.id}" scope="row"></th>
-						      <td th:text="${member.name}">  </td>
-						      <td th:text="${member.phone_number}"></td>
-						      <td th:text="${member.role}"></td>
-				      <!--   <td th:text="${ai.regtime}"></td>  -->
-					       <td th:text="${#temporals.format(member.regtime, 'yyyy-MM-dd HH:mm:ss')}"></td> 
-						        <td>
-						      	 	<button type="button" class="btn btn-danger waves-effect waves-light" th:id="${member.id}" th:value="${member.id}" th:onclick="'javascript:deleteAi(' + ${member.id} +')'">삭제하기</button>
-						      </td> 
-						    </tr>
-						  </tbody>
-						</table>
-					
 
-						
-					</form>
+	<div class="row"
+		style="justify-content: center; align-items: center; margin: 0 auto; width: 70%; padding: 30px 30px 60px 30px;">
+
+		<div  style="justify-content: center; align-items: center; margin: 0 auto; text-align: center;"  >
+			<div style="text-align: center; margin-bottom: 100px;   padding:  0  0 15px  0;  width: 100%; "><h2 style="width: 150px; border-bottom: 2px solid black; justify-content: center; align-items: center; margin: 0 auto; text-align: center;"  >회원 정보</h2></div>
+			<form th:action="@{'/admin/profile/' + ${member.id}}" method="get"
+				th:object="${member}">
+				<input type="hidden" id="memberId" th:value="${member.id}" />
+				<!-- 초기화된 데이터를 출력한다. -->
+				<div style="display: block;" class="main">
+					<div style="display: flex;">
+						<div style="display: flex; border: solid 0.5px black;">
+							<p style="width: 200px;  border: solid 0.5px black;">회원 이름</p>
+							<p th:text="${member.name}"
+								style="padding: 40px 0px; width: 350px;  border: solid 0.5px black;"></p>
+						</div>
+						<div style="display: flex; border: solid 0.5px black;">
+							<p style="width: 200px;  border: solid 0.5px black;">회원 아이디</p>
+							<p th:text="${member.email}"
+								style="padding: 40px 0px; width: 350px;  border: solid 0.5px black;"></p>
+						</div>
+					</div>
+					<div style="display: flex;">
+						<div style="display: flex; border: solid 0.5px black;">
+							<p style="width: 200px; border: solid 0.5px black;" >가입 날짜</p>
+							<p th:text="${#temporals.format(member.regtime, 'yyyy-MM-dd HH:mm:ss')}"
+								style="padding: 40px 0px; width: 350px;  border: solid 0.5px black;"></p>
+						</div>
+						<div style="display: flex; border: solid 0.5px black;">
+							<p style="width: 200px;  border: solid 0.5px black;">전화 번호</p>
+							<p th:text="${member.phoneNumber}"
+								style="padding: 40px 0px; width: 350px;  border: solid 0.5px black;"></p>
+						</div>
+						<!--   <td th:text="${ai.regtime}"></td>  -->
+					</div>
+					<div style="display: flex;">
+						<div style="display: flex;  border: solid 0.5px black;">
+							<p style="width: 200px; border: solid 0.5px black;">가입 방법</p>
+							<p
+								th:text="${member.division}"
+								style="width: 350px; border: solid 0.5px black;"></p>
+						</div>
+						<div style="display: flex;  border: solid 0.5px black;">
+							<p style="width: 200px; border: solid 0.5px black;"></p>
+							<p style="width: 350px;  border: solid 0.5px black;"></p>
+						</div>
+					</div>
 				</div>
 
-</div>
+				<button type="button"
+					class="btn btn-danger waves-effect waves-light"
+					th:id="${member.id}" th:value="${member.id}"
+					th:onclick="'javascript:deleteAi(' + ${member.id} +')'"
+					style="margin: 40px 10px 40px 0; float:right;">삭제하기</button>
+				<button type="button" class="btn btn-danger waves-effect waves-light" onclick="location.href='/admin/list'"
+					style="margin: 40px 40px; float:right;">돌아가기</button>
+			</form>
+		</div>
+
+	</div>
 </div>
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-		$(document).ready(function(){
-			$("#searchBtn").on("click", function(e){
+		$(document).ready(function() {
+			$("#searchBtn").on("click", function(e) {
 				e.preventDefault(); // submit되는걸 방지
 				page(0);
 			});
 		});
-		
 
-		
-		
-		 function deleteAi(aiId) {
-		        const deleteconf = confirm("주문 내역을 삭제하시겠습니까?");
-		        if (!deleteconf) return;
+		function deleteAi(memberId) {
+			const deleteconf = confirm("정말 삭제하시겠습니까?");
+			if (!deleteconf)
+				return;
 
-		        var token = $("meta[name='_csrf']").attr("content");
-		        var header = $("meta[name='_csrf_header']").attr("content");
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
 
-		        var url = "/admin/" + aiId + "/delete";
-		        
-		        $.ajax({
-		          url: url,
-		          type: "DELETE", //전송방식
-		          contentType: "application/json",
-		          beforeSend: function(xhr) {
-		            //데이터를 전송하기 전에 헤더에 xsrf값
-		            xhr.setRequestHeader(header, token);
-		          },
-		          dataType: "json",
-		          cache: false,
-		          success: function(result, status) {
-		            // Handle success, e.g., refresh the page or update the UI
-		        	  location.href = "/";
-		          },
-		          error: function(jqXHR, status, error) {
-		            if (jqXHR.status == "401") {
-		              alert("로그인 후 이용해주세요.");
-		              location.href = "/member/login";
-		            } else {
-		              alert(jqXHR.responseText);
-		            }
-		          },
-		        });
-		      }
-		
+			var url = "/admin/" + memberId + "/delete";
+
+			$.ajax({
+				url : url,
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					location.href = "/";
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == "401") {
+						alert("로그인 후 이용해주세요.");
+						location.href = "/member/login";
+					} else {
+						alert(jqXHR.responseText);
+					}
+				},
+			});
+		}
 	</script>
 </th:block>
 </html>

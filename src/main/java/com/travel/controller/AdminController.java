@@ -7,12 +7,21 @@ import com.travel.Dto.MemberFormDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+<<<<<<< HEAD
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+=======
 import org.springframework.data.repository.query.Param;
+>>>>>>> 3df426859a0b7a8ab13b4def08335e0011ef5ff9
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.travel.Dto.MemberFormDto;
 import com.travel.entity.Member;
 import com.travel.service.MemberService;
 
@@ -27,7 +36,12 @@ public class AdminController {
 	public String admin() {
 		return "/admin/adminMain";
 	}
+<<<<<<< HEAD
+	
+	//회원 리스트
+=======
 
+>>>>>>> 3df426859a0b7a8ab13b4def08335e0011ef5ff9
 		@GetMapping(value = {"/admin/list", "/admin/list/{page}"})
 		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model ) {
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 10); 
@@ -40,6 +54,17 @@ public class AdminController {
 		
 		
 		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
+<<<<<<< HEAD
+		public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
+			
+			
+			
+				MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
+				
+				model.addAttribute("member", memberFormDto);
+			return "admin/profile";
+		}
+=======
 		public String  Profilemember(@PathVariable("memberId") Long memberId,
 									 Model model) {
 		/*	MemberFormDto memberFormDto =memberService.g(memberId);*/
@@ -48,13 +73,30 @@ public class AdminController {
 }
 		
 	// 쇼핑몰 상품 등록하기
+>>>>>>> 3df426859a0b7a8ab13b4def08335e0011ef5ff9
 	@GetMapping(value="/adminShop")
 	public String adminShop() {
 		return "/admin/itemRegist";
 	}
+<<<<<<< HEAD
+	
+	//회원 탈퇴시키기
+	@DeleteMapping(value ="admin/{memberId}/delete")
+	public @ResponseBody ResponseEntity  deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
+			Principal principal) {
+		
+		memberService.deleteMember(memberId);
+		
+		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+	}
+}
+	 
+		
+=======
 
 }
 	 
 		
 
+>>>>>>> 3df426859a0b7a8ab13b4def08335e0011ef5ff9
 	
