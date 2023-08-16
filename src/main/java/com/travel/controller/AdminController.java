@@ -46,6 +46,8 @@ public class AdminController {
 			/*	model.addAttribute("member", memberFormDto);*/
 			return "admin/profile";
 }
+		
+	// 쇼핑몰 상품 등록하기
 	@GetMapping(value="/adminShop")
 	public String adminShop() {
 		return "/admin/itemRegist";
