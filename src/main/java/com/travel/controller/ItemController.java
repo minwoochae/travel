@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import com.travel.Dto.ItemFormDto;
 import com.travel.Dto.ItemSearchDto;
 import com.travel.Dto.MainItemDto;
 import com.travel.service.ItemService;
@@ -34,8 +36,12 @@ public class ItemController {
 		return "/item/itemShopList";
 	}
 	
-	@GetMapping(value="/itemDtl")
-	public String itemDtl() {
+	@GetMapping(value="/item/{itemId}")
+	public String itemDtl(Model model, @PathVariable("itemId") Long itemId) {
+		ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+		System.out.println(itemFormDto.getId());
+		model.addAttribute("item", itemFormDto);
+		
 		return "/item/itemDtl";
 	}
 	

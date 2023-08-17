@@ -45,11 +45,11 @@
   text-decoration: none;
 }
 
-p, li, a{
+p, ul, li, a{
   font-size: 14px;
 }
 
-.p1 a{
+.p1 ul li a{
   width: 40px;
   height: 40px;
   line-height: 40px;
@@ -116,7 +116,7 @@ p, li, a{
                     <div class="col-md-4" style="padding: 20px;" th:each="item, status:${items.getContent()}">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" th:src="${item.imgUrl}" alt="..." />
+                            <img class="card-img-top" th:src="${item.imgUrl}" alt="..."  width="316px" height="261px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -127,25 +127,40 @@ p, li, a{
                                 </div>
                             </div>
                             <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/itemDtl">자세히 보기</a></div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" >
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto boxed-btn4"
+                                th:href="'/item/' + ${item.id}" style="padding: 10px 27px !important;">상품 보러가기</a></div>
                             </div>
+
                         </div>
                     </div>
                 </div>
 
-			    <div class="pagination p1" style="display: flex; justify-content: center;">
-			      <ul>
-			        <a href="#"><li><</li></a>
-			        <a class="is-active" href="#"><li>1</li></a>
-			        <a href="#"><li>2</li></a>
-			        <a href="#"><li>3</li></a>
-			        <a href="#"><li>4</li></a>
-			        <a href="#"><li>5</li></a>
-			        <a href="#"><li>6</li></a>
-			        <a href="#"><li>></li></a>
-			      </ul>
-			    </div>
+						<div class="col-md-12 text-center">
+							<nav
+								th:with="start=${(items.number/maxPage)*maxPage + 1}, 
+									end=(${(items.totalPages == 0) ? 1 
+									: (start + (maxPage - 1) < items.totalPages ? 
+									start + (maxPage - 1) : items.totalPages)})"
+								aria-label="Page navigation example">
+								<ul class="pagination d-flex justify-content-center">
+									<li class="page-item"
+										th:classappend="${items.first}?'disabled'"><a
+										class="page-link"
+										th:href="@{'/itemList' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number - 1}}">이전</a></li>
+									<li class="page-item"
+										th:each="page: ${#numbers.sequence(start, end)}"
+										th:classappend="${items.number eq page-1}?'active':''"><a
+										class="page-link" th:inline="text"
+										th:href="@{'/itemList' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page - 1}}">[[${page}]]</a>
+									</li>
+									<li class="page-item" th:classappend="${items.last}?'disabled'">
+										<a class="page-link"
+										th:href="@{'/itemList' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number + 1}}">다음</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
             </div>
             
 

@@ -94,6 +94,19 @@ public class ItemService {
 			itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
 		}
 
+		
+		
+		
+	/*	@Transactional(readOnly = true)
+		public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+			
+			Page<Item> itemPage = itemRepository.getAdminItemPage(itemSearchDto, pageable);
+			return itemPage;
+			
+		}*/
+		
+
+
 		return item.getId(); // 변경한 item의 id 리턴.
 	}
 
@@ -104,11 +117,12 @@ public class ItemService {
 		return itemPage;
 
 	}
-	
+
 	@Transactional(readOnly = true)
 	public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
 		Page<MainItemDto> mainItemPage = itemRepository.getMainItemPage(itemSearchDto, pageable);
 		return mainItemPage;
 	}
+
 
 }

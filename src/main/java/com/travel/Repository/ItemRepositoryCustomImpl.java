@@ -66,11 +66,6 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 				.limit(pageable.getPageSize())
 				.fetch();
 		
-		/*
-		 * select count item where reg_time = ? and item_sell_status = ? and
-		 * item_nm(create_by) like %검색어% order by item_id desc;
-		 */
-		
 		long total = queryFactory.select(Wildcard.count).from(QItem.item)
 					.where(searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
 							searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<!-- 각 페이지의 CSS가 작성될 위치 -->
+<th:block layout:fragment="css">
+	<style>
+.slider {
+	width: 100%;
+	height: 300px;
+	background: #ccc;
+}
+
+.link {
+	width: 800px;
+	height: 200px;
+	margin: auto;
+	background: #fff;
+	border-radius: 20px 20px 0 0;
+	margin-top: -200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.link p {
+	width: 100px;
+	height: 100px;
+	background: #ccc;
+	border-radius: 50%;
+}
+
+ul {
+	display: flex;
+	justify-content: center;
+}
+
+li {
+	list-style: none;
+	margin-right: 10px;
+}
+
+.vertical-dots::before {
+	content: "\22EE";
+	margin-right: 5px; /* 필요에 따라 간격 조정 */
+}
+
+.btnmember {
+	background-color: #dadada;
+	border: none;
+	color: black;
+}
+</style>
+</th:block>
+<div layout:fragment="content">
+
+	<div class="slider"></div>
+	<div class="link">
+		<p
+			style="background-image: url('/img/users.png'); background-size: cover;"></p>
+	</div>
+	<div style="margin: 0 auto; justify-content: center; align-items: center; width: 780px; margin-top: 40px; margin-bottom: 50px;">
+	<form th:action="@{'/member/mypage}" method="POST"
+		th:object="${member}"  >
+		<input type="hidden" id="memberId" th:value="${member.id}" />
+		<div style="display: flex; width: 100%;" >
+			<h4 style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px;">이름</h4>
+			<div >
+				<label th:for="name" class="text-black"
+					style="width: 100%; justify-content: center; margin: 15px auto; align-items: center; font-size: 25px;"></label>
+				<input type="text" class="form-control" id="name" name="name" style="width: 400px;"
+					placeholder="Name" th:value="${member.name}">
+			</div>
+		</div>
+		<div  style="display: flex;">
+			<h4 style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px">이메일</h4>
+			<div>
+				<label th:for="email" class="text-black" th:text="${member.email}" 
+					style="width: 100%; justify-content: center; align-items: center; font-size: 17px; margin-top: 42px"></label>
+
+			</div>
+		</div>
+		<div style="display: flex;">
+			<h4 style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px">전화번호</h4>
+			<div >
+				<label th:for="phoneNumber" class="text-black"
+					style="width: 100%; justify-content: center; margin: 15px auto; align-items: center; font-size: 25px;"></label>
+				<input type="text" class="form-control" id="phoneNumber"  style="width: 400px;"
+					name="phoneNumber" placeholder="PhoneNumber"
+					th:value="${member.phoneNumber}">
+			</div>
+		</div>
+		<div style="display: flex;">
+			<h4 style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px">패스워드</h4>
+			<div>
+				<button type="button"
+					class="btn btn-danger waves-effect waves-light btnmember"
+					onclick="location.href ='/member/mypageupdate'"
+					style=" justify-content: center; align-items: center; font-size: 17px; margin-top: 38px">패스워드
+					변경하기</button>
+			</div>
+		</div>
+			<div  style="margin-top: 60px; ">
+			<button type="button" class="btn"
+				onclick="location.href ='/member/mypage'"  >돌아가기</button>
+			<button type="button" class="btn"
+				onclick="member()"  >수정하기</button>
+				</div>
+	</form>
+</div>
+
+
+</div>
+<!-- 각 페이지의 스크립트가 작성될 위치 -->
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	function member(memberId) {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		var url = "/member/mypageupdate";
+
+		//controller(서버)에 전달할 데이터
+		var paramData = {
+			memberEmail : $("#name").val(), //email
+			memberEmail : $("#phoneNumber").val(), //email
+			message : ""
+		}
+
+		//*전달하기 전에 데이터를 JSON ->문자 번호 만들어야 한다.
+		var param = JSON.stringify(paramData);
+
+		console.log(param);
+
+		$.ajax({
+			url : url, //request URL
+			type : "POST", //전송방식
+			contentType : "application/json",
+			data : param, //서버에  전송할 데이터
+			beforeSend : function(xhr) {
+				//데이터를 전송하기전에 헤더에 csrf값을 설정
+				xhr.setRequestHeader(header, token);
+			},
+			dataType : "json",
+			cache : false,
+			success : function(param) {
+				$(".idpwResult").text(`${param.message}`)
+
+			},
+			error : function(jqXHR, status, error) {
+				if (jqXHR.status == '401') {
+					alert('로그인 후 이용해주세요.')
+					location.href = '/';
+				} else {
+					//에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
+					alert(jqXHR.responseText);
+				}
+			}
+		});
+	}
+	</script>
+</th:block>
+</html>

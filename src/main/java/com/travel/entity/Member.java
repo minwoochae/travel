@@ -70,6 +70,14 @@ public class Member extends BaseEntity {
 
 		return password;
 	}
+	
+	public void  updatenamePhone(MemberFormDto memberFormDto) {
+		this.name = memberFormDto.getName();
+		this.phoneNumber = memberFormDto.getPhoneNumber();
+		
+	}
+
+	
 
 }
 
