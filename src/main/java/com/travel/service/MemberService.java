@@ -3,6 +3,8 @@ package com.travel.service;
 import java.security.SecureRandom;
 import java.util.Date;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.User;
@@ -13,9 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.travel.Dto.MemberFormDto;
 import com.travel.Repository.MemberRepository;
 import com.travel.entity.Member;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -92,19 +96,42 @@ public class MemberService implements UserDetailsService{
 		return member.getPassword();
 	}
 
-	private final JavaMailSender javaMailSender;
+	
+	  private final JavaMailSender javaMailSender;
+	  
+	  
+	  
+	  public void sendEmail(String to, String subject, String text) {
+	  SimpleMailMessage message = new SimpleMailMessage(); message.setTo(to);
+	  message.setSubject(subject); message.setText(text);
+	  javaMailSender.send(message); }
+	 
 
-
-
-	public void sendEmail(String to, String subject, String text) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(text);
-		javaMailSender.send(message);
+	//회원 상세정보
+	@Transactional(readOnly =  true)
+	public MemberFormDto getmemberDtl(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+					.orElseThrow(EntityNotFoundException::new);
+	MemberFormDto memberFormDto = MemberFormDto.of(member);
+ 	
+	
+     return	memberFormDto ;
+		
 	}
-
-
+	
+	public void deleteMember(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+				   .orElseThrow(EntityNotFoundException::new);
+		
+		memberRepository.delete(member);
+	}
+	
+	
+	public Member memberMypage(String email) {
+		Member member = memberRepository.findByEmail(email);
+		
+		return member;
+	}
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		// 사용자가 입력한 email이 DB에 있는지 쿼리문을 사용한다.
@@ -119,6 +146,13 @@ public class MemberService implements UserDetailsService{
 				.roles(member.getRole().toString()).build();
 	}
 	
+	@Transactional(readOnly = true)
+	public Page<Member> getAdminlistPage(Pageable pageable){
+		return memberRepository.findAll(pageable);
+	}
+	
+
+
 	
 
 }

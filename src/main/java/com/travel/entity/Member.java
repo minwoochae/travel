@@ -1,5 +1,8 @@
 package com.travel.entity;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.travel.Dto.MemberFormDto;
@@ -33,6 +36,9 @@ public class Member extends BaseEntity {
 	@Column(nullable = true)
 	private String phoneNumber; //폰번호
 	
+	@CreatedDate
+	@Column(updatable =  false)
+	private LocalDateTime regtime;
 	
 	@Enumerated(EnumType.STRING)
 	private Role role; //역할
@@ -49,6 +55,7 @@ public class Member extends BaseEntity {
 		member.setPhoneNumber(memberFormDto.getPhoneNumber());
 		member.setPassword(password);
 		member.setRole(Role.USER);
+		member.setRegtime(memberFormDto.getRegtime());
 		member.setDivision(Division.NORMAL);
 		return member;
 		
@@ -65,7 +72,4 @@ public class Member extends BaseEntity {
 	}
 
 }
-
-
-
 

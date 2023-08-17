@@ -105,14 +105,17 @@ function updateResults3() {
         .then((data) => {
             let parser = new DOMParser();
             let xmlDoc = parser.parseFromString(data, "text/xml");
-
             let items = xmlDoc.getElementsByTagName("item");
+            
+            var searchInput3 = document.getElementById("searchInput3");
+      		var searchTerm3 = searchInput3.value.toLowerCase(); // 검색어를 소문자로 변환하여 대소문자 구분 없이 검색
 
             for (let i = 0; i < items.length; i++) {
                 let item = items[i];
                 let titleElement = item.getElementsByTagName("title")[0];
                 let title = titleElement ? titleElement.textContent : "";
-
+				
+				if (title.toLowerCase().includes(searchTerm3)){
                 let addressElement = item.getElementsByTagName("addr1")[0];
                 let address = addressElement ? addressElement.textContent : "";
 
@@ -147,6 +150,7 @@ function updateResults3() {
 
                 addClickListener3(resultElement, title, address, tel, firstImage, mapx, mapy, item);
                 resultsDiv3.appendChild(resultElement);
+            	}
             }
         })
         .catch((error) => console.error("API 호출 오류:", error));
