@@ -92,20 +92,7 @@ public class ItemService {
 		for (int i = 0; i < itemImgFileList.size(); i++) {
 			itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
 		}
-<<<<<<< HEAD
-		
-		
-		
-	/*	@Transactional(readOnly = true)
-		public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-			
-			Page<Item> itemPage = itemRepository.getAdminItemPage(itemSearchDto, pageable);
-			return itemPage;
-			
-		}*/
-		
-	
-=======
+
 
 		return item.getId(); // 변경한 item의 id 리턴.
 	}
@@ -117,6 +104,5 @@ public class ItemService {
 		return itemPage;
 
 	}
->>>>>>> 46e9213b2a416a3772798aed264052c5746615bf
 
 }

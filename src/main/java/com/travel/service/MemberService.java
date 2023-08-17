@@ -55,12 +55,13 @@ public class MemberService implements UserDetailsService{
 		return "고객님의 아이디는 " + member.getEmail() + " 입니다";
 	}
 	
-	public Long updateNamePhone(MemberFormDto memberFormDto) {
+	
+	
+	public Long updateNamePhone(MemberFormDto memberFormDto) throws Exception {
 		Member member = memberRepository.findById(memberFormDto.getId())
 							.orElseThrow(EntityNotFoundException::new);		
-		member.updatenamePhone(memberFormDto);
+		 member.updatenamePhone(memberFormDto);
 
-		
 		return member.getId();
 	}
 	

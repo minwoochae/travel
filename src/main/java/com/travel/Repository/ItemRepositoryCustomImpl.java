@@ -1,6 +1,5 @@
 package com.travel.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -13,12 +12,12 @@ import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.travel.Dto.ItemSearchDto;
+import com.travel.Dto.MainItemDto;
+import com.travel.Dto.QMainItemDto;
 import com.travel.constant.ItemSellStatus;
 import com.travel.entity.Item;
-import com.travel.entity.MainItemDto;
 import com.travel.entity.QItem;
 import com.travel.entity.QItemImg;
-import com.travel.entity.QMainItemDto;
 
 import jakarta.persistence.EntityManager;
 
