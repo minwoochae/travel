@@ -1,5 +1,8 @@
 package com.travel.entity;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.travel.Dto.MemberFormDto;
@@ -14,7 +17,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class Member {
+public class Member extends BaseEntity {
 	
 	@Id
 	@Column(name="member_id")
@@ -33,6 +36,9 @@ public class Member {
 	@Column(nullable = true)
 	private String phoneNumber; //폰번호
 	
+	@CreatedDate
+	@Column(updatable =  false)
+	private LocalDateTime regtime;
 	
 	@Enumerated(EnumType.STRING)
 	private Role role; //역할
@@ -49,12 +55,29 @@ public class Member {
 		member.setPhoneNumber(memberFormDto.getPhoneNumber());
 		member.setPassword(password);
 		member.setRole(Role.USER);
+		member.setRegtime(memberFormDto.getRegtime());
 		member.setDivision(Division.NORMAL);
 		return member;
 		
 	}
+
+	public  void updateMember(MemberFormDto memberFormDto) {
+		this.password = memberFormDto.getPassword();
+	}
+	public String  updatePassword(String pass,PasswordEncoder passwordEncoder) {
+		String password = passwordEncoder.encode(pass);
+		this.password = password;
+
+		return password;
+	}
+	
+	public void  updatenamePhone(MemberFormDto memberFormDto) {
+		this.name = memberFormDto.getName();
+		this.phoneNumber = memberFormDto.getPhoneNumber();
+		
+	}
+
+	
+
 }
-
-
-
 

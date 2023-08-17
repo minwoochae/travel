@@ -13,9 +13,5 @@ public class MainController {
 	public String main() {
 		return "/main";
 	}
-	
-	@GetMapping(value = "/admin")
-	public String admin() {
-		return "/admin/adminMain";
-	}
+
 }

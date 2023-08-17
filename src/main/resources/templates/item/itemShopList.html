@@ -4,9 +4,168 @@
 	layout:decorate="~{layouts/layout1}">
 
 <th:block layout:fragment="css">
+	<style>
+		.item-cover {
+			width: 100%;
+			height: 400px;
+			background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url("/img/itemBgImg.jpg");
+			background-repeat: no-repeat;
+			background-size: cover;
+			margin-bottom: 50px;
+			background-position: center;
+			display: flex;
+		}
+
+		.cover-text {
+			font-size: 40px;
+			text-decoration: underline;
+			margin: auto;
+			text-underline-position: under;
+			color: white;
+			font-weight: 600;
+			letter-spacing: 5px;
+			text-decoration-thickness: 5px;
+		}
+		
+				.cf:before,
+		.cf:after {
+		    content: " ";
+		    display: table;
+		}
+		
+		.cf:after {
+		    clear: both;
+		}
+		
+		.cf {
+		    *zoom: 1;
+		}
+		
+		a{
+  text-decoration: none;
+}
+
+p, ul, li, a{
+  font-size: 14px;
+}
+
+.p1 ul li a{
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0;
+  text-align: center;
+}
+
+.p1 a.is-active{
+  background-color: #FF4A52;
+  border-radius: 100%;
+  color: #fff;
+}
+
+.pagination{
+  padding: 30px 0;
+}
+
+.pagination ul{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.pagination a{
+  display: inline-block;
+  color: #222;
+}
+/* GRID */
+
+.twelve { width: 100%; }
+.eleven { width: 91.53%; }
+.ten { width: 83.06%; }
+.nine { width: 74.6%; }
+.eight { width: 66.13%; }
+.seven { width: 57.66%; }
+.six { width: 49.2%; }
+.five { width: 40.73%; }
+.four { width: 32.26%; }
+.three { width: 23.8%; }
+.two { width: 15.33%; }
+.one { width: 6.866%; }
+
+/* COLUMNS */
+
+.col {
+	display: block;
+	float:left;
+	margin: 1% 0 1% 1.6%;
+}
+
+.col:first-of-type {
+  margin-left: 0;
+}
+	</style>
 </th:block>
 
 <div layout:fragment="content">
+	<div class="item-cover">
+		<h1 class="cover-text">상품 둘러보기</h1>
+	</div> <!--백그라운드 이미지 활용  -->
+	            <div class="container px-4 px-lg-5 mt-5" style="margin: 150px auto;">
+
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <div class="col-md-4" style="padding: 20px;" th:each="item, status:${items.getContent()}">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" th:src="${item.imgUrl}" alt="..."  width="316px" height="261px"/>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder" th:text="${item.itemNm}"></h5>
+                                    <!-- Product price-->
+								[[${#numbers.formatInteger(item.price, 0, 'COMMA') + '원'}]]
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" >
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto boxed-btn4"
+                                th:href="'/item/' + ${item.id}" style="padding: 10px 27px !important;">상품 보러가기</a></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+						<div class="col-md-12 text-center">
+							<nav
+								th:with="start=${(items.number/maxPage)*maxPage + 1}, 
+									end=(${(items.totalPages == 0) ? 1 
+									: (start + (maxPage - 1) < items.totalPages ? 
+									start + (maxPage - 1) : items.totalPages)})"
+								aria-label="Page navigation example">
+								<ul class="pagination d-flex justify-content-center">
+									<li class="page-item"
+										th:classappend="${items.first}?'disabled'"><a
+										class="page-link"
+										th:href="@{'/itemList' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number - 1}}">이전</a></li>
+									<li class="page-item"
+										th:each="page: ${#numbers.sequence(start, end)}"
+										th:classappend="${items.number eq page-1}?'active':''"><a
+										class="page-link" th:inline="text"
+										th:href="@{'/itemList' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page - 1}}">[[${page}]]</a>
+									</li>
+									<li class="page-item" th:classappend="${items.last}?'disabled'">
+										<a class="page-link"
+										th:href="@{'/itemList' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number + 1}}">다음</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+            </div>
+            
+
 </div>
 
+<th:block layout:fragment="script">
+</th:block>
 </html>

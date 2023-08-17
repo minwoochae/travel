@@ -1,5 +1,6 @@
 package com.travel.entity;
 
+import com.travel.Dto.PlanContentDto;
 import com.travel.constant.TravelDivision;
 
 import jakarta.persistence.Column;
@@ -53,5 +54,21 @@ public class PlanContent {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "plan_id")
 	private Plan plan;
+	
+	
+	public static PlanContent createContent(PlanContentDto planContentDto) {
+		PlanContent planContent = new PlanContent();
+		planContent.setPlanDay(planContentDto.getPlanDay());
+		planContent.setTravelDivision(planContentDto.getTravelDivision());
+		planContent.setPlaceName(planContentDto.getPlaceName());
+		planContent.setPlaceAddress(planContentDto.getPlaceAddress());
+		planContent.setPlaceLatitude(planContentDto.getPlaceLatitude());
+		planContent.setPlaceLongitude(planContentDto.getPlaceLongitude());
+		planContent.setPlace_img(planContentDto.getPlace_img());
+		planContent.setPlan(null);
+		
+		return planContent;
+	}
+	
 	
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<th:block layout:fragment="css">
+	<style>
+		.title1 {
+			margin: 20px auto;
+    		text-align: center;
+    		font-size: 34px;
+		}
+		
+		.title2 {
+			margin: 10px auto;
+    		font-size: 16px;
+    		text-align: center;
+    		color: #828282;
+		}
+		
+		.planBox {
+			width: 917px;
+    		height: 706px;
+    		border: 1px solid #d7d7d7;
+    		margin: 20px auto;
+		}
+		
+		.planTitle {
+			font-size: 25px;
+    		text-align: center;
+    		margin: 32px 0 52px 0;
+		}
+
+		/* Rectangle 8 */
+		.kakao-btn {
+			width: 309.16px;
+			height: 51px;
+			background: #FEE500;
+			border-radius: 5px;
+			display: flex;
+   		 	margin: 0 auto;
+    		padding-top: 15px;
+    		justify-content: space-around;
+		}
+		
+		
+		.kakao-text {
+			width: 194px;
+			height: 24.48px;
+			
+			font-family: 'Inter';
+			font-style: normal;
+			font-weight: 600;
+			font-size: 20px;
+			line-height: 24px;
+
+		
+		}
+		
+		.kakao-logo {
+			width: 29.61px;
+			height: 27px;
+		
+		}
+		
+				
+	</style>
+</th:block>
+
+<div layout:fragment="content" style="margin-top: 30px;">
+	<div style="display:flex;">
+		<h1 class="title1">플랜을 완성했습니다.</h1>
+	</div>
+	<div style="display:flex;">
+		<h5 class="title2">이 플랜을 여러 사람들과 공유하거나 <br/> 이미지로 내려받을 수 있습니다.</h5>
+	</div>
+	<div class="planBox">
+		<h5 class="planTitle">플랜제목</h5>
+		<div class="card text-center">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="true" href="#">Active</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+	</div>
+<div style="display:flex; justify-content: center;">
+	<div class="more_place_btn text-center" style="margin-right: 20px;">
+        <a class="boxed-btn4" href="#">이미지 내려받기</a>
+    </div>
+   	<div class="more_place_btn text-center" style="margin-left: 20px;">
+        <a class="boxed-btn4" href="#">내 플랜 공유하기</a>
+    </div>
+</div>
+<div style="display: flex; margin: 20px 0;" onclick="'여기에 카카오 공유링크'">
+	<div class="kakao-btn" style="margin: 0 auto;">
+		<img class="kakao-logo" alt="logo" src="/img/kakaoLogo.png">
+        <a class="kakao-text" href="#">카카오로 공유하기</a>
+    </div>
+</div>
+</div>
+</html>
