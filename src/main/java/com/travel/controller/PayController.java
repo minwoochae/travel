@@ -11,8 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PayController {
 	
-	@GetMapping("/kakao")
+	@RequestMapping(value = "/kakao", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	public String kakaopay() {
 		try {
@@ -29,11 +29,22 @@ public class PayController {
 			try {
 				HttpURLConnection conServer = (HttpURLConnection) kakaoUrl.openConnection();
 				conServer.setRequestMethod("POST");
-				conServer.setRequestProperty("Authorization", "KakaoAK ${74456afa519cdeabeb17c1bbaf21a4c1}");
+				conServer.setRequestProperty("Authorization", "KakaoAK 826f9676e26b9186cb6767cddf17d62b");
 				conServer.addRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 				conServer.setDoOutput(true);
-				String param = "cid=TC0ONETIME&partner_order_id=partner_order_id&partner_user_id=partner_user_id&item_name=초코파이&quantity=1&total_amount=2200&tax_free_amount=0&approval_url=https://developers.kakao.com/success&cancel_url=https://developers.kakao.com/cancel&fail_url=https://developers.kakao.com/fail";
+				String param = "cid=TC0ONETIME" // 가맹점 코드
+						+ "&partner_order_id=partner_order_id" // 가맹점 주문번호
+						+ "&partner_user_id=partner_user_id" // 가맹점 회원 id
+						+ "&item_name=초코파이" // 상품명
+						+ "&quantity=1" // 상품 수량
+						+ "&total_amount=5000" // 총 금액
+						+ "&vat_amount=200" // 부가세
+						+ "&tax_free_amount=0" // 상품 비과세 금액
+						+ "&approval_url=https://developers.kakao.com/success" // 결제 성공 시
+						+ "&fail_url=https://developers.kakao.com/fail" // 결제 실패 시
+						+ "&cancel_url=https://developers.kakao.com/cancel"; // 결제 취소 시	
 				OutputStream outPut = conServer.getOutputStream();
+				
 				DataOutputStream dataOutPut = new DataOutputStream(outPut);
 				dataOutPut.writeBytes(param);
 				dataOutPut.close();
@@ -41,13 +52,14 @@ public class PayController {
 				int result = conServer.getResponseCode();
 				System.out.println(result);
 				
+
 				InputStream dataInput;
-				if(result == 200) {
-					dataInput = conServer.getInputStream();
+				if (result == 200) {
+				    dataInput = conServer.getInputStream();
 				} else {
-					dataInput = conServer.getErrorStream();
+				    dataInput = conServer.getErrorStream();
 				}
-				
+
 				InputStreamReader reader = new InputStreamReader(dataInput);
 				BufferedReader buffer = new BufferedReader(reader);
 				return buffer.readLine();
@@ -59,6 +71,13 @@ public class PayController {
 			e.printStackTrace();
 		}
 		
-		return "Item/kakao";
+		return "";
 	}
+	
+	
+
 }
+
+
+
+

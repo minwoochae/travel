@@ -126,7 +126,13 @@ public class MemberService implements UserDetailsService{
 		
 		memberRepository.delete(member);
 	}
-
+	
+	
+	public Member memberMypage(String email) {
+		Member member = memberRepository.findByEmail(email);
+		
+		return member;
+	}
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		// 사용자가 입력한 email이 DB에 있는지 쿼리문을 사용한다.

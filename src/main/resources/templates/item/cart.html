@@ -3,8 +3,10 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
 <head>
-<meta name="_csrf" th:content="${_csrf.token}" />
-<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+	<meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+<meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+
+
 </head>
 
 <th:block layout:fragment="css">
@@ -120,33 +122,40 @@
 
     </div>
   </div>
-	
-	<form method="post" >
+
     <button id="apibtn">카카오페이로 결제하기</button>
-</form>
+
+
 	
 </div>
 
 <th:block layout:fragment="script">
-
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 	<script>
-	// 카카오결제
+ 	// 카카오결제
 	$(function(){
 		$('#apibtn').click(function(){
-			alert("욍ㅇ");
 			$.ajax({
 				url:'/kakao' ,
 				dataType:'json' ,
 				success:function(data){
-					var box = data.next_redirect_pc_url;
-					window.open(box);
+	                var box = data.next_redirect_pc_url;
+	                var popupWidth = 500; // 팝업 창 가로 크기
+	                var popupHeight = 800; // 팝업 창 세로 크기
+	                var left = (screen.width - popupWidth) / 2;
+	                var top = (screen.height - popupHeight) / 2;
+
+	                var popupOptions = "width=" + popupWidth + ",height=" + popupHeight + ",top=" + top + ",left=" + left;
+	                window.open(box, "KakaoPay", popupOptions);
 				} ,
 				error:function(error){
 					alert(error);
 				}
 			})
 		})
-	})
+	});
+
 </script>
 </th:block>
 
