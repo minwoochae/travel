@@ -162,7 +162,6 @@ function updateResults() {
 
                 addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy, item);
 
-
                 resultsDiv.appendChild(resultElement);
              	addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy);
                 }

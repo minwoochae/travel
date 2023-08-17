@@ -56,6 +56,17 @@ public class MemberService implements UserDetailsService{
 	}
 	
 	
+	
+	public Long updateNamePhone(MemberFormDto memberFormDto) throws Exception {
+		Member member = memberRepository.findById(memberFormDto.getId())
+							.orElseThrow(EntityNotFoundException::new);		
+		 member.updatenamePhone(memberFormDto);
+
+		return member.getId();
+	}
+	
+	
+	
 	public String getRamdomPassword(int size) {
 		char[] charSet = new char[] {
 				'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -85,6 +96,8 @@ public class MemberService implements UserDetailsService{
 
 		return password;
 	}
+	
+	
 	public String passwordFind( String email) {
 
 		Member member = memberRepository.findByEmail( email);

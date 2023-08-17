@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.travel.Dto.MemberFormDto;
+
 import com.travel.entity.Member;
 import com.travel.service.ItemService;
 import com.travel.service.MemberService;
@@ -47,6 +47,9 @@ public class AdminController {
 	public String admin() {
 		return "/admin/adminMain";
 	}
+	
+	//회원 리스트
+
 
 	// 회원 리스트
 
@@ -61,6 +64,7 @@ public class AdminController {
 		return "admin/MemberList";
 	}
 
+		
 	// 쇼핑몰 상품 리스트
 	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
 	public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
@@ -89,7 +93,6 @@ public class AdminController {
 			return "admin/profile";
 		}
 
-		
 
 
 	// 쇼핑몰 상품 등록하기
@@ -125,6 +128,7 @@ public class AdminController {
 		return "redirect:/";
 	}
 
+	
 
 	// 회원 탈퇴시키기
 	@DeleteMapping(value = "admin/{memberId}/delete")

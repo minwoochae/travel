@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.travel.Dto.ItemFormDto;
 import com.travel.Dto.ItemImgDto;
 import com.travel.Dto.ItemSearchDto;
+import com.travel.Dto.MainItemDto;
 import com.travel.Repository.ItemImgRepository;
 import com.travel.Repository.ItemRepository;
 import com.travel.entity.Item;
@@ -93,6 +94,10 @@ public class ItemService {
 			itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
 		}
 
+		
+		
+
+
 		return item.getId(); // 변경한 item의 id 리턴.
 	}
 
@@ -103,5 +108,12 @@ public class ItemService {
 		return itemPage;
 
 	}
+
+	@Transactional(readOnly = true)
+	public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+		Page<MainItemDto> mainItemPage = itemRepository.getMainItemPage(itemSearchDto, pageable);
+		return mainItemPage;
+	}
+
 
 }
