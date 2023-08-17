@@ -12,6 +12,8 @@ var searchButton2 = document.getElementById("searchButton3");
 // 검색 버튼 클릭 시 결과 업데이트
 searchButton3.addEventListener("click", updateResults3);
 
+var currentData = null;
+
 // 초기 로드시 지역 코드 목록을 가져옴
 fetch(
   "https://apis.data.go.kr/B551011/KorService1/areaCode1?numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D"
@@ -103,14 +105,17 @@ function updateResults3() {
         .then((data) => {
             let parser = new DOMParser();
             let xmlDoc = parser.parseFromString(data, "text/xml");
-
             let items = xmlDoc.getElementsByTagName("item");
+            
+            var searchInput3 = document.getElementById("searchInput3");
+      		var searchTerm3 = searchInput3.value.toLowerCase(); // 검색어를 소문자로 변환하여 대소문자 구분 없이 검색
 
             for (let i = 0; i < items.length; i++) {
                 let item = items[i];
                 let titleElement = item.getElementsByTagName("title")[0];
                 let title = titleElement ? titleElement.textContent : "";
-
+				
+				if (title.toLowerCase().includes(searchTerm3)){
                 let addressElement = item.getElementsByTagName("addr1")[0];
                 let address = addressElement ? addressElement.textContent : "";
 
@@ -123,30 +128,44 @@ function updateResults3() {
                 //위도 경도
         		let mapx = item.getElementsByTagName("mapx")[0].textContent;
         		let mapy = item.getElementsByTagName("mapy")[0].textContent;
-        		//<p>Mapx: ${mapx}</p>
-        		//<p>Mapy: ${mapy}</p>
         		
-                console.log(title);
-                console.log(mapx);
-                console.log(mapy);
+        		console.log(item);
 
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `
-                    <div style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;">
+                    <div class="dataList" style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;">
                         <img src="${firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${title} Image">
                         <h4 style="margin-left:15px;">${title}</h4>
                     </div>
                 `;
+                
+                currentData = {
+                    title: title,
+                    address: address,
+                    tel: tel,
+                    firstImage: firstImage,
+                    mapx: mapx,
+                    mapy: mapy
+                };
 
-                addClickListener3(resultElement, title, address, tel, firstImage, mapx, mapy);
+                addClickListener3(resultElement, title, address, tel, firstImage, mapx, mapy, item);
                 resultsDiv3.appendChild(resultElement);
+            	}
             }
         })
         .catch((error) => console.error("API 호출 오류:", error));
 }
 
-function addClickListener3(element, title, address, tel, firstImage, mapx, mapy) {
+function addClickListener3(element, title, address, tel, firstImage, mapx, mapy, itemData) {
     element.addEventListener("click", function() {
+		currentData = {
+            title: title,
+            address: address,
+            tel: tel,
+            firstImage: firstImage,
+            mapx: mapx,
+            mapy: mapy
+        };
         showDetail3(title, address, tel, firstImage, mapx, mapy);
     });
 }
@@ -169,7 +188,7 @@ function showDetail3(title, address, tel, firstImage, mapx, mapy) {
         	</div>
         	
         	<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:20px;">
-    			<button type="button" class="btn btn-outline-danger">일정 추가하기</button>
+    			<button onclick="insertContent()" type="button" class="btn btn-outline-danger">일정 추가하기</button>
     		</div>
     	
     	</div>
@@ -196,3 +215,51 @@ var mapContainer = document.getElementById("map"), // 지도를 표시할 div
       // 마커가 지도 위에 표시되도록 설정합니다
       marker.setMap(map);
 }
+
+
+function insertContent() {
+    // 현재 show active 클래스를 가진 tabPane 찾기
+    let activeTabPane = document.querySelector(".tab-pane.show.active");
+    
+    if (!activeTabPane) {
+        alert("먼저 일자를 선택해주세요!");
+        return;
+    }
+    
+    // dataList 클래스를 가진 새로운 div 생성 및 내용 설정
+    let dataListDiv = document.createElement("div");
+    dataListDiv.className = "dataList";
+    dataListDiv.style = "display:flex;  padding:10px; border-bottom:1px solid black;";
+    
+    
+    dataListDiv.innerHTML = `
+    <img src="${currentData.firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
+    <h4 style="margin-left:15px; margin-right:5px; width:170px;">${currentData.title}</h4>
+    <button type="button" class="btn btn-outline-secondary align-self-center" onclick="deleteContent(event)" style="height:30px; line-height: 0;">-</button>
+`;
+
+    
+    // 해당 tabPane 내의 list-group 선택
+    let listGroup = activeTabPane.querySelector(".list-group");
+    
+    if (listGroup) {
+        // list-group 내에 새로운 div 추가
+        listGroup.appendChild(dataListDiv);
+    } else {
+        console.error("list-group을 찾을 수 없습니다.");
+    }
+}
+
+
+function deleteContent(event) {
+    // 클릭한 버튼의 가장 가까운 .dataList 부모 요소를 찾음
+    let dataListDiv = event.target.closest(".dataList");
+    
+    if (dataListDiv) {
+        dataListDiv.remove(); // 해당 div 삭제
+    } else {
+        console.error("dataList 요소를 찾을 수 없습니다.");
+    }
+}
+
+
