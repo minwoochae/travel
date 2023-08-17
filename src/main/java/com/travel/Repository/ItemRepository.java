@@ -13,4 +13,5 @@ public interface ItemRepository extends JpaRepository<Item,Long>, ItemRepository
 	List<Item> findByItemNm(String itemNm); 
 	
 	List<Item> findByItemNmAndItemSellStatus(String itemNm, ItemSellStatus itemSellStatus);
+	
 }

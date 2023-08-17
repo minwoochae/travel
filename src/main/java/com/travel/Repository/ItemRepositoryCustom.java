@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.travel.Dto.ItemSearchDto;
+import com.travel.Dto.MainItemDto;
 import com.travel.entity.Item;
-import com.travel.entity.MainItemDto;
 
 
 public interface ItemRepositoryCustom {
@@ -13,5 +13,4 @@ public interface ItemRepositoryCustom {
 
 	Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 
-	// Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 }

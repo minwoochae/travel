@@ -13,12 +13,12 @@ import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.travel.Dto.ItemSearchDto;
+import com.travel.Dto.MainItemDto;
+import com.travel.Dto.QMainItemDto;
 import com.travel.constant.ItemSellStatus;
 import com.travel.entity.Item;
-import com.travel.entity.MainItemDto;
 import com.travel.entity.QItem;
 import com.travel.entity.QItemImg;
-import com.travel.entity.QMainItemDto;
 
 import jakarta.persistence.EntityManager;
 
@@ -103,23 +103,19 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 		//1. 컬럼과 dto객체의 필드가 일치해야 한다. 
 		//2. dto객체의 생성자에 @쿼리프로젝션 을 반드시 사용해야 한다. 
 
-		List<MainItemDto> content = queryFactory
-				.select(
-						new QMainItemDto(
-								item.id,
-								item.itemNm,
-								item.itemDetail,
-								itemImg.imgUrl,
-								item.price)
-						)
-						.from(itemImg)
-						.join(itemImg.item, item)
-						.where(itemImg.repimgYn.eq("Y"))
-						.where(itemNmLike(itemSearchDto.getSearchQuery()))
-						.orderBy(item.id.desc())
-						.offset(pageable.getOffset())
-						.limit(pageable.getPageSize())
-						.fetch();
+		List<MainItemDto> content = queryFactory.select(
+				new QMainItemDto(
+						item.id, item.itemNm, item.itemDetail,
+						itemImg.imgUrl, item.price)
+				)
+				.from(itemImg)
+				.join(itemImg.item, item)
+				.where(itemImg.repimgYn.eq("Y"))
+				.where(itemNmLike(itemSearchDto.getSearchQuery()))
+				.orderBy(item.id.desc())
+				.offset(pageable.getOffset())
+				.limit(pageable.getPageSize())
+				.fetch();
 		
 		long total = queryFactory
 				.select(Wildcard.count)
