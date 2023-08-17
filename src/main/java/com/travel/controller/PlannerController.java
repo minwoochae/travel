@@ -1,5 +1,8 @@
 package com.travel.controller;
 
+import java.security.Principal;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +36,18 @@ public class PlannerController {
 		return "planner/planComp";
 	}
 	
-	
+	//플랜만들기
+	public @ResponseBody ResponseEntity createPlan(Principal principal, Model model) {
+		String no = principal.getName();
+		
+		try {
+			planService.setPlan(no);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", e.getMessage());
+		}
+		
+		return new ResponseEntity<String>(no, HttpStatus.OK);
+	}
 	
 }

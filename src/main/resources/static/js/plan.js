@@ -159,10 +159,10 @@ function updateResults() {
                 };
                 
 
-<<<<<<< HEAD
+
                 addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy, item);
-=======
->>>>>>> 0a4319134a38546b82940ff5cbdc09fe0b361748
+
+
                 resultsDiv.appendChild(resultElement);
              	addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy);
                 }
