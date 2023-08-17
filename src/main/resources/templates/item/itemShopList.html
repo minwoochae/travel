@@ -111,19 +111,19 @@ p, li, a{
 		<h1 class="cover-text">상품 둘러보기</h1>
 	</div> <!--백그라운드 이미지 활용  -->
 	            <div class="container px-4 px-lg-5 mt-5" style="margin: 150px auto;">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-                th:each="item, status:${items.getContent()}">
-                    <div class="col-md-4" style="padding: 20px;">
+
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <div class="col-md-4" style="padding: 20px;" th:each="item, status:${items.getContent()}">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <img class="card-img-top" th:src="${item.imgUrl}" alt="..." />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
                                     <h5 class="fw-bolder" th:text="${item.itemNm}"></h5>
                                     <!-- Product price-->
-                                    10000원
+								[[${#numbers.formatInteger(item.price, 0, 'COMMA') + '원'}]]
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -133,6 +133,7 @@ p, li, a{
                         </div>
                     </div>
                 </div>
+
 			    <div class="pagination p1" style="display: flex; justify-content: center;">
 			      <ul>
 			        <a href="#"><li><</li></a>
