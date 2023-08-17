@@ -96,17 +96,16 @@ public class MemberService implements UserDetailsService{
 		return member.getPassword();
 	}
 
-	private final JavaMailSender javaMailSender;
-
-
-
-	public void sendEmail(String to, String subject, String text) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(text);
-		javaMailSender.send(message);
-	}
+	
+	  private final JavaMailSender javaMailSender;
+	  
+	  
+	  
+	  public void sendEmail(String to, String subject, String text) {
+	  SimpleMailMessage message = new SimpleMailMessage(); message.setTo(to);
+	  message.setSubject(subject); message.setText(text);
+	  javaMailSender.send(message); }
+	 
 
 	//회원 상세정보
 	@Transactional(readOnly =  true)
@@ -126,7 +125,13 @@ public class MemberService implements UserDetailsService{
 		
 		memberRepository.delete(member);
 	}
-
+	
+	
+	public Member memberMypage(String email) {
+		Member member = memberRepository.findByEmail(email);
+		
+		return member;
+	}
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		// 사용자가 입력한 email이 DB에 있는지 쿼리문을 사용한다.
