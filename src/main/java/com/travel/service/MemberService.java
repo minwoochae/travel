@@ -55,6 +55,16 @@ public class MemberService implements UserDetailsService{
 		return "고객님의 아이디는 " + member.getEmail() + " 입니다";
 	}
 	
+	public Long updateNamePhone(MemberFormDto memberFormDto) {
+		Member member = memberRepository.findById(memberFormDto.getId())
+							.orElseThrow(EntityNotFoundException::new);		
+		member.updatenamePhone(memberFormDto);
+
+		
+		return member.getId();
+	}
+	
+	
 	
 	public String getRamdomPassword(int size) {
 		char[] charSet = new char[] {
@@ -85,6 +95,8 @@ public class MemberService implements UserDetailsService{
 
 		return password;
 	}
+	
+	
 	public String passwordFind( String email) {
 
 		Member member = memberRepository.findByEmail( email);

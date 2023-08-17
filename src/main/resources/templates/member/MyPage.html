@@ -44,6 +44,10 @@ li {
 	content: "\22EE";
 	margin-right: 5px; /* 필요에 따라 간격 조정 */
 }
+
+.btnmember:hover {
+	color: red !important;
+}
 </style>
 </th:block>
 <div layout:fragment="content">
@@ -53,18 +57,24 @@ li {
 		<p
 			style="background-image: url('/img/users.png'); background-size: cover;"></p>
 	</div>
-	<form th:action="@{'/member/mypage}" method="get"
-		th:object="${member}">
+	<form th:action="@{'/member/mypage}" method="get" th:object="${member}">
 		<input type="hidden" id="memberId" th:value="${member.id}" />
 		<ul>
-			<li>내 정보 수정</li>
-			<li style="color: 949494;">|</li>
 			<li>
 				<button type="button"
-					class="btn btn-danger waves-effect waves-light"
+					class="btn btn-danger waves-effect waves-light btnmember"
+					onclick="location.href ='/member/mypageupdate'"
+					style="float: right; background-color: white; color: black; border: none; font-weight: bolder;">내
+					정보 수정</button>
+			</li>
+			<li style="color: 949494; margin-top: 5px;">|</li>
+			<li>
+				<button type="button"
+					class="btn btn-danger waves-effect waves-light btnmember"
 					th:id="${member.id}" th:value="${member.id}"
 					th:onclick="'javascript:deleteMember(' + ${member.id} +')'"
-					style="margin: 40px 10px 40px 0; float: right;">삭제하기</button>
+					style="float: right; background-color: white; color: black; border: none; font-weight: bolder;">회원
+					탈퇴</button>
 			</li>
 		</ul>
 	</form>
@@ -98,39 +108,38 @@ li {
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-	function deleteMember(memberId) {
-		const deleteconf = confirm("정말 삭제하시겠습니까?");
-		if (!deleteconf)
-			return;
+		function deleteMember(memberId) {
+			const deleteconf = confirm("정말 삭제하시겠습니까?");
+			if (!deleteconf)
+				return;
 
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		var url = "/member/" + memberId + "/delete";
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
 
-		$.ajax({
-			url : url,
-			type : "DELETE", //전송방식
-			contentType : "application/json",
-			beforeSend : function(xhr) {
-				//데이터를 전송하기 전에 헤더에 xsrf값
-				xhr.setRequestHeader(header, token);
-			},
-			dataType : "json",
-			cache : false,
-			success : function(result, status) {
-				location.href = "/";
-			},
-			error : function(jqXHR, status, error) {
-				if (jqXHR.status == "401") {
-					alert("로그인 후 이용해주세요.");
-					location.href = "/member/login";
-				} else {
-					alert(jqXHR.responseText);
-				}
-			},
-		});
-	}
+			var url = "/member/" + memberId + "/delete";
+
+			$.ajax({
+				url : url,
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					location.href = "/";
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == "401") {
+						alert("로그인 후 이용해주세요.");
+					} else {
+						alert(jqXHR.responseText);
+					}
+				},
+			});
+		}
 	</script>
 </th:block>
 </html>

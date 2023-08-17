@@ -102,13 +102,13 @@ public class ItemService {
 		
 		
 		
-		@Transactional(readOnly = true)
+	/*	@Transactional(readOnly = true)
 		public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
 			
 			Page<Item> itemPage = itemRepository.getAdminItemPage(itemSearchDto, pageable);
 			return itemPage;
 			
-		}
+		}*/
 		
 	
 

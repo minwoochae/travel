@@ -12,33 +12,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-<<<<<<< HEAD
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.travel.entity.Item;
-=======
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.travel.Dto.MemberFormDto;
->>>>>>> 5d2f038c1071eb1fdc3030f8072d40591ca483a9
 import com.travel.entity.Member;
-import com.travel.service.ItemImgService;
 import com.travel.service.ItemService;
 import com.travel.service.MemberService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,10 +47,7 @@ public class AdminController {
 	}
 	
 	//회원 리스트
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
 	@GetMapping(value = { "/admin/list", "/admin/list/{page}" })
 	public String memberManage(@PathVariable("page") Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -71,15 +59,9 @@ public class AdminController {
 		return "admin/MemberList";
 	}
 
-	@GetMapping(value = { "/admin/profile", "/admin/profile/{memberId}" })
-	public String Profilemember(@PathVariable("memberId") Long memberId, Model model) {
-		/* MemberFormDto memberFormDto =memberService.g(memberId); */
-		/* model.addAttribute("member", memberFormDto); */
-		return "admin/profile";
-	}
 
 	// 쇼핑몰 상품 리스트
-	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
+/*	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
 	public String itemManage(ItemSearchDto itemSearchDto, 
 			@PathVariable("page") Optional<Integer> page, Model model) {
 		
@@ -93,19 +75,9 @@ public class AdminController {
 			model.addAttribute("items" , items);
 			model.addAttribute("itemSearchDto", itemSearchDto);
 			model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
-=======
->>>>>>> f11261c272a979a5da825ad393251ffc4c39fa7f
-		@GetMapping(value = {"/admin/list", "/admin/list/{page}"})
-		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model ) {
-			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 10); 
-			Page<Member> travel = memberService.getAdminlistPage(pageable);
-			
-			model.addAttribute("travel", travel);
-			model.addAttribute("maxPage", 5); 
-			
-			return "admin/MemberList";
-		}
-		
+			return "/admin/shop";
+			}
+
 		
 		//회원 리스트(회원 프로필)
 		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
@@ -117,10 +89,8 @@ public class AdminController {
 			return "admin/profile";
 		}
 
->>>>>>> 5d2f038c1071eb1fdc3030f8072d40591ca483a9
-		
-		return "/admin/shop";
-	}
+		*/
+	
 
 	// 쇼핑몰 상품 등록하기
 	@GetMapping(value = "/adminShop/new")
@@ -128,7 +98,6 @@ public class AdminController {
 		model.addAttribute("itemFormDto", new ItemFormDto());
 		return "/admin/itemRegist";
 	}
-<<<<<<< HEAD
 
 	// 상품, 상품이미지 등록
 	@PostMapping(value = "/adminShop/new")
@@ -156,7 +125,6 @@ public class AdminController {
 		return "redirect:/";
 	}
 
-=======
 	
 	//회원 탈퇴시키기
 	@DeleteMapping(value ="admin/{memberId}/delete")
@@ -167,5 +135,4 @@ public class AdminController {
 		
 		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
 	}
->>>>>>> 5d2f038c1071eb1fdc3030f8072d40591ca483a9
 }

@@ -134,6 +134,29 @@ public class MemberController {
 			 return "member/MyPage";
 		 }
 		 
+		 
+		//mypage
+		 @GetMapping(value =  "/member/mypageupdate")
+		 public String mypageupdate (Principal principal, Model model) {
+			 Member member = memberservice.memberMypage(principal.getName());
+			 model.addAttribute("member",member);
+			 return "member/MypageupdateForm";
+		 }
+
+		 
+		 @PostMapping("/member/mypageupdate")
+			@ResponseBody
+			public HashMap<String, String> mypageupdate(@RequestBody Map<String, Object> data) {
+				String name = (String) data.get("name");
+				String phone = (String) data.get("phoneNumber");
+				
+				HashMap<String, String> msg = new HashMap<>();
+				String email = memberservice.emailFind(name, phone);
+				
+				msg.put("message", email);
+				return msg;
+			}
+		 
 		//탈퇴하기
 			@DeleteMapping(value ="/member/{memberId}/delete")
 			public @ResponseBody ResponseEntity  deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
