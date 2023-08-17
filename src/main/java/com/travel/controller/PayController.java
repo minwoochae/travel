@@ -35,9 +35,9 @@ public class PayController {
 				String param = "cid=TC0ONETIME" // 가맹점 코드
 						+ "&partner_order_id=partner_order_id" // 가맹점 주문번호
 						+ "&partner_user_id=partner_user_id" // 가맹점 회원 id
-						+ "&item_name=초코파이" // 상품명
+						+ "&item_name=movie" // 상품명
 						+ "&quantity=1" // 상품 수량
-						+ "&total_amount=5000" // 총 금액
+						+ "&total_amount=1100000000" // 총 금액
 						+ "&vat_amount=200" // 부가세
 						+ "&tax_free_amount=0" // 상품 비과세 금액
 						+ "&approval_url=https://developers.kakao.com/success" // 결제 성공 시

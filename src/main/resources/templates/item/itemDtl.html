@@ -19,17 +19,18 @@
 	<div class="item-cover">
 		<p style="color: white; font-size: 26px;"> < </p>
 	</div> <!--백그라운드 이미지 활용  -->
-	
-	        <section class="py-5">
+	<section class="py-5">
+		<input type="hidden" id="itemId" th:value="${item.id}">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." /></div>
                     <div class="col-md-6">
-                        <h1 class="display-5 fw-bolder">상품명</h1>
+                    <img class="card-img-top mb-5 mb-md-0" th:src="${item.itemImgDtoList[0].imgUrl}" th:alt="${item.itemNm}" /></div>
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-bolder" th:text="${item.itemNm}"></h1>
                         <div class="fs-5 mb-5">
-                            <span class="text-decoration-line-through">$45.00</span>
+                            <span class="text-decoration-line-through">[[${#numbers.formatInteger(item.price, 0, 'COMMA') + '원'}]]</span>
                         </div>
-                        <p class="lead">상품설명 주저리주저리</p>
+                        <p class="lead" th:text="${item.itemDetail}"></p>
                         <div class="d-flex">
                             <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
                             <button class="btn btn-outline-dark flex-shrink-0" type="button">

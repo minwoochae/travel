@@ -24,6 +24,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+<<<<<<< HEAD
+=======
+import com.travel.Dto.MemberFormDto;
+
+>>>>>>> 4a27ef9ee12e74a1a3bea5764f167c681b569bce
 import com.travel.entity.Member;
 import com.travel.service.ItemService;
 import com.travel.service.MemberService;
@@ -45,6 +50,10 @@ public class AdminController {
 	public String admin() {
 		return "/admin/adminMain";
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4a27ef9ee12e74a1a3bea5764f167c681b569bce
 	
 	//회원 리스트
 
@@ -62,8 +71,13 @@ public class AdminController {
 		return "admin/MemberList";
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4a27ef9ee12e74a1a3bea5764f167c681b569bce
 
 
+<<<<<<< HEAD
 		
 	// 쇼핑몰 상품 리스트
 	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
@@ -94,6 +108,9 @@ public class AdminController {
 		}
 
 
+=======
+*/
+>>>>>>> 4a27ef9ee12e74a1a3bea5764f167c681b569bce
 
 	// 쇼핑몰 상품 등록하기
 	@GetMapping(value = "/adminShop/new")
