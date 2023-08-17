@@ -9,11 +9,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.travel.Dto.MemberFormDto;
 import com.travel.entity.Member;
 import com.travel.service.MemberService;
@@ -61,7 +66,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	
+	//로크인에러
 	@GetMapping(value = "/members/login/error")
 	public String loginError(Model model) {
 		model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요.");
@@ -122,11 +127,22 @@ public class MemberController {
 		}
 	
 		//mypage
-		 @GetMapping(value = "/member/mypage")
-		 public String mainMypage (Model model) {
-			 
+		 @GetMapping(value =  "/member/mypage")
+		 public String mainMypage (Principal principal, Model model) {
+			 Member member = memberservice.memberMypage(principal.getName());
+			 model.addAttribute("member",member);
 			 return "member/MyPage";
 		 }
+		 
+		//탈퇴하기
+			@DeleteMapping(value ="/member/{memberId}/delete")
+			public @ResponseBody ResponseEntity  deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
+					Principal principal) {
+				
+				memberservice.deleteMember(memberId);
+				
+				return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+			}
 		
 		 
 

@@ -11,17 +11,15 @@ import com.travel.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, Long>{
 	Member findByEmail(String email);
 	
+	
 	Member findByNameAndPhoneNumber(String name, String  phoneNumber);
 	
 	Member findByNameAndPhoneNumberAndEmail(String name, String  phoneNumber, String email);
 	
+	Member findByRole(String role);
+	
 	Page<Member> findAll(Pageable pageable);
 	
-	/*
-	 * @Query("select o from member o where o.member.role = :USER order by member_id desc"
-	 * ) Page<Member> getAdminlistPage(@ MemberSearchDto memberSearchDto, Pageable
-	 * pageable);
-	 */
 	
 
 }

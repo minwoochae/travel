@@ -37,6 +37,12 @@ public class MemberFormDto {
 	
 	
 	private LocalDateTime regtime;
+	
+	private String division;
+	
+
+	private String role;
+	
 private static ModelMapper modelMapper = new ModelMapper();
 	
 	
