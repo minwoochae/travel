@@ -47,11 +47,8 @@ public class AdminController {
 		return "/admin/adminMain";
 	}
 
-<<<<<<< HEAD
 	// 회원 리스트
 
-=======
->>>>>>> 38d0f7d51027e65f94b8318c4d993493e0c21fe3
 	@GetMapping(value = { "/admin/list", "/admin/list/{page}" })
 	public String memberManage(@PathVariable("page") Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -63,7 +60,6 @@ public class AdminController {
 		return "admin/MemberList";
 	}
 
-<<<<<<< HEAD
 	// 쇼핑몰 상품 리스트
 	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
 	public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
@@ -78,52 +74,38 @@ public class AdminController {
 		model.addAttribute("itemSearchDto", itemSearchDto);
 		model.addAttribute("maxPage", 5); // 상품관리페이지 하단에 보여줄 최대 페이지 번호
 
-		return"/admin/shop";
+		return "/admin/itemList";
 
-		}
+	}
 
-
-
-	@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
-=======
 	/*
 	 * // 쇼핑몰 상품 리스트
 	 * 
 	 * @GetMapping(value = { "/adminShop", "/adminShop/{page}" }) public String
-	 * itemManage(ItemSearchDto itemSearchDto,
-	 * 
-	 * @PathVariable("page") Optional<Integer> page, Model model) {
-	 * 
-	 * 
-	 * //of(조회할 페이지의 번호★[0부터 시작], 한페이지당 조회할 데이터 갯수) //url 경로에 페이지가 있으면 해당 페이지 번호를
-	 * 조회하도록 하고 페이지 번호가 없으면 0페이지를 조회. Pageable pageable =
-	 * PageRequest.of(page.isPresent()?page.get():0, 3);
+	 * itemManage(ItemSearchDto itemSearchDto, @PathVariable("page")
+	 * Optional<Integer> page, Model model) { //of(조회할 페이지의 번호★[0부터 시작], 한페이지당 조회할
+	 * 데이터 갯수) //url 경로에 페이지가 있으면 해당 페이지 번호를 //조회하도록 하고 페이지 번호가 없으면 0페이지를 조회.
+	 * Pageable pageable = PageRequest.of(page.isPresent()?page.get():0, 3);
 	 * 
 	 * Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
 	 * 
 	 * model.addAttribute("items" , items); model.addAttribute("itemSearchDto",
 	 * itemSearchDto); model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
 	 * 
+	 * 
 	 * return "/admin/itemList"; }
 	 */
-		
-		//회원 리스트(회원 프로필)
-		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
->>>>>>> 38d0f7d51027e65f94b8318c4d993493e0c21fe3
-		public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
-			
-				MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
-				
-				model.addAttribute("member", memberFormDto);
-			return "admin/profile";
-		}
 
-<<<<<<< HEAD
-=======
-		
-	
+	// 회원 리스트(회원 프로필)
+	@GetMapping(value = { "/admin/profile", "/admin/profile/{memberId}" })
+	public String Profilemember(@PathVariable("memberId") Long memberId, Model model) {
 
->>>>>>> 38d0f7d51027e65f94b8318c4d993493e0c21fe3
+		MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
+
+		model.addAttribute("member", memberFormDto);
+		return "admin/profile";
+	}
+
 	// 쇼핑몰 상품 등록하기
 	@GetMapping(value = "/adminShop/new")
 	public String adminShop(Model model) {
@@ -157,22 +139,16 @@ public class AdminController {
 		return "redirect:/";
 	}
 
-<<<<<<< HEAD
 	// 회원 탈퇴시키기
-=======
-	
-	//회원 탈퇴시키기
->>>>>>> 38d0f7d51027e65f94b8318c4d993493e0c21fe3
-	@DeleteMapping(value ="admin/{memberId}/delete")
-	public @ResponseBody ResponseEntity  deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
+
+	// 회원 탈퇴시키기
+	@DeleteMapping(value = "admin/{memberId}/delete")
+	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
 			Principal principal) {
-		
+
 		memberService.deleteMember(memberId);
-		
+
 		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> 38d0f7d51027e65f94b8318c4d993493e0c21fe3
 }
