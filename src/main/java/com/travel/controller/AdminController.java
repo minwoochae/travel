@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.travel.Dto.MemberFormDto;
+
 import com.travel.entity.Member;
 import com.travel.service.ItemService;
 import com.travel.service.MemberService;
@@ -63,9 +65,6 @@ public class AdminController {
 	}
 
 
-
-
-		
 	// 쇼핑몰 상품 리스트
 	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
 	public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {

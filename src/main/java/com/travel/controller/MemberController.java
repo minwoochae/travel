@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.hibernate.annotations.ValueGenerationType;
-import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -121,6 +119,7 @@ public class MemberController {
 		String password = memberservice.updatePassword(ramdomps, email, passwordEncoder);
 
 		 memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps); 
+
 		String asd = "이메일로 임시 비밀번호가 발송되었습니다.";
 		msg.put("message", asd);
 		return msg;
@@ -193,7 +192,6 @@ public class MemberController {
 		return "redirect:/";
 	} 
 	 
-
 	
 	
 	// 탈퇴하기
