@@ -47,7 +47,6 @@ public class AdminController {
 	public String admin() {
 		return "/admin/adminMain";
 	}
-
 	
 	//회원 리스트
 
@@ -64,7 +63,6 @@ public class AdminController {
 
 		return "admin/MemberList";
 	}
-
 
 
 	// 쇼핑몰 상품 리스트
@@ -84,6 +82,20 @@ public class AdminController {
 			model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
 			return "/admin/itemList";
 			}
+
+
+
+	
+
+		//회원 리스트(회원 프로필)
+
+		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
+		public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
+				MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
+				
+				model.addAttribute("member", memberFormDto);
+			return "admin/profile";
+		}
 
 
 

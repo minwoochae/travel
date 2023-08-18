@@ -24,6 +24,8 @@ public class SecurityConfig{
 				.requestMatchers("/css/**","/js/**","/img/**","/images/**", "/fonts/**").permitAll()
 				.requestMatchers("/","/members/**","/planner/**", "/item/**", "/account/**", "/account/pssearch/**").permitAll()
 				.requestMatchers("favicon.ico","/error").permitAll()
+				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
+				.requestMatchers("/error").permitAll()
 				//'admin' 으로 시작하는 경로로 관리자만 접근가능하도록 설정
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				//그 외의 페이지는 모두 로그인(인증을 받아야한다.)
@@ -52,11 +54,8 @@ public class SecurityConfig{
 	}	
 	
 
-	
-	
-	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
