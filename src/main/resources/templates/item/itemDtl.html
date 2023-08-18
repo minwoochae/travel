@@ -2,22 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
+<head>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
 
 <th:block layout:fragment="css">
-		<style>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+	<style>
 		.item-cover {
 			width: 100%;
 			height: 60px;
 			background-color: black;
 			display: flex;
 		}
+		
+	input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-	</style>
+  .custom-number-input input:focus {
+    outline: none !important;
+  }
+
+  .custom-number-input button:focus {
+    outline: none !important;
+  }
+  
+  .genric-btn.primary-border{
+	color: #FF4A52;
+	border: 1px solid #FF4A52;
+}
+
+	.genric-btn.primary-border:hover{
+		background-color: #FF4A52;
+	}
+
+</style>
 </th:block>
 
 <div layout:fragment="content">
 	<div class="item-cover">
-		<p style="color: white; font-size: 26px;"> < </p>
+		<p style="color: white; font-size: 26px;"> <i class="fa-solid fa-chevron-left" style="color: #ffffff;"></i> </p>
 	</div> <!--백그라운드 이미지 활용  -->
 	<section class="py-5">
 		<input type="hidden" id="itemId" th:value="${item.id}">
@@ -28,19 +59,164 @@
                     <div class="col-md-6">
                         <h1 class="display-5 fw-bolder" th:text="${item.itemNm}"></h1>
                         <div class="fs-5 mb-5">
-                            <span class="text-decoration-line-through">[[${#numbers.formatInteger(item.price, 0, 'COMMA') + '원'}]]</span>
+                        	<input id="price" type="hidden" th:value="${item.price}">
+                        	
+                            <span  class="text-decoration-line-through" style="font-size: 25px;">[[${#numbers.formatInteger(item.price, 0, 'COMMA') + '원'}]]</span>
+                        	<p id="totalPrice"></p>
                         </div>
-                        <p class="lead" th:text="${item.itemDetail}"></p>
                         <div class="d-flex">
-                            <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                                <i class="bi-cart-fill me-1"></i>
-                                장바구니에 담기
-                            </button>
-                        </div>
+							    <button data-action="decrement" class="genric-btn primary-border circle" style="padding: 0 20px;">
+							      <span class="m-auto text-2xl font-thin count_btn">−</span>
+							    </button>
+							    <input id="count" type="number" min="1" class="text-center" name="custom-input-number" value="0" style="width: 48px; height: 42px; margin: 0 5px;"></input>
+							  <button data-action="increment" class="genric-btn primary-border circle" style="padding: 0 20px; ">
+							    <span class="m-auto text-2xl font-thin count_btn">+</span>
+							  </button>
+								<div class="more_place_btn text-center">
+								     <a class="boxed-btn4" href="#" style="padding: 9px 30px; margin-left: 20px;" onclick="cart()">장바구니에 담기</a>
+								 </div>	
+							</div>
+								 <button class="boxed-btn3" style="height: 42px; display:flex; align-items: center; margin-top: 120px;">구매하기</button>
                     </div>
                 </div>
             </div>
-        </section>
+            <div class="container px-4 px-lg-5 my-5" style="border-top: 1px solid #7a7a7a">
+                    <div class="text-center mb_70">
+                        <h3 style="margin: 50px 0;">상품 정보</h3>
+                        <pre><p th:text="${item.itemDetail}" style=""></p></pre>
+                        <div class="col-md-12">
+							<div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
+							<img th:if="${not #strings.isEmpty(itemImg.imgUrl)}"
+							th:src="${itemImg.imgUrl}" class="rounded mgb-15" width="500px" style="margin: 20px 0">
+							</div>
+						</div>
+                    </div>
+            </div>
+            
+</section>
+        
 </div>
+
+
+<th:block layout:fragment="script">
+	<script>
+  function decrement(e) {
+    const btn = e.target.parentNode.parentElement.querySelector(
+      'button[data-action="decrement"]'
+    );
+    const target = btn.nextElementSibling;
+    let value = Number(target.value);
+    if(value > 0) {
+	    value--;
+	    target.value = value;
+    }
+    calculateTotalPrice();
+  }
+
+  function increment(e) {
+    const btn = e.target.parentNode.parentElement.querySelector(
+      'button[data-action="decrement"]'
+    );
+    const target = btn.nextElementSibling;
+    let value = Number(target.value);
+    value++;
+    target.value = value;
+    calculateTotalPrice();
+  }
+
+  const decrementButtons = document.querySelectorAll(
+    `button[data-action="decrement"]`
+  );
+
+  const incrementButtons = document.querySelectorAll(
+    `button[data-action="increment"]`
+  );
+
+  decrementButtons.forEach(btn => {
+    btn.addEventListener("click", decrement);
+  });
+
+  incrementButtons.forEach(btn => {
+    btn.addEventListener("click", increment);
+  });
+  
+  function printTotal()  {
+      calculateTotalPrice();
+  }
+  
+	$(document).ready(function() {
+		//처음 상세페이지 화면에 들어올때 총 상품금액이 보여야 하므로
+		calculateTotalPrice(); 
+		
+		//수량 -, + 버튼을 누를때마다 총 가격을 구한다.
+		$(".count_btn").click(function() {
+			calculateTotalPrice();
+		})
+	});
+  
+	function calculateTotalPrice() {
+		console.log("왜애애애ㅐ애ㅔ앵");
+		var count = $("#count").val(); //수량
+		console.log(count);
+		var price = $("#price").val(); //가격
+		console.log(price);
+		var totalPrice = (price * count).toLocaleString('ko-KR'); //천단위 콤마
+		$("#totalPrice").html(totalPrice + '원'); //총가격 출력
+	}
+  
+  function cart() {
+		var token = $("meta[name='_csrf']").attr("content"); // meta태그에서 값이 _csrf인 값을 가져오겠다~
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		var url = "/cart";
+		
+		
+		// Controller(서버)에 전달할 데이터
+		var paramData = {
+			itemId : $("#itemId").val(), // class_id
+			price : $("#price").val(),
+			count : $("#count").val()
+			
+		}
+		alert($("#itemId").val());
+		alert($("#price").val());
+		alert($("#count").val());
+		
+		// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
+
+		var param = JSON.stringify(paramData);
+		
+		$.ajax({
+			url : url, // request URL 서버에 요청할 url 쓰면 됨 위에서 url이란 변수에 담아놨기 때문에 url 써줌 
+			type : "POST", // 전송방식
+			contentType : "application/json",
+			data : param, // 서버에 전송할 데이터 var param = JSON.stringify(paramData); item_id, 수량 들어있음
+			beforeSend : function(xhr) {
+				// 데이터를 전송하기 전에 헤더에 csrf 값을 설정해줌
+				xhr.setRequestHeader(header, token);
+			},
+			dataType : "json",
+			cache : false,
+			success : function(result, status) {
+				location.href = '/';
+				alert("장바구니 들어감")
+			},
+			error : function(jqXHR, status, error) {
+				if (jqXHR.status == '401') {
+					alert('로그인 후 이용해 주세요.')
+					location.href = '/members/login';
+				} else {
+					
+					// 에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
+					alert("안돼")
+					alert(jqXHR.responseText); 
+				}
+				
+			}
+		});
+		
+	}
+</script>
+</th:block>
+
 </html>

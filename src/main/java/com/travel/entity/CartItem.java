@@ -1,5 +1,7 @@
 package com.travel.entity;
 
+import com.travel.Dto.CartDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +24,7 @@ public class CartItem {
 	@Id
 	@Column(name="cart_item_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	private Long cartItemId;
+	private Long id;
 	
 	@Column(name="count")
 	private Long count;
@@ -34,4 +36,16 @@ public class CartItem {
 	@ManyToOne
 	@JoinColumn(name = "item_id")
 	private Item item;
+	
+	public static CartItem addCartItem(Item item, CartDto cartDto) {
+		CartItem cartItem = new CartItem();
+		cartItem.setId(cartItem.id);
+		cartItem.setCart(cartItem.cart);
+		cartItem.setItem(item);
+		cartItem.setCount(cartDto.getCount());
+		
+		return cartItem;
+	}
+	
+
 }

@@ -68,7 +68,7 @@ public class AdminController {
 
 
 	// 쇼핑몰 상품 리스트
-/*	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
+	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
 	public String itemManage(ItemSearchDto itemSearchDto, 
 			@PathVariable("page") Optional<Integer> page, Model model) {
 		
@@ -82,10 +82,10 @@ public class AdminController {
 			model.addAttribute("items" , items);
 			model.addAttribute("itemSearchDto", itemSearchDto);
 			model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
-			return "/admin/shop";
+			return "/admin/itemList";
 			}
 
-*/
+
 
 	// 쇼핑몰 상품 등록하기
 	@GetMapping(value = "/adminShop/new")
