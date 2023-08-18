@@ -92,36 +92,25 @@ public class ItemService {
 
 		for (int i = 0; i < itemImgFileList.size(); i++) {
 			itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
+			
+		}
+			return item.getId(); // 변경한 item의 id 리턴.
+
+
 		}
 
-<<<<<<< HEAD
-=======
 		
 		
 		
-	/*	@Transactional(readOnly = true)
+		@Transactional(readOnly = true)
 		public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
 			
 			Page<Item> itemPage = itemRepository.getAdminItemPage(itemSearchDto, pageable);
 			return itemPage;
 			
-		}*/
+		}
 		
 
->>>>>>> 4a27ef9ee12e74a1a3bea5764f167c681b569bce
-
-		return item.getId(); // 변경한 item의 id 리턴.
-	}
-
-	@Transactional(readOnly = true)
-	public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-
-		Page<Item> itemPage = itemRepository.getAdminItemPage(itemSearchDto, pageable);
-		return itemPage;
-
-	}
-<<<<<<< HEAD
-=======
 
 	@Transactional(readOnly = true)
 	public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
@@ -129,6 +118,5 @@ public class ItemService {
 		return mainItemPage;
 	}
 
->>>>>>> 4a27ef9ee12e74a1a3bea5764f167c681b569bce
 
 }
