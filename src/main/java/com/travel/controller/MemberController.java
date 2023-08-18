@@ -118,7 +118,7 @@ public class MemberController {
 		// ramdomps 를 view에 출력
 		String password = memberservice.updatePassword(ramdomps, email, passwordEncoder);
 
-		/* memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps); */
+		memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps);
 		String asd = "이메일로 임시 비밀번호가 발송되었습니다.";
 		msg.put("message", asd);
 		return msg;

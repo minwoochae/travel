@@ -23,7 +23,7 @@ public class SecurityConfig{
 				//모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
 				.requestMatchers("/css/**","/js/**","/img/**","/images/**", "/fonts/**").permitAll()
 				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
-				.requestMatchers("favicon.ico","/error").permitAll()
+				.requestMatchers("/error").permitAll()
 				//'admin' 으로 시작하는 경로로 관리자만 접근가능하도록 설정
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				//그 외의 페이지는 모두 로그인(인증을 받아야한다.)
