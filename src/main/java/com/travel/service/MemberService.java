@@ -46,7 +46,9 @@ public class MemberService implements UserDetailsService{
 		}
 	}
 	
-
+	public Member findByEmail(String email) {
+		return memberRepository.findByEmail(email);
+	}
 	
 	public String emailFind(String name, String phone) {
 		Member member = memberRepository.findByNameAndPhoneNumber(name, phone);
@@ -59,14 +61,25 @@ public class MemberService implements UserDetailsService{
 	
 	
 	
-	public Long updateNamePhone(MemberFormDto memberFormDto) throws Exception {
-		Member member = memberRepository.findById(memberFormDto.getId())
-							.orElseThrow(EntityNotFoundException::new);		
-		 member.updatenamePhone(memberFormDto);
-
-		return member.getId();
+	public void updateNamePhone(String email, String name, String phone) {
+		
+		Member member = memberRepository.findByEmail(email);
+		   
+		member.updatenamePhone(name,phone);
+		
 	}
 	
+	public void updatepassword(String email,String password,PasswordEncoder passwordEncoder) {
+ 		Member member = memberRepository.findByEmail(email);
+ 		
+ 		if(passwordEncoder.matches(password, member.getPassword()) == true){
+ 			throw new IllegalStateException("기존 비밀번호와 동일합니다.");
+ 		}else {
+ 			member.updatepassword(password);
+		}
+ 		}
+		
+
 	
 	
 	public String getRamdomPassword(int size) {
@@ -121,7 +134,18 @@ public class MemberService implements UserDetailsService{
 	  javaMailSender.send(message); }
 	 
 
-	//회원 상세정보
+	//회원 상세정보(Long)
+	@Transactional(readOnly =  true)
+	public Member getmemberDts(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+					.orElseThrow(EntityNotFoundException::new);
+	
+ 	
+	
+     return	member;
+	}
+	
+	//회원 상세정보(String)
 	@Transactional(readOnly =  true)
 	public MemberFormDto getmemberDtl(Long memberId) {
 		Member member = memberRepository.findById(memberId)
@@ -130,7 +154,6 @@ public class MemberService implements UserDetailsService{
  	
 	
      return	memberFormDto ;
-		
 	}
 	
 	public void deleteMember(Long memberId) {
