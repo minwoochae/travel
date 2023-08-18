@@ -1,5 +1,8 @@
 package com.travel.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,6 +35,7 @@ public class ItemImg {
 	private String repimgYn; // 대표 이미지 여부
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	@JoinColumn(name = "item_id")
 	private Item item;
 
