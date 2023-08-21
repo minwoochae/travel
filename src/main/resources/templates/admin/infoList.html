@@ -25,8 +25,8 @@
 					<h2 class="h3 mb-3 text-black">공지사항 관리</h2>
 					 <a href="/adminInfo/new" style="margin-right: 0;">등록하기</a> 
 				</div>
-				<form th:action="@{'/admin/shop/' + ${items.number}}" method="get"
-					th:object="${items}">
+				<form th:action="@{'/adminInfo/' + ${infoBoards.number}}" method="get"
+					th:object="${infoBoards}">
 					<table class="table table-responsive-md">
 						<thead>
 							<tr>
@@ -38,10 +38,10 @@
 						</thead>
 						<tbody>
 							<!-- 조회된 데이터를 출력한다. -->
-							<tr th:each="item, status:${items.getContent()}">
+							<!-- <tr th:each="item, status:${items.getContent()}">
 								<th th:text="${item.id}" scope="row"></th>
 								<td>
-									<!-- 수정페이지로 넘어가게할거라 a태그 --> <a
+									수정페이지로 넘어가게할거라 a태그 <a
 									th:href="'/adminShop/item/' + ${item.id}"
 									th:text="${item.itemNm}"> </a>
 								</td>
@@ -52,7 +52,7 @@
 										th:id="${item.Id}" th:value="${item.Id}"
 										th:onclick="'javascript:deleteItem(' + ${item.id} +')'">삭제</button>
 								</td>
-							</tr>
+							</tr> -->
 						</tbody>
 					</table>
 

@@ -65,6 +65,15 @@ public class AdminController {
 		return "admin/MemberList";
 	}
 
+	//회원 리스트(회원 프로필)
+	
+	@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
+	public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
+		MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
+		
+		model.addAttribute("member", memberFormDto);
+		return "admin/profile";
+	}
 
 	// 쇼핑몰 상품 리스트
 	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
@@ -86,21 +95,7 @@ public class AdminController {
 
 
 
-	
-
-		//회원 리스트(회원 프로필)
-
-		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
-		public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
-				MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
-				
-				model.addAttribute("member", memberFormDto);
-			return "admin/profile";
-		}
-
-
-
-	// 쇼핑몰 상품 등록하기
+	// 쇼핑몰 상품 등록하기 보여주기
 	@GetMapping(value = "/adminShop/new")
 	public String adminShop(Model model) {
 		model.addAttribute("itemFormDto", new ItemFormDto());
@@ -227,6 +222,45 @@ public class AdminController {
 		}
 	
 
+	// 공지사항 수정페이지 보여주기
+	
+	// 공지사항 수정하기
+	
+	// 공지사항 삭제하기
+	
+	// 추천관광지 리스트 
+	
+	// 추천관광지 등록 보여주기
+	@GetMapping(value = "/adminTour/new")
+	public String adminTour(Model model) {
+		model.addAttribute("tourFormDto", new ItemFormDto());
+		return "/admin/itemRegist";
+	}
+	
+	// 추천관광지 등록
+	
+	// 추천관광지 수정페이지 보여주기
+	
+	// 추천관광지 수정
+	
+	// 추천관광지 삭제
+	
+	
+	// 문의사항 리스트 보여주기 
+	
+	// 문의사항 등록 보여주기 - 회원
+	
+	// 문의사항 등록하기 - 회원
+	
+	// 문의사항 답변하기 보여주기 - 관리자
+	
+	// 문의사항 답변하기 - 관리자
+	
+	
+	
+	
+	
+	
 	
 	// 회원 탈퇴시키기
 	@DeleteMapping(value = "admin/{memberId}/delete")
