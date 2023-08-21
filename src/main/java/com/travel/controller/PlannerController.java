@@ -58,9 +58,9 @@ public class PlannerController {
 			return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 		}
 		
-		
 		try {
 			planService.setPlan(no, planFormDto);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
