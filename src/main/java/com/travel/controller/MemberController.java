@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -118,7 +119,7 @@ public class MemberController {
 		// ramdomps 를 view에 출력
 		String password = memberservice.updatePassword(ramdomps, email, passwordEncoder);
 
-		 memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps); 
+		memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps);
 
 		String asd = "이메일로 임시 비밀번호가 발송되었습니다.";
 		msg.put("message", asd);
@@ -127,73 +128,76 @@ public class MemberController {
 
 	// Mypage
 	@GetMapping(value = "/member/mypage")
-	public String mainMypage( Principal principal, Model model) {
+	public String mainMypage(Principal principal, Model model) {
 		Member member = memberservice.memberMypage(principal.getName());
 		model.addAttribute("member", member);
 		return "member/MyPage";
 	}
-	
 
-	//내 정보 수정
+	// 내 정보 수정
 	@GetMapping(value = "/member/mypageupdate")
 	public String mypageupdate(Principal principal, Model model) {
 		Member member = memberservice.memberMypage(principal.getName());
 		model.addAttribute("member", member);
 		return "member/MypageupdateForm";
 	}
+
 	@PostMapping("/member/mypageupdate")
-	public String mypageupdate(@Valid String name,@Valid String phoneNumber,  Model model, Principal principal)  {
+	public String mypageupdate(@Valid String name, @Valid String phoneNumber, Model model, Principal principal) {
 		Member members = memberservice.memberMypage(principal.getName());
-		memberservice.updateNamePhone(principal.getName(),name,phoneNumber);
-		
+		memberservice.updateNamePhone(principal.getName(), name, phoneNumber);
+
 		return "redirect:/";
 	}
-	
 
 	@GetMapping("/member/checkPwd")
 	public String checkPwdView(Model model) {
-		model.addAttribute("passwordDto",new PasswordDto());
-		
-		
+		model.addAttribute("passwordDto", new PasswordDto());
+
 		return "member/checkPwd";
 	}
-	
+
 	/** 회원 수정 전 비밀번호 확인 **/
 	@PostMapping(value = "/member/checkPwd")
-	public String checkPwd(@Valid PasswordDto passwordDto,Principal principal,Model model) {
-		
+	public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
+
 		Member member = memberservice.findByEmail(principal.getName());
-		
+
 		boolean result = passwordEncoder.matches(passwordDto.getPassword(), member.getPassword());
-		
-		if(!result) {
+
+		if (!result) {
 			model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
 			return "member/checkPwd";
 		}
-		
+
 		return "member/EditMember";
-	} 
-	
-	//내 비밀번호수정
+	}
+
+	// 내 비밀번호수정
 	@GetMapping(value = "/member/EditMember")
 	public String passwordupdate(Principal principal, Model model) {
 		Member member = memberservice.memberMypage(principal.getName());
 		model.addAttribute("member", member);
 		return "member/EditMember";
 	}
+
 	@PostMapping("/member/EditMember")
-	public String passwordupdate(@Valid String password,  Model model, Principal principal, Member member)  {
+	public String passwordupdate(@RequestParam String password, Model model, Principal principal, Member member) {
 		Member members = memberservice.memberMypage(principal.getName());
-			
-		memberservice.updatepassword(principal.getName(),passwordEncoder.encode(password),passwordEncoder);
-		
-		
-		
-		return "redirect:/";
-	} 
-	 
-	
-	
+		if (passwordEncoder.matches(password, members.getPassword()) == true) {
+			model.addAttribute("errorMessage", "기존 비밀번호와 같습니다."); // Set the errorOccurred attribute
+			model.addAttribute("member", member);
+			return "member/EditMember"; // Stay on the same page with the error message
+		} else {
+			memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
+			return "redirect:/"; // Redirect after successful password update
+		}
+		// memberservice.updatepassword(principal.getName(),passwordEncoder.encode(password),passwordEncoder);
+
+		// return "redirect:/";
+
+	}
+
 	// 탈퇴하기
 	@DeleteMapping(value = "/member/{memberId}/delete")
 	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
@@ -203,5 +207,8 @@ public class MemberController {
 
 		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
 	}
+	
 
+
+	
 }
