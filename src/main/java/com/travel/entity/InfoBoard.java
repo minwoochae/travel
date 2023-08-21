@@ -26,13 +26,13 @@ public class InfoBoard extends BaseEntity{
 	private Long id;	// 공지사항 식별자
 	
 	@Column(name = "info_title")
-	private String InfoTitle;	// 공지사항 제목
+	private String infoTitle;	// 공지사항 제목
 	
 	@Column(name = "info_content")
-	private String InfoContent;	// 공지사항 내용
+	private String infoContent;	// 공지사항 내용
 		
 	@Column(name="info_img")
-	private String InfoImg;	// 공지사항 이미지
+	private String infoImg;	// 공지사항 이미지
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")

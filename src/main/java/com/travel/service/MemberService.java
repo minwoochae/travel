@@ -3,6 +3,7 @@ package com.travel.service;
 import java.security.SecureRandom;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,7 +27,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional //퀘리문 오류시 이전데이터 롤백
 @RequiredArgsConstructor  // autowired를 사용하지 않고 필드의 의존성을 주입 시켜준다
 public class MemberService implements UserDetailsService{
-	
+
+	@Autowired
 	private final MemberRepository memberRepository ;
 	
 	public Member saveMember(Member member) {
@@ -124,7 +126,6 @@ public class MemberService implements UserDetailsService{
 
 	
 	  private final JavaMailSender javaMailSender;
-	  
 	  
 	  
 	  public void sendEmail(String to, String subject, String text) {

@@ -51,7 +51,9 @@ public class CartController {
 		
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
 
+		
 		Page<CartListDto> cartListDto = cartService.getCartList(principal.getName(), pageable);
+		
 		model.addAttribute("carts", cartListDto);
 		model.addAttribute("maxPage", 5);
 		model.addAttribute("page", pageable.getPageNumber());

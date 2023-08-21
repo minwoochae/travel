@@ -1,6 +1,8 @@
 package com.travel.entity;
 
 
+import com.travel.Dto.TourFormDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,4 +37,10 @@ public class Tourist extends BaseEntity{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
+	
+	// 엔티티 수정
+	public void updateTour(TourFormDto tourFormDto) {
+		this.touristTitle = tourFormDto.getTouristTitle();
+		this.touristContent = tourFormDto.getTouristContent();
+	}
 }
