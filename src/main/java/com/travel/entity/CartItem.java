@@ -37,14 +37,12 @@ public class CartItem {
 	@JoinColumn(name = "item_id")
 	private Item item;
 	
-	public static CartItem addCartItem(Item item, CartDto cartDto) {
-		CartItem cartItem = new CartItem();
-		cartItem.setId(cartItem.id);
-		cartItem.setCart(cartItem.cart);
-		cartItem.setItem(item);
-		cartItem.setCount(cartDto.getCount());
-		
-		return cartItem;
+	public static CartItem addCartItem(Item item ,  CartDto cartDto) {
+	    CartItem cartItem = new CartItem();
+	    cartItem.setItem(item);
+	    cartItem.setCount(cartDto.getCount());
+	    System.out.println("11111111111111111111");
+	    return cartItem;
 	}
 	
 

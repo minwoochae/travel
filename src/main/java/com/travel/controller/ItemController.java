@@ -45,8 +45,4 @@ public class ItemController {
 		return "/item/itemDtl";
 	}
 	
-	@GetMapping(value = "/cart")
-	public String cart() {
-		return "/item/cart";
-	}
 }

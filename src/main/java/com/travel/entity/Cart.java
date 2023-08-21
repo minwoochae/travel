@@ -40,11 +40,12 @@ public class Cart {
 	public void addCartItem(CartItem cartItem) {
 		this.cartitems.add(cartItem);
 		cartItem.setCart(this);
+
 	}
 	
 	public static Cart createCart(Member member, List<CartItem> cartItemList) {
 		Cart cart = new Cart();
-		cart.setCartitems(cartItemList);
+		cart.setMember(member);
 		
 		for(CartItem cartItme : cartItemList) {
 			cart.addCartItem(cartItme);
