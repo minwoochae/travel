@@ -36,4 +36,12 @@ public class TouristImg extends BaseEntity{
 	@JoinColumn(name = "tourist_id")
 	private Tourist tourist;
 	
+	// 이미지 업데이트
+	public void updateTourImg(String oriImgName, String imgName, String imgUrl) {
+		this.oriImgName = oriImgName;
+		this.imgName = imgName;
+		this.imgUrl = imgUrl;
+	}
+	
+	
 }

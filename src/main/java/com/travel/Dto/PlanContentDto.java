@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class PlanContentDto {
 
-	private Long id;
 	
 	private String planDay;
 	

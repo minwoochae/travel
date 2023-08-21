@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import com.travel.Dto.InfoFormDto;
 import com.travel.Dto.ItemFormDto;
 import com.travel.Dto.ItemSearchDto;
 import com.travel.Dto.MemberFormDto;
@@ -48,7 +49,7 @@ public class AdminController {
 		return "/admin/adminMain";
 	}
 	
-	//회원 리스트
+	
 
 
 	// 회원 리스트
@@ -64,38 +65,37 @@ public class AdminController {
 		return "admin/MemberList";
 	}
 
+	//회원 리스트(회원 프로필)
+	
+	@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
+	public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
+		MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
 		
-	// 쇼핑몰 상품 리스트
-	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
-	public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
-
-		// of(조회할 페이지의 번호★[0부터 시작], 한페이지당 조회할 데이터 갯수)
-		// url 경로에 페이지가 있으면 해당 페이지 번호를 조회하도록 하고 페이지 번호가 없으면 0페이지를 조회.
-		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
-
-		Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
-
-		model.addAttribute("items", items);
-		model.addAttribute("itemSearchDto", itemSearchDto);
-		model.addAttribute("maxPage", 5); // 상품관리페이지 하단에 보여줄 최대 페이지 번호
-
-		return "/admin/itemList";
-
+		model.addAttribute("member", memberFormDto);
+		return "admin/profile";
 	}
 
-		//회원 리스트(회원 프로필)
+	// 쇼핑몰 상품 리스트
+	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
+	public String itemManage(ItemSearchDto itemSearchDto, 
+			@PathVariable("page") Optional<Integer> page, Model model) {
+		
 
-		@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
-		public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
-				MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
-				
-				model.addAttribute("member", memberFormDto);
-			return "admin/profile";
-		}
+			//of(조회할 페이지의 번호★[0부터 시작], 한페이지당 조회할 데이터 갯수)
+			//url 경로에 페이지가 있으면 해당 페이지 번호를 조회하도록 하고 페이지 번호가 없으면 0페이지를 조회.
+			Pageable pageable = PageRequest.of(page.isPresent()?page.get():0, 3); 
+			
+			Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
+			
+			model.addAttribute("items" , items);
+			model.addAttribute("itemSearchDto", itemSearchDto);
+			model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
+			return "/admin/itemList";
+			}
 
 
 
-	// 쇼핑몰 상품 등록하기
+	// 쇼핑몰 상품 등록하기 보여주기
 	@GetMapping(value = "/adminShop/new")
 	public String adminShop(Model model) {
 		model.addAttribute("itemFormDto", new ItemFormDto());
@@ -129,7 +129,139 @@ public class AdminController {
 	}
 
 	
+	// 상품 수정페이지 보여주기
+	@GetMapping(value = "/adminShop/item/{itemId}")
+	public String itemDtl(@PathVariable("itemId") Long itemId,Model model) {
+		
+		try {
+			ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+			model.addAttribute("itemFormDto",itemFormDto);
+		} catch (Exception e) {
+			e.printStackTrace(); //이거 안하면 에러 안찍힘.
+			model.addAttribute("errorMessage", "상품정보를 가져올 때 에러가 발생했습니다.");
+			//에러발생시 비어있는 객체를 넘겨준다. 
+			model.addAttribute("itemFormDto", new ItemFormDto()); 
+			return "admin/itemRegist";
+		}
+		
+		
+		return "admin/itemModify";
+	}
+	
+	//상품수정
+	@PostMapping(value = "/adminShop/item/{itemId}")
+		public String itemUpdate(@Valid ItemFormDto itemFormDto,Model model,
+				BindingResult bindingResult, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList) {
+			
+			if(bindingResult.hasErrors()) {
+				return "admin/itemRegist";
+			}
+			
+			//첫번째 이미지가 있는지 검사. 
+			if(itemImgFileList.get(0).isEmpty() && itemFormDto.getId()==null) {
+				model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수입니다.");
+				return "admin/itemRegist";
+			}
+			
+			try {
+				itemService.updateItem(itemFormDto, itemImgFileList);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				model.addAttribute("errorMessage", "상품 수정 중 에러가 발생했습니다.");
+				return "admin/itemRegist";
+			}
+			
+			return "redirect:/";
+		}
+	
+	
+	// 상품 삭제
+	@DeleteMapping("/adminShop/{itemId}/delete")
+	public @ResponseBody ResponseEntity deletemovie(@RequestBody @PathVariable("itemId") Long itemId,
+			Principal principal) {
+		itemService.deleteItem(itemId);
+		return new ResponseEntity<Long>(itemId, HttpStatus.OK);
+	}
+	
+	
+	// 공지사항 리스트
 
+		@GetMapping(value = { "/adminInfo", "/adminInfo/{page}" })
+		public String infoManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
+
+			// of(조회할 페이지의 번호★[0부터 시작], 한페이지당 조회할 데이터 갯수)
+			// url 경로에 페이지가 있으면 해당 페이지 번호를 조회하도록 하고 페이지 번호가 없으면 0페이지를 조회.
+			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
+
+			Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
+
+			//model.addAttribute("infoBoards", infoBoards);
+			model.addAttribute("itemSearchDto", itemSearchDto);
+			model.addAttribute("maxPage", 5); // 상품관리페이지 하단에 보여줄 최대 페이지 번호
+
+			return "/admin/infoList";
+
+		}
+	
+	
+	// 공지사항 등록 보여주기
+	@GetMapping(value = "/adminInfo/new")
+		public String adminInfo(Model model) {
+			model.addAttribute("infoFormDto", new InfoFormDto());
+			return "/admin/infoForm";
+		}
+
+	// 공지사항, 공지사항이미지 등록
+	@PostMapping(value = "/adminInfo/new")
+		public String InfoNew(@Valid InfoFormDto infoFormDto, BindingResult bindingResult, Model model) {
+
+			
+
+			return "redirect:/";
+		}
+	
+
+	// 공지사항 수정페이지 보여주기
+	
+	// 공지사항 수정하기
+	
+	// 공지사항 삭제하기
+	
+	// 추천관광지 리스트 
+	
+	// 추천관광지 등록 보여주기
+	@GetMapping(value = "/adminTour/new")
+	public String adminTour(Model model) {
+		model.addAttribute("tourFormDto", new ItemFormDto());
+		return "/admin/itemRegist";
+	}
+	
+	// 추천관광지 등록
+	
+	// 추천관광지 수정페이지 보여주기
+	
+	// 추천관광지 수정
+	
+	// 추천관광지 삭제
+	
+	
+	// 문의사항 리스트 보여주기 
+	
+	// 문의사항 등록 보여주기 - 회원
+	
+	// 문의사항 등록하기 - 회원
+	
+	// 문의사항 답변하기 보여주기 - 관리자
+	
+	// 문의사항 답변하기 - 관리자
+	
+	
+	
+	
+	
+	
+	
 	// 회원 탈퇴시키기
 	@DeleteMapping(value = "admin/{memberId}/delete")
 	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,

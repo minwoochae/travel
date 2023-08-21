@@ -233,7 +233,11 @@ function showDetail(title, address, tel, firstImage, mapx, mapy) {
       marker.setMap(map);
 }
 
+
+
+
 function insertContent() {
+    
     // 현재 show active 클래스를 가진 tabPane 찾기
     let activeTabPane = document.querySelector(".tab-pane.show.active");
     
@@ -247,14 +251,18 @@ function insertContent() {
     dataListDiv.className = "dataList";
     dataListDiv.style = "display:flex;  padding:10px; border-bottom:1px solid black;";
     
-    
     dataListDiv.innerHTML = `
     <img src="${currentData.firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
     <h4 style="margin-left:15px; margin-right:5px; width:170px;">${currentData.title}</h4>
+    <input type="hidden" value="${currentData.address}">
+    <input type="hidden" value="${currentData.mapx}">
+    <input type="hidden" value="${currentData.mapy}">
     <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent(event)" style="height:30px; line-height: 0;">-</button>
-`;
-
+    `;
     
+
+
+
     // 해당 tabPane 내의 list-group 선택
     let listGroup = activeTabPane.querySelector(".list-group");
     
@@ -265,6 +273,10 @@ function insertContent() {
         console.error("list-group을 찾을 수 없습니다.");
     }
 }
+
+
+
+
 
 
 function deleteContent(event) {

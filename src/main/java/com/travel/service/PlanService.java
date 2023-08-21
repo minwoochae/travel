@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.travel.Dto.PlanContentDto;
+import com.travel.Dto.PlanFormDto;
 import com.travel.Repository.MemberRepository;
 import com.travel.Repository.PlanContentRepository;
 import com.travel.Repository.PlanRepository;
@@ -22,11 +23,13 @@ public class PlanService {
 	private final MemberRepository memberRepository;
 	
 	//플랜 만들기
-	public Long setPlan(String no) {
+	public Long setPlan(String no, PlanFormDto planFormDto) {
 		Member member = memberRepository.findByEmail(no);
 		
 		Plan plan = new Plan();
 		plan.setMember(member);
+		plan.setPlanDate(planFormDto.getPlanDate());
+		plan.setPlanTitle(planFormDto.getPlanTitle());
 		
 		Plan planResult = planRepository.save(plan);
 		
@@ -36,7 +39,7 @@ public class PlanService {
 	
 	
 	//플랜 컨텐츠 추가하기
-	public PlanContent setPlanContent(PlanContentDto planContentDto) {
+	private PlanContent setPlanContent(PlanContentDto planContentDto) {
 		
 		PlanContent planContent = PlanContent.createContent(planContentDto);
 		PlanContent savePlanContent = planContentRepository.save(planContent);
@@ -44,6 +47,8 @@ public class PlanService {
 		return savePlanContent;
 		
 	}
+	
+	
 	
 	
 }
