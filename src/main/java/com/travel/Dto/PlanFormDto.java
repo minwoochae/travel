@@ -20,6 +20,6 @@ public class PlanFormDto {
 	private String planDate;
 	
 	
-	
 	private List<PlanContent> planContentDtoList = new ArrayList<>();
+	
 }
