@@ -80,6 +80,7 @@ public class ItemService {
 		return itemFormDto; // 이미지 정보, 아이템 테이블에서 가져온 내용 all 들어있음.
 	}
 
+	// 수정하기
 	public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
 
 		// 1. item 엔티티 가져와서 바꾼다.
@@ -92,22 +93,27 @@ public class ItemService {
 
 		for (int i = 0; i < itemImgFileList.size(); i++) {
 			itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
+			
 		}
+			return item.getId(); // 변경한 item의 id 리턴.
+
+
+}
+
 
 		
 		
+		
+		@Transactional(readOnly = true)
+		public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+			
+			Page<Item> itemPage = itemRepository.getAdminItemPage(itemSearchDto, pageable);
+			return itemPage;
+			
+		}
+		
 
 
-		return item.getId(); // 변경한 item의 id 리턴.
-	}
-
-	@Transactional(readOnly = true)
-	public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-
-		Page<Item> itemPage = itemRepository.getAdminItemPage(itemSearchDto, pageable);
-		return itemPage;
-
-	}
 
 	@Transactional(readOnly = true)
 	public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
@@ -116,4 +122,13 @@ public class ItemService {
 	}
 
 
+	// 상품 삭제
+	public void deleteItem(Long itemId) {
+		Item item = itemRepository.findById(itemId)
+				.orElseThrow(EntityNotFoundException::new);
+		
+		itemRepository.delete(item);
+	}
+	
+	
 }

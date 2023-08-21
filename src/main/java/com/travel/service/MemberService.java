@@ -3,6 +3,7 @@ package com.travel.service;
 import java.security.SecureRandom;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,7 +27,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional //퀘리문 오류시 이전데이터 롤백
 @RequiredArgsConstructor  // autowired를 사용하지 않고 필드의 의존성을 주입 시켜준다
 public class MemberService implements UserDetailsService{
-	
+
+	@Autowired
 	private final MemberRepository memberRepository ;
 	
 	public Member saveMember(Member member) {
@@ -44,7 +46,9 @@ public class MemberService implements UserDetailsService{
 		}
 	}
 	
-
+	public Member findByEmail(String email) {
+		return memberRepository.findByEmail(email);
+	}
 	
 	public String emailFind(String name, String phone) {
 		Member member = memberRepository.findByNameAndPhoneNumber(name, phone);
@@ -57,14 +61,25 @@ public class MemberService implements UserDetailsService{
 	
 	
 	
-	public Long updateNamePhone(MemberFormDto memberFormDto) throws Exception {
-		Member member = memberRepository.findById(memberFormDto.getId())
-							.orElseThrow(EntityNotFoundException::new);		
-		 member.updatenamePhone(memberFormDto);
-
-		return member.getId();
+	public void updateNamePhone(String email, String name, String phone) {
+		
+		Member member = memberRepository.findByEmail(email);
+		   
+		member.updatenamePhone(name,phone);
+		
 	}
 	
+	public void updatepassword(String email,String password,PasswordEncoder passwordEncoder) {
+ 		Member member = memberRepository.findByEmail(email);
+ 		
+ 		if(passwordEncoder.matches(password, member.getPassword()) == true){
+ 			throw new IllegalStateException("기존 비밀번호와 동일합니다.");
+ 		}else {
+ 			member.updatepassword(password);
+		}
+ 		}
+		
+
 	
 	
 	public String getRamdomPassword(int size) {
@@ -113,14 +128,24 @@ public class MemberService implements UserDetailsService{
 	  private final JavaMailSender javaMailSender;
 	  
 	  
-	  
 	  public void sendEmail(String to, String subject, String text) {
 	  SimpleMailMessage message = new SimpleMailMessage(); message.setTo(to);
 	  message.setSubject(subject); message.setText(text);
 	  javaMailSender.send(message); }
 	 
 
-	//회원 상세정보
+	//회원 상세정보(Long)
+	@Transactional(readOnly =  true)
+	public Member getmemberDts(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+					.orElseThrow(EntityNotFoundException::new);
+	
+ 	
+	
+     return	member;
+	}
+	
+	//회원 상세정보(String)
 	@Transactional(readOnly =  true)
 	public MemberFormDto getmemberDtl(Long memberId) {
 		Member member = memberRepository.findById(memberId)
@@ -129,7 +154,6 @@ public class MemberService implements UserDetailsService{
  	
 	
      return	memberFormDto ;
-		
 	}
 	
 	public void deleteMember(Long memberId) {

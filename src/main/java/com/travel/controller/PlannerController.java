@@ -32,7 +32,7 @@ public class PlannerController {
 		return "planner/plannerMain";
 	}
 
-	@GetMapping(value = "/planList")
+	@GetMapping(value = "/planner/list")
 	public String planList() {
 		return "planner/planList";
 	}

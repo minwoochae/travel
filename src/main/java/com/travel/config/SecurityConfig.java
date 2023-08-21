@@ -22,6 +22,8 @@ public class SecurityConfig{
 		
 				//모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
 				.requestMatchers("/css/**","/js/**","/img/**","/images/**", "/fonts/**").permitAll()
+				.requestMatchers("/","/members/**","/planner/**", "/item/**", "/account/**", "/account/pssearch/**").permitAll()
+				.requestMatchers("favicon.ico","/error").permitAll()
 				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/account/pssearch/**").permitAll()
 				.requestMatchers("/error").permitAll()
 				//'admin' 으로 시작하는 경로로 관리자만 접근가능하도록 설정
@@ -52,11 +54,8 @@ public class SecurityConfig{
 	}	
 	
 
-	
-	
-	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

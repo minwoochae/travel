@@ -71,10 +71,13 @@ public class Member extends BaseEntity {
 		return password;
 	}
 	
-	public void  updatenamePhone(MemberFormDto memberFormDto) {
-		this.name = memberFormDto.getName();
-		this.phoneNumber = memberFormDto.getPhoneNumber();
-		
+	public void  updatenamePhone(String name, String phone) {
+		this.name = name;
+		this.phoneNumber = phone;
+	}
+	
+	public void updatepassword(String password) {
+		this.password = password;
 	}
 
 	

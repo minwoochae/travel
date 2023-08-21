@@ -1,5 +1,8 @@
 package com.travel.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.travel.Dto.ItemFormDto;
 import com.travel.constant.ItemSellStatus;
 import com.travel.exception.OutOfStockException;
@@ -49,6 +52,7 @@ public class Item extends BaseEntity{
 	private ItemSellStatus itemSellStatus; 
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	@JoinColumn(name = "member_id")
 	private Member member;
 	
