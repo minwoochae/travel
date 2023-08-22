@@ -8,6 +8,9 @@ import com.travel.Dto.InfoFormDto;
 import com.travel.Dto.ItemFormDto;
 import com.travel.Dto.ItemSearchDto;
 import com.travel.Dto.MemberFormDto;
+import com.travel.Dto.TourFormDto;
+import com.travel.Dto.TourSearchDto;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +31,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.travel.Dto.MemberFormDto;
 
 import com.travel.entity.Member;
+import com.travel.entity.Tourist;
 import com.travel.service.ItemService;
 import com.travel.service.MemberService;
+import com.travel.service.TourService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminController {
 
 	private final ItemService itemService;
+	private final TourService tourService;
 
 	private final MemberService memberService;
 
@@ -224,26 +230,132 @@ public class AdminController {
 
 	// 공지사항 수정페이지 보여주기
 	
+	
+	
 	// 공지사항 수정하기
 	
 	// 공지사항 삭제하기
 	
 	// 추천관광지 리스트 
+	@GetMapping(value = {"/adminTour/tours","/adminTour/tours/{page}"})
+	public String tourManage(TourSearchDto tourSearchDto,
+			@PathVariable("page") Optional<Integer> page, Model model) {
+		
+		Pageable pageable = PageRequest.of(page.isPresent()?page.get():0, 3); 
+		
+		Page<Tourist> tours = tourService.getAdminTourPage(tourSearchDto, pageable);
+		
+		model.addAttribute("tours" , tours);
+		model.addAttribute("tourSearchDto", tourSearchDto);
+		model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
+		
+		return "/admin/tourList";
+	}
+	
+	
 	
 	// 추천관광지 등록 보여주기
 	@GetMapping(value = "/adminTour/new")
 	public String adminTour(Model model) {
-		model.addAttribute("tourFormDto", new ItemFormDto());
-		return "/admin/itemRegist";
+		model.addAttribute("tourFormDto", new TourFormDto());
+		return "/admin/tourRegist";
 	}
 	
 	// 추천관광지 등록
+	@PostMapping(value = "/adminTour/new")
+	public String tourNew(@Valid TourFormDto tourFormDto, BindingResult bindingResult,
+			Model model, @RequestParam("tourImgFile") List<MultipartFile> tourImgFileList) {
+		
+		if(bindingResult.hasErrors()) {
+			return "admin/tourRegist";
+		}
+		
+		//상품등록전에 첫번째 이미지가 있는지 없는지 검사.(첫번째 이미지는 필수입력값)
+		if(tourImgFileList.get(0).isEmpty()) {
+			model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수입니다.");
+			return "admin/tourRegist";
+		}
+		
+		try {
+			tourService.saveTour(tourFormDto, tourImgFileList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "상품 등록 중 에러가 발생했습니다.");
+			return "admin/tourRegist";
+		}
+		
+		return "redirect:/";
+	}
+	
 	
 	// 추천관광지 수정페이지 보여주기
+	@GetMapping(value = "/adminTour/tour/{touristId}")
+	public String tourModify(@PathVariable("touristId") Long touristId,Model model) {
+		
+		try {
+			TourFormDto tourFormDto = tourService.getTourDtl(touristId);
+			model.addAttribute("tourFormDto",tourFormDto);
+		} catch (Exception e) {
+			e.printStackTrace(); //이거 안하면 에러 안찍힘.
+			model.addAttribute("errorMessage", "상품정보를 가져올 때 에러가 발생했습니다.");
+			//에러발생시 비어있는 객체를 넘겨준다. 
+			model.addAttribute("tourFormDto", new TourFormDto()); 
+			return "admin/tourRegist";
+		}
+		
+		return "admin/tourModify";
+	}
+	
 	
 	// 추천관광지 수정
+	@PostMapping(value = "/adminTour/tour/{touristId}")
+	public String tourUpdate(@Valid TourFormDto tourFormDto,Model model,
+			BindingResult bindingResult, @RequestParam("tourImgFile") List<MultipartFile> tourImgFileList) {
+		
+		if(bindingResult.hasErrors()) {
+			System.out.println("Tid");
+			return "admin/tourRegist";
+		}
+		
+		//첫번째 이미지가 있는지 검사. 
+		if(tourImgFileList.get(0).isEmpty() && tourFormDto.getId()==null) {
+			model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수입니다.");
+			return "admin/tourRegist";
+		}
+		
+		System.out.println("11111111111");
+		try {
+			tourService.updateTour(tourFormDto, tourImgFileList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "상품 수정 중 에러가 발생했습니다.");
+			System.out.println("22222222222");
+			return "admin/tourList";
+		}
+		
+		return "redirect:/";
+	}
+
+	
+
+	//추천관광지 상세 페이지
+	@GetMapping(value = "/tour/{touristId}")
+	public String tourDtl(Model model, @PathVariable("touristId") Long touristId) {
+		TourFormDto tourFormDto = tourService.getTourDtl(touristId);
+		model.addAttribute("tour", tourFormDto);
+		return "admin/tourDtl";
+	}
+	
 	
 	// 추천관광지 삭제
+	@DeleteMapping("/adminTour/{touristId}/delete")
+	public @ResponseBody ResponseEntity deleteTour(@RequestBody @PathVariable("touristId") Long touristId,
+			Principal principal) {
+		tourService.deleteTour(touristId);
+		return new ResponseEntity<Long>(touristId, HttpStatus.OK);
+	}
+	
 	
 	
 	// 문의사항 리스트 보여주기 

@@ -1,14 +1,17 @@
 package com.travel.service;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.travel.Dto.ItemSearchDto;
+import com.travel.Dto.MainItemDto;
+import com.travel.Dto.MainTourDto;
 import com.travel.Dto.TourFormDto;
 import com.travel.Dto.TourImgDto;
 import com.travel.Dto.TourSearchDto;
@@ -96,11 +99,17 @@ public class TourService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<Tourist> getAdminPage(TourSearchDto tourSearchDto, Pageable pageable) {
+	public Page<Tourist> getAdminTourPage(TourSearchDto tourSearchDto, Pageable pageable) {
 		
-		// Page<Tourist> tourPage = tourRepository.getAdminTourPage(tourSearchDto, pageable);
+		Page<Tourist> tourPage = tourRepository.getAdminTourPage(tourSearchDto, pageable);
 		
-		return null;
+		return tourPage;
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<MainTourDto> getMainTourPage(TourSearchDto tourSearchDto, Pageable pageable) {
+		Page<MainTourDto> mainTourPage = tourRepository.getMainTourPage(tourSearchDto, pageable);
+		return mainTourPage;
 	}
 	
 	
