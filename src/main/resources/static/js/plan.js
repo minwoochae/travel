@@ -138,7 +138,7 @@ function updateResults() {
         		let mapx = item.getElementsByTagName("mapx")[0].textContent;
         		let mapy = item.getElementsByTagName("mapy")[0].textContent;
         		
-                console.log(item);
+                //console.log(item);
                 
 
                 let resultElement = document.createElement("div");
@@ -203,7 +203,7 @@ function showDetail(title, address, tel, firstImage, mapx, mapy) {
         	</div>
         	
         	<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:20px;">
-    			<button onclick="insertContent()" type="button" class="btn btn-outline-danger">일정 추가하기</button>
+    			<button onclick="insertContent1()" type="button" class="btn btn-outline-danger">일정 추가하기</button>
     		</div>
     	
     	</div>
@@ -236,7 +236,7 @@ function showDetail(title, address, tel, firstImage, mapx, mapy) {
 
 
 
-function insertContent() {
+function insertContent1() {
     
     // 현재 show active 클래스를 가진 tabPane 찾기
     let activeTabPane = document.querySelector(".tab-pane.show.active");
@@ -248,15 +248,15 @@ function insertContent() {
     
     // dataList 클래스를 가진 새로운 div 생성 및 내용 설정
     let dataListDiv = document.createElement("div");
-    dataListDiv.className = "dataList";
+    dataListDiv.className = "dataList1";
     dataListDiv.style = "display:flex;  padding:10px; border-bottom:1px solid black;";
     
     dataListDiv.innerHTML = `
-    <img src="${currentData.firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
-    <h4 style="margin-left:15px; margin-right:5px; width:170px;">${currentData.title}</h4>
-    <input type="hidden" value="${currentData.address}">
-    <input type="hidden" value="${currentData.mapx}">
-    <input type="hidden" value="${currentData.mapy}">
+    <img class="place_img" name="place_img" src="${currentData.firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
+    <h4 class="placeName" name="placeName" style="margin-left:15px; margin-right:5px; width:170px;">${currentData.title}</h4>
+    <input type="hidden" class="placeAddress" name="placeAddress" value="${currentData.address}">
+    <input type="hidden" class="placeLongitude" name="placeLongitude" value="${currentData.mapx}">
+    <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.mapy}">
     <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent(event)" style="height:30px; line-height: 0;">-</button>
     `;
     

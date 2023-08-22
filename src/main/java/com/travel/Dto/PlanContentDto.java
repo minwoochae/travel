@@ -13,7 +13,7 @@ public class PlanContentDto {
 	
 	private String planDay;
 	
-	private TravelDivision travelDivision;
+	private String travelDivision;
 	
 	private String placeName;
 	
