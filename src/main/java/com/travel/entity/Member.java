@@ -1,11 +1,13 @@
 package com.travel.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.travel.Dto.MemberFormDto;
+import com.travel.Dto.MemberKakaoDto;
 import com.travel.constant.Division;
 import com.travel.constant.Role;
 
@@ -80,6 +82,24 @@ public class Member extends BaseEntity {
 		this.password = password;
 	}
 
+	
+    public static Member createKaKao(MemberKakaoDto memberKakaoDto) {
+    	Member member = new Member();
+    	
+    	member.setName(memberKakaoDto.getName());
+    	member.setEmail(memberKakaoDto.getEmail());
+    	member.setRole(Role.USER);
+		member.setRegtime(memberKakaoDto.getRegtime());
+		member.setDivision(Division.KAKAO);
+    	return member;
+    }
+    
+    public static final String MAPPER = "ezen.dev.spring.kakao";
+    
+    // 정보 저장
+    public void kakaoinsert(HashMap<String, Object> userInfo) {
+        this.kakaoinsert(userInfo);
+    }
 	
 
 }
