@@ -11,4 +11,6 @@ public interface TourImgRepository extends JpaRepository<TouristImg, Long>{
 	List<TouristImg> findByTouristIdOrderByIdAsc(Long touristId);
 	
 	TouristImg findByTouristIdAndRepimgYn(Long touristId, String repingYn);
+
+	
 }

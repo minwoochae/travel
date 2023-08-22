@@ -178,9 +178,6 @@
 			count : $("#count").val()
 			
 		}
-		alert($("#itemId").val());
-		alert($("#price").val());
-		alert($("#count").val());
 		
 		// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
 
@@ -198,8 +195,8 @@
 			dataType : "json",
 			cache : false,
 			success : function(result, status) {
+				alert("장바구니에 저장되었습니다.")
 				location.href = '/';
-				alert("장바구니 들어감")
 			},
 			error : function(jqXHR, status, error) {
 				if (jqXHR.status == '401') {

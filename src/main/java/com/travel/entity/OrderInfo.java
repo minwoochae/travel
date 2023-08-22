@@ -33,6 +33,9 @@ public class OrderInfo {
 	@Column(name = "order_info_phone")
 	private String orderInfoPhone;
 	
+	@Column(name= "zip_code")
+	private int zipCode;
+	
 	@OneToOne
 	@JoinColumn(name = " orders_id")
 	private Orders orders;
