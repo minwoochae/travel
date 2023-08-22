@@ -134,7 +134,7 @@ public class MemberService implements UserDetailsService {
 		javaMailSender.send(message);
 	}
 
-	// 회원 상세정보(Long)
+	// 회원 상세정보
 	@Transactional(readOnly = true)
 	public Member getmemberDts(Long memberId) {
 		Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
@@ -142,7 +142,7 @@ public class MemberService implements UserDetailsService {
 		return member;
 	}
 
-	// 회원 상세정보(String)
+	// 회원 상세정보
 	@Transactional(readOnly = true)
 	public MemberFormDto getmemberDtl(Long memberId) {
 		Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);

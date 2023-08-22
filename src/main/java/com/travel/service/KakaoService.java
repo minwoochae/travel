@@ -1,246 +1,179 @@
 package com.travel.service;
 
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
-import org.apache.tomcat.util.json.JSONParser;
-import org.apache.tomcat.util.json.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-import org.json.simple.JSONObject;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.travel.Dto.MemberKakaoDto;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.travel.Repository.MemberRepository;
+import com.travel.constant.Division;
+import com.travel.entity.Member;
 
 import lombok.RequiredArgsConstructor;
+
+
+
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class KakaoService {
+public class KakaoService implements IKakaoLoginService {
 
 
-		public String getToken(String code) throws IOException, ParseException {
-	        // 인가코드로 토큰받기
-	        String host = "https://kauth.kakao.com/oauth/token";
-	        URL url = new URL(host);
-	        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-	        String token = "";
-	        try {
-	            urlConnection.setRequestMethod("POST");
-	            urlConnection.setDoOutput(true); // 데이터 기록 알려주기
 
-	            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
-	            StringBuilder sb = new StringBuilder();
-	            sb.append("grant_type=authorization_code");
-	            sb.append("&client_id=98f390fb8a9c8c0429606de4259a885c");
-	            sb.append("&redirect_uri=http://localhost/members/login/kakao");
-	            sb.append("&code=" + code);
+	@Override
+	public String getAccessToken(String authorize_code) throws Exception {
+		String access_Token = "";
+		String refresh_Token = "";
+		String reqURL = "https://kauth.kakao.com/oauth/token";
 
-	            bw.write(sb.toString());
-	            bw.flush();
+		try {
+			URL url = new URL(reqURL);
 
-	            int responseCode = urlConnection.getResponseCode();
-	            System.out.println("responseCode 확인 = " + responseCode);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			// POST 요청을 위해 기본값이 false인 setDoOutput을 true로
 
-	            BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-	            String line = "";
-	            String result = "";
-	            while ((line = br.readLine()) != null) {
-	                result += line;
-	            }
-	            System.out.println("result = " + result);
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+			// POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
 
-	            // json parsing
-	            JSONParser parser = new JSONParser(result);
-	            JSONObject elem = (JSONObject) parser.parse();
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+			StringBuilder sb = new StringBuilder();
+			sb.append("grant_type=authorization_code");
 
-	            String access_token = elem.get("access_token").toString();
-	            String refresh_token = elem.get("refresh_token").toString();
-	            System.out.println("refresh_token = " + refresh_token);
-	            System.out.println("access_token = " + access_token);
+			sb.append("&client_id=98f390fb8a9c8c0429606de4259a885c"); // REST_API키 본인이 발급받은 key 넣어주기
+			sb.append("&redirect_uri=http://localhost/members/login/kakao"); // REDIRECT_URI 본인이 설정한 주소 넣어주기
 
-	            token = access_token;
+			sb.append("&code=" + authorize_code);
+			bw.write(sb.toString());
+			bw.flush();
 
-	            br.close();
-	            bw.close();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+			// 결과 코드가 200이라면 성공
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
 
+			// 요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line = "";
+			String result = "";
 
-	        return token;
-	    }
+			while ((line = br.readLine()) != null) {
+				result += line;
+			}
+			System.out.println("response body : " + result);
 
-	    // 유저 정보 받아오기
-		public MemberKakaoDto getUserInfo(String access_token) throws IOException, ParseException {
-		    String host = "https://kapi.kakao.com/v2/user/me";
-		    MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
+			// jackson objectmapper 객체 생성
+			ObjectMapper objectMapper = new ObjectMapper();
+			// JSON String -> Map
+			Map<String, Object> jsonMap = objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {
+			});
 
-		    try {
-		        URL url = new URL(host);
-		        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-		        urlConnection.setRequestProperty("Authorization", "Bearer " + access_token);
-		        urlConnection.setRequestMethod("GET");
+			access_Token = jsonMap.get("access_token").toString();
+			refresh_Token = jsonMap.get("refresh_token").toString();
 
-		        int responseCode = urlConnection.getResponseCode();
-		        System.out.println("responseCode = " + responseCode);
+			System.out.println("access_token : " + access_Token);
+			System.out.println("refresh_token : " + refresh_Token);
 
-		        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-		        String line = "";
-		        String res = "";
-		        while ((line = br.readLine()) != null) {
-		            res += line;
-		        }
-
-		        System.out.println("res = " + res);
-
-		        JSONParser parser = new JSONParser(res);
-		        JSONObject obj = (JSONObject) parser.parse();
-		        JSONObject kakao_account = (JSONObject) obj.get("kakao_account");
-
-		        String id = obj.get("id").toString();
-		        String email = kakao_account.get("email").toString();
-
-		        memberKakaoDto.setId(id);
-		        memberKakaoDto.setEmail(email);
-
-		        br.close();
-
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
-		    return memberKakaoDto;
+			br.close();
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		
-	    // 정상적으로 받아왔는지 여부
-	    public String getAgreementInfo(String access_token)
-	    {
-	        String result = "";
-	        String host = "https://kapi.kakao.com/v2/user/scopes";
-	        try{
-	            URL url = new URL(host);
-	            HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
-	            urlConnection.setRequestMethod("GET");
-	            urlConnection.setRequestProperty("Authorization", "Bearer "+access_token);
+		return access_Token;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public HashMap<String, Object> getUserInfo(String access_Token) throws Throwable {
+		// 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
+		HashMap<String, Object> userInfo = new HashMap<String, Object>();
+		String reqURL = "https://kapi.kakao.com/v2/user/me";
 
-	            BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-	            String line = "";
-	            while((line=br.readLine())!=null)
-	            {
-	                result+=line;
-	            }
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
 
-	            int responseCode = urlConnection.getResponseCode();
-	            System.out.println("responseCode = " + responseCode);
+			// 요청에 필요한 Header에 포함될 내용
+			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
-	            // result is json format
-	            br.close();
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
 
-	        } catch (MalformedURLException e) {
-	            e.printStackTrace();
-	        } catch (ProtocolException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return result;
-	    }
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-	    public String getAccessToken (String authorize_code) {
-	        String access_Token = "";
-	        String refresh_Token = "";
-	        String reqURL = "http://localhost/members/login/kakao";
-	 
-	        try {
-	            URL url = new URL(reqURL);
-	 
-	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	 
-	            //    POST 요청을 위해 기본값이 false인 setDoOutput을 true로 변경을 해주세요
-	 
-	            conn.setRequestMethod("POST");
-	            conn.setDoOutput(true);
-	 
-	            //    POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
-	// BufferedWriter 간단하게 파일을 끊어서 보내기로 토큰값을 받아오기위해 전송
+			String line = "";
+			String result = "";
 
-	            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-	            StringBuilder sb = new StringBuilder();
-	            sb.append("grant_type=authorization_code");
-	            sb.append("&client_id=98f390fb8a9c8c0429606de4259a885c");  //본인이 발급받은 key
-	            sb.append("&redirect_uri=http://localhost/members/login/kakao");     // 본인이 설정해 놓은 경로
-	            sb.append("&code=" + authorize_code);
-	            bw.write(sb.toString());
-	            bw.flush();
-	 
-	            //    결과 코드가 200이라면 성공
-	// 여기서 안되는경우가 많이 있어서 필수 확인 !! ** 
-	            int responseCode = conn.getResponseCode();
-	            System.out.println("responseCode : " + responseCode+"확인");
-	 
-	            //    요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-	            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	            String line = "";
-	            String result = "";
-	 
-	            while ((line = br.readLine()) != null) {
-	                result += line;
-	            }
-	            System.out.println("response body : " + result+"결과");
-	 
-				/*
-				 * // Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성 JsonParser parser = new JsonParser();
-				 * JsonElement element = parser.parse(result);
-				 * 
-				 * 
-				 * 
-				 * access_Token = element.getAsJsonObject().get("access_token").getAsString();
-				 * refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-				 * 
-				 * System.out.println("access_token : " + access_Token);
-				 * System.out.println("refresh_token : " + refresh_Token);
-				 * 
-				 * br.close(); bw.close();
-				 */
-	            
-	            String jsonString = "{\"key\":\"value\"}";
+			while ((line = br.readLine()) != null) {
+				result += line;
+			}
+			System.out.println("response body : " + result);
+			System.out.println("result type" + result.getClass().getName()); // java.lang.String
 
-	            JsonElement jsonElement = JsonParser.parseString(jsonString);
-	            JsonObject jsonObject = jsonElement.getAsJsonObject();
+			try {
+				// jackson objectmapper 객체 생성
+				ObjectMapper objectMapper = new ObjectMapper();
+				// JSON String -> Map
+				Map<String, Object> jsonMap = objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {
+				});
 
-	            String value = jsonObject.get("key").getAsString();
-	            System.out.println("Value: " + value);
-	            
-	            JsonElement element = JsonParser.parseString(result);
-	            
-	            access_Token = element.getAsJsonObject().get("access_token").getAsString();
-	            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+				System.out.println(jsonMap.get("properties"));
 
-	            System.out.println("access_token : " + access_Token);
-	            System.out.println("refresh_token : " + refresh_Token);
-	            br.close(); bw.close();
-	        } catch (IOException e) {
-	 
-	            e.printStackTrace();
-	        }
-	 
-	        return access_Token;
-	    }
-		
-	    
+				Map<String, Object> properties = (Map<String, Object>) jsonMap.get("properties");
+				Map<String, Object> kakao_account = (Map<String, Object>) jsonMap.get("kakao_account");
+
+				// System.out.println(properties.get("nickname"));
+				// System.out.println(kakao_account.get("email"));
+
+				String nickname = properties.get("nickname").toString();
+				String email = kakao_account.get("email").toString();
+
+				userInfo.put("nickname", nickname);
+				userInfo.put("email", email);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return userInfo;
+	}
+	
+	
+
+    private final MemberRepository memberRepository;
+
+    // Constructor injection
+
+    public Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
+
+    public Member saveMember(Member member) {
+        insertUserInfoToDatabase(member);
+        return memberRepository.save(member);
+    }
+
+    private void insertUserInfoToDatabase(Member member) {
+        Member findMember = memberRepository.findByEmail(member.getEmail());
+
+        if (findMember != null && Division.NORMAL == findMember.getDivision()) {
+            throw new IllegalStateException("이미 사용중인 Email 입니다");
+        }
+    }
 	}
 
