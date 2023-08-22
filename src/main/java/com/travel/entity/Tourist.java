@@ -1,6 +1,9 @@
 package com.travel.entity;
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.travel.Dto.TourFormDto;
 
 import jakarta.persistence.Column;
@@ -35,6 +38,7 @@ public class Tourist extends BaseEntity{
 	private String touristContent;	// 추천관광지 상세설명
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	@JoinColumn(name = "member_id")
 	private Member member;
 	
