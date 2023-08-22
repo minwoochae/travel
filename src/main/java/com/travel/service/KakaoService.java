@@ -137,10 +137,10 @@ public class KakaoService implements IKakaoLoginService {
 				// System.out.println(properties.get("nickname"));
 				// System.out.println(kakao_account.get("email"));
 
-				String nickname = properties.get("nickname").toString();
+				String name = properties.get("nickname").toString();
 				String email = kakao_account.get("email").toString();
 
-				userInfo.put("nickname", nickname);
+				userInfo.put("nickname", name);
 				userInfo.put("email", email);
 
 			} catch (Exception e) {
@@ -157,7 +157,6 @@ public class KakaoService implements IKakaoLoginService {
 
     private final MemberRepository memberRepository;
 
-    // Constructor injection
 
     public Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
@@ -171,7 +170,7 @@ public class KakaoService implements IKakaoLoginService {
     private void insertUserInfoToDatabase(Member member) {
         Member findMember = memberRepository.findByEmail(member.getEmail());
 
-        if (findMember != null && Division.NORMAL == findMember.getDivision()) {
+        if (findMember != null) {
             throw new IllegalStateException("이미 사용중인 Email 입니다");
         }
     }

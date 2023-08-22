@@ -83,12 +83,15 @@ public class Member extends BaseEntity {
 	}
 
 	
-    public static Member createKaKao(MemberKakaoDto memberKakaoDto) {
+    public static Member createKaKao(MemberKakaoDto memberKakaoDto , PasswordEncoder passwordEncoder) {
+    	String password = passwordEncoder.encode(memberKakaoDto.getPassword());
+    		
     	Member member = new Member();
-    	
     	member.setName(memberKakaoDto.getName());
     	member.setEmail(memberKakaoDto.getEmail());
     	member.setRole(Role.USER);
+    	member.setPassword("");
+		member.setPhoneNumber("");
 		member.setRegtime(memberKakaoDto.getRegtime());
 		member.setDivision(Division.KAKAO);
     	return member;
