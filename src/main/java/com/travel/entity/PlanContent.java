@@ -33,8 +33,7 @@ public class PlanContent {
 	@Column(name="plan_day")
 	private String planDay;
 	
-	@Enumerated(EnumType.STRING)
-	private TravelDivision travelDivision;
+	private String travelDivision;
 	
 	@Column(name="place_name")
 	private String placeName;
@@ -56,7 +55,7 @@ public class PlanContent {
 	private Plan plan;
 	
 	
-	public static PlanContent createContent(PlanContentDto planContentDto) {
+	public static PlanContent createContent(PlanContentDto planContentDto, Plan plan) {
 		PlanContent planContent = new PlanContent();
 		planContent.setPlanDay(planContentDto.getPlanDay());
 		planContent.setTravelDivision(planContentDto.getTravelDivision());
@@ -65,7 +64,7 @@ public class PlanContent {
 		planContent.setPlaceLatitude(planContentDto.getPlaceLatitude());
 		planContent.setPlaceLongitude(planContentDto.getPlaceLongitude());
 		planContent.setPlace_img(planContentDto.getPlace_img());
-		planContent.setPlan(planContentDto.getPlan());
+		planContent.setPlan(plan);
 		
 		return planContent;
 	}

@@ -10,7 +10,7 @@ import com.travel.entity.Tourist;
 
 public interface TourRepositoryCustom {
 
-	//Page<Tourist> getAdminTourPage(TourSearchDto tourSearchDto, Pageable pageable);
+	Page<Tourist> getAdminTourPage(TourSearchDto tourSearchDto, Pageable pageable);
 
-	//Page<MainTourDto> getMainTourPage(TourSearchDto tourSearchDto, Pageable pageable);
+	Page<MainTourDto> getMainTourPage(TourSearchDto tourSearchDto, Pageable pageable);
 }

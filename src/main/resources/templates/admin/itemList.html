@@ -50,7 +50,8 @@
 								<td th:text="${item.stockNumber}"></td>
 								<td><button type="button" class="btn btn-primary"
 										th:id="${item.Id}" th:value="${item.Id}"
-										th:onclick="'javascript:deleteItem(' + ${item.id} +')'">삭제</button>
+										th:onclick="'javascript:deleteItem(' + ${item.id} +')'"
+										style="background-color:#FF6168; border:none;">삭제</button>
 								</td>
 							</tr>
 						</tbody>

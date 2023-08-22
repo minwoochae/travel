@@ -23,7 +23,7 @@ public class PlanService {
 	private final MemberRepository memberRepository;
 	
 	//플랜 만들기
-	public Long setPlan(String no, PlanFormDto planFormDto) {
+	public Plan setPlan(String no, PlanFormDto planFormDto) {
 		Member member = memberRepository.findByEmail(no);
 		
 		Plan plan = new Plan();
@@ -33,15 +33,15 @@ public class PlanService {
 		
 		Plan planResult = planRepository.save(plan);
 		
-		return planResult.getId();
+		return planResult;
 		
 	}
 	
 	
 	//플랜 컨텐츠 추가하기
-	private PlanContent setPlanContent(PlanContentDto planContentDto) {
+	public PlanContent setPlanContent(PlanContentDto planContentDto, Plan plan) {
 		
-		PlanContent planContent = PlanContent.createContent(planContentDto);
+		PlanContent planContent = PlanContent.createContent(planContentDto, plan);
 		PlanContent savePlanContent = planContentRepository.save(planContent);
 		
 		return savePlanContent;
