@@ -114,12 +114,13 @@
 				<div class="form-group">
 					<div class="col-md-12 d-flex justify-content-center">
 						<button type="button" th:onclick="beforeSubmit()"
-							class="btn btn-primary mb-3" style="width: 150px;">상품 수정</button>
+							class="btn btn-primary mb-3" style="width: 150px; background-color:#FF6168; border:none;">상품 수정</button>
 					</div>
 				</div>
 
 				<input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">
+					</div>
 		</form>
 	</div>
 </div>
