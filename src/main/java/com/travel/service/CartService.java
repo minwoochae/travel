@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import com.travel.Dto.CartDto;
 import com.travel.Dto.CartItemDto;
@@ -76,5 +77,25 @@ public class CartService {
 		}
 		
 		return new PageImpl<CartListDto>(cartListDtos, pageable, totalCount);
+	}
+	
+	@Transactional(readOnly = true)
+	public boolean validateCart(Long cartId, String email) {
+		Member curMember = memberRepository.findByEmail(email);
+		Cart cart = cartRepository.findById(cartId).orElseThrow(EntityNotFoundException::new);
+		
+		Member savedMember = cart.getMember();
+		
+		if(!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	public void deleteCart(Long cartId) {
+		Cart cart = cartRepository.findById(cartId).orElseThrow(EntityNotFoundException::new);
+		
+		cartRepository.delete(cart);
 	}
 }
