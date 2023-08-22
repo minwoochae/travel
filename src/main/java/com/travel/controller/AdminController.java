@@ -287,6 +287,8 @@ public class AdminController {
 		return "redirect:/";
 	}
 	
+
+	
 	
 	// 추천관광지 수정페이지 보여주기
 	@GetMapping(value = "/adminTour/tour/{touristId}")
