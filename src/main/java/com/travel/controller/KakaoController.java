@@ -8,13 +8,17 @@ import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.travel.Dto.MemberFormDto;
 import com.travel.Dto.MemberKakaoDto;
 import com.travel.constant.Division;
 import com.travel.constant.Role;
@@ -39,7 +43,7 @@ public class KakaoController {
 	@Autowired
 	public  PasswordEncoder  passwordEncoder;
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
-	public ModelAndView kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Throwable {
+	public ModelAndView kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
 
 		// 1번
 		System.out.println("code:" + code);
@@ -58,19 +62,48 @@ public class KakaoController {
 		String email = (String) userInfo.get("email");
 		// memberKakaoDto.setEmail(email);
 		// memberKakaoDto.setName(name);
-		String ramdomps = memberService.getRamdomPassword(12);
-		System.out.println(ramdomps);
+		//String ramdomps = memberService.getRamdomPassword(12);
 		
 		MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
 		memberKakaoDto.setEmail(email);
 		memberKakaoDto.setName(name);
-		memberKakaoDto.setPassword(ramdomps);
-		System.out.println(memberKakaoDto.getPassword());
-		Member member = Member.createKaKao(memberKakaoDto ,passwordEncoder);
-		kakaoService.saveMember(member);
+		//memberKakaoDto.setPassword(ramdomps);
+
+        String errorMessage = "가입이 되어 있는 카카오 계정입니다.";
+        model.addAttribute("errorMessage", errorMessage);
 		
-		ModelAndView modelAndView = new ModelAndView("redirect:/");
+		/* Member member = Member.createKaKao(memberKakaoDto ,passwordEncoder); */
+
+		
+		ModelAndView modelAndView = new ModelAndView("/kakao/new");
 		return modelAndView;
+	}
+	
+	//카카오  회원가입 화면
+	@GetMapping(value = "/kakao/new")
+	public String memberForme(Model model) {
+		model.addAttribute("memberFormDto", new MemberFormDto());
+		return "member/KakaoMemberForm";
+	}
+
+	
+	//카카오 회원가입
+	@PostMapping(value = "/kakao/new")
+	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			return "member/KakaoMemberForm";
+		}
+
+		try {
+			Member member = Member.createKaKao(memberKakaoDto, passwordEncoder);
+
+			kakaoService.saveMember(member);
+		} catch (IllegalStateException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return "member/KakaoMemberForm";
+		}
+
+		return "redirect:/";
 	}
 
 }

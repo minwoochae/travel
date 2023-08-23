@@ -162,17 +162,25 @@ public class KakaoService implements IKakaoLoginService {
         return memberRepository.findByEmail(email);
     }
 
-    public Member saveMember(Member member) {
-        insertUserInfoToDatabase(member);
-        return memberRepository.save(member);
-    }
+    public void saveMember(Member member) {
+//        insertUserInfoToDatabase(member);
 
-    private void insertUserInfoToDatabase(Member member) {
-        Member findMember = memberRepository.findByEmail(member.getEmail());
-
-        if (findMember != null) {
-            throw new IllegalStateException("이미 사용중인 Email 입니다");
+        // 기존에 가입되어 있는 고객인지 확인
+        Member searchMember = memberRepository.findByEmail(member.getEmail());
+        // 가입이 안되어 있다면 회원가입 시작.
+        if (searchMember == null){
+            memberRepository.save(member);
+        }else {
+			/* throw new IllegalStateException("이미 사용중인 Email 입니다"); */
         }
     }
+
+	
+//	  private void insertUserInfoToDatabase(Member member) { Member findMember =
+//	 memberRepository.findByEmail(member.getEmail());
+//	 
+//	 if (findMember != null) { 
+//		 throw new IllegalStateException("이미 사용중인 Email 입니다"); } }
+	 
 	}
 
