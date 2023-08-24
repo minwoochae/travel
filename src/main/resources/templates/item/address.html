@@ -8,9 +8,13 @@
 </head>
 
 <th:block layout:fragment="css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
   <style>
   	.menubar {
-  		background-color: #d7d7d7;
+  		background-color: rgb(229, 229, 229);
     	height: 40px;
     	text-align: left;
     	display: flex;
@@ -18,9 +22,60 @@
   	
   	.menubar-text {
   		align-items: center;
-    	margin-left: 30px;
     	display: flex;
   	}
+  	
+  	.priceText {
+  		font-size: 40px;
+  	}
+  	
+  	.price-menu {
+  		background-color: rgb(229, 229, 229);
+  		padding: 0 130px;
+	    text-align: center;
+	    justify-content: space-between;
+	    font-size: 14px;
+	    display: flex;
+  	}
+  	
+  	.price-content {
+  		display: flex;
+	    height: 100px;
+	    justify-content: space-between;
+	    padding: 0 110px;
+	    align-items: center;
+  	}
+  			input[type='number']::-webkit-inner-spin-button,
+		input[type='number']::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	  }
+	  
+	  		.kakao-btn {
+				width: 303.16px;
+			    height: 51px;
+			    background: #FFEB00;
+			    border-radius: 5px;
+			    display: flex;
+			    padding-top: 15px;
+			    justify-content: end;
+			    background-repeat: no-repeat;
+			    background-image: url(/img/kakaoPayCI.svg);
+			    background-size: 100px;
+			    background-position: 10px;
+		}
+		
+		.kakao-text {
+			width: 194px;
+			height: 24.48px;
+			font-family: 'Inter';
+			font-style: normal;
+			font-weight: 600;
+			font-size: 20px;
+			line-height: 24px;
+
+		
+	
   </style>
   	
   
@@ -28,13 +83,49 @@
 
 <div layout:fragment="content">
 	<section class="pt-5 pb-5">
+
   <div class="container">
+  <h3 class="display-5 mb-2 text-center">주문상품</h3>
+	            <table id="shoppingCart" class="table table-condensed table-responsive" style="margin-bottom: 60px;">
+                <thead>
+                    <tr style="min-width: 1080px;">
+                    	<th style="width:5%">
+                    	</th>
+                        <th style="width:60%">상품이름</th>
+                        <th style="width:15%">수량</th>
+                        <th style="width:17%">가격</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="orderItem, index: ${selectedItems}">
+                    <td>
+                    </td>
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="col-md-3 text-left">
+                                    <img th:src="${imgsArray[imgsArray.length - 1 - index.index]}" th:alt="${orderItem.itemNm}" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                </div>
+                                <div class="col-md-9 text-left mt-sm-2" style="display:flex;">
+                                    <h4 th:text="${orderItem.itemNm}"></h4>
+
+                                </div>
+                            </div>
+                        </td>
+                       
+                  
+                        <td data-th="Quantity">
+							<span style="border: none;" th:text="${orderItem.count}"></span>
+                        </td>
+                        <td data-th="Price"><span th:text="${orderItem.price} * ${orderItem.count}">0</span></td>
+                    </tr>
+                </tbody>
+            </table>
     <div class="row w-100">
         <div class="col-lg-12 col-md-12 col-12">
             <h3 class="display-5 mb-2 text-center">배송지 입력</h3>
         </div>
     </div>
-    <div style="width:1080px; margin-bottom: 50px; border: 1px solid #a3a3a3">
+    <div style=" margin-bottom: 50px; border: 1px solid #a3a3a3">
     	<div class="menubar" >
 			<span class="menubar-text">받는사람 정보</span>
     	</div>
@@ -47,7 +138,8 @@
 			    <label for="exampleInputEmail1" class="form-label" style="font-size: 16px; color: black;">주소</label>
 			<div>
 				<div class="input-group mb-3">
-				  <input type="text" id="sample6_postcode" class="form-control" placeholder="우편번호" aria-label="Recipient's username" aria-describedby="button-addon2">
+				  <input type="text" id="sample6_postcode" class="form-control" placeholder="우편번호" aria-label="Recipient's username" aria-describedby="button-addon2"
+				  style="margin-right: 20px; border-radius: 5px;">
 				  <button class="btn btn-outline-secondary" onclick="sample6_execDaumPostcode()" type="button" id="button-addon2">우편번호 찾기</button>
 				</div>
 					<input type="text" id="sample6_address" class="form-control" aria-describedby="emailHelp" placeholder="주소" style="margin-bottom:17px;">		
@@ -67,14 +159,23 @@
 			  </div>
     	</div>
     </div>
-        <div style="width:1080px; border: 1px solid #a3a3a3">
-    	<div class="menubar" >
-			<span class="menubar-text">결제정보</span>
+        <div style=" border: 1px solid #a3a3a3">
+    	<div class="price-menu" style="height:70px;">
+			<span class="menubar-text">주문 금액</span>
+			<span class="menubar-text">할인 + 부가결제금액</span>
+			<span class="menubar-text">총 결제 금액</span>
     	</div>
-    	<div style="height: 400px;">
-			<span>총 주문금액: </span> <p></p>
+    	<div class="price-content">
+	            <span class="priceText" th:text="${totalPrice}"></span>
+	            <span class="priceText"> -0 </span>
+	            <span class="priceText" th:text="${'=' + totalPrice}"></span>
     	</div>
     </div>
+    <div style="display: flex; margin: 20px 0;" onclick="'여기에 카카오링크'">
+	<div class="kakao-btn" style="margin: 0 auto;">
+		<span class="kakao-text">카카오페이로 결제</span>
+    </div>
+</div>
   </div>
     </section>  
       
