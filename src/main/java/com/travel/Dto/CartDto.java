@@ -12,4 +12,6 @@ public class CartDto {
 	private String member;
 	
 	private Long count;
+	
+	private String imgUrl;
 }

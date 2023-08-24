@@ -1,7 +1,12 @@
 package com.travel.controller;
 
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +18,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.travel.Dto.CartItemDto;
+import com.travel.Dto.ItemImgDto;
+import com.travel.Dto.OrderItemDto;
+import com.travel.Repository.CartItemRepository;
+import com.travel.entity.Cart;
+import com.travel.entity.CartItem;
+import com.travel.entity.Item;
 import com.travel.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +38,14 @@ public class OrderController {
 	private final OrderService orderService;
 
 	@PostMapping(value= "/order/address")
-	public @ResponseBody ResponseEntity getAddress(@RequestBody Long[] selectedProductIds,BindingResult bindingResult, Model model) {
+	public @ResponseBody ResponseEntity getAddress(@RequestBody Map<String, Object> requestData,BindingResult bindingResult, Model model) {
+	    Long[] selectedProductIds = ((List<Integer>) requestData.get("selectedProductIds"))
+	            .stream()
+	            .map(Long::valueOf)
+	            .toArray(Long[]::new);
+	    
+	    List<String> imgUrlArray = (List<String>) requestData.get("imgUrlArray");
+		
 		if(bindingResult.hasErrors()) {
 			StringBuilder sb = new StringBuilder();
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -37,33 +57,45 @@ public class OrderController {
 			return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 		}
 		
-		System.out.println("오긴함?");
-	    System.out.println(selectedProductIds);
 	    
-	    for (Long productId : selectedProductIds) {
-	        System.out.println("Product ID: " + productId);
-	    }
+	    Map<String, Object> responseData = new HashMap<>();
+	    responseData.put("imgUrlArray", imgUrlArray);
+	    responseData.put("selectedProductIds", selectedProductIds);
+	    
+	    System.out.println(responseData);
 
-//	    List<CartItem> selectedItems = orderService.findByIdIn(Arrays.asList(selectedProductIds));	        // 선택된 상품들의 정보를 모델에 추가하거나 필요한 작업 수행
-//	        model.addAttribute("selectedItems", selectedItems);
-
-//	    System.out.println(selectedItems);
-	    return new ResponseEntity<Long[]>(selectedProductIds, HttpStatus.OK);	
+	    return new ResponseEntity<>(responseData, HttpStatus.OK);	
 	    
 	}
 	
-	@GetMapping(value= "/order/test/{selectedProductIds}")
-	public String test(@PathVariable("selectedProductIds") String selectedProductIds) {
-		
-		String[] idsArray = selectedProductIds.split(",");
+	@GetMapping(value= "/order/{selectedProductIdsString}")
+	public String test(@RequestParam("selectedProductIdsString") String selectedProductIdsString,
+            @RequestParam("imgUrls") String imgUrls,
+            Model model) {
+
+		String[] idsArray = selectedProductIdsString.split(",");
         Long[] ids = new Long[idsArray.length];
+        
+        String[] imgsArray = imgUrls.split(",");
         
         for (int i = 0; i < idsArray.length; i++) {
             ids[i] = Long.parseLong(idsArray[i]);
-            System.out.println(ids[i] + "FFFFFFFFF");
         }
         
-		return "/item/address";
+        
+        long totalPrice = 0;
+        List<CartItemDto> selectedItems = orderService.findItemsByIds(ids);
+
+        
+        for (CartItemDto item : selectedItems) {
+            totalPrice += item.getPrice() * item.getCount();
+        }
+        
+        model.addAttribute("selectedItems", selectedItems);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("imgsArray", imgsArray);
+        
+        return "/item/address";
 	}
     
 }

@@ -56,7 +56,7 @@
                         <td data-th="Product">
                             <div class="row">
                                 <div class="col-md-3 text-left">
-                                    <img th:src="${item.imgUrl}" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                    <img id="imgUrl" th:src="${item.imgUrl}" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                 </div>
                                 <div class="col-md-9 text-left mt-sm-2" style="display:flex;">
                                     <h4 th:text="${item.itemNm}"></h4>
@@ -209,10 +209,25 @@
 
 			var url = "/order/address";
 	        var selectedProductIds = [];
+	        var imgUrlArray = [];
+	        
 	        $(".slaveCheckbox:checked").each(function() {
 	            selectedProductIds.push(Number($(this).val())); // 문자열을 숫자로 변환
 	        });
+	        
+	        
+	        $(".slaveCheckbox:checked").each(function() {
+	            selectedProductIds.push(Number($(this).val()));
+	            var imgUrl = $(this).closest("tr").find("img").attr("src"); // 선택한 아이템의 imgUrl 가져오기
+	            imgUrlArray.push(imgUrl); // imgUrl을 배열에 추가
+	        });
 
+	        
+	        var requestData = {
+	                selectedProductIds: selectedProductIds,
+	                imgUrlArray: imgUrlArray
+	            };
+	                alert(imgUrlArray);
 	        // 선택된 아이템의 ID를 JSON 형식으로 변환하여 전송
 	        $.ajax({
 	            type: "POST",
@@ -222,11 +237,13 @@
 					//데이터를 전송하기 전에 헤더에 xsrf값
 					xhr.setRequestHeader(header, token);
 				},
-	            data: JSON.stringify(selectedProductIds),
-	            success: function(selectedProductIds, response) {
+				data: JSON.stringify(requestData),
+	            success: function(responseData, response) {
+	                var selectedProductIdsString = responseData.selectedProductIds.join(",");
+	                var imgUrls = responseData.imgUrlArray.join(",");
 	            	/* var selectedProductIdsString = selectedProductIds.join(","); */
 	            	
-	                location.href='/order/test/' + selectedProductIds;
+	                location.href = '/order/redirect?selectedProductIdsString=' + selectedProductIdsString + '&imgUrls=' + imgUrls;
 	            },
 				error : function(jqXHR, status, error) {
 					if(jqXHR.status == '401') {
