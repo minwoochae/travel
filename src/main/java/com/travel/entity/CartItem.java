@@ -18,7 +18,6 @@ import lombok.ToString;
 @Table(name="cart_item") 
 @Getter
 @Setter
-@ToString
 public class CartItem {
 	
 	@Id
@@ -41,7 +40,6 @@ public class CartItem {
 	    CartItem cartItem = new CartItem();
 	    cartItem.setItem(item);
 	    cartItem.setCount(cartDto.getCount());
-	    System.out.println("11111111111111111111");
 	    return cartItem;
 	}
 	

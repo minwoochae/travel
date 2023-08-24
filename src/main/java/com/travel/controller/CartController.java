@@ -13,11 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.service.annotation.DeleteExchange;
 
 import com.travel.Dto.CartDto;
 import com.travel.Dto.CartListDto;
@@ -59,6 +61,19 @@ public class CartController {
 		model.addAttribute("page", pageable.getPageNumber());
 		
 		return "/item/cart";
+	}
+	
+	@DeleteMapping("/cartList/{cartId}/delete")
+	public @ResponseBody ResponseEntity deleteCart(@PathVariable("cartId")Long cartId, Principal principal) {
+		
+		if(!cartService.validateCart(cartId, principal.getName())) {
+			return new ResponseEntity<String>("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
+			
+		}
+		
+		cartService.deleteCart(cartId);
+		
+		return new ResponseEntity<Long>(cartId, HttpStatus.OK);
 	}
 	
 }
