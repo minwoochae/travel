@@ -90,8 +90,8 @@ public class Member extends BaseEntity {
     	member.setName(memberKakaoDto.getName());
     	member.setEmail(memberKakaoDto.getEmail());
     	member.setRole(Role.USER);
-    	member.setPassword("");
-		member.setPhoneNumber("");
+    	member.setPassword(password);
+		member.setPhoneNumber(memberKakaoDto.getPhoneNumber());
 		member.setRegtime(memberKakaoDto.getRegtime());
 		member.setDivision(Division.KAKAO);
     	return member;

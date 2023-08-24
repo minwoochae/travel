@@ -80,7 +80,6 @@ public class MemberController {
 		model.addAttribute("memberFormDto", new MemberFormDto());
 		return "member/LoginForm";
 	}
-
 	@PostMapping("/account/search")
 	@ResponseBody
 	public HashMap<String, String> members(@RequestBody Map<String, Object> data) {
