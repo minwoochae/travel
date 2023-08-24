@@ -1,6 +1,6 @@
 package com.travel.entity;
 
-import com.travel.constant.Ask;
+import com.travel.constant.AskStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,11 +35,9 @@ public class AskBoard extends BaseEntity{
 	@Column(name = "ask_content")
 	private String askContent;
 	
-	@Column(name = "ask_img")
-	private String askImg;
 	
 	@Enumerated(EnumType.STRING)
-	private Ask ask;
+	private AskStatus askStatus;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
