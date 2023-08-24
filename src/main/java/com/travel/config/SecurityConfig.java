@@ -8,12 +8,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.travel.service.CustomOAuth2SuccessHandler;
+
 
 @Configuration //bean 객체를 싱글톤으로 공유할 수 있게 해준다.
 @EnableWebSecurity // spring security filterCahin이 자동으로 포함되게한다.
 public class SecurityConfig{
 	
+	@Bean
+    public AuthenticationSuccessHandler CustomOAuth2kakaoSuccessHandler() {
+		
+		return new  CustomOAuth2SuccessHandler();
+    } 
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -32,7 +41,8 @@ public class SecurityConfig{
 				)
 		.formLogin(formLogin->formLogin //2.로그인에 관련된 설정
 				.loginPage("/members/login") //로그인 페이지 URL 설정
-				.defaultSuccessUrl("/") //로그인 성공시 이동할 페이지
+				.successHandler(CustomOAuth2kakaoSuccessHandler())
+				//.defaultSuccessUrl("/") //로그인 성공시 이동할 페이지
 				.usernameParameter("email") //로그인시 id로 사용할  파라메터 이름
 				.failureUrl("/members/login/error") //로그인 실패시 이동할 URL
 				
