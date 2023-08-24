@@ -1,6 +1,5 @@
 package com.travel.entity;
 
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -19,11 +18,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tourist_img")
-public class TouristImg extends BaseEntity{
+@Table(name = "info_board_img")
+public class InfoBoardImg extends BaseEntity{
 
 	@Id
-	@Column(name = "tour_img_id")
+	@Column(name = "info_img_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
@@ -37,15 +36,13 @@ public class TouristImg extends BaseEntity{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action= OnDeleteAction.CASCADE)
-	@JoinColumn(name = "tourist_id")
-	private Tourist tourist;
+	@JoinColumn(name = "info_board_id")
+	private InfoBoard infoBoard;
 	
 	// 이미지 업데이트
-	public void updateTourImg(String oriImgName, String imgName, String imgUrl) {
-		this.oriImgName = oriImgName;
-		this.imgName = imgName;
-		this.imgUrl = imgUrl;
-	}
-	
-	
+		public void updateInfoImg(String oriImgName, String imgName, String imgUrl) {
+			this.oriImgName = oriImgName;
+			this.imgName = imgName;
+			this.imgUrl = imgUrl;
+		}
 }

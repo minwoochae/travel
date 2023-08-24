@@ -137,10 +137,10 @@ public class KakaoService implements IKakaoLoginService {
 				// System.out.println(properties.get("nickname"));
 				// System.out.println(kakao_account.get("email"));
 
-				String nickname = properties.get("nickname").toString();
+				String name = properties.get("nickname").toString();
 				String email = kakao_account.get("email").toString();
 
-				userInfo.put("nickname", nickname);
+				userInfo.put("nickname", name);
 				userInfo.put("email", email);
 
 			} catch (Exception e) {
@@ -157,23 +157,30 @@ public class KakaoService implements IKakaoLoginService {
 
     private final MemberRepository memberRepository;
 
-    // Constructor injection
 
     public Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
 
-    public Member saveMember(Member member) {
-        insertUserInfoToDatabase(member);
-        return memberRepository.save(member);
-    }
+    public void saveMember(Member member) {
+//        insertUserInfoToDatabase(member);
 
-    private void insertUserInfoToDatabase(Member member) {
-        Member findMember = memberRepository.findByEmail(member.getEmail());
-
-        if (findMember != null && Division.NORMAL == findMember.getDivision()) {
-            throw new IllegalStateException("이미 사용중인 Email 입니다");
+        // 기존에 가입되어 있는 고객인지 확인
+        Member searchMember = memberRepository.findByEmail(member.getEmail());
+        // 가입이 안되어 있다면 회원가입 시작.
+        if (searchMember == null){
+            memberRepository.save(member);
+        }else {
+			/* throw new IllegalStateException("이미 사용중인 Email 입니다"); */
         }
     }
+
+	
+//	  private void insertUserInfoToDatabase(Member member) { Member findMember =
+//	 memberRepository.findByEmail(member.getEmail());
+//	 
+//	 if (findMember != null) { 
+//		 throw new IllegalStateException("이미 사용중인 Email 입니다"); } }
+	 
 	}
 

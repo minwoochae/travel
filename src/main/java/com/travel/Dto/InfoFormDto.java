@@ -1,5 +1,8 @@
 package com.travel.Dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 
 import com.travel.entity.InfoBoard;
@@ -17,7 +20,10 @@ public class InfoFormDto {
 	
 	private String infoContent;
 	
-	private String infoImg;
+	private List<InfoImgDto> infoImgDtoList = new ArrayList<>();
+	
+	private List<Long> infoImgIds = new ArrayList<>();
+	
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 	

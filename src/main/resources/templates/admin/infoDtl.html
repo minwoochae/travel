@@ -46,6 +46,7 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
+
 <div layout:fragment="content">
 
 	<div class="container">
@@ -58,59 +59,57 @@
 
 
 	<div class="container">
-		<div class="row" style="">
-			<input type="hidden" id="touristId" th:value="${tour.id}">
+		<div class="row">
+			<input type="hidden" id="infoBoardId" th:value="${info.id}">
 
 
-		<div>
-				<input type="hidden" th:value="${tour.touristTitle}" id="touristTitle" name="touristTitle">
-					<strong th:text="${tour.touristTitle}"
+		
+				<input type="hidden" th:value="${info.infoTitle}" id="infoTitle" name="infoTitle">
+					<strong th:text="${info.infoTitle}"
 					style="font-size:larger; padding-bottom:20px; margin-top:50px;"
 					></strong>				
-		</div>	
 			
-			<div class="card" style="margin-bottom:20px; width:1400px">
-				<div class="card-body text-center">
-					<img th:src = "${tour.tourImgDtoList[0].imgUrl}"
-					class="rounded repImg" th:alt="${tour.touristTitle}"
-					style="width:900px; height:400px; padding-bottom:30px;">
-						
-				
-					<img th:src = "${tour.tourImgDtoList[1].imgUrl}"
-					class="rounded repImg" th:alt="${tour.touristTitle}"
-					style="width:900px; height:400px; padding-bottom:30px;">
-				
-				
-					<img th:src = "${tour.tourImgDtoList[2].imgUrl}"
-					class="rounded repImg" th:alt="${tour.touristTitle}"
-					style="width:900px; height:400px; padding-bottom:30px;">
-				</div>			
-				
-			</div>
-
 			<div class="card" style="width:1140px; margin-bottom:20px">
 				<div class="card-body">
-				<input type="hidden" th:value="${tour.touristContent}" id="touristContent" name="touristContent">
-					<strong th:text="${tour.touristContent}"></strong>				
+				<input type="hidden" th:value="${info.infoContent}" id="infoContent" name="infoContent">
+					<strong th:text="${info.infoContent}"></strong>				
 				</div>
 			</div>
+			
+			<div class="card" style="margin-bottom:20px; width:1140px">
+				<div class="card-body text-center">
+					<img th:src = "${info.infoImgDtoList[0].imgUrl}"
+					class="rounded repImg" th:alt="${info.infoTitle}"
+					style="width:900px; height:400px; padding-bottom:30px;">	
+					<!-- <img th:src = "${info.infoImgDtoList[1].imgUrl}"
+					class="rounded repImg" th:alt="${info.infoTitle}"
+					style="width:900px; height:400px; padding-bottom:30px;">
+					<img th:src = "${info.infoImgDtoList[2].imgUrl}"
+					class="rounded repImg" th:alt="${info.infoTitle}"
+					style="width:900px; height:400px; padding-bottom:30px;">		 -->	
+				</div>
+			</div>
+
 		
 		
-				<div class="d-flex">
-						<a th:href="@{'/adminTour/tour/' + ${tour.id}}"> 
+				<div class="d-flex justify-content-center">
+						<a th:href="'/adminInfo/info/' + ${info.id}"> 
 						<button type="button" 
 							class="btn btn-primary mb-3" style="width: 150px; background-color:#FF6168; border:none; margin-left:350px;"
 							sec:authorize="hasAnyAuthority('ROLE_ADMIN')">수정하기
 							</button>
 						</a>
-						<a href="/adminTour/tours"> 
+						<a href="/adminInfo"> 
 						<button type="button" 
-							class="btn btn-primary mb-3" style="width: 150px; background-color:#FF6168; border:none; margin-left:120px;">목록보기
-							</button>
+							class="btn btn-primary mb-3" style="width: 150px; background-color:#FF6168; border:none; margin-left:120px;">목록 보기
+					    </button>
 						</a>
 				</div>	
 			
 		</div>
 	</div>
 </div>
+
+
 </html>
+
