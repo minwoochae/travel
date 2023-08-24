@@ -31,7 +31,7 @@ public class AskFormDto {
 	private static ModelMapper modelMapper = new ModelMapper();
 	
 	// dto-> entity
-		public AskBoard createask() {
+		public AskBoard createAsk() {
 			return modelMapper.map(this, AskBoard.class);
 		}
 		

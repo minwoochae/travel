@@ -1,5 +1,7 @@
 package com.travel.entity;
 
+import com.travel.Dto.AskFormDto;
+import com.travel.Dto.InfoFormDto;
 import com.travel.constant.AskStatus;
 
 import jakarta.persistence.Column;
@@ -42,5 +44,11 @@ public class AskBoard extends BaseEntity{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
+	
+	// 엔티티 수정
+		public void updateAsk(AskFormDto askFormDto) {
+			this.askTitle = askFormDto.getAskTitle();
+			this.askContent = askFormDto.getAskContent();
+		}
 	
 }
