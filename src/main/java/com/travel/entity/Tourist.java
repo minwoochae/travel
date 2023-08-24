@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -34,7 +35,8 @@ public class Tourist extends BaseEntity{
 	@Column(name = "tourist_title")
 	private String touristTitle;	// 추천관광지 제목
 	
-	@Column(name="tourist_content")
+	@Lob
+	@Column(name="tourist_content", columnDefinition = "longtext")
 	private String touristContent;	// 추천관광지 상세설명
 	
 	@ManyToOne(fetch = FetchType.LAZY)

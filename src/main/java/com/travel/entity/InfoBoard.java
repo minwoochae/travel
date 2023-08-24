@@ -1,5 +1,7 @@
 package com.travel.entity;
 
+import com.travel.Dto.InfoFormDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -7,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -14,7 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table
+@Table(name="info_board")
 @Getter
 @Setter
 @ToString
@@ -28,13 +31,19 @@ public class InfoBoard extends BaseEntity{
 	@Column(name = "info_title")
 	private String infoTitle;	// 공지사항 제목
 	
-	@Column(name = "info_content")
+	@Lob
+	@Column(name = "info_content", columnDefinition = "longtext")
 	private String infoContent;	// 공지사항 내용
 		
-	@Column(name="info_img")
-	private String infoImg;	// 공지사항 이미지
+
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
+	
+	// 엔티티 수정
+	public void updateInfo(InfoFormDto infoFormDto) {
+		this.infoTitle = infoFormDto.getInfoTitle();
+		this.infoContent = infoFormDto.getInfoContent();
+	}
 }

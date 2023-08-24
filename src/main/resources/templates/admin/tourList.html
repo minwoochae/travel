@@ -40,14 +40,15 @@
 							<tr th:each="tour, status:${tours.getContent()}">
 								<th th:text="${tour.id}" scope="row"></th>
 								<td>
-									<!-- 수정페이지로 넘어가게할거라 a태그 --> <a
-									th:href="'/adminTour/tour/' + ${tour.id}"
+									<!-- 상세페이지로 넘어가게할거라 a태그 --> <a
+									th:href="'/tour/' + ${tour.id}"
 									th:text="${tour.touristTitle}"> </a>
 								</td>
 								<td th:text="${tour.createBy}"></td>
 								<td><button type="button" class="btn btn-primary"
 										th:id="${tour.Id}" th:value="${tour.Id}"
-										th:onclick="'javascript: deletetour(' + ${tour.id} +')'" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
+										th:onclick="'javascript: deletetour(' + ${tour.id} +')'" 
+										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
 										style="background-color:#FF6168; border:none;">삭제</button>
 								</td>
 							</tr>
@@ -121,7 +122,7 @@
 				dataType : "json",
 				cache : false,
 				success : function(result, status) {
-					location.href = '/';
+					location.href = '/admin';
 
 				},
 				error : function(jqXHR, status, error) {
