@@ -13,6 +13,7 @@ import org.thymeleaf.util.StringUtils;
 import com.travel.Dto.CartDto;
 import com.travel.Dto.CartItemDto;
 import com.travel.Dto.CartListDto;
+import com.travel.Dto.ItemImgDto;
 import com.travel.Repository.CartItemRepository;
 import com.travel.Repository.CartRepository;
 import com.travel.Repository.ItemImgRepository;
