@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.travel.Dto.MemberKakaoDto;
 import com.travel.Repository.MemberRepository;
 import com.travel.constant.Division;
 import com.travel.entity.Member;
@@ -174,7 +175,8 @@ public class KakaoService implements IKakaoLoginService {
 			/* throw new IllegalStateException("이미 사용중인 Email 입니다"); */
         }
     }
-
+    
+    
 	
 //	  private void insertUserInfoToDatabase(Member member) { Member findMember =
 //	 memberRepository.findByEmail(member.getEmail());

@@ -173,12 +173,12 @@
 			<span class="menubar-text">총 결제 금액</span>
     	</div>
     	<div class="price-content">
-	            <span id="" class="priceText" th:text="${totalPrice}"></span>
+	            <span id="totalPrice" class="priceText" th:text="${totalPrice}"></span>
 	            <span class="priceText"> -0 </span>
 	            <span class="priceText" th:text="${'=' + totalPrice}"></span>
     	</div>
     </div>
-    <button th:value="${totalPrice}" id="apibtn" style="display: flex; margin: 20px auto; border: none;" onclick="kakaoPay(this.value)">
+    <button th:value="${totalPrice}" id="apibtn" style="display: flex; margin: 20px auto; border: none;" >
 	<div class="kakao-btn" style="margin: 0 auto;">
 		<span class="kakao-text">카카오페이로 결제</span>
     </div>
@@ -189,6 +189,8 @@
 </div>
 
 <th:block layout:fragment="script">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script th:inline="javascript">
     function sample6_execDaumPostcode() {
@@ -240,13 +242,13 @@
     }
     
  	// 카카오결제
-	function kakaoPay(){
+	/* function kakaoPay(){
     		var token = $("meta[name='_csrf']").attr("content");
     		var header = $("meta[name='_csrf_header']").attr("content");
     		var totalPrice= document.getElementById("apibtn").value;
 			
 			$.ajax({
-		        url: '/kakao/' + totalPrice,
+		        url: '/ready',
 		        dataType: 'json',
 		        beforeSend: function(xhr) {
 		            //데이터를 전송하기 전에 헤더에 xsrf값
@@ -279,7 +281,46 @@
 		                  "Response JSON: " + JSON.stringify(responseJSON));
 		        }
 		    });
-	};
+	}; */
+	
+	
+	$("#apibtn").click(function(){
+   		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+	    var data = {
+	            item_name: encodeURIComponent("아이폰 14 pro"),
+	            quantity: encodeURIComponent("1"),
+	            total_amount: encodeURIComponent("140000"),
+	            tax_free_amount: encodeURIComponent("0")
+	        };
+		
+		$.ajax({
+		    type: 'GET',
+		    url: '/pay/ready',
+		    contentType: 'application/json',
+		    data: data,
+	        beforeSend: function(xhr) {
+	            //데이터를 전송하기 전에 헤더에 xsrf값
+	            xhr.setRequestHeader(header, token);
+	        },
+			
+			success:function(res){
+	            var box = res.next_redirect_pc_url;
+	            var popupWidth = 500;
+	            var popupHeight = 800;
+	            var left = (screen.width - popupWidth) / 2;
+	            var top = (screen.height - popupHeight) / 2;
+	            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight + ",top=" + top + ",left=" + left;
+	            window.open(box, "KakaoPay", popupOptions);
+				
+				
+			}
+		})
+	})
+	
+	
+	
 	
 	// 카카오 결제 성공 시 처리
 	function kakaoPaySuccess() {

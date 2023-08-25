@@ -1,10 +1,148 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
 
-</body>
+<th:block layout:fragment="css">
+
+</th:block>
+
+<head>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+
+
+<div layout:fragment="content" style="height:1000px">
+
+<div class="container">
+
+		<div class="row">
+		
+		
+			<div class="col-md-12">
+				<div
+					style="display: flex; justify-content: space-between; align-items: center;">
+					<h2 class="h3 mb-3 text-black">문의사항 관리</h2>
+					 <a href="/ask/new" style="margin-right: 0;" sec:authorize="hasAnyAuthority('ROLE_USER')">등록하기</a>  
+				</div>
+				<form th:action="@{'/ask/' + ${asks.number}}" method="get"
+					th:object="${asks}">
+					<table class="table table-responsive-md">
+						<thead>
+							<tr>
+								<th scope="col">id</th>
+								<th scope="col">제목</th>
+								<th scope="col">등록자</th>
+								<th scope="col">상태</th>								
+								<th scope="col">삭제</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 조회된 데이터를 출력한다. -->
+							 <tr th:each="ask, status:${asks.getContent()}">
+								<th th:text="${ask.id}" scope="row"></th>
+								<td>
+								<a
+								
+									th:href="'/askBoard/' + ${ask.id}"
+									th:text="${ask.askTitle}"> </a>
+								</td>
+								<td th:text="${ask.askTitle}"></td>
+								<td></td>
+								<td><button type="button" class="btn btn-primary"
+										th:id="${ask.Id}" th:value="${ask.Id}"
+										th:onclick="'javascript:deleteAsk(' + ${ask.id} +')'"
+										
+										style="background-color:#FF6168; border:none;">삭제</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<!-- 페이징 버튼 ◁ 1 2 3 4 5 ▷ -->
+					<!-- start = (현재 페이지 번호/보여줄 페이지 수) * 보여줄 페이지 수 +1, 페이지 시작 번호 -->
+					<!-- end = start + (보여줄 페이지 수) -1, 페이지 끝 번호 -->
+					<nav style=""
+    
+					
+						th:with="start=${(asks.number/maxPage)*maxPage + 1}
+			,end=(${(asks.totalPages == 0) ? 1 : (start + (maxPage - 1) < asks.totalPages ? start + (maxPage - 1) : asks.totalPages)})"
+						aria-label="Page navigation example">
+						<ul class="pagination d-flex justify-content-center">
+							<li class="page-item" th:classappend="${asks.first}?'disabled'">
+								<a class="page-link"
+								th:onclick="'javascript:page(' + ${asks.number - 1} +')'">이전</a>
+							</li>
+							<li class="page-item"
+								th:each="page: ${#numbers.sequence(start, end)}"
+								th:classappend="${asks.number eq page-1}?'active':''"><a
+								class="page-link" th:inline="text"
+								th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a>
+							</li>
+							<li class="page-item" th:classappend="${asks.last}?'disabled'">
+								<a class="page-link"
+								th:onclick="'javascript:page(' + ${asks.number + 1} +')'">다음</a>
+							</li>
+						</ul>
+					</nav>
+
+	
+				</form>
+			</div>
+		
+		</div>
+</div>
+
+</div>
+
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		function deleteAsk(askBoardId) {
+			const deleteConf = confirm("삭제하시겠습니까?");
+			if (!deleteConf)
+				return; //취소버튼 누르면
+
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+
+			
+			// header 변수의 값 확인
+	        console.log("Header:", header);
+
+	        if (header === undefined) {
+	            console.error("Header is undefined.");
+	            return;
+	        }
+			
+			var url = "/ask/" + askBoardId + "/delete";
+
+			$.ajax({
+				url : url, //request url
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터 전송 전에 헤더에  csrf값을 설정. 
+					xhr.setRequestHeader(header, token);
+
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					location.href = '/';
+
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/memberLoginForm';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+	</script>
+</th:block>
 </html>

@@ -121,7 +121,7 @@ public class MemberService implements UserDetailsService {
 	}
 
 
-	  private final JavaMailSender javaMailSender;
+	private final JavaMailSender javaMailSender;
 	  
 	  
 

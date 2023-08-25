@@ -142,6 +142,7 @@ function updateResults() {
                 
 
                 let resultElement = document.createElement("div");
+                
                 resultElement.innerHTML = `
                     <div class="dataList" style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;">
                         <img src="${firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${title} Image">
@@ -257,7 +258,7 @@ function insertContent1() {
     <input type="hidden" class="placeAddress" name="placeAddress" value="${currentData.address}">
     <input type="hidden" class="placeLongitude" name="placeLongitude" value="${currentData.mapx}">
     <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.mapy}">
-    <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent(event)" style="height:30px; line-height: 0;">-</button>
+    <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent1(event)" style="height:30px; line-height: 0;">-</button>
     `;
     
 
@@ -275,13 +276,9 @@ function insertContent1() {
 }
 
 
-
-
-
-
-function deleteContent(event) {
+function deleteContent1(event) {
     // 클릭한 버튼의 가장 가까운 .dataList 부모 요소를 찾음
-    let dataListDiv = event.target.closest(".dataList");
+    let dataListDiv = event.target.closest(".dataList1");
     
     if (dataListDiv) {
         dataListDiv.remove(); // 해당 div 삭제
