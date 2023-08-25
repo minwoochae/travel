@@ -61,7 +61,7 @@ public class AdminController {
 
 	@GetMapping(value = "/admin")
 	public String admin() {
-		return "/admin/adminMain";
+		return "admin/adminMain";
 	}
 	
 	
@@ -92,7 +92,7 @@ public class AdminController {
 
 	
 	// 회원 탈퇴시키기
-	@DeleteMapping(value = "admin/{memberId}/delete")
+	@DeleteMapping(value = "/admin/{memberId}/delete")
 	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
 			Principal principal) {
 		
@@ -120,7 +120,7 @@ public class AdminController {
 			model.addAttribute("items" , items);
 			model.addAttribute("itemSearchDto", itemSearchDto);
 			model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
-			return "/admin/itemList";
+			return "admin/itemList";
 			}
 
 
@@ -129,7 +129,7 @@ public class AdminController {
 	@GetMapping(value = "/adminShop/new")
 	public String adminShop(Model model) {
 		model.addAttribute("itemFormDto", new ItemFormDto());
-		return "/admin/itemRegist";
+		return "admin/itemRegist";
 	}
 
 	// 상품, 상품이미지 등록

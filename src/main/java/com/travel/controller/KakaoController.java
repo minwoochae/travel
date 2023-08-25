@@ -3,7 +3,12 @@ package com.travel.controller;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +31,13 @@ import lombok.RequiredArgsConstructor;
 public class KakaoController {
 	@Autowired
 	public IKakaoLoginService iKakaoS;
+	
+	@Autowired
+	private AuthenticationSuccessHandler kakaoAuthenticationSuccessHandler;
+
+	   @Autowired
+	    private AuthenticationManager authenticationManager;
+
 
 	@Autowired
 	public KakaoService kakaoService;
@@ -69,11 +81,17 @@ public class KakaoController {
         	return "member/KakaoMemberForm";
         }
         
-
-        String errorMessage = "현재 가입되어 있는 이메일입니다.";
-    	model.addAttribute("errorMessage", errorMessage);
-		
-		return "member/memberLoginForm";
+        // 가입되어 있는 경우
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(email, null)
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    	
+    	
+    	
+    	
+    	
+		return "redirect:/";
 		
 		
 	}
@@ -93,6 +111,11 @@ public class KakaoController {
 			Member member = Member.createKaKao(memberKakaoDto, passwordEncoder);
 			kakaoService.saveMember(member);
 			
+		    // 가입 후 자동 로그인
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(memberKakaoDto.getEmail(), null)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());
