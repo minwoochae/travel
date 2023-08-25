@@ -30,12 +30,6 @@ fetch(
       var code = item.getElementsByTagName("code")[0].textContent;
       var name = item.getElementsByTagName("name")[0].textContent;
 
-
-      // OPTION 요소 생성 및 추가
-      var option = document.createElement("option");
-      option.value = code;
-      option.text = name;
-      areaCodeSelect2.appendChild(option);
     }
 
     // 초기 로드시 지역 코드를 기반으로 콘텐츠 유형 업데이트
@@ -215,7 +209,11 @@ var mapContainer = document.getElementById("map2"), // 지도를 표시할 div
       marker.setMap(map);
 }
 
+<<<<<<< HEAD
+function insertContent1() {
+=======
 function insertContent2() {
+>>>>>>> 42adfe47e7bf7482a87059859cb84c2f9ec679c6
     // 현재 show active 클래스를 가진 tabPane 찾기
     let activeTabPane = document.querySelector(".tab-pane.show.active");
     
@@ -231,6 +229,15 @@ function insertContent2() {
     
     
     dataListDiv.innerHTML = `
+<<<<<<< HEAD
+    <img src="${currentData.firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
+    <h4 style="margin-left:15px; margin-right:5px; width:170px;">${currentData.title}</h4>
+    <input type="hidden" class="placeAddress" name="placeAddress" value="${currentData.address}">
+    <input type="hidden" class="placeLongitude" name="placeLongitude" value="${currentData.mapx}">
+    <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.mapy}">
+    <button type="button" class="btn btn-outline-secondary align-self-center" onclick="deleteContent(event)" style="height:30px; line-height: 0;">-</button>
+`;
+=======
     <img class="place_img" name="place_img" src="${currentData.firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
     <h4 class="placeName" name="placeName" style="margin-left:15px; margin-right:5px; width:170px;">${currentData.title}</h4>
     <input type="hidden" class="placeAddress" name="placeAddress" value="${currentData.address}">
@@ -238,6 +245,7 @@ function insertContent2() {
     <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.mapy}">
     <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent2(event)" style="height:30px; line-height: 0;">-</button>
     `;
+>>>>>>> 42adfe47e7bf7482a87059859cb84c2f9ec679c6
 
     
     // 해당 tabPane 내의 list-group 선택
@@ -261,4 +269,88 @@ function deleteContent2(event) {
     } else {
         console.error("dataList 요소를 찾을 수 없습니다.");
     }
+}
+
+
+// "더 보기" 버튼 선택
+var loadMoreResultsButton2 = document.getElementById("loadMoreResults2");
+
+// "더 보기" 버튼 클릭 시 결과 추가 로드
+loadMoreResultsButton2.addEventListener("click", loadMoreResults2);
+
+var currentPage = 2; // 초기 페이지
+
+
+function loadMoreResults2() {
+    let selectedContentTypeId = contentTypeIdSelect2.value;
+    let selectedAreaCode = areaCodeSelect2.value;
+
+    let contentTypes = {
+        1: "39",
+        2: "32",
+        3: "12",
+    };
+
+    let apiUrl = `https://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=10&pageNo=${currentPage}&MobileOS=ETC&MobileApp=TEST
+    			  &arrange=O&contentTypeId=${contentTypes[selectedContentTypeId]}&areaCode=${selectedAreaCode}
+    			  &serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D`;
+
+    fetch(apiUrl)
+        .then((response) => response.text())
+        .then((data) => {
+            let parser = new DOMParser();
+            let xmlDoc = parser.parseFromString(data, "text/xml");
+            let items = xmlDoc.getElementsByTagName("item");
+
+            var searchInput = document.getElementById("searchInput");
+            var searchTerm = searchInput.value.toLowerCase();
+            		           
+
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
+                let titleElement = item.getElementsByTagName("title")[0];
+                let title = titleElement ? titleElement.textContent : "";
+
+                if (title.toLowerCase().includes(searchTerm)) {
+                    let addressElement = item.getElementsByTagName("addr1")[0];
+                    let address = addressElement ? addressElement.textContent : "";
+
+                    let telElement = item.getElementsByTagName("tel")[0];
+                    let tel = telElement ? telElement.textContent : "";
+
+                    let firstImageElement = item.getElementsByTagName("firstimage")[0];
+                    let firstImage = firstImageElement ? firstImageElement.textContent : "";
+
+                    // 위도 경도
+                    let mapx = item.getElementsByTagName("mapx")[0].textContent;
+                    let mapy = item.getElementsByTagName("mapy")[0].textContent;
+
+                    let resultElement = document.createElement("div");
+                    resultElement.innerHTML = `
+                        <div class="dataList" style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;">
+                            <img src="${firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${title} Image">
+                            <h4 style="margin-left:15px;">${title}</h4>
+                        </div>
+                    `;
+
+                    currentData = {
+                        title: title,
+                        address: address,
+                        tel: tel,
+                        firstImage: firstImage,
+                        mapx: mapx,
+                        mapy: mapy
+                    };
+
+                    addClickListener2(resultElement, title, address, tel, firstImage, mapx, mapy, item);
+
+                    resultsDiv2.appendChild(resultElement);
+                    addClickListener2(resultElement, title, address, tel, firstImage, mapx, mapy);
+                }
+            }
+	     
+        })
+        .catch((error) => console.error("API 호출 오류:", error));
+
+    currentPage++; // 다음 페이지로 넘어감
 }
