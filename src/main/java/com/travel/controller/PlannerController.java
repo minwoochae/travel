@@ -1,6 +1,7 @@
 package com.travel.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,13 +57,24 @@ public class PlannerController {
 	    String memberNo = principal.getName();
 	    Pageable pageable = PageRequest.of(page.orElse(0), 1);
 
-	    Plan latestPlan = planService.findLastPlan(memberNo, pageable);
-	    if (latestPlan != null) {
-	        List<PlanContent> latestPlanContents = planService.findPlanContentsByPlanId(latestPlan.getId());
-	        model.addAttribute("latestPlanContents", latestPlanContents);
+	    Plan Plan = planService.findLastPlan(memberNo, pageable);
+	    model.addAttribute("plan", Plan);
+	    
+	    if (Plan != null) {
+	        List<PlanContent> PlanContents = planService.findPlanContentsByPlanId(Plan.getId());
+	        model.addAttribute("PlanContents", PlanContents);
+	        
+	        Map<String, List<PlanContent>> planContentByDay = new HashMap<>();
+	        for (PlanContent content : PlanContents) {
+	        	String day = content.getPlanDay();  // 가정: PlanContent 클래스에 getPlanDay 메소드가 있다.
+	        	planContentByDay
+	        	.computeIfAbsent(day, k -> new ArrayList<>())
+	        	.add(content);
+	        }
+	        model.addAttribute("planContentByDay", planContentByDay);
 	    }
 	    
-	    model.addAttribute("plan", latestPlan);
+	    
 	    
 	    return "planner/planComp";
 	}
