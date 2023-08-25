@@ -23,35 +23,37 @@
 			<div class="col-md-12">
 				<div
 					style="display: flex; justify-content: space-between; align-items: center;">
-					<h2 class="h3 mb-3 text-black">공지사항 관리</h2>
-					 <a href="/adminInfo/new" style="margin-right: 0;" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">등록하기</a> 
+					<h2 class="h3 mb-3 text-black">문의사항 관리</h2>
+					 <a href="/ask/new" style="margin-right: 0;" sec:authorize="hasAnyAuthority('ROLE_USER')">등록하기</a>  
 				</div>
-				<form th:action="@{'/adminInfo/' + ${infos.number}}" method="get"
-					th:object="${infos}">
+				<form th:action="@{'/ask/' + ${asks.number}}" method="get"
+					th:object="${asks}">
 					<table class="table table-responsive-md">
 						<thead>
 							<tr>
 								<th scope="col">id</th>
 								<th scope="col">제목</th>
 								<th scope="col">등록자</th>
-								<th scope="col" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">삭제</th>
+								<th scope="col">상태</th>								
+								<th scope="col">삭제</th>
 							</tr>
 						</thead>
 						<tbody>
 							<!-- 조회된 데이터를 출력한다. -->
-							 <tr th:each="info, status:${infos.getContent()}">
-								<th th:text="${info.id}" scope="row"></th>
+							 <tr th:each="ask, status:${asks.getContent()}">
+								<th th:text="${ask.id}" scope="row"></th>
 								<td>
 								<a
 								
-									th:href="'/info/' + ${info.id}"
-									th:text="${info.infoTitle}"> </a>
+									th:href="'/askBoard/' + ${ask.id}"
+									th:text="${ask.askTitle}"> </a>
 								</td>
-								<td th:text="${info.createBy}"></td>
+								<td th:text="${ask.askTitle}"></td>
+								<td></td>
 								<td><button type="button" class="btn btn-primary"
-										th:id="${info.Id}" th:value="${info.Id}"
-										th:onclick="'javascript:deleteInfo(' + ${info.id} +')'"
-										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
+										th:id="${ask.Id}" th:value="${ask.Id}"
+										th:onclick="'javascript:deleteAsk(' + ${ask.id} +')'"
+										
 										style="background-color:#FF6168; border:none;">삭제</button>
 								</td>
 							</tr>
@@ -64,23 +66,23 @@
 					<nav style=""
     
 					
-						th:with="start=${(infos.number/maxPage)*maxPage + 1}
-			,end=(${(infos.totalPages == 0) ? 1 : (start + (maxPage - 1) < infos.totalPages ? start + (maxPage - 1) : infos.totalPages)})"
+						th:with="start=${(asks.number/maxPage)*maxPage + 1}
+			,end=(${(asks.totalPages == 0) ? 1 : (start + (maxPage - 1) < asks.totalPages ? start + (maxPage - 1) : asks.totalPages)})"
 						aria-label="Page navigation example">
 						<ul class="pagination d-flex justify-content-center">
-							<li class="page-item" th:classappend="${infos.first}?'disabled'">
+							<li class="page-item" th:classappend="${asks.first}?'disabled'">
 								<a class="page-link"
-								th:onclick="'javascript:page(' + ${infos.number - 1} +')'">이전</a>
+								th:onclick="'javascript:page(' + ${asks.number - 1} +')'">이전</a>
 							</li>
 							<li class="page-item"
 								th:each="page: ${#numbers.sequence(start, end)}"
-								th:classappend="${infos.number eq page-1}?'active':''"><a
+								th:classappend="${asks.number eq page-1}?'active':''"><a
 								class="page-link" th:inline="text"
 								th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a>
 							</li>
-							<li class="page-item" th:classappend="${infos.last}?'disabled'">
+							<li class="page-item" th:classappend="${asks.last}?'disabled'">
 								<a class="page-link"
-								th:onclick="'javascript:page(' + ${infos.number + 1} +')'">다음</a>
+								th:onclick="'javascript:page(' + ${asks.number + 1} +')'">다음</a>
 							</li>
 						</ul>
 					</nav>
@@ -97,7 +99,7 @@
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-		function deleteInfo(infoBoardId) {
+		function deleteAsk(askBoardId) {
 			const deleteConf = confirm("삭제하시겠습니까?");
 			if (!deleteConf)
 				return; //취소버튼 누르면
@@ -114,7 +116,7 @@
 	            return;
 	        }
 			
-			var url = "/adminInfo/" + infoBoardId + "/delete";
+			var url = "/ask/" + askBoardId + "/delete";
 
 			$.ajax({
 				url : url, //request url
@@ -128,7 +130,7 @@
 				dataType : "json",
 				cache : false,
 				success : function(result, status) {
-					location.href = '/admin';
+					location.href = '/';
 
 				},
 				error : function(jqXHR, status, error) {
