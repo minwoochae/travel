@@ -4,7 +4,10 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.Dto.PlanContentDto;
 import com.travel.Dto.PlanFormDto;
 import com.travel.entity.Plan;
+import com.travel.entity.PlanContent;
+import com.travel.service.MemberService;
 import com.travel.service.PlanService;
 
 import jakarta.validation.Valid;
@@ -30,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlannerController {
 	private final PlanService planService;
+	private final MemberService memberService;
 	private final ObjectMapper objectMapper;
 	
 
@@ -43,17 +50,37 @@ public class PlannerController {
 		return "planner/planList";
 	}
 	
+	//플랜 완성 페이지
 	@GetMapping(value="/planComplete")
-	public String planComp() {
-		return "planner/planComp";
+	public String planComp(Principal principal, Model model, Optional<Integer> page) {
+	    String memberNo = principal.getName();
+	    Pageable pageable = PageRequest.of(page.orElse(0), 1);
+
+	    Plan latestPlan = planService.findLastPlan(memberNo, pageable);
+	    if (latestPlan != null) {
+	        List<PlanContent> latestPlanContents = planService.findPlanContentsByPlanId(latestPlan.getId());
+	        model.addAttribute("latestPlanContents", latestPlanContents);
+	    }
+	    
+	    model.addAttribute("plan", latestPlan);
+	    
+	    return "planner/planComp";
 	}
+	
+	
 	
 	//플랜만들기
 	@PostMapping(value = "/planner/setplan")
 	public @ResponseBody ResponseEntity createPlan(Principal principal, Model model, @RequestBody HashMap<String, Object> hashMap, BindingResult bindingResult) {
+		// 로그인하지 않은 사용자에 대한 처리
+	    if (principal == null) {
+	        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	    }
+		
 		String no = principal.getName();
 		PlanFormDto planFormDto = new PlanFormDto();
 		PlanContentDto planContentDto = new PlanContentDto();
+		
 		
 		
 		try {
