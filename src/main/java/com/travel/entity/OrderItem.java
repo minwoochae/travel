@@ -26,10 +26,10 @@ public class OrderItem {
 	private Long id;
 	
 	@Column(name = "order_item_price")
-	private String orderPrice;
+	private int orderPrice;
 	
 	@Column(name = "order_item_count")
-	private Long orderCount;
+	private int orderCount;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "orders_id")

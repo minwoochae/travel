@@ -36,6 +36,7 @@ public class CartItem {
 	@JoinColumn(name = "item_id")
 	private Item item;
 	
+	
 	public static CartItem addCartItem(Item item ,  CartDto cartDto) {
 	    CartItem cartItem = new CartItem();
 	    cartItem.setItem(item);

@@ -4,9 +4,13 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import com.travel.Dto.AskFormDto;
+import com.travel.Dto.AskSearchDto;
 import com.travel.Dto.InfoFormDto;
+import com.travel.Dto.InfoSearchDto;
 import com.travel.Dto.ItemFormDto;
 import com.travel.Dto.ItemSearchDto;
+import com.travel.Dto.MainAskDto;
 import com.travel.Dto.MemberFormDto;
 import com.travel.Dto.TourFormDto;
 import com.travel.Dto.TourSearchDto;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.travel.entity.InfoBoard;
 import com.travel.entity.Item;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +37,8 @@ import com.travel.Dto.MemberFormDto;
 
 import com.travel.entity.Member;
 import com.travel.entity.Tourist;
+import com.travel.service.AskService;
+import com.travel.service.InfoService;
 import com.travel.service.ItemService;
 import com.travel.service.MemberService;
 import com.travel.service.TourService;
@@ -47,6 +54,8 @@ public class AdminController {
 
 	private final ItemService itemService;
 	private final TourService tourService;
+	private final InfoService infoService;
+	private final AskService askService;
 
 	private final MemberService memberService;
 
@@ -81,6 +90,21 @@ public class AdminController {
 		return "admin/profile";
 	}
 
+	
+	// 회원 탈퇴시키기
+	@DeleteMapping(value = "admin/{memberId}/delete")
+	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
+			Principal principal) {
+		
+		memberService.deleteMember(memberId);
+		
+		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+	}
+	
+	
+	// 상품
+	
+	
 	// 쇼핑몰 상품 리스트
 	@GetMapping(value = { "/adminShop", "/adminShop/{page}" })
 	public String itemManage(ItemSearchDto itemSearchDto, 
@@ -191,19 +215,28 @@ public class AdminController {
 	}
 	
 	
+	
+	// 공지사항
+	
+	
 	// 공지사항 리스트
-
 		@GetMapping(value = { "/adminInfo", "/adminInfo/{page}" })
-		public String infoManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
+		public String infoManage(InfoSearchDto infoSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
 
 			// of(조회할 페이지의 번호★[0부터 시작], 한페이지당 조회할 데이터 갯수)
 			// url 경로에 페이지가 있으면 해당 페이지 번호를 조회하도록 하고 페이지 번호가 없으면 0페이지를 조회.
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
 
-			Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
+			Page<InfoBoard> infos = infoService.getAdminInfoPage(infoSearchDto, pageable);
 
-			//model.addAttribute("infoBoards", infoBoards);
-			model.addAttribute("itemSearchDto", itemSearchDto);
+			try {
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			model.addAttribute("infos", infos);
+			model.addAttribute("infoSearchDto", infoSearchDto);
 			model.addAttribute("maxPage", 5); // 상품관리페이지 하단에 보여줄 최대 페이지 번호
 
 			return "/admin/infoList";
@@ -215,26 +248,104 @@ public class AdminController {
 	@GetMapping(value = "/adminInfo/new")
 		public String adminInfo(Model model) {
 			model.addAttribute("infoFormDto", new InfoFormDto());
-			return "/admin/infoForm";
+			return "admin/infoRegist";
 		}
 
 	// 공지사항, 공지사항이미지 등록
 	@PostMapping(value = "/adminInfo/new")
-		public String InfoNew(@Valid InfoFormDto infoFormDto, BindingResult bindingResult, Model model) {
+		public String InfoNew(@Valid InfoFormDto infoFormDto, BindingResult bindingResult, 
+				Model model, @RequestParam("infoImgFile") List<MultipartFile> infoImgFileList) {
 
-			
-
+		if(bindingResult.hasErrors()) {
+			return "admin/infoRegist";
+		}
+		
+		//상품등록전에 첫번째 이미지가 있는지 없는지 검사.(첫번째 이미지는 필수입력값)
+		if(infoImgFileList.get(0).isEmpty()) {
+			model.addAttribute("errorMessage", "첫번째 이미지는 필수입니다.");
+			return "admin/infoRegist";
+		}
+		
+		try {
+			infoService.saveInfo(infoFormDto, infoImgFileList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "공지 등록 중 에러가 발생했습니다.");
+			return "admin/infoRegist";
+		}
+		
+		System.out.println("1111111111");
 			return "redirect:/";
 		}
 	
 
-	// 공지사항 수정페이지 보여주기
+	// 공지사항 상세페이지
+	@GetMapping(value = "/info/{infoBoardId}")
+	public String infoDtl(Model model, @PathVariable("infoBoardId") Long infoBoardId) {
+		InfoFormDto infoFormDto = infoService.getInfoDtl(infoBoardId);
+		model.addAttribute("info", infoFormDto);
+		return "admin/infoDtl";
+	}
 	
+	
+	// 공지사항 수정페이지 보여주기
+	@GetMapping(value = "/adminInfo/info/{infoBoardId}")
+	public String infoModify(@PathVariable("infoBoardId") Long infoBoardId,Model model) {
+		
+		try {
+			InfoFormDto infoFormDto = infoService.getInfoDtl(infoBoardId);
+			model.addAttribute("infoFormDto",infoFormDto);
+		} catch (Exception e) {
+			e.printStackTrace(); //이거 안하면 에러 안찍힘.
+			model.addAttribute("errorMessage", "상품정보를 가져올 때 에러가 발생했습니다.");
+			//에러발생시 비어있는 객체를 넘겨준다. 
+			model.addAttribute("infoFormDto", new InfoFormDto()); 
+			return "admin/infoRegist";
+		}
+		
+		
+		return "admin/infoModify";
+	}
 	
 	
 	// 공지사항 수정하기
+	@PostMapping(value = "/adminInfo/info/{infoBoardId}")
+	public String infoUpdate(@Valid InfoFormDto infoFormDto,Model model,
+			BindingResult bindingResult, @RequestParam("infoImgFile") List<MultipartFile> infoImgFileList) {
+		
+		if(bindingResult.hasErrors()) {
+			return "admin/infoRegist";
+		}
+		
+		//첫번째 이미지가 있는지 검사. 
+		if(infoImgFileList.get(0).isEmpty() && infoFormDto.getId()==null) {
+			model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수입니다.");
+			return "admin/infoRegist";
+		}
+		
+		try {
+			infoService.updateInfo(infoFormDto, infoImgFileList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "상품 수정 중 에러가 발생했습니다.");
+			return "admin/infoRegist";
+		}
+		
+		return "redirect:/";
+	}
 	
 	// 공지사항 삭제하기
+	@DeleteMapping("/adminInfo/{infoBoardId}/delete")
+	public @ResponseBody ResponseEntity deleteInfo(@RequestBody @PathVariable("infoBoardId") Long infoBoardId,
+			Principal principal) {
+		infoService.deleteInfo(infoBoardId);
+		return new ResponseEntity<Long>(infoBoardId, HttpStatus.OK);
+		}
+	
+	
+	
+	// 추천관광지
 	
 	// 추천관광지 리스트 
 	@GetMapping(value = {"/adminTour/tours","/adminTour/tours/{page}"})
@@ -360,31 +471,113 @@ public class AdminController {
 	
 	
 	
-	// 문의사항 리스트 보여주기 
+	// 문의사항
 	
+	// 문의사항 리스트 보여주기 
+	@GetMapping(value = "/adminAsk/asks")
+	public String askList(Model model, AskSearchDto askSearchDto, Optional<Integer> page) {
+		
+		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 9);	
+		Page<MainAskDto> asks = askService.getMainAskPage(askSearchDto, pageable);
+		
+		model.addAttribute("asks", asks);
+		model.addAttribute("askSearchDto", askSearchDto);
+		model.addAttribute("maxPage", 5);
+		
+		return "admin/askList";
+	}
+
 	// 문의사항 등록 보여주기 - 회원
+	@GetMapping(value = "/ask/new")
+	public String askForm(Model model) {
+		model.addAttribute("askFormDto", new AskFormDto());
+		return "admin/askRegist";
+	}
 	
 	// 문의사항 등록하기 - 회원
+	@PostMapping(value = "/ask/new")
+	public String askNew(@Valid AskFormDto askFormDto, BindingResult bindingResult, Model model, @RequestParam("askImgFile") List<MultipartFile> askImgFileList) {
+		
+		if(bindingResult.hasErrors()) {
+			return "admin/askRegist";
+		}
+		
+		try {
+			askService.saveAsk(askFormDto, askImgFileList);			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "문의사항 등록 중 에러가 발생했습니다.");
+			return "admin/askRegist";
+		}
+		
+		return "redirect:/";
+	}
 	
+	// 문의사항 수정보여주기 - 회원
+	@GetMapping(value = "/ask/{askBoardId}")
+	public String askModify(@PathVariable("askBoardId") Long askBoardId, Model model) {
+		
+		try {
+			AskFormDto askFormDto = askService.getAskDtl(askBoardId);
+			model.addAttribute("askFormDto", askFormDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "문의사항을 가져올 때 에러가 발생했습니다.");
+			
+			// 에러발생 시 비어있는 객체를 넘겨준다.
+			model.addAttribute("askFormDto", new AskFormDto());
+			return "admin/askRegist";
+		}
+		
+		return "admin/askModify";
+	}
+	
+	// 문의사항 수정하기 - 회원 
+	@PostMapping(value = "/ask/{askBoardId}")
+	public String askUpdate(@Valid AskFormDto askFormDto, Model model,
+			BindingResult bindingResult, @RequestParam("askImgFile") List<MultipartFile> askImgFileList) {
+		
+		if(bindingResult.hasErrors()) {
+			return "admin/askRegist";
+		}
+		
+		try {
+			askService.updateAsk(askFormDto, askImgFileList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "문의사항 등록 중 에러가 발생했습니다.");
+			return "admin/askRegist";
+		}
+		
+		return "redirect:/";
+	}
+	
+	
+	// 문의사항 삭제하기 - 회원
+		@DeleteMapping("/ask/{touristId}/delete")
+		public @ResponseBody ResponseEntity deleteAsk(@RequestBody @PathVariable("askBoardId") Long askBoardId,
+				Principal principal) {
+			askService.deleteAsk(askBoardId);
+			return new ResponseEntity<Long>(askBoardId, HttpStatus.OK);
+		}
+	
+		
 	// 문의사항 답변하기 보여주기 - 관리자
 	
-	// 문의사항 답변하기 - 관리자
+	
+	// 문의사항 답변하기 등록 - 관리자
+	
+	// 문의사항 답변 수정보여주기 - 관리자 
+	
+	// 문의사항 답변 수정하기 - 관리자 
+	
+	// 문의사항 삭제하기 - 관리자
 	
 	
 	
 	
 	
 	
-	
-	// 회원 탈퇴시키기
-	@DeleteMapping(value = "admin/{memberId}/delete")
-	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
-			Principal principal) {
-
-		memberService.deleteMember(memberId);
-
-		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
-	}
 
 }
 	 
