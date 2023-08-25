@@ -17,9 +17,9 @@
   
 	<style>
 		input[type='number']::-webkit-inner-spin-button,
-		  input[type='number']::-webkit-outer-spin-button {
-		    -webkit-appearance: none;
-		    margin: 0;
+		input[type='number']::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
 	  }
 	</style>
 </th:block>
@@ -35,38 +35,44 @@
             <table id="shoppingCart" class="table table-condensed table-responsive" >
                 <thead>
                     <tr style="min-width: 1080px;">
-                        <th style="width:60%">상품이름</th>
+                    	<th style="width:10%">
+                    		<div class="checkbox" style="margin-left: 10px;">
+<!--                     			<label><input type="checkbox" value="" style="zoom:1.5;" class="masterCheckbox"/></label>
+ -->                    		</div>	
+                    	</th>
+                        <th style="width:54%">상품이름</th>
                         <th style="width:12%">가격</th>
                         <th style="width:10%">수량</th>
-                        <th style="width:16%"></th>
+                        <th style="width:14%"></th>
                     </tr>
                 </thead>
                 <tbody th:each="cart, cartIndex : ${carts.getContent()}">
                     <tr th:each = "item, itemIndex: ${cart.cartItemDtoList}">
+                    <td>
+                    	<div class="checkbox" style="margin-left: 10px;">
+							<label><input type="checkbox" th:value="${item.id}" style="zoom:1.5;" class="slaveCheckbox"/> </label>
+						</div>
+                    </td>
                         <td data-th="Product">
                             <div class="row">
                                 <div class="col-md-3 text-left">
-                                    <img th:src="${item.imgUrl}" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                    <img id="imgUrl" th:src="${item.imgUrl}" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                 </div>
-                                <div class="col-md-9 text-left mt-sm-2">
+                                <div class="col-md-9 text-left mt-sm-2" style="display:flex;">
                                     <h4 th:text="${item.itemNm}"></h4>
-                                    <div class="checkbox">
-									  <label><input type="checkbox" value="check1"/> Check Opt 1 </label>
-									</div>
+
                                 </div>
                             </div>
                         </td>
+                       
                   
-                        <td data-th="Price"><span th:id="'totalPrice-' + ${itemIndex.index}" th:text="${item.price * item.count}">0</span></td>
+                        <td data-th="Price"><span th:id="'totalPrice-' + ${cartIndex.index}" th:text="${item.price * item.count}">0</span></td>
                         <td data-th="Quantity">
-							<input type="number" min="1" class="form-control form-control-lg text-center" th:value="${item.count}" th:onkeyup="'updateTotalPrice(' + ${itemIndex.index} + ')'">
+							<input type="number" min="1" class="form-control form-control-lg text-center" th:value="${item.count}">
                         </td>
                         <td class="actions" data-th="">
                             <div class="text-right">
-                                <button class="btn btn-white border-secondary bg-white btn-md mb-2">
-                                    <i class="fas fa-sync"></i>
-                                </button>
-                                <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                <button class="btn btn-white border-secondary bg-white btn-md mb-2" th:value="${cart.cartId}" onclick="deleteCart(this.value)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -76,17 +82,17 @@
             </table>
             <div class="float-right text-right">
                 <h4>총 가격:</h4>
-                <h1>가격</h1>
+                <h1 id="totalSum"></h1>
             </div>
         </div>
     </div>
     <div class="row mt-4 d-flex align-items-center">
         <div class="col-sm-6 order-md-2 text-right">
-            <a href="catalog.html" class="btn btn-primary mb-4 btn-lg pl-5 pr-5">Checkout</a>
+            <a id="submitButton" type="submit"class="btn btn-primary mb-4 btn-lg pl-5 pr-5">결제하기</a>
         </div>
         <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
-            <a href="catalog.html">
-                <i class="fas fa-arrow-left mr-2"></i> Continue Shopping</a>
+            <a href="/item/list">
+                <i class="fas fa-arrow-left mr-2"></i> 쇼핑 계속하기</a>
         </div>
     </div>
 </div>
@@ -101,23 +107,158 @@
 <th:block layout:fragment="script">
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
 	<script th:inline="javascript">
-    /* 상품 가격 계산 및 출력 함수 */
-    function updateTotalPrice(itemIndex) {
-        var totalPriceElementId = 'totalPrice-' + itemIndex;
-        var totalPriceElement = document.getElementById(totalPriceElementId);
-        var price = [[${item.price}]];
-        var count = [[${item.count}]];
-        var totalPrice = price * count;
-        totalPriceElement.innerText = totalPrice;
+	document.addEventListener("DOMContentLoaded", function() {
+	    const masterCheckbox = document.querySelector(".masterCheckbox");
+	    const slaveCheckboxes = document.querySelectorAll(".slaveCheckbox");
+	    
+	    masterCheckbox.addEventListener("change", function() {
+	        const isChecked = masterCheckbox.checked;
+	        
+	        for (const checkbox of slaveCheckboxes) {
+	            checkbox.checked = isChecked;
+	        }
+	    });
+	    
+	    for (const slaveCheckbox of slaveCheckboxes) {
+	        slaveCheckbox.addEventListener("change", function() {
+	            const allChecked = [...slaveCheckboxes].every(checkbox => checkbox.checked);
+	            masterCheckbox.checked = allChecked;
+	        });
+	    }
+	    
+	    
+	});
+	
+	
+    window.addEventListener('load', function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(function(checkbox) {
+        	checkbox.checked = true; // 모든 체크박스 선택 상태로 변경
+            checkbox.addEventListener('change', calculateTotalPrice);
+        });
+        
+        calculateTotalPrice(); // 페이지 로딩 시에도 초기 계산 수행
+    });
+    
+    function calculateTotalPrice() {
+        var selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        var totalSum = 0;
+
+        selectedCheckboxes.forEach(function(checkbox) {
+            var row = checkbox.closest('tr:not(:has(.masterCheckbox))'); // 체크박스가 속한 행을 가져옴
+            var priceElement = row.querySelector('[data-th="Price"] span'); // 가격 요소 선택
+            var price = parseInt(priceElement.textContent.replace(/[^0-9]/g, '')); // 가격에서 숫자만 추출
+            totalSum += price;
+        });
+
+        var totalSumElement = document.getElementById('totalSum'); // 총 가격을 표시할 요소
+        totalSumElement.textContent = addCommas(totalSum); // 포맷팅하여 표시
+    }
+
+    // 숫자를 3자리마다 구분 기호로 "." 추가하여 포맷팅하는 함수
+    function addCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
     
     
-</script>
+	function deleteCart(cartId) {
+		alert(cartId);
+		const deleteconf = confirm("삭제하시겠습니까?");
+		if(!deleteconf) return;
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+	var paramData = {
+			cartId : cartId	
+		};
+				
+		var url = "/cartList/" + cartId + "/delete";
+			$.ajax({
+				url : url,
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+
+					location.href= '/cartList'
+				},
+				error : function(jqXHR, status, error) {
+					if(jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/login';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+	}
 	
-	
-	<script>
-	
+	$(document).ready(function() {
+	    	$("#submitButton").click(function() {
+
+	    		var token = $("meta[name='_csrf']").attr("content");
+	    		var header = $("meta[name='_csrf_header']").attr("content");
+
+			var url = "/order/address";
+	        var selectedProductIds = [];
+	        var imgUrlArray = [];
+	        
+	        $(".slaveCheckbox:checked").each(function() {
+	            selectedProductIds.push(Number($(this).val())); // 문자열을 숫자로 변환
+	        });
+	        
+	        
+	        $(".slaveCheckbox:checked").each(function() {
+	            selectedProductIds.push(Number($(this).val()));
+	            var imgUrl = $(this).closest("tr").find("img").attr("src"); // 선택한 아이템의 imgUrl 가져오기
+	            imgUrlArray.push(imgUrl); // imgUrl을 배열에 추가
+	        });
+
+	        
+	        var requestData = {
+	                selectedProductIds: selectedProductIds,
+	                imgUrlArray: imgUrlArray
+	            };
+	                alert(imgUrlArray);
+	        // 선택된 아이템의 ID를 JSON 형식으로 변환하여 전송
+	        $.ajax({
+	            type: "POST",
+	            url: url,
+	            contentType: "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				data: JSON.stringify(requestData),
+	            success: function(responseData, response) {
+	                var selectedProductIdsString = responseData.selectedProductIds.join(",");
+	                var imgUrls = responseData.imgUrlArray.join(",");
+	            	/* var selectedProductIdsString = selectedProductIds.join(","); */
+	            	
+	                location.href = '/order/redirect?selectedProductIdsString=' + selectedProductIdsString + '&imgUrls=' + imgUrls;
+	            },
+				error : function(jqXHR, status, error) {
+					if(jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/login';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+	        });
+	       
+	    });
+	});
+	    
+	    
 	
  	// 카카오결제
 	$(function(){
@@ -141,6 +282,8 @@
 			})
 		})
 	});
+ 	
+ 	
 
 </script>
 </th:block>

@@ -135,7 +135,7 @@ li {
 				dataType : "json",
 				cache : false,
 				success : function(result, status) {
-					location.href = "/";
+					location.href = "/members/logout";
 				},
 				error : function(jqXHR, status, error) {
 					if (jqXHR.status == "401") {

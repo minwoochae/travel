@@ -182,7 +182,7 @@ function showDetail3(title, address, tel, firstImage, mapx, mapy) {
         	</div>
         	
         	<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:20px;">
-    			<button onclick="insertContent()" type="button" class="btn btn-outline-danger">일정 추가하기</button>
+    			<button onclick="insertContent3()" type="button" class="btn btn-outline-danger">일정 추가하기</button>
     		</div>
     	
     	</div>
@@ -211,7 +211,11 @@ var mapContainer = document.getElementById("map"), // 지도를 표시할 div
 }
 
 
+<<<<<<< HEAD
 function insertContent1() {
+=======
+function insertContent3() {
+>>>>>>> 42adfe47e7bf7482a87059859cb84c2f9ec679c6
     // 현재 show active 클래스를 가진 tabPane 찾기
     let activeTabPane = document.querySelector(".tab-pane.show.active");
     
@@ -222,11 +226,12 @@ function insertContent1() {
     
     // dataList 클래스를 가진 새로운 div 생성 및 내용 설정
     let dataListDiv = document.createElement("div");
-    dataListDiv.className = "dataList";
+    dataListDiv.className = "dataList3";
     dataListDiv.style = "display:flex;  padding:10px; border-bottom:1px solid black;";
     
     
     dataListDiv.innerHTML = `
+<<<<<<< HEAD
     <img src="${currentData.firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
     <h4 style="margin-left:15px; margin-right:5px; width:170px;">${currentData.title}</h4>
     <input type="hidden" class="placeAddress" name="placeAddress" value="${currentData.address}">
@@ -234,6 +239,15 @@ function insertContent1() {
     <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.mapy}">
     <button type="button" class="btn btn-outline-secondary align-self-center" onclick="deleteContent(event)" style="height:30px; line-height: 0;">-</button>
 `;
+=======
+    <img class="place_img" name="place_img" src="${currentData.firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
+    <h4 class="placeName" name="placeName" style="margin-left:15px; margin-right:5px; width:170px;">${currentData.title}</h4>
+    <input type="hidden" class="placeAddress" name="placeAddress" value="${currentData.address}">
+    <input type="hidden" class="placeLongitude" name="placeLongitude" value="${currentData.mapx}">
+    <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.mapy}">
+    <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent3(event)" style="height:30px; line-height: 0;">-</button>
+    `;
+>>>>>>> 42adfe47e7bf7482a87059859cb84c2f9ec679c6
 
     
     // 해당 tabPane 내의 list-group 선택
@@ -248,9 +262,9 @@ function insertContent1() {
 }
 
 
-function deleteContent(event) {
+function deleteContent3(event) {
     // 클릭한 버튼의 가장 가까운 .dataList 부모 요소를 찾음
-    let dataListDiv = event.target.closest(".dataList");
+    let dataListDiv = event.target.closest(".dataList3");
     
     if (dataListDiv) {
         dataListDiv.remove(); // 해당 div 삭제

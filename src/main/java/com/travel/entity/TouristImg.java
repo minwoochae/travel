@@ -23,7 +23,7 @@ import lombok.Setter;
 public class TouristImg extends BaseEntity{
 
 	@Id
-	@Column(name = "item_img_id")
+	@Column(name = "tour_img_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
