@@ -21,9 +21,7 @@ public class AskFormDto {
 	private String askTitle;
 	
 	private String askContent;
-	
-	private AskStatus askStatus;
-	
+
 	private List<AskImgDto> askImgDtoList = new ArrayList<>();
 	
 	private List<Long> askImgIds = new ArrayList<>();

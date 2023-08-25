@@ -1,10 +1,14 @@
 package com.travel.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +26,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.Dto.PlanContentDto;
 import com.travel.Dto.PlanFormDto;
 import com.travel.entity.Plan;
+import com.travel.entity.PlanContent;
+import com.travel.service.MemberService;
 import com.travel.service.PlanService;
 
 import jakarta.validation.Valid;
@@ -30,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlannerController {
 	private final PlanService planService;
+	private final MemberService memberService;
 	private final ObjectMapper objectMapper;
 	
 
@@ -37,23 +45,55 @@ public class PlannerController {
 	public String plannerMain() {
 		return "planner/plannerMain";
 	}
+	
 
 	@GetMapping(value = "/planner/list")
 	public String planList() {
 		return "planner/planList";
 	}
 	
+	//플랜 완성 페이지
 	@GetMapping(value="/planComplete")
-	public String planComp() {
-		return "planner/planComp";
+	public String planComp(Principal principal, Model model, Optional<Integer> page) {
+	    String memberNo = principal.getName();
+	    Pageable pageable = PageRequest.of(page.orElse(0), 1);
+
+	    Plan Plan = planService.findLastPlan(memberNo, pageable);
+	    model.addAttribute("plan", Plan);
+	    
+	    if (Plan != null) {
+	        List<PlanContent> PlanContents = planService.findPlanContentsByPlanId(Plan.getId());
+	        model.addAttribute("PlanContents", PlanContents);
+	        
+	        Map<String, List<PlanContent>> planContentByDay = new HashMap<>();
+	        for (PlanContent content : PlanContents) {
+	        	String day = content.getPlanDay();  // 가정: PlanContent 클래스에 getPlanDay 메소드가 있다.
+	        	planContentByDay
+	        	.computeIfAbsent(day, k -> new ArrayList<>())
+	        	.add(content);
+	        }
+	        model.addAttribute("planContentByDay", planContentByDay);
+	    }
+	    
+	    
+	    
+	    return "planner/planComp";
 	}
+	
+	
 	
 	//플랜만들기
 	@PostMapping(value = "/planner/setplan")
 	public @ResponseBody ResponseEntity createPlan(Principal principal, Model model, @RequestBody HashMap<String, Object> hashMap, BindingResult bindingResult) {
+		// 로그인하지 않은 사용자에 대한 처리
+	    if (principal == null) {
+	        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	    }
+		
 		String no = principal.getName();
 		PlanFormDto planFormDto = new PlanFormDto();
 		PlanContentDto planContentDto = new PlanContentDto();
+		
 		
 		
 		try {
@@ -86,6 +126,7 @@ public class PlannerController {
                 	planContentDto.setPlaceLatitude((String)data.get("placeLatitude"));
                 	planContentDto.setPlaceLongitude((String)data.get("placeLongitude"));
                 	planContentDto.setPlace_img((String)data.get("place_img"));
+
                 	
                 	planService.setPlanContent(planContentDto, plan);
                 }

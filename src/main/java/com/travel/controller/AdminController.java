@@ -513,6 +513,15 @@ public class AdminController {
 		return "redirect:/";
 	}
 	
+	
+	// 문의사항 상세페이지
+	@GetMapping(value = "/askBoard/{askBoardId}")
+	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId) {
+		AskFormDto askFormDto = askService.getAskDtl(askBoardId);
+		model.addAttribute("ask", askFormDto);
+		return "admin/askDtl";
+	}
+	
 	// 문의사항 수정보여주기 - 회원
 	@GetMapping(value = "/ask/{askBoardId}")
 	public String askModify(@PathVariable("askBoardId") Long askBoardId, Model model) {
@@ -554,7 +563,7 @@ public class AdminController {
 	
 	
 	// 문의사항 삭제하기 - 회원
-		@DeleteMapping("/ask/{touristId}/delete")
+		@DeleteMapping("/ask/{askBoardId}/delete")
 		public @ResponseBody ResponseEntity deleteAsk(@RequestBody @PathVariable("askBoardId") Long askBoardId,
 				Principal principal) {
 			askService.deleteAsk(askBoardId);

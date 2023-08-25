@@ -25,5 +25,13 @@ public class PlanContentDto {
 	
 	private String place_img;
 	
+	private int area_code;
+	
+	private int sigungu_code;
+	
+	private int content_id;
+	
+	private int content_type;
+	
 	private Plan plan;
 }

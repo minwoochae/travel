@@ -35,4 +35,7 @@ public class Plan {
 	@JoinColumn(name = "member_id")
 	private Member member;
 	
+	@Column(name = "reg_date")
+	private String regDate;
+	
 }
