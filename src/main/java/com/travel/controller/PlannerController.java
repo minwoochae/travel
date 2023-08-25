@@ -37,6 +37,7 @@ public class PlannerController {
 	public String plannerMain() {
 		return "planner/plannerMain";
 	}
+	
 
 	@GetMapping(value = "/planner/list")
 	public String planList() {
@@ -86,6 +87,7 @@ public class PlannerController {
                 	planContentDto.setPlaceLatitude((String)data.get("placeLatitude"));
                 	planContentDto.setPlaceLongitude((String)data.get("placeLongitude"));
                 	planContentDto.setPlace_img((String)data.get("place_img"));
+
                 	
                 	planService.setPlanContent(planContentDto, plan);
                 }
