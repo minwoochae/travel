@@ -101,10 +101,6 @@
 				<!--<li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>-->
 				<button type="button" class="btn btn-danger"
 					style="margin-right: 20px;" onclick="createPlan()">저장하기</button>
-				<button type="button" class="btn btn-danger"
-					style="margin-right: 20px;" onclick="getAllTabPaneContentData()">데이터 확인하기</button>
-				<button type="button" class="btn btn-danger"
-					style="margin-right: 20px;" onclick="debugTabPanes()">디버그 확인하기</button>
 				<button type="button" class="btn btn-dark"
 					style="margin-right: 40px;">여행가지말기</button>
 			</ul>
@@ -150,7 +146,7 @@
 		</div>
 
 
-		<div class="d-flex flex-column flex-shrink-0 bg-body-tertiary"
+		<div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" th:test="dddd"
 			style="width: 6rem; background-color: #f0f0f0; min-height: 100vh; overflow: auto;">
 			<div
 				class="d-flex align-items-center flex-shrink-0 p-3 text-decoration-none border-bottom">
@@ -450,19 +446,9 @@
         }
     }
 
-console.log(allData);
     return allData;
 }
 
-
-
-
-
-
-
-
-        
-        
         
         function createPlan() {
 			var token = $("meta[name='_csrf']").attr("content");
