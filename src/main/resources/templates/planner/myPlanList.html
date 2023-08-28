@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<th:block layout:fragment="css">
+	<style>
+.item-cover {
+	width: 100%;
+	height: 300px;
+	margin-bottom: 30px;
+	background-position: center;
+	display: flex;
+	color: black;
+}
+
+.cover-text {
+	font-size: 40px;
+	text-decoration: underline;
+	margin: auto;
+	text-underline-position: under;
+	color: black;
+	font-weight: 600;
+	letter-spacing: 5px;
+	text-decoration-thickness: 5px;
+}
+</style>
+</th:block>
+
+<div layout:fragment="content">
+	<div class="item-cover">
+		<h1 class="cover-text">나의 여행 PLAN LIST</h1>
+	</div>
+
+	<div class="container text-center" style="margin-bottom: 50px;">
+			<div class="single_place" th:each="plan : ${plan}">
+				<div class="regTime" th:text="${plan.regDate}" style="display: flex; justify-content: flex-start; font-weight: bold; margin-left: 80px;"></div>
+				<div class="card" 
+					style="width: 950px; display: flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto; margin-top: 10px;">
+					<div class="row g-0" style="display: flex;">
+						<div style="display: flex; align-items: center;">
+							<div class="col-md-4">
+								<img th:src="${plan.planContent[0].place_img}"
+									class="img-fluid rounded-start"
+									th:alt="${plan.planContent[0].place_img}">
+							</div>
+							<div class="col-md-8" style="display: flex;">
+								<div class="card-body" style="display: flex;">
+									<div style="display: block; width: 99%;">
+										<h5 class="card-title" th:text="${plan.planTitle}"
+											style="width: 500px; font-size: x-large;"></h5>
+										<p class="card-text">
+											<small class="text-body-secondary"
+												th:text="${plan.planDate} + 일">2박 3일</small>
+												<a th:href="'/planner/myPlanInfo/' + ${plan.id}">상세보기</a>
+										</p>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+	</div>
+
+</div>
+
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	document.addEventListener("DOMContentLoaded", function() {
+	    // 모든 "regTime" 클래스를 가진 div 요소를 선택
+	    const regTimeElements = document.querySelectorAll(".regTime");
+
+	    regTimeElements.forEach((element) => {
+	        // 현재 div의 내용을 가져옴 (ISO 8601 형식)
+	        const isoDateString = element.textContent;
+
+	        // Date 객체를 생성
+	        const date = new Date(isoDateString);
+
+	        // 년, 월, 일, 시, 분 정보를 추출
+	        const year = date.getFullYear();
+	        const month = String(date.getMonth() + 1).padStart(2, "0"); // 0으로 시작하므로 +1
+	        const day = String(date.getDate()).padStart(2, "0");
+	        const hours = String(date.getHours()).padStart(2, "0");
+	        const minutes = String(date.getMinutes()).padStart(2, "0");
+
+	        // 포맷 변경: "2023-08-28 11:34"
+	        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+
+	        // div의 내용을 변경
+	        element.textContent = formattedDate;
+	    });
+	});
+
+	
+	</script>
+</th:block>	
+</html>
