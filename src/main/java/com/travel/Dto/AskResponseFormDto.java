@@ -22,7 +22,7 @@ public class AskResponseFormDto {
 	
 	private AskStatus askStatus;
 	
-	private Long askBoardId; // AskBoard의 ID를 담을 필드 추가
+	private Long askBoardId; 
 	
 	// dto -> entity
 	public AskResponseBoard createAskResponse() {

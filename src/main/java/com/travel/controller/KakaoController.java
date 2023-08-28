@@ -27,6 +27,7 @@ public class KakaoController {
 	@Autowired
 	public IKakaoLoginService iKakaoS;
 
+
 	@Autowired
 	public KakaoService kakaoService;
 	@Autowired
@@ -56,6 +57,7 @@ public class KakaoController {
 		MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
 		memberKakaoDto.setEmail(email);
 		memberKakaoDto.setName(name);
+		memberKakaoDto.setPassword("SNS 비밀번호ㅇㅅㅇ");
 		System.out.println(memberKakaoDto.getEmail());
 
    
@@ -65,15 +67,17 @@ public class KakaoController {
         	String errorMessage = "가입이 되어 있지 않은 카카오 계정입니다.";
         	model.addAttribute("errorMessage", errorMessage);
         	model.addAttribute("memberKakaoDto" ,memberKakaoDto);
-        	
+     
+ 
         	return "member/KakaoMemberForm";
         }
         
-
-        String errorMessage = "현재 가입되어 있는 이메일입니다.";
-    	model.addAttribute("errorMessage", errorMessage);
-		
-		return "member/memberLoginForm";
+    	
+    	
+    	
+    	
+    	
+		return "redirect:/";
 		
 		
 	}
@@ -84,15 +88,15 @@ public class KakaoController {
 	@PostMapping(value = "/kakao/new")
 	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
+			
 			return "member/KakaoMemberForm";
 		}
 
 		try {
-			System.out.println(memberKakaoDto.getEmail() + "fdwsp.jfklwajgkkjawg;l");
 			
 			Member member = Member.createKaKao(memberKakaoDto, passwordEncoder);
 			kakaoService.saveMember(member);
-			
+		
 
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());

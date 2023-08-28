@@ -41,6 +41,7 @@
 						<tbody>
 							<!-- 조회된 데이터를 출력한다. -->
 							 <tr th:each="ask, status:${asks.getContent()}">
+							 
 								<th th:text="${ask.id}" scope="row"></th>
 								<td>
 								<a
@@ -48,8 +49,8 @@
 									th:href="'/askBoard/' + ${ask.id}"
 									th:text="${ask.askTitle}"> </a>
 								</td>
-								<td th:text="${ask.askTitle}"></td>
-								<td></td>
+								<td th:text="${ask.createBy}"></td>
+								<td th:text="${ask.createBy}"></td>
 								<td><button type="button" class="btn btn-primary"
 										th:id="${ask.Id}" th:value="${ask.Id}"
 										th:onclick="'javascript:deleteAsk(' + ${ask.id} +')'"

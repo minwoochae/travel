@@ -1,11 +1,10 @@
-package com.travel.service;
+package com.travel.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.travel.Dto.PrincipalDetails;
 import com.travel.Repository.MemberRepository;
 import com.travel.entity.Member;
 
@@ -42,7 +41,4 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         } else {
             return "/";
         }
-    }
-
-	
-}
+    }}

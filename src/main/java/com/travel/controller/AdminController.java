@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.travel.entity.AskBoard;
 import com.travel.entity.InfoBoard;
 import com.travel.entity.Item;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -63,7 +64,7 @@ public class AdminController {
 
 	@GetMapping(value = "/admin")
 	public String admin() {
-		return "/admin/adminMain";
+		return "admin/adminMain";
 	}
 	
 	
@@ -94,7 +95,7 @@ public class AdminController {
 
 	
 	// 회원 탈퇴시키기
-	@DeleteMapping(value = "admin/{memberId}/delete")
+	@DeleteMapping(value = "/admin/{memberId}/delete")
 	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
 			Principal principal) {
 		
@@ -122,7 +123,7 @@ public class AdminController {
 			model.addAttribute("items" , items);
 			model.addAttribute("itemSearchDto", itemSearchDto);
 			model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
-			return "/admin/itemList";
+			return "admin/itemList";
 			}
 
 
@@ -131,7 +132,7 @@ public class AdminController {
 	@GetMapping(value = "/adminShop/new")
 	public String adminShop(Model model) {
 		model.addAttribute("itemFormDto", new ItemFormDto());
-		return "/admin/itemRegist";
+		return "admin/itemRegist";
 	}
 
 	// 상품, 상품이미지 등록
@@ -486,7 +487,7 @@ public class AdminController {
 	public String askList(Model model, AskSearchDto askSearchDto, Optional<Integer> page) {
 		
 		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 9);	
-		Page<MainAskDto> asks = askService.getMainAskPage(askSearchDto, pageable);
+		Page<AskBoard> asks = askService.getAdminAskPage(askSearchDto, pageable);
 		
 		model.addAttribute("asks", asks);
 		model.addAttribute("askSearchDto", askSearchDto);
@@ -590,11 +591,11 @@ public class AdminController {
 		
 	// 문의사항 답변하기 보여주기 - 관리자
 	@GetMapping(value = "/response/{askBoardId}")
-	public String askResponseForm(Model model, @RequestParam("askBoardId") Long askBoardId) {
+	public String askResponseForm(Model model) {
 		
-		AskResponseFormDto arFormDto = new AskResponseFormDto();
-		arFormDto.setAskBoardId(askBoardId);    
-		model.addAttribute("askResponseFormDto", arFormDto);
+		//AskResponseFormDto arFormDto = new AskResponseFormDto();
+		//arFormDto.setAskBoardId(askBoardId); 
+		//model.addAttribute("askResponseFormDto", arFormDto);
 		
 		return "admin/askResponseRegist";
 		}
@@ -603,9 +604,15 @@ public class AdminController {
 	// 문의사항 답변하기 등록 - 관리자
 	@PostMapping(value = "/response/{askBoardId}")
 	public String askResponseNew(@Valid AskResponseFormDto askResponseFormDto, BindingResult bindingResult, Model model,
-			@RequestParam("askBoardId") Long askBoardId) {
+			 @PathVariable("askBoardId") Long askBoardId) {
 		
-		System.out.println("여기니");
+		//AskResponseFormDto arFormDto = new AskResponseFormDto();
+		//arFormDto.setAskBoardId(askBoardId); 
+		//model.addAttribute("askResponseFormDto", arFormDto);
+		
+		 askResponseFormDto.setAskBoardId(askBoardId);
+		
+		System.out.println("여기온다");
 		
 		if(bindingResult.hasErrors()) {
 			System.out.println("너냐");

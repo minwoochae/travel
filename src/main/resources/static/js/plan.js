@@ -17,10 +17,11 @@ var searchButton = document.getElementById("searchButton");
 // 검색 버튼 클릭 시 결과 업데이트
 searchButton.addEventListener("click", updateResults);
 
+
 var currentData = null;
 
 
-// 초기 로드시 지역 코드 목록을 가져옴
+/*// 초기 로드시 지역 코드 목록을 가져옴
 fetch(
   "https://apis.data.go.kr/B551011/KorService1/areaCode1?numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=gOVD3%2BBlrMTRtX3Mo4DWCe0dDc%2FSzwpdZW%2FiVE3cw5j5YDl6zOb59oeZgcuj3M6XRj8vV9wd0Ukt6tZ1l%2FilPQ%3D%3D"
 )
@@ -36,13 +37,6 @@ fetch(
       var code = item.getElementsByTagName("code")[0].textContent;
       var name = item.getElementsByTagName("name")[0].textContent;
       
-      
-
-      // OPTION 요소 생성 및 추가
-      var option = document.createElement("option");
-      option.value = code;
-      option.text = name;
-      areaCodeSelect.appendChild(option);
     }
 
     // 초기 로드시 지역 코드를 기반으로 콘텐츠 유형 업데이트
@@ -60,24 +54,19 @@ function updateContentTypes() {
       id: 1,
       name: "식당",
       url:
-        "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&arrange=O&contentTypeId=39&areaCode=" +
-        selectedAreaCode +
-        "&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D",
+		"/api/updateContentTypes?selectedAreaCode=" + selectedAreaCode
     },
     {
       id: 2,
       name: "숙소",
       url:
-        "https://apis.data.go.kr/B551011/KorService1/searchStay1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&areaCode=" +
-        selectedAreaCode +
-        "&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D",
+        "/api/updateContentTypes?selectedAreaCode=" + selectedAreaCode
     },
     {
       id: 3,
       name: "관광지",
       url:
-        "https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&listYN=Y&arrange=A&contentTypeId=12&areaCode=" +
-        selectedAreaCode,
+   		"/api/updateContentTypes?selectedAreaCode=" + selectedAreaCode
     },
   ];
 
@@ -92,12 +81,15 @@ function updateContentTypes() {
 
   // 초기 로드시 콘텐츠 결과 업데이트
   //   updateResults();
-}
+}*/
+
+
 
 // 콘텐츠 유형 선택 시 결과 업데이트
 function updateResults() {
     resultsDiv.innerHTML = ""; // 결과 영역 초기화
 
+	
     let selectedContentTypeId = contentTypeIdSelect.value;
     let selectedAreaCode = areaCodeSelect.value;
 
@@ -107,7 +99,9 @@ function updateResults() {
         3: "12",
     };
 
-    let apiUrl = `https://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST&arrange=O&contentTypeId=${contentTypes[selectedContentTypeId]}&areaCode=${selectedAreaCode}&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D`;
+    let apiUrl = `https://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=TEST
+    			  &arrange=O&contentTypeId=${contentTypes[selectedContentTypeId]}&areaCode=${selectedAreaCode}
+    			  &serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D`;
 
     fetch(apiUrl)
         .then((response) => response.text())
@@ -118,6 +112,7 @@ function updateResults() {
             
             var searchInput = document.getElementById("searchInput");
       		var searchTerm = searchInput.value.toLowerCase(); // 검색어를 소문자로 변환하여 대소문자 구분 없이 검색
+
 
             for (let i = 0; i < items.length; i++) {
                 let item = items[i];
@@ -162,11 +157,13 @@ function updateResults() {
 
 
                 addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy, item);
-
                 resultsDiv.appendChild(resultElement);
              	addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy);
-                }
+
+                
+              }
           }
+          
      })
         .catch((error) => console.error("API 호출 오류:", error));
 }
@@ -262,8 +259,6 @@ function insertContent1() {
     `;
     
 
-
-
     // 해당 tabPane 내의 list-group 선택
     let listGroup = activeTabPane.querySelector(".list-group");
     
@@ -276,7 +271,11 @@ function insertContent1() {
 }
 
 
+<<<<<<< HEAD
+function deleteContent(event) {
+=======
 function deleteContent1(event) {
+>>>>>>> 42adfe47e7bf7482a87059859cb84c2f9ec679c6
     // 클릭한 버튼의 가장 가까운 .dataList 부모 요소를 찾음
     let dataListDiv = event.target.closest(".dataList1");
     
@@ -287,8 +286,88 @@ function deleteContent1(event) {
     }
 }
 
+// "더 보기" 버튼 선택
+var loadMoreResultsButton = document.getElementById("loadMoreResults");
+
+// "더 보기" 버튼 클릭 시 결과 추가 로드
+loadMoreResultsButton.addEventListener("click", loadMoreResults);
+
+var currentPage = 2; // 초기 페이지
 
 
+function loadMoreResults() {
+    let selectedContentTypeId = contentTypeIdSelect.value;
+    let selectedAreaCode = areaCodeSelect.value;
+
+    let contentTypes = {
+        1: "39",
+        2: "32",
+        3: "12",
+    };
+
+    let apiUrl = `https://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=10&pageNo=${currentPage}&MobileOS=ETC&MobileApp=TEST
+    			  &arrange=O&contentTypeId=${contentTypes[selectedContentTypeId]}&areaCode=${selectedAreaCode}
+    			  &serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D`;
+
+    fetch(apiUrl)
+        .then((response) => response.text())
+        .then((data) => {
+            let parser = new DOMParser();
+            let xmlDoc = parser.parseFromString(data, "text/xml");
+            let items = xmlDoc.getElementsByTagName("item");
+
+            var searchInput = document.getElementById("searchInput");
+            var searchTerm = searchInput.value.toLowerCase();
+            		           
+
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
+                let titleElement = item.getElementsByTagName("title")[0];
+                let title = titleElement ? titleElement.textContent : "";
+
+                if (title.toLowerCase().includes(searchTerm)) {
+                    let addressElement = item.getElementsByTagName("addr1")[0];
+                    let address = addressElement ? addressElement.textContent : "";
+
+                    let telElement = item.getElementsByTagName("tel")[0];
+                    let tel = telElement ? telElement.textContent : "";
+
+                    let firstImageElement = item.getElementsByTagName("firstimage")[0];
+                    let firstImage = firstImageElement ? firstImageElement.textContent : "";
+
+                    // 위도 경도
+                    let mapx = item.getElementsByTagName("mapx")[0].textContent;
+                    let mapy = item.getElementsByTagName("mapy")[0].textContent;
+
+                    let resultElement = document.createElement("div");
+                    resultElement.innerHTML = `
+                        <div class="dataList" style="display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;">
+                            <img src="${firstImage}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${title} Image">
+                            <h4 style="margin-left:15px;">${title}</h4>
+                        </div>
+                    `;
+
+                    currentData = {
+                        title: title,
+                        address: address,
+                        tel: tel,
+                        firstImage: firstImage,
+                        mapx: mapx,
+                        mapy: mapy
+                    };
+
+                    addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy, item);
+
+                    resultsDiv.appendChild(resultElement);
+                    addClickListener(resultElement, title, address, tel, firstImage, mapx, mapy);
+                }
+            }
+	     
+        })
+        .catch((error) => console.error("API 호출 오류:", error));
+
+    currentPage++; // 다음 페이지로 넘어감
+}
 
 
 
