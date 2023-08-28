@@ -2,6 +2,7 @@ package com.travel.controller;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,7 +23,10 @@ import org.springframework.http.ResponseEntity;
 import com.travel.Dto.MemberFormDto;
 import com.travel.Dto.PasswordDto;
 import com.travel.entity.Member;
+import com.travel.entity.Plan;
+import com.travel.entity.PlanContent;
 import com.travel.service.MemberService;
+import com.travel.service.PlanService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
 	private final MemberService memberservice;
+	private final PlanService planService;
 	private final PasswordEncoder passwordEncoder;
 
 	// 로그인 화면
@@ -130,6 +135,21 @@ public class MemberController {
 	public String mainMypage(Principal principal, Model model) {
 		Member member = memberservice.memberMypage(principal.getName());
 		model.addAttribute("member", member);
+		
+		String memberId = principal.getName();
+		List<Plan> plans = planService.findPlanByEmail(memberId);
+		
+		Map<Long, List<PlanContent>> planContentsMap = new HashMap<>();
+		
+		for (Plan plan : plans) {
+		    List<PlanContent> planContents = planService.findPlanContentsByPlanId(plan.getId());
+		    planContentsMap.put(plan.getId(), planContents);
+		}
+		
+		model.addAttribute("plan", plans);
+		model.addAttribute("planContents", planContentsMap);
+		
+		
 		return "member/MyPage";
 	}
 
