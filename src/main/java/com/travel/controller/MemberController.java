@@ -137,17 +137,9 @@ public class MemberController {
 		model.addAttribute("member", member);
 		
 		String memberId = principal.getName();
-		List<Plan> plans = planService.findPlanByEmail(memberId);
-		
-		Map<Long, List<PlanContent>> planContentsMap = new HashMap<>();
-		
-		for (Plan plan : plans) {
-		    List<PlanContent> planContents = planService.findPlanContentsByPlanId(plan.getId());
-		    planContentsMap.put(plan.getId(), planContents);
-		}
+		List<Plan> plans = planService.findPlanTopByEmail(memberId);
 		
 		model.addAttribute("plan", plans);
-		model.addAttribute("planContents", planContentsMap);
 		
 		
 		return "member/MyPage";

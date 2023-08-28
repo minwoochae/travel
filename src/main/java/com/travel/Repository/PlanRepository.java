@@ -21,5 +21,7 @@ public interface PlanRepository extends JpaRepository<Plan, Long>{
 
 	List<Plan> findByMember_Email(String email);
 
+	List<Plan> findTop3ByMember_EmailOrderByRegDateDesc(String email);
 
+	
 }

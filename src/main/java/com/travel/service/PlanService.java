@@ -71,6 +71,10 @@ public class PlanService {
 		return planRepository.findByMember_Email(email);
 	}
 	
+	public List<Plan> findPlanTopByEmail(String email){
+		return planRepository.findTop3ByMember_EmailOrderByRegDateDesc(email);
+	}
+	
 	//최근 플랜 찾기
 	public Plan findLastPlan(String memberNo, Pageable pageable){
 	    Member member = memberRepository.findByEmail(memberNo);
