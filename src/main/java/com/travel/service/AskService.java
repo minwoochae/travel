@@ -19,10 +19,12 @@ import com.travel.Dto.MainAskDto;
 import com.travel.Dto.MainInfoDto;
 import com.travel.Repository.AskImgRepository;
 import com.travel.Repository.AskRepository;
+import com.travel.Repository.MemberRepository;
 import com.travel.entity.AskBoard;
 import com.travel.entity.AskBoardImg;
 import com.travel.entity.InfoBoard;
 import com.travel.entity.InfoBoardImg;
+import com.travel.entity.Member;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +37,16 @@ public class AskService {
 	private final AskRepository askRepository;
 	private final AskImgRepository askImgRepository;
 	private final AskImgService askImgService;
+	private final MemberRepository memberRepositoty;
 	
 	// askBoard 테이블에 등록(insert)
-	public Long saveAsk(AskFormDto askFormDto, List<MultipartFile> askImgFileList) throws Exception {
+	public Long saveAsk(String no, AskFormDto askFormDto, List<MultipartFile> askImgFileList) throws Exception {
 		
 		// 글등록
 		AskBoard askBoard = askFormDto.createAsk();
+		Member member = memberRepositoty.findByEmail(no);
+		
+		askBoard.setMember(member);
 		askRepository.save(askBoard);
 		
 		// 이미지 등록

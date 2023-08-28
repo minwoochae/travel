@@ -15,8 +15,10 @@ import com.travel.Dto.ItemSearchDto;
 import com.travel.Dto.MainItemDto;
 import com.travel.Repository.ItemImgRepository;
 import com.travel.Repository.ItemRepository;
+import com.travel.Repository.MemberRepository;
 import com.travel.entity.Item;
 import com.travel.entity.ItemImg;
+import com.travel.entity.Member;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +31,17 @@ public class ItemService {
 	private final ItemRepository itemRepository;
 	private final ItemImgRepository itemImgRepository;
 	private final ItemImgService itemImgService;
+	private final MemberRepository memberRepository;
 
 	// item 테이블에 상품등록(insert)
-	public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
+	public Long saveItem(String no, ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
 
 		// 1. 상품등록
 		Item item = itemFormDto.createItem(); // dto > entity
+		
+		Member member = memberRepository.findByEmail(no);
+		item.setMember(member);
+		
 		itemRepository.save(item);
 
 		// 2.이미지 등록 (5개)
