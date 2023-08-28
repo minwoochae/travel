@@ -9,10 +9,21 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
@@ -21,9 +32,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PayController {
 	
-	@RequestMapping(value = "/kakao", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/kakao/{totalPrice}", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
-	public String kakaopay() {
+	public String kakaopay(@RequestBody Map<String, Object> requestData, @PathVariable("totalPrice") String totalPriceTest) {
+		
+		
+		String totalPrice = (String) requestData.get("totalPrice");
+		
 		try {
 			URL kakaoUrl = new URL("https://kapi.kakao.com/v1/payment/ready");
 			try {
@@ -37,7 +52,7 @@ public class PayController {
 						+ "&partner_user_id=partner_user_id" // 가맹점 회원 id
 						+ "&item_name=movie" // 상품명
 						+ "&quantity=1" // 상품 수량
-						+ "&total_amount=1100000000" // 총 금액
+						+ "&total_amount="+totalPrice // 총 금액
 						+ "&vat_amount=200" // 부가세
 						+ "&tax_free_amount=0" // 상품 비과세 금액
 						+ "&approval_url=https://developers.kakao.com/success" // 결제 성공 시
@@ -50,7 +65,6 @@ public class PayController {
 				dataOutPut.close();
 				
 				int result = conServer.getResponseCode();
-				System.out.println(result);
 				
 
 				InputStream dataInput;
@@ -77,7 +91,3 @@ public class PayController {
 	
 
 }
-
-
-
-

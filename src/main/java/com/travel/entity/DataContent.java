@@ -19,22 +19,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name="plan_content") 
+@Table(name="data_content") 
 @Getter
 @Setter
 @ToString
-public class PlanContent {
+public class DataContent {
 
 	@Id
 	@Column(name="plan_content_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
-	
-	@Column(name="plan_day")
-	private String planDay;
-	
-	private String travelDivision;
-	
+		
 	@Column(name="place_name")
 	private String placeName;
 	
@@ -48,43 +43,45 @@ public class PlanContent {
 	private String placeLongitude;
 	
 	@Column(name="place_img")
-	private String place_img;
+	private String placeimg;
 	
 	@Column(name="area_code")
-	private int area_code;
+	private int areaCode;
 	
 	@Column(name="sigungu_code")
-	private int sigungu_code;
+	private int sigunguCode;
 	
 	@Column(name="content_id")
-	private int content_id;
+	private int contentId;
 	
 	@Column(name="content_type")
-	private int content_type;
+	private int contentType;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "plan_id")
 	private Plan plan;
 	
+
 	
-	public static PlanContent createContent(PlanContentDto planContentDto, Plan plan) {
-		PlanContent planContent = new PlanContent();
-		planContent.setPlanDay(planContentDto.getPlanDay());
-		planContent.setTravelDivision(planContentDto.getTravelDivision());
-		planContent.setPlaceName(planContentDto.getPlaceName());
-		planContent.setPlaceAddress(planContentDto.getPlaceAddress());
-		planContent.setPlaceLatitude(planContentDto.getPlaceLatitude());
-		planContent.setPlaceLongitude(planContentDto.getPlaceLongitude());
-		planContent.setPlace_img(planContentDto.getPlace_img());
-		planContent.setArea_code(planContentDto.getArea_code());
-		planContent.setSigungu_code(planContentDto.getSigungu_code());
-		planContent.setContent_id(planContentDto.getContent_id());
-		planContent.setContent_type(planContentDto.getContent_type());
-		planContent.setPlan(plan);
+	
+	public static DataContent createContent(PlanContentDto dataContentDto, Plan plan) {
+		DataContent dataContent = new DataContent();
+		dataContent.setPlaceName(dataContentDto.getPlaceName());
+		dataContent.setPlaceAddress(dataContentDto.getPlaceAddress());
+		dataContent.setPlaceLatitude(dataContentDto.getPlaceLatitude());
+		dataContent.setPlaceLongitude(dataContentDto.getPlaceLongitude());
+		dataContent.setPlaceimg(dataContentDto.getPlace_img());
+		dataContent.setAreaCode(dataContentDto.getArea_code());
+		dataContent.setSigunguCode(dataContentDto.getSigungu_code());
+		dataContent.setContentId(dataContentDto.getContent_id());
+		dataContent.setContentType(dataContentDto.getContent_type());
 		
-		return planContent;
+		return dataContent;
 	}
+	
+	
+	
 	
 	
 }

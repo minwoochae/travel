@@ -34,7 +34,7 @@ public class OrderInfo {
 	private String orderInfoPhone;
 	
 	@Column(name= "zip_code")
-	private int zipCode;
+	private String zipCode;
 	
 	@OneToOne
 	@JoinColumn(name = " orders_id")

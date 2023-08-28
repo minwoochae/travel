@@ -1,6 +1,4 @@
-package com.travel.Dto;
-
-
+package com.travel.auth;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,19 +9,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import com.travel.auth.OAuth2UserInfo;
 import com.travel.entity.Member;
 
-import groovy.transform.ToString;
-
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @ToString
-public class PrincipalDetails implements UserDetails , OAuth2User {
-	Member member;
-	MemberKakaoDto memberKakaoDto;
+public class PrincipalDetails implements UserDetails, OAuth2User{
+	private Member member;
 	private OAuth2UserInfo oAuth2UserInfo;
+	
 	public PrincipalDetails(Member member) {
 		this.member = member;
 	}
@@ -81,9 +77,5 @@ public class PrincipalDetails implements UserDetails , OAuth2User {
 	public String getName() {
 		return oAuth2UserInfo.getProviderId();
 	}
-	
- 
-	
-	
 	
 }
