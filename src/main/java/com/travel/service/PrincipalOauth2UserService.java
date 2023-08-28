@@ -24,14 +24,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
     
     @Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-	
+	System.out.println("d");
 	 OAuth2User oAuth2User = super.loadUser(userRequest);
+	 System.out.println(oAuth2User + "ZZ");
 	 OAuth2UserInfo oAuth2UserInfo = null;
-
      String provider = userRequest.getClientRegistration().getRegistrationId();    
-    if(provider.equals("kakao")){
-         oAuth2UserInfo = new KakaoMemberInfo(oAuth2User.getAttributes());
-     }
+     oAuth2UserInfo = new KakaoMemberInfo(oAuth2User.getAttributes());
      
      String providerId = oAuth2UserInfo.getProviderId();
      String username = oAuth2UserInfo.getName(); 
@@ -41,13 +39,15 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
      Role role = Role.USER;
      
      Member member = memberRepository.findByEmail(email);
-     
      if(member == null){
     	 member = Member.oauth2Register()
         		 .email(email).name(username).password(password).role(role)
                  .provider(provider).providerId(providerId)
                  .build();
      }
+     System.out.println(member.getEmail() + "JJJJJJJJJJ");
+     System.out.println(member.getProviderId() + "kasdjgkdjsakgjaskgd");
+     System.out.println(member.getPassword() + "password");
      
      return new PrincipalDetails(member, oAuth2UserInfo);
 }}
