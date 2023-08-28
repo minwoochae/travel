@@ -41,4 +41,13 @@ public class AskResponseFormDto {
 	public void setAskBoardId(Long askBoardId) {
 	       this.askBoardId = askBoardId;
 	}
+	
+
+    public AskStatus getAskStatus() {
+        return askStatus;
+    }
+
+    public void setAskStatus(AskStatus askStatus) {
+        this.askStatus = askStatus;
+    }
 }

@@ -63,6 +63,7 @@ public class AskResponseService {
 
 		// entity -> dto
 		AskResponseFormDto askResponseFormDto = AskResponseFormDto.of(askResponseBoard);
+		askResponseFormDto.setAskStatus(askResponseBoard.getAskStatus());
 
 		return askResponseFormDto;
 	}

@@ -527,11 +527,13 @@ public class AdminController {
 	
 	// 문의사항 상세페이지
 	@GetMapping(value = "/askBoard/{askBoardId}")
-	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId, @PathVariable(name = "askResponseBoardId", required = false) Long askResponseBoardId) {
-	    AskFormDto askFormDto = askService.getAskDtl(askBoardId);
+	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId) {
 	    
-	    if (askResponseBoardId != null) {
-	        AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askResponseBoardId);
+		AskFormDto askFormDto = askService.getAskDtl(askBoardId);
+	    
+		AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askBoardId);
+		
+	    if (askResponseFormDto != null) {
 	        model.addAttribute("askResponse", askResponseFormDto);
 	    }
 	    
@@ -591,11 +593,11 @@ public class AdminController {
 		
 	// 문의사항 답변하기 보여주기 - 관리자
 	@GetMapping(value = "/response/{askBoardId}")
-	public String askResponseForm(Model model) {
+	public String askResponseForm(Model model,  @PathVariable("askBoardId") Long askBoardId) {
 		
-		//AskResponseFormDto arFormDto = new AskResponseFormDto();
-		//arFormDto.setAskBoardId(askBoardId); 
-		//model.addAttribute("askResponseFormDto", arFormDto);
+		AskResponseFormDto arFormDto = new AskResponseFormDto();
+		arFormDto.setAskBoardId(askBoardId); 
+		model.addAttribute("askResponseFormDto", arFormDto);
 		
 		return "admin/askResponseRegist";
 		}
