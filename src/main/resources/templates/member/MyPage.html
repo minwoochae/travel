@@ -64,7 +64,7 @@ li {
 			style="background-image: url('/img/users.png'); background-size: cover;"></p>
 	</div>
 	<form th:action="@{'/member/mypage}" method="get" th:object="${member}">
-		<input type="hidden" id="memberId" th:value="${member.id}" />
+		<input type="hidden" id="memberId" th:value="${member.Id}" />
 		<ul>
 			<li>
 				<button type="button"

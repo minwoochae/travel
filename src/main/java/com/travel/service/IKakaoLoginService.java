@@ -8,6 +8,5 @@ public interface IKakaoLoginService {
 	
 	public HashMap<String, Object> getUserInfo(String access_Token) throws Throwable;
 	
-	// String insertUserInfoToDatabase(String nickname, String email) throws Throwable;
 	
 }
