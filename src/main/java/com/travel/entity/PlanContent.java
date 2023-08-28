@@ -50,17 +50,7 @@ public class PlanContent {
 	@Column(name="place_img")
 	private String place_img;
 	
-	@Column(name="area_code")
-	private int area_code;
-	
-	@Column(name="sigungu_code")
-	private int sigungu_code;
-	
-	@Column(name="content_id")
-	private int content_id;
-	
-	@Column(name="content_type")
-	private int content_type;
+
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -77,10 +67,7 @@ public class PlanContent {
 		planContent.setPlaceLatitude(planContentDto.getPlaceLatitude());
 		planContent.setPlaceLongitude(planContentDto.getPlaceLongitude());
 		planContent.setPlace_img(planContentDto.getPlace_img());
-		planContent.setArea_code(planContentDto.getArea_code());
-		planContent.setSigungu_code(planContentDto.getSigungu_code());
-		planContent.setContent_id(planContentDto.getContent_id());
-		planContent.setContent_type(planContentDto.getContent_type());
+
 		planContent.setPlan(plan);
 		
 		return planContent;
