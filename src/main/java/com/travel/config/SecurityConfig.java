@@ -1,94 +1,87 @@
 package com.travel.config;
 
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.travel.auth.CustomAuthenticationProvider;
-import com.travel.auth.KakaoAuthenticationSuccessHandler;
+import com.travel.auth.CustomOAuth2SuccessHandler;
+import com.travel.service.PrincipalOauth2UserService;
 
 @Configuration // bean 객체를 싱글톤으로 공유할 수 있게 해준다.
 @EnableWebSecurity // spring security filterCahin이 자동으로 포함되게한다.
 public class SecurityConfig {
- 
 
-
+	private final PrincipalOauth2UserService principalOauth2UserService;
 	
-	@Autowired
-	private KakaoAuthenticationSuccessHandler kakaoAuthenticationSuccessHandlers; // 카카오 로그인 성공 핸들러 주입
-
-	@Bean
-	@Primary 
-	public KakaoAuthenticationSuccessHandler mykakaoAuthenticationSuccessHandler() {
-		return new KakaoAuthenticationSuccessHandler();
+	
+	public SecurityConfig(PrincipalOauth2UserService principalOauth2UserService) {
+		this.principalOauth2UserService = principalOauth2UserService;
 	}
+	
 
-
-
-	   private final CustomAuthenticationProvider customAuthenticationProvider;
-
-	    @Autowired
-	    public SecurityConfig(@Lazy CustomAuthenticationProvider customAuthenticationProvider) {
-	        this.customAuthenticationProvider = customAuthenticationProvider;
-	    }
-	    
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		//로그인에 대한설정
-		http.authorizeHttpRequests(authorize->authorize //1.페이지 접근에 관한
-		
-				//모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
-				.requestMatchers("/css/**","/js/**","/img/**","/images/**", "/fonts/**").permitAll()
-				.requestMatchers("/","/members/**","/planner/**", "/account/**", "/pay/**" , "/account/pssearch/**", "/members/login/**", "/item/**", "/kakao/**", "/order/**").permitAll()
-				.requestMatchers("favicon.ico","/error").permitAll()
-				.requestMatchers("/error").permitAll()
-				//'admin' 으로 시작하는 경로로 관리자만 접근가능하도록 설정
+    public AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
+        return new CustomOAuth2SuccessHandler();
+    }
+
+
+
+
+
+	    
+
+
+
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		// 로그인에 대한설정
+		http.authorizeHttpRequests(authorize -> authorize // 1.페이지 접근에 관한
+
+				// 모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
+				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/fonts/**").permitAll()
+				.requestMatchers("/", "/members/**", "/planner/**", "/account/**", "/pay/**", "/account/pssearch/**",
+						"/members/login/**", "/item/**", "/kakao/**", "/order/**")
+				.permitAll().requestMatchers("favicon.ico", "/error").permitAll().requestMatchers("/error").permitAll()
+				// 'admin' 으로 시작하는 경로로 관리자만 접근가능하도록 설정
 
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				// 그 외의 페이지는 모두 로그인(인증을 받아야한다.)
 				.anyRequest().authenticated()).formLogin(formLogin -> formLogin // 2.로그인에 관련된 설정
 						.loginPage("/members/login") // 로그인 페이지 URL 설정
 						.defaultSuccessUrl("/") // 로그인 성공시 이동할 페이지
-						// .successHandler(CustomOAuth2kakaoSuccessHandler())
 						// .defaultSuccessUrl("/") //로그인 성공시 이동할 페이지
 						.usernameParameter("email") // 로그인시 id로 사용할 파라메터 이름
-						.failureUrl("/members/login/error") // 로그인 실패시 이동할 URL
-		)
-				// .oauth2Login(oauth2 -> oauth2
-				// .loginPage("/oauth2/authorization/kakao")
-				// .successHandler(CustomOAuth2kakaoSuccessHandler())
-				// .defaultSuccessUrl("/") //로그인 성공시 이동할 페이지
-				// .userInfoEndpoint(userInfoEndpoint ->userInfoEndpoint
-				// .userService(principalOauth2UserService))
-				// )
-				.logout(logout -> logout
-						.logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")) // 로그아웃시 이동할
+						.failureUrl("/members/login/error")) // 로그인 실패시 이동할 URL
+			.oauth2Login(oauth2 -> oauth2 
+				.loginPage("/members/login")
+				.successHandler(oauth2AuthenticationSuccessHandler())
+				.failureUrl("/login/error")
+				.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+				.userService(principalOauth2UserService))
+				) 
+				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")) // 로그아웃시 이동할
 						.logoutSuccessUrl("/") // 로그아웃 성공시 이동할 URL
-						.invalidateHttpSession(true) 
-				) // 로그아웃에 관련된 설정
-					// 4. 인증되지 않은 사용자가 리소스에 접근했을때 설정(ex. 로그인 안했는데 order ,cart 페이지에 접근)
-				.exceptionHandling(handling -> handling.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
+						) // 로그아웃에 관련된 설정
 
-				.rememberMe(Customizer.withDefaults())
-				.oauth2Login(oauth2Login ->
-				oauth2Login.loginPage("/members/login") // 로그인 페이지 URL 설정
-				.defaultSuccessUrl("/kakao/success") // 로그인 성공 시 이동할 URL
-				.successHandler(kakaoAuthenticationSuccessHandlers)); // 카카오 로그인 성공 핸들러 설정
+				.exceptionHandling(handling -> handling
+						.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+						)
+				.rememberMe(Customizer.withDefaults());
+
+		; // 카카오 로그인 성공 핸들러 설정
 
 		return http.build();
 	}
-	
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

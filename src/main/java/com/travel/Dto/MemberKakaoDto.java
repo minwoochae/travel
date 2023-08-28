@@ -44,7 +44,9 @@ private LocalDateTime regtime;
 
 
 private String division;
+private String provider;
 
+private String providerId;
 
 private String role;
 

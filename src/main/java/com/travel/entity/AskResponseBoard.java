@@ -1,7 +1,12 @@
 package com.travel.entity;
 
+import com.travel.Dto.AskResponseFormDto;
+import com.travel.constant.AskStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,10 +35,17 @@ public class AskResponseBoard extends BaseEntity{
 	@Column(name="ask_response_content") 
 	private String askResponseContent;
 	
-	@Column(name="ask_response_img") 
-	private String askResponseImg;
+	@Enumerated(EnumType.STRING)
+	private AskStatus askStatus;
 	
 	@OneToOne
-	@JoinColumn(name="ask_board")
+	@JoinColumn(name="ask_board_id")
 	private AskBoard askBoard;
+	
+	
+	// 엔티티 수정
+	public void updateAskResponse(AskResponseFormDto askResponseFormDto) {
+		this.askResponseTitle = askResponseFormDto.getAskResponseTitle();
+		this.askResponseContent = askResponseFormDto.getAskResponseContent();
+	}
 }
