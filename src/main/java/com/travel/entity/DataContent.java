@@ -62,6 +62,8 @@ public class DataContent {
 	@JoinColumn(name = "plan_id")
 	private Plan plan;
 	
+
+	
 	
 	public static DataContent createContent(PlanContentDto dataContentDto, Plan plan) {
 		DataContent dataContent = new DataContent();
@@ -77,6 +79,7 @@ public class DataContent {
 		
 		return dataContent;
 	}
+	
 	
 	
 	

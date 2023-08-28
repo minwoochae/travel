@@ -1,7 +1,13 @@
 package com.travel.config;
 
+<<<<<<< HEAD
+=======
+
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> d6f097cf3aff501bf473f06f658f24800e6093fa
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,6 +40,13 @@ public class SecurityConfig {
 		return new CustomOAuth2SuccessHandler();
 	}
 
+
+
+
+	    
+
+
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// 로그인에 대한설정
@@ -46,6 +59,7 @@ public class SecurityConfig {
 				.permitAll().requestMatchers("favicon.ico", "/error").permitAll()
 				.requestMatchers("/error").permitAll()
 				// 'admin' 으로 시작하는 경로로 관리자만 접근가능하도록 설정
+
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				// 그 외의 페이지는 모두 로그인(인증을 받아야한다.)
 				.anyRequest().authenticated()).formLogin(formLogin -> formLogin // 2.로그인에 관련된 설정

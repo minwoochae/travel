@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.travel.Dto.AskFormDto;
+import com.travel.Dto.AskResponseFormDto;
 import com.travel.Dto.AskSearchDto;
 import com.travel.Dto.InfoFormDto;
 import com.travel.Dto.InfoSearchDto;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.travel.entity.AskBoard;
 import com.travel.entity.InfoBoard;
 import com.travel.entity.Item;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,6 +39,7 @@ import com.travel.Dto.MemberFormDto;
 
 import com.travel.entity.Member;
 import com.travel.entity.Tourist;
+import com.travel.service.AskResponseService;
 import com.travel.service.AskService;
 import com.travel.service.InfoService;
 import com.travel.service.ItemService;
@@ -56,7 +59,7 @@ public class AdminController {
 	private final TourService tourService;
 	private final InfoService infoService;
 	private final AskService askService;
-
+	private final AskResponseService askResponseService;
 	private final MemberService memberService;
 
 	@GetMapping(value = "/admin")
@@ -134,9 +137,11 @@ public class AdminController {
 
 	// 상품, 상품이미지 등록
 	@PostMapping(value = "/adminShop/new")
-	public String itemNew(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model,
+	public String itemNew(Principal principal, @Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model,
 			@RequestParam("itemImgFile") List<MultipartFile> itemImgFileList) {
 
+		String no = principal.getName();
+		
 		if (bindingResult.hasErrors()) {
 			return "/admin/itemRegist";
 		}
@@ -148,7 +153,7 @@ public class AdminController {
 		}
 
 		try {
-			itemService.saveItem(itemFormDto, itemImgFileList);
+			itemService.saveItem(no,itemFormDto, itemImgFileList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "상품 등록 중 에러가 발생했습니다.");
@@ -253,9 +258,11 @@ public class AdminController {
 
 	// 공지사항, 공지사항이미지 등록
 	@PostMapping(value = "/adminInfo/new")
-		public String InfoNew(@Valid InfoFormDto infoFormDto, BindingResult bindingResult, 
+		public String InfoNew(Principal principal, @Valid InfoFormDto infoFormDto, BindingResult bindingResult, 
 				Model model, @RequestParam("infoImgFile") List<MultipartFile> infoImgFileList) {
 
+		String memberNo = principal.getName();
+		
 		if(bindingResult.hasErrors()) {
 			return "admin/infoRegist";
 		}
@@ -267,7 +274,7 @@ public class AdminController {
 		}
 		
 		try {
-			infoService.saveInfo(infoFormDto, infoImgFileList);
+			infoService.saveInfo(memberNo, infoFormDto, infoImgFileList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "공지 등록 중 에러가 발생했습니다.");
@@ -374,8 +381,10 @@ public class AdminController {
 	
 	// 추천관광지 등록
 	@PostMapping(value = "/adminTour/new")
-	public String tourNew(@Valid TourFormDto tourFormDto, BindingResult bindingResult,
+	public String tourNew(Principal principal, @Valid TourFormDto tourFormDto, BindingResult bindingResult,
 			Model model, @RequestParam("tourImgFile") List<MultipartFile> tourImgFileList) {
+		
+		String memberNo = principal.getName();
 		
 		if(bindingResult.hasErrors()) {
 			return "admin/tourRegist";
@@ -388,7 +397,7 @@ public class AdminController {
 		}
 		
 		try {
-			tourService.saveTour(tourFormDto, tourImgFileList);
+			tourService.saveTour(memberNo, tourFormDto, tourImgFileList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "상품 등록 중 에러가 발생했습니다.");
@@ -478,7 +487,7 @@ public class AdminController {
 	public String askList(Model model, AskSearchDto askSearchDto, Optional<Integer> page) {
 		
 		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 9);	
-		Page<MainAskDto> asks = askService.getMainAskPage(askSearchDto, pageable);
+		Page<AskBoard> asks = askService.getAdminAskPage(askSearchDto, pageable);
 		
 		model.addAttribute("asks", asks);
 		model.addAttribute("askSearchDto", askSearchDto);
@@ -496,14 +505,16 @@ public class AdminController {
 	
 	// 문의사항 등록하기 - 회원
 	@PostMapping(value = "/ask/new")
-	public String askNew(@Valid AskFormDto askFormDto, BindingResult bindingResult, Model model, @RequestParam("askImgFile") List<MultipartFile> askImgFileList) {
+	public String askNew(Principal principal, @Valid AskFormDto askFormDto, BindingResult bindingResult, Model model, @RequestParam("askImgFile") List<MultipartFile> askImgFileList) {
+		
+		String no = principal.getName();
 		
 		if(bindingResult.hasErrors()) {
 			return "admin/askRegist";
 		}
 		
 		try {
-			askService.saveAsk(askFormDto, askImgFileList);			
+			askService.saveAsk(no, askFormDto, askImgFileList);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "문의사항 등록 중 에러가 발생했습니다.");
@@ -516,10 +527,17 @@ public class AdminController {
 	
 	// 문의사항 상세페이지
 	@GetMapping(value = "/askBoard/{askBoardId}")
-	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId) {
-		AskFormDto askFormDto = askService.getAskDtl(askBoardId);
-		model.addAttribute("ask", askFormDto);
-		return "admin/askDtl";
+	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId, @PathVariable(name = "askResponseBoardId", required = false) Long askResponseBoardId) {
+	    AskFormDto askFormDto = askService.getAskDtl(askBoardId);
+	    
+	    if (askResponseBoardId != null) {
+	        AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askResponseBoardId);
+	        model.addAttribute("askResponse", askResponseFormDto);
+	    }
+	    
+	    model.addAttribute("ask", askFormDto);
+
+	    return "admin/askDtl";
 	}
 	
 	// 문의사항 수정보여주기 - 회원
@@ -572,22 +590,95 @@ public class AdminController {
 	
 		
 	// 문의사항 답변하기 보여주기 - 관리자
+	@GetMapping(value = "/response/{askBoardId}")
+	public String askResponseForm(Model model) {
+		
+		//AskResponseFormDto arFormDto = new AskResponseFormDto();
+		//arFormDto.setAskBoardId(askBoardId); 
+		//model.addAttribute("askResponseFormDto", arFormDto);
+		
+		return "admin/askResponseRegist";
+		}
 	
 	
 	// 문의사항 답변하기 등록 - 관리자
+	@PostMapping(value = "/response/{askBoardId}")
+	public String askResponseNew(@Valid AskResponseFormDto askResponseFormDto, BindingResult bindingResult, Model model,
+			 @PathVariable("askBoardId") Long askBoardId) {
+		
+		//AskResponseFormDto arFormDto = new AskResponseFormDto();
+		//arFormDto.setAskBoardId(askBoardId); 
+		//model.addAttribute("askResponseFormDto", arFormDto);
+		
+		 askResponseFormDto.setAskBoardId(askBoardId);
+		
+		System.out.println("여기온다");
+		
+		if(bindingResult.hasErrors()) {
+			System.out.println("너냐");
+			return "admin/askResponseRegist";
+		}
+		
+		try {
+			askResponseService.saveAskResponse(askBoardId, askResponseFormDto);		
+			System.out.println("여기오니");
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "답변 등록 중 에러가 발생했습니다.");
+			System.out.println(askResponseFormDto.getAskResponseTitle());
+			return "admin/askResponseRegist";
+		}
+		
+		return "redirect:/";
+	}
 	
-	// 문의사항 답변 수정보여주기 - 관리자 
+	// 문의사항 답변 수정보여주기 - 관리자
+	@GetMapping(value = "/ask/response/{askResponseBoardId}")
+	public String askResponseBoardIdModify(@PathVariable("askResponseBoardId") Long askResponseBoardId, Model model) {
+		
+		try {
+			AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askResponseBoardId);
+			model.addAttribute("askResponseFormDto", askResponseFormDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "문의사항을 가져올 때 에러가 발생했습니다.");
+			
+			// 에러발생 시 비어있는 객체를 넘겨준다.
+			model.addAttribute("askResponseFormDto", new AskResponseFormDto());
+			return "admin/askResponseRegist";
+		}
+		
+		return "admin/askResponseModify";
+	}
+	
 	
 	// 문의사항 답변 수정하기 - 관리자 
-	
-	// 문의사항 삭제하기 - 관리자
-	
-	
-	
-	
-	
-	
+	@PostMapping(value = "/ask/response/{askResponseBoardId}")
+	public String askResponseUpdate(@Valid AskResponseFormDto askResponseFormDto, Model model,
+			BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			return "admin/askResponseRegist";
+		}
+		
+		try {
+			askResponseService.updateAskResponse(askResponseFormDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "답변 등록 중 에러가 발생했습니다.");
+			return "admin/askResponseRegist";
+		}
+		
+		return "redirect:/";
+	}
 
+	// 문의사항 답변 삭제 - 관리자 
+	@DeleteMapping("/askResponse/{askResponseBoardId}/delete")
+	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askResponseBoardId") Long askResponseBoardId,
+			Principal principal) {
+		askResponseService.deleteAskResponse(askResponseBoardId);
+		return new ResponseEntity<Long>(askResponseBoardId, HttpStatus.OK);
+	}
 }
 	 
 		

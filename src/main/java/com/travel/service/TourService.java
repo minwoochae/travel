@@ -15,8 +15,10 @@ import com.travel.Dto.MainTourDto;
 import com.travel.Dto.TourFormDto;
 import com.travel.Dto.TourImgDto;
 import com.travel.Dto.TourSearchDto;
+import com.travel.Repository.MemberRepository;
 import com.travel.Repository.TourImgRepository;
 import com.travel.Repository.TourRepository;
+import com.travel.entity.Member;
 import com.travel.entity.Tourist;
 import com.travel.entity.TouristImg;
 
@@ -31,10 +33,14 @@ public class TourService {
 	private final TourRepository tourRepository;
 	private final TourImgRepository tourImgRepository;
 	private final TourImgService tourImgService;
+	private final MemberRepository memberRepository;
 	
 	// 테이블에 추천관광지 등록
-	public Long saveTour(TourFormDto tourFormDto, List<MultipartFile> tourImgFileList) throws Exception {
+	public Long saveTour(String no, TourFormDto tourFormDto, List<MultipartFile> tourImgFileList) throws Exception {
 		Tourist tourist = tourFormDto.createTour();
+		
+		Member member = memberRepository.findByEmail(no);
+		tourist.setMember(member);
 		tourRepository.save(tourist);
 		
 		// 이미지 등록

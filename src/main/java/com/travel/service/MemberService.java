@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional // 퀘리문 오류시 이전데이터 롤백
-@RequiredArgsConstructor // autowired를 사용하지 않고 필드의 의존성을 주입 시켜준다
+@RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
@@ -121,10 +121,17 @@ public class MemberService implements UserDetailsService {
 	}
 
 
+<<<<<<< HEAD
 	  private final JavaMailSender javaMailSender;
 
 
 
+=======
+
+	  private final JavaMailSender javaMailSender;
+
+	  
+>>>>>>> d6f097cf3aff501bf473f06f658f24800e6093fa
 	  
 	  public void sendEmail(String to, String subject, String text) {
 			SimpleMailMessage message = new SimpleMailMessage();
@@ -134,8 +141,11 @@ public class MemberService implements UserDetailsService {
 			javaMailSender.send(message);
 		}
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> d6f097cf3aff501bf473f06f658f24800e6093fa
 	// 회원 상세정보
 	@Transactional(readOnly = true)
 	public Member getmemberDts(Long memberId) {

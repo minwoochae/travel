@@ -11,20 +11,15 @@ import java.util.List;
 @Service
 public class DataService {
 
-    private final DataRepository dataRepository;
+	@Autowired
+    private DataRepository dataRepository;
 
-    @Autowired
-    public DataService(DataRepository dataRepository) {
-        this.dataRepository = dataRepository;
+    public List<DataContent> getDataByAreaCodeAndContentType(
+            List<Integer> areaCodes,
+            List<Integer> contentTypes
+    ) {
+        return dataRepository.findByAreaCodeInAndContentTypeIn(areaCodes, contentTypes);
     }
 
-    public List<DataContent> getAllAreaCodes() {
-        return dataRepository.findAllAreaCodes();
-    }
-
-    public List<DataContent> findByContentTypeAndAreaCode(int contentType, int areaCode) {
-        return dataRepository.findByContentTypeAndAreaCode(contentType, areaCode);
-    }
-    
-    
+   
 }
