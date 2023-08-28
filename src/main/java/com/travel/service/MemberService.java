@@ -121,7 +121,14 @@ public class MemberService implements UserDetailsService {
 	}
 
 
+<<<<<<< HEAD
 	  private final JavaMailSender javaMailSender;
+=======
+
+	  private final JavaMailSender javaMailSender;
+
+
+>>>>>>> 710be5cf3659be051bcc19f12f0c886cf8219c2b
 	  
 	  
 	  public void sendEmail(String to, String subject, String text) {
@@ -133,7 +140,10 @@ public class MemberService implements UserDetailsService {
 		}
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 710be5cf3659be051bcc19f12f0c886cf8219c2b
 	// 회원 상세정보
 	@Transactional(readOnly = true)
 	public Member getmemberDts(Long memberId) {
