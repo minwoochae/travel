@@ -35,12 +35,12 @@ public class CartController {
 	private final CartService cartService;
 	
 	@PostMapping(value = "/addCart")
-	public @ResponseBody ResponseEntity cart(@RequestBody @Valid CartDto orderDto, BindingResult bindingResult, Principal principal) {
+	public @ResponseBody ResponseEntity cart(@RequestBody @Valid CartDto cartDto, BindingResult bindingResult, Principal principal) {
 		String email = principal.getName();
 		Long cartId;
 		
 		try {
-			cartId = cartService.cart(orderDto, email);			
+			cartId = cartService.cart(cartDto, email);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

@@ -35,10 +35,10 @@ public class Cart {
 	private Member member;
 	
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartItem> cartitems = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 	
 	public void addCartItem(CartItem cartItem) {
-		this.cartitems.add(cartItem);
+		this.cartItems.add(cartItem);
 		cartItem.setCart(this);
 
 	}
