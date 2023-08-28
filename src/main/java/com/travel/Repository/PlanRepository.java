@@ -19,7 +19,9 @@ public interface PlanRepository extends JpaRepository<Plan, Long>{
 	@Query("SELECT p FROM Plan p WHERE p.member.id = :memberId ORDER BY p.regDate DESC")
 	List<Plan> findLatestByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
+	List<Plan> findByMember_Email(String email);
 
+	List<Plan> findTop3ByMember_EmailOrderByRegDateDesc(String email);
 
-
+	
 }

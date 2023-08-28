@@ -19,8 +19,10 @@ import com.travel.Dto.TourImgDto;
 import com.travel.Dto.TourSearchDto;
 import com.travel.Repository.InfoImgRepository;
 import com.travel.Repository.InfoRepository;
+import com.travel.Repository.MemberRepository;
 import com.travel.entity.InfoBoard;
 import com.travel.entity.InfoBoardImg;
+import com.travel.entity.Member;
 import com.travel.entity.Tourist;
 import com.travel.entity.TouristImg;
 
@@ -35,13 +37,17 @@ public class InfoService {
 	private final InfoRepository infoRepository;
 	private final InfoImgRepository infoImgRepository;
 	private final InfoImgService infoImgService;
+	private final MemberRepository memberRepository;
 	
 	
 	// infoBoard 테이블에 공지등록(insert)
-	public Long saveInfo(InfoFormDto infoFormDto, List<MultipartFile> infoImgFileList) throws Exception {
+	public Long saveInfo(String no, InfoFormDto infoFormDto, List<MultipartFile> infoImgFileList) throws Exception {
 		
 		// 공지등록
 		InfoBoard infoBoard = infoFormDto.createInfo();
+		Member member = memberRepository.findByEmail(no);
+		infoBoard.setMember(member);
+		
 		infoRepository.save(infoBoard);
 		
 		// 이미지 등록

@@ -2,6 +2,7 @@ package com.travel.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -49,16 +50,29 @@ public class PlanService {
 	//플랜 컨텐츠 추가하기
 	public PlanContent setPlanContent(PlanContentDto planContentDto, Plan plan) {
 		
+		List<PlanContent> planContentList = new ArrayList<>();
 		PlanContent planContent = PlanContent.createContent(planContentDto, plan);
+		planContentList.add(planContent);
 		PlanContent savePlanContent = planContentRepository.save(planContent);
 		
 		return savePlanContent;
 		
 	}
 	
+	
+	
 	//플랜 찾기
 	public List<Plan> findPlan(Long memberId) {
 		return planRepository.findByPlanId(memberId);
+	}
+	
+	//email을 사용해서 플랜 찾기
+	public List<Plan> findPlanByEmail(String email){
+		return planRepository.findByMember_Email(email);
+	}
+	
+	public List<Plan> findPlanTopByEmail(String email){
+		return planRepository.findTop3ByMember_EmailOrderByRegDateDesc(email);
 	}
 	
 	//최근 플랜 찾기
