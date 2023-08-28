@@ -3,12 +3,7 @@ package com.travel.controller;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,12 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class KakaoController {
 	@Autowired
 	public IKakaoLoginService iKakaoS;
-	
-	@Autowired
-	private AuthenticationSuccessHandler kakaoAuthenticationSuccessHandler;
-
-	   @Autowired
-	    private AuthenticationManager authenticationManager;
 
 
 	@Autowired
@@ -68,6 +57,7 @@ public class KakaoController {
 		MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
 		memberKakaoDto.setEmail(email);
 		memberKakaoDto.setName(name);
+		memberKakaoDto.setPassword("SNS 비밀번호ㅇㅅㅇ");
 		System.out.println(memberKakaoDto.getEmail());
 
    
@@ -77,15 +67,11 @@ public class KakaoController {
         	String errorMessage = "가입이 되어 있지 않은 카카오 계정입니다.";
         	model.addAttribute("errorMessage", errorMessage);
         	model.addAttribute("memberKakaoDto" ,memberKakaoDto);
-        	
+     
+ 
         	return "member/KakaoMemberForm";
         }
         
-        // 가입되어 있는 경우
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(email, null)
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     	
     	
     	
@@ -102,20 +88,15 @@ public class KakaoController {
 	@PostMapping(value = "/kakao/new")
 	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
+			
 			return "member/KakaoMemberForm";
 		}
 
 		try {
-			System.out.println(memberKakaoDto.getEmail() + "fdwsp.jfklwajgkkjawg;l");
 			
 			Member member = Member.createKaKao(memberKakaoDto, passwordEncoder);
 			kakaoService.saveMember(member);
-			
-		    // 가입 후 자동 로그인
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(memberKakaoDto.getEmail(), null)
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+		
 
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());

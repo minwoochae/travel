@@ -55,36 +55,30 @@
 									style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px">이메일</h4>
 								<div>
 									<label th:for="email" class="text-black" id="email"
-										th:text="${memberKakaoDto.email}" 
+										th:text="${memberKakaoDto.email}"
 										style="width: 100%; justify-content: center; align-items: center; font-size: 17px; margin-top: 42px"></label>
 
 								</div>
 							</div>
 
 							<div class="form-group row">
-								<div style="display: flex; height: 50px; width: 100%;   font-size: 17px; margin-top: 42px">
-								<h4
-									style="font-weight: bolder; margin-top: 15px; width: 100px; margin-left: 100px">전화번호</h4>
+								<div
+									style="display: flex; height: 50px; width: 100%; font-size: 17px; margin-top: 42px">
+									<h4
+										style="font-weight: bolder; margin-top: 15px; width: 100px; margin-left: 100px">전화번호</h4>
 									<input type="text" class="form-control" style="width: 70%"
 										placeholder="번호는 - 를 제외하고 입력해주세요" th:field="*{phoneNumber}">
-									</div>
-									<p th:if="${#fields.hasErrors('phoneNumber')}"
-										th:errors="*{phoneNumber}" class="fieldError"></p>
-							</div>
-
-
-							<div class="form-group row">
-									<div style="display: flex; height: 50px; width: 100%;   font-size: 17px; margin-top: 42px">
-								<h4
-									style="font-weight: bolder; margin-top: 15px; width: 100px; margin-left: 100px">비밀번호</h4>
-									<input type="password" class="form-control"  style="width: 70%"
-										placeholder="Password" th:field="*{password}">
 								</div>
-									<p th:if="${#fields.hasErrors('password')}"
-										th:errors="*{password}" class="fieldError"></p>
+								<p th:if="${#fields.hasErrors('phoneNumber')}"
+									th:errors="*{phoneNumber}" class="fieldError"></p>
 							</div>
-						<input type="hidden" id="name" name="name" th:value="${memberKakaoDto.name}" />
-							<input type="hidden" id="email"  name="email" th:value="${memberKakaoDto.email}" />
+							<input type="hidden" th:field="*{provider}" name="provider">
+							<input type="hidden" th:field="*{providerId}" name="providerId">
+							<input type="hidden" th:field="*{password}"
+								th:value="${memberKakaoDto.password}"> <input
+								type="hidden" id="name" name="name"
+								th:value="${memberKakaoDto.name}" /> <input type="hidden"
+								id="email" name="email" th:value="${memberKakaoDto.email}" />
 
 							<div
 								style="display: flex; width: 100%; justify-content: center; margin: 0 auto; align-items: center; margin-bottom: 50px">
@@ -95,7 +89,7 @@
 								th:value="${_csrf.token}">
 						</form>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
