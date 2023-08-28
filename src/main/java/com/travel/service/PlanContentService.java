@@ -23,9 +23,9 @@ public class PlanContentService {
 
     public void DataSave() {
     	 List<String> apiUrls = new ArrayList<>();
-    	 apiUrls.add("https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=12035&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&showflag=1&listYN=Y&arrange=A&contentTypeId=12");
-    	 apiUrls.add("https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=3366&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&showflag=1&listYN=Y&arrange=A&contentTypeId=32");
-    	 apiUrls.add("https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=17046&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&showflag=1&listYN=Y&arrange=A&contentTypeId=39");
+    	 apiUrls.add("https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=2000&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&showflag=1&listYN=Y&arrange=Y&contentTypeId=12");
+    	 apiUrls.add("https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=2000&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&showflag=1&listYN=Y&arrange=Y&contentTypeId=32");
+    	 apiUrls.add("https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=2000&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&showflag=1&listYN=Y&arrange=Y&contentTypeId=39");
 
     	    for (String apiUrl : apiUrls) {
     	        List<PlanContentDto> contentList = apiService.fetchApiData(apiUrl);
