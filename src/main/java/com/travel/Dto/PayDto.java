@@ -9,7 +9,7 @@ public class PayDto {
 	
 	private Long cartId;
 	
-	private String price;
+	private int price;
 	
 	private String payNo;
 	

@@ -50,12 +50,16 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12 mb-0"></div>
+		
+		
+			<div th:unless="${isOwner}" class="col-md-12 mb-0">
+			  <p>등록한 사용자만 볼 수 있는 페이지입니다.</p>
+			</div>
 		</div>
 	</div>
 
 
-	<div class="container">
+	<div class="container"  th:if="${isOwner}">
 		<div class="row">
 			<input type="hidden" id="askBoardId" th:value="${ask.id}"> <input
 				type="hidden" th:value="${ask.askTitle}" id="askTitle"
@@ -69,21 +73,6 @@
 				</div>
 			</div>
 
-			<!-- 이미지가 등록된 경우에만 카드 박스와 askTitle을 출력 -->
-	<!-- 		<div th:if="${not #lists.isEmpty(ask.askImgDtoList)}">
-				<div class="card" style="margin-bottom: 20px; width: 1140px">
-					<div class="card-body text-center">
-						<div th:each="imgDto : ${ask.askImgDtoList}">
-							<img th:src="${imgDto.imgUrl}" class="rounded repImg"
-								th:alt="${ask.askTitle}"
-								style="width: 900px; height: 400px; padding-bottom: 30px;">
-						</div>
-					</div>
-				</div>
-
-			</div> -->
-
-
 			<div class="col-md-12">
 				<div th:each="askImg : ${ask.askImgDtoList}" class="text-center">
 					<img th:if="${not #strings.isEmpty(askImg.imgUrl)}"
@@ -93,17 +82,20 @@
 			</div>
 
 
+
 			<!-- 관리자 답변 표시 -->
-			<div class="row" th:if="${askResponse != null}">
-				<input type="hidden" id="askResponseBoardId"
-					th:value="${askResponse.id}">
-				<div class="card" style="margin-bottom: 20px; width: 1140px">
-					<div class="card-body">
-						<strong th:text="${askResponse.askResponseTitle}"></strong> <strong
-							th:text="${askResponse.askResponseContent}"></strong>
-					</div>
-				</div>
-			</div>
+			
+<div class="row" th:if="${askResponse != null}">
+<p>답변보기</p>
+    <input type="hidden" id="askResponseBoardId"
+        th:value="${askResponse.id}">
+    <div class="card" style="margin-bottom: 20px; width: 1140px">
+        <div class="card-body">
+            <strong th:text="${askResponse.askResponseTitle}"></strong> <strong
+                th:text="${askResponse.askResponseContent}"></strong>
+        </div>
+    </div>
+</div>
 
 
 
