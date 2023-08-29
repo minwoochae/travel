@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.travel.Dto.MemberFormDto;
 import com.travel.Repository.MemberRepository;
+import com.travel.constant.Division;
 import com.travel.entity.Member;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -110,6 +111,8 @@ public class MemberService implements UserDetailsService {
 
 		if (member == null) {
 			return "일치하는 사용자가 없습니다";
+		} else if(member.getDivision() ==Division.KAKAO ){
+			return "카카오 사용자입니다";
 		}
 
 		return member.getPassword();
@@ -168,7 +171,7 @@ public class MemberService implements UserDetailsService {
 
 		// 사용자가 있다면 DB에서 가져온 값으로 userDetails 객체를 만들어서 반환
 		return User.builder().username(member.getEmail()).password(member.getPassword())
-				.roles(member.getRole().toString()).build();
+				.roles(member.getDivision().toString()).build();
 	}
 
 	@Transactional(readOnly = true)

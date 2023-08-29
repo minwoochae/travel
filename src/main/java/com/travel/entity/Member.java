@@ -132,11 +132,10 @@ public class Member extends BaseEntity {
 	}
 
 	@Builder(builderClassName = "OAuth2Register", builderMethodName = "oauth2Register")
-	public Member(String email, String password, String name, Role role, String provider, String providerId, Division division) {
+	public Member(String email, String password, String name,  String provider, String providerId, Division division) {
 		this.email = email;
 		this.password = password;
 		this.name = name;
-		this.role = role;
 		this.provider = provider;
 		this.providerId = providerId;
 		this.division = division;
