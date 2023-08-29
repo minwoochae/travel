@@ -115,4 +115,13 @@ public class PlanService {
     }
 	
 	
+	
+	public void deleteplan(Long planId) {
+		Plan plan = planRepository.findById(planId).orElseThrow(EntityNotFoundException::new);
+
+		planRepository.delete(plan);
+	}
+	
+	
+	
 }
