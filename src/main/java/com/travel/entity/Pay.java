@@ -31,7 +31,7 @@ public class Pay{
 	private Long id;
 	
 	@Column(name="price") 
-	private String price;
+	private int price;
 	
 	@Column(name="pay_no") 
 	private String payNo;

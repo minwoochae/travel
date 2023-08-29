@@ -54,6 +54,7 @@ li {
 .btnmember:hover {
 	color: red !important;
 }
+
 </style>
 </th:block>
 <div layout:fragment="content">
@@ -86,22 +87,39 @@ li {
 	</form>
 	
 	
-	<div class="row justify-content-between"
+	<div class="row justify-content-between" th:if="${!#lists.isEmpty(plan)}"
 		style="width: 950px; justify-content: center; align-items: center; margin: 0 auto; margin-top: 50px">
 		<h1 style="font-weight: bold;">나의 최근 플랜</h1>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9a621f34f312f55880878c9e6a92fc9010f6cdd3
 		<a href="/planner/myPlanList" type="button"
 			class="btn btn-outline-danger m-1 justify-content-md-end">더 보러가기</a>
 	</div>
 
 	<div th:if="${#lists.isEmpty(plan)}">
-		<p style="text-align: center; font-size: 50px; width:100%; height: 100px; margin-top: 50px; ">현재 나의 플랜이 없습니다.</p>
+		<p style="text-align: center; font-size: 50px; width:100%; height: 400px; margin-top: 200px; ">현재 나의 플랜이 없습니다.</p>
 	</div>
 	
+<<<<<<< HEAD
+=======
+	
+
+	<a th:href="'/planner/myPlanInfo/' + ${plan.id}" class="card" th:each="plan : ${plan}"
+		style="width: 950px; display:flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
+
+		<div class="row g-0" style="display: flex; " >
+=======
+
+	
+>>>>>>> 9a621f34f312f55880878c9e6a92fc9010f6cdd3
 	<div>
 	<a th:href="'/planner/myPlanInfo/' + ${plan.id}" class="card" th:each="plan : ${plan}"
 		style="width: 950px; display:flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
 
 		<div class="row g-0" style="display: flex;">
+>>>>>>> c2652421206710c0b3b5b2abbfa1a49d3d791abe
 			<div style="display: flex; align-items:center;">
 				<div class="col-md-4">
 					<img th:src="${plan.planContent[0].place_img}" class="img-fluid rounded-start" th:alt="${plan.planContent[0].place_img}">
