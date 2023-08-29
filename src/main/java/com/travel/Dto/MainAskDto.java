@@ -15,10 +15,13 @@ public class MainAskDto {
 	
 	private String askContent;
 	
+	private String createBy;
+	
 	@QueryProjection 
-	public MainAskDto(Long id, String askTitle, String askContent) {
+	public MainAskDto(Long id, String askTitle, String askContent, String createBy) {
 		this.id = id;
 		this.askTitle = askTitle;
 		this.askContent = askContent;
+		this.createBy = createBy;
 	}
 }

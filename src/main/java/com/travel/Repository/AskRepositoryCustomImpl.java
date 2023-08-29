@@ -64,7 +64,7 @@ public class AskRepositoryCustomImpl implements AskRepositoryCustom {
 		QAskBoardImg askBoardImg = QAskBoardImg.askBoardImg;
 
 		List<MainAskDto> content = queryFactory
-				.select(new QMainAskDto(askBoard.id, askBoard.askTitle, askBoard.askContent)).from(askBoardImg)
+				.select(new QMainAskDto(askBoard.id, askBoard.askTitle, askBoard.askContent, askBoard.createBy)).from(askBoardImg)
 				.join(askBoardImg.askBoard, askBoard).where(askTitleLike(askSearchDto.getSearchQuery()))
 				.orderBy(askBoard.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 

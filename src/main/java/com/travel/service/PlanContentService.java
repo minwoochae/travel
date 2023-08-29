@@ -51,4 +51,14 @@ public class PlanContentService {
     		    }
     		}
     }
+    
+    public Long recordCount(){
+    	long recordCount = dataRepository.count();
+        
+        if (recordCount == 0) {
+        	DataSave();
+        }
+    	
+    	return recordCount;
+    }
 }
