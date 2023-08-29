@@ -92,10 +92,8 @@ public class MemberController {
 	public HashMap<String, String> members(@RequestBody Map<String, Object> data) {
 		String name = (String) data.get("memberName");
 		String phone = (String) data.get("memberPhoneNumber");
-		/*
-		 * Member foundMember = memberRepository.findByNameAndPhoneNumber( name ,
-		 * phoneNumber);
-		 */
+
+		
 		HashMap<String, String> msg = new HashMap<>();
 		String email = memberservice.emailFind(name, phone);
 
@@ -114,11 +112,13 @@ public class MemberController {
 	// 비밀번호 찾고 난수생성기로 랜덤비밀번호 생성
 	@PostMapping("/account/pssearch")
 	@ResponseBody
-	public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata, Principal principal) {
+	public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata) {
 		String email = (String) psdata.get("memberEmail");
+		
 
 		HashMap<String, String> msg = new HashMap<>();
 		String pass = memberservice.passwordFind(email);
+			
 		// pass 암호화된 비밀번호
 		String ramdomps = memberservice.getRamdomPassword(12);
 
@@ -206,7 +206,7 @@ public class MemberController {
 		return "member/EditMember";
 	}
 
-	// 내 비밀번호수정
+	// 내 비밀번호수정 (마이페이지에서)
 	@GetMapping(value = "/member/EditMember")
 	public String passwordupdate(Principal principal, Model model) {
 		Member member = memberservice.memberMypage(principal.getName());
@@ -218,12 +218,12 @@ public class MemberController {
 	public String passwordupdate(@RequestParam String password, Model model, Principal principal, Member member) {
 		Member members = memberservice.memberMypage(principal.getName());
 		if (passwordEncoder.matches(password, members.getPassword()) == true) {
-			model.addAttribute("errorMessage", "기존 비밀번호와 같습니다."); // Set the errorOccurred attribute
+			model.addAttribute("errorMessage", "기존 비밀번호와 같습니다."); 
 			model.addAttribute("member", member);
-			return "member/EditMember"; // Stay on the same page with the error message
+			return "member/EditMember"; 
 		} else {
 			memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
-			return "redirect:/"; // Redirect after successful password update
+			return "redirect:/"; 
 		}
 
 
