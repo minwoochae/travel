@@ -1,10 +1,7 @@
 package com.travel.config;
 
-<<<<<<< HEAD
-=======
 
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> d6f097cf3aff501bf473f06f658f24800e6093fa
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -39,11 +36,6 @@ public class SecurityConfig {
 	public AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
 		return new CustomOAuth2SuccessHandler();
 	}
-
-
-
-
-	    
 
 
 

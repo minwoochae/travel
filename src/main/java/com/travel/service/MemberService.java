@@ -1,13 +1,8 @@
 package com.travel.service;
 
-import java.io.*;
-import java.net.*;
 import java.security.SecureRandom;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
@@ -121,17 +116,10 @@ public class MemberService implements UserDetailsService {
 	}
 
 
-<<<<<<< HEAD
 	  private final JavaMailSender javaMailSender;
 
 
 
-=======
-
-	  private final JavaMailSender javaMailSender;
-
-	  
->>>>>>> d6f097cf3aff501bf473f06f658f24800e6093fa
 	  
 	  public void sendEmail(String to, String subject, String text) {
 			SimpleMailMessage message = new SimpleMailMessage();
@@ -141,11 +129,6 @@ public class MemberService implements UserDetailsService {
 			javaMailSender.send(message);
 		}
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> d6f097cf3aff501bf473f06f658f24800e6093fa
 	// 회원 상세정보
 	@Transactional(readOnly = true)
 	public Member getmemberDts(Long memberId) {

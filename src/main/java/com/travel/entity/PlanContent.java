@@ -50,11 +50,7 @@ public class PlanContent {
 	@Column(name="place_img")
 	private String place_img;
 	
-<<<<<<< HEAD
 
-	
-=======
->>>>>>> d6f097cf3aff501bf473f06f658f24800e6093fa
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "plan_id")
@@ -69,11 +65,8 @@ public class PlanContent {
 		planContent.setPlaceAddress(planContentDto.getPlaceAddress());
 		planContent.setPlaceLatitude(planContentDto.getPlaceLatitude());
 		planContent.setPlaceLongitude(planContentDto.getPlaceLongitude());
-<<<<<<< HEAD
 		planContent.setPlace_img(planContentDto.getPlace_img());
 
-=======
->>>>>>> d6f097cf3aff501bf473f06f658f24800e6093fa
 		planContent.setPlan(plan);
 		
 		return planContent;
