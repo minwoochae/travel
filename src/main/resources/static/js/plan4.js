@@ -1,56 +1,94 @@
-document.getElementById("searchButton").addEventListener("click",
- 	function() {
+document.getElementById("searchButton").addEventListener("click", function() {
     var selectedAreaCode = document.getElementById("areaCodeSelect").value;
     var selectedContentType = document.getElementById("contentTypeIdSelect").value;
-   
-
-
+    
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/search-data?areaCode=" + encodeURIComponent(selectedAreaCode) + "&contentType=" + encodeURIComponent(selectedContentType), true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var searchData = JSON.parse(xhr.responseText);
-
             var searchResultsElement = document.getElementById("results");
-            searchResultsElement.innerHTML = ""; // 결과 영역 초기화
-			
-      		
-            for (let i = 0; i < searchData.length; i++) {
-		    let data = searchData[i];
-		    
-		    let resultItem = document.createElement("div");
-		    resultItem.className = "dataList";
-		    resultItem.style = "display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;";
-			
-		    let placeimg = data.placeimg;
-		    let placeName = data.placeName;
-		    let placeAddress = data.placeAddress;
-		    let placeLatitude = data.placeLatitude;
-		    let placeLongitude = data.placeLongitude;
-		
-		
-		    resultItem.innerHTML = `
-		        <img src="${placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${placeName} Image">
-		        <h4 style="margin-left:15px;">${placeName}</h4>
-		    `;
-		    
-		    currentData = {
+            
+            // 페이지 관련 설정
+            var itemsPerPage = 20;
+            var currentPage = 1;
+            var totalPages = Math.ceil(searchData.length / itemsPerPage);
+            
+            // 검색 결과 초기화
+            searchResultsElement.innerHTML = "";
+            
+            var searchInput = document.getElementById("searchInput");
+            var searchTerm = searchInput.value.toLowerCase(); // 검색어를 소문자로 변환하여 대소문자 구분 없이 검색
+            
+            // 현재 페이지에 해당하는 결과만 표시
+            var startIndex = (currentPage - 1) * itemsPerPage;
+            var endIndex = Math.min(startIndex + itemsPerPage, searchData.length);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                let data = searchData[i];
+
+                let resultItem = document.createElement("div");
+                resultItem.className = "dataList";
+                resultItem.style = "display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;";
+
+                let placeimg = data.placeimg;
+                let placeName = data.placeName;
+                let placeAddress = data.placeAddress;
+                let placeLatitude = data.placeLatitude;
+                let placeLongitude = data.placeLongitude;
+
+                resultItem.innerHTML = `
+                    <img src="${placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${placeName} Image">
+                    <h4 style="margin-left:15px;">${placeName}</h4>
+                `;
+
+                currentData = {
                     placeName: placeName,
                     placeAddress: placeAddress,
                     placeimg: placeimg,
                     placeLatitude: placeLatitude,
                     placeLongitude: placeLongitude
                 };
-		
-		     searchResultsElement.appendChild(resultItem);
-            addClickListener(resultItem, placeName, placeAddress, placeimg, placeLatitude, placeLongitude);
-			}
+
+                searchResultsElement.appendChild(resultItem);
+                addClickListener(resultItem, placeName, placeAddress, placeimg, placeLatitude, placeLongitude);
+            }
+            
+            // 페이지 이동 버튼 추가
+            var paginationElement = document.createElement("div");
+            paginationElement.className = "pagination";
+            paginationElement.innerHTML = `
+                <button class="prev-btn" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+                <span>Page ${currentPage} of ${totalPages}</span>
+                <button class="next-btn" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
+            `;
+            
+            // 이전 페이지로 이동
+            paginationElement.querySelector(".prev-btn").addEventListener("click", function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updateResults();
+                }
+            });
+            
+            // 다음 페이지로 이동
+            paginationElement.querySelector(".next-btn").addEventListener("click", function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updateResults();
+                }
+            });
+            
+            searchResultsElement.appendChild(paginationElement);
+            
+            // 페이지 이동 후 버튼 상태 업데이트
+            updatePaginationButtons();
         }
     };
     
     xhr.send();
-    
 });
+   
 
 
 function addClickListener(element, placeName, placeAddress, placeimg, placeLatitude, placeLongitude) {
