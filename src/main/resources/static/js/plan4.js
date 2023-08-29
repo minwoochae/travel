@@ -1,26 +1,32 @@
-document.getElementById("searchButton2").addEventListener("click", function() {
-    var selectedAreaCode = document.getElementById("areaCodeSelect2").value;
-    var selectedContentType = document.getElementById("contentTypeIdSelect2").value;
+document.getElementById("searchButton").addEventListener("click", function() {
+    var selectedAreaCode = document.getElementById("areaCodeSelect").value;
+    var selectedContentType = document.getElementById("contentTypeIdSelect").value;
+
 
     var currentPage = 1;
     var searchData = []; // 전체 검색 결과를 저장할 배열
-    var itemsPerPage = Number.MAX_SAFE_INTEGER; // 한 페이지에 보여줄 결과 개수
-
+    var itemsPerPage = Number.MAX_SAFE_INTEGER;// 한 페이지에 보여줄 결과 개수
+	
+	// 초기 로드시 지역 코드를 기반으로 콘텐츠 유형 업데이트
+	showResultsWithLazyLoading()
+	
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/search-data?areaCode=" + encodeURIComponent(selectedAreaCode) +
              "&contentType=" + encodeURIComponent(selectedContentType), true);
+         
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             searchData = JSON.parse(xhr.responseText);
-            showResultsWithLazyLoading2();
+            showResultsWithLazyLoading();
         }
     };
 
     xhr.send();
 
-   function showResultsWithLazyLoading2() {
-        var searchResultsElement = document.getElementById("results2");
+
+    function showResultsWithLazyLoading() {
+        var searchResultsElement = document.getElementById("results");
         searchResultsElement.innerHTML = ""; // 결과 영역 초기화      
 
         // 현재 페이지에 해당하는 결과만 표시
@@ -31,7 +37,7 @@ document.getElementById("searchButton2").addEventListener("click", function() {
         for (let i = startIndex; i < endIndex; i++) {
             let data = searchData[i];
             
-            var searchInput = document.getElementById("searchInput2");
+            var searchInput = document.getElementById("searchInput");
       		var searchTerm = searchInput.value.toLowerCase(); // 검색어를 소문자로 변환하여 대소문자 구분 없이 검색
       		
             let resultItem = document.createElement("div");
@@ -90,25 +96,28 @@ document.getElementById("searchButton2").addEventListener("click", function() {
 
 });
 
-    function addClickListener(element, placeName, placeAddress, placeimg, placeLatitude, placeLongitude) {
-        element.addEventListener("click", function() {
-            currentData = {
-                placeName: placeName,
-                placeAddress: placeAddress,
-                placeimg: placeimg,
-                placeLatitude: placeLatitude,
-                placeLongitude: placeLongitude
-            };
-            showDetail2(placeName, placeAddress, placeimg, placeLatitude, placeLongitude);
-        });
-    }
 
-    var resultDetailDiv2 = document.getElementById("resultDetail");
 
-    function showDetail2(placeName, placeAddress, placeimg, placeLatitude, placeLongitude) {
-        resultDetailDiv.innerHTML = `
-        
-      <div style="min-width:950px; max-width:950px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
+function addClickListener(element, placeName, placeAddress, placeimg, placeLatitude, placeLongitude) {
+    element.addEventListener("click", function() {
+        currentData = {
+            placeName: placeName,
+            placeAddress: placeAddress,
+            placeimg: placeimg,
+            placeLatitude: placeLatitude,
+            placeLongitude: placeLongitude
+        };
+        showDetail(placeName, placeAddress, placeimg, placeLatitude, placeLongitude);
+    });
+}
+
+ var resultDetailDiv = document.getElementById("resultDetail");
+ 
+// 상세 정보 표시 함수
+function showDetail(placeName, placeAddress, placeimg, placeLatitude, placeLongitude) {
+    resultDetailDiv.innerHTML = `
+    
+    <div style="min-width:950px; max-width:950px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
     	<div style="flex-shrink: 0;"> 
     		<!-- 이미지는 flex-shrink 속성을 0으로 지정해서 줄어들지 않게 합니다 -->
         	<img src="${placeimg}" alt="${placeName} Image" style="width:360px; height:240px;">
@@ -127,29 +136,29 @@ document.getElementById("searchButton2").addEventListener("click", function() {
     	</div>
 	</div>
     <div id="map" style="width:880px; height:570px; margin-left:60px;"></div>
-        `;
-
+	
+    `;
         var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-            mapOption = {
-                center: new kakao.maps.LatLng(placeLongitude, placeLatitude), // 지도의 중심좌표
-                level: 2 // 지도의 확대 레벨
-            };
+        mapOption = {
+          center: new kakao.maps.LatLng(placeLongitude, placeLatitude), // 지도의 중심좌표
+          level: 2, // 지도의 확대 레벨
+        };
 
-        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-	      // 마커가 표시될 위치입니다
-	      var markerPosition = new kakao.maps.LatLng(placeLongitude, placeLatitude);
-	
-	      // 마커를 생성합니다
-	      var marker = new kakao.maps.Marker({
-	        position: markerPosition,
-	      });
-	
-	      // 마커가 지도 위에 표시되도록 설정합니다
-	      marker.setMap(map);
-    }
+      // 마커가 표시될 위치입니다
+      var markerPosition = new kakao.maps.LatLng(placeLongitude, placeLatitude);
 
-function insertContent2() {
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+        position: markerPosition,
+      });
+
+      // 마커가 지도 위에 표시되도록 설정합니다
+      marker.setMap(map);
+}
+
+function insertContent1() {
     
     // 현재 show active 클래스를 가진 tabPane 찾기
     let activeTabPane = document.querySelector(".tab-pane.show.active");
@@ -185,7 +194,7 @@ function insertContent2() {
     }
 }
 
-function deleteContent2(event) {
+function deleteContent1(event) {
 
     // 클릭한 버튼의 가장 가까운 .dataList 부모 요소를 찾음
     let dataListDiv = event.target.closest(".dataList1");

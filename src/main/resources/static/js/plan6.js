@@ -5,6 +5,9 @@ document.getElementById("searchButton3").addEventListener("click", function() {
     var currentPage = 1;
     var searchData = []; // 전체 검색 결과를 저장할 배열
     var itemsPerPage = Number.MAX_SAFE_INTEGER; // 한 페이지에 보여줄 결과 개수
+    
+    // 초기 로드시 지역 코드를 기반으로 콘텐츠 유형 업데이트
+	showResultsWithLazyLoading3()
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/search-data?areaCode=" + encodeURIComponent(selectedAreaCode) +
