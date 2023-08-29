@@ -28,7 +28,6 @@ public class MainController {
     public void loadData() {
         long recordCount = dataRepository.count();
         
-
         if (recordCount == 0) {
             planContentService.DataSave();
         }
