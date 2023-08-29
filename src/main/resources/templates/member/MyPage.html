@@ -89,7 +89,7 @@ li {
 	<div class="row justify-content-between" each="${plan}"
 		style="width: 950px; justify-content: center; align-items: center; margin: 0 auto; margin-top: 50px">
 		<h1 style="font-weight: bold;">나의 최근 플랜</h1>
-<<<<<<< HEAD
+
 		<a href="/planner/myPlanList" type="button"
 			class="btn btn-outline-danger m-1 justify-content-md-end">더 보러가기</a>
 	</div>
@@ -99,14 +99,14 @@ li {
 	</div>
 	<a href="#" class="card" th:each="plan : ${plan}"
 		style="width: 950px; display: flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
-=======
+
 		<a href="/planner/myPlanList" type="button" class="btn btn-outline-danger m-1 justify-content-md-end" >더 보러가기</a>
 	</div>
 
 	<div>
 	<a th:href="'/planner/myPlanInfo/' + ${plan.id}" class="card" th:each="plan : ${plan}"
 		style="width: 950px; display:flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
->>>>>>> 069e975ffb20e42c90d9d74235ff9b9c06bcf07a
+
 		<div class="row g-0" style="display: flex;">
 			<div style="display: flex; align-items: center;">
 				<div class="col-md-4">
