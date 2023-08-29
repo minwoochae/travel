@@ -28,6 +28,9 @@ public class CartItem {
 	@Column(name="count")
 	private Long count;
 	
+	@Column(name = "img_url")
+	private String imgUrl;
+	
 	@ManyToOne
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
@@ -37,8 +40,10 @@ public class CartItem {
 	private Item item;
 	
 	
+	
 	public static CartItem addCartItem(Item item ,  CartDto cartDto) {
 	    CartItem cartItem = new CartItem();
+	    cartItem.setImgUrl(cartDto.getImgUrl());
 	    cartItem.setItem(item);
 	    cartItem.setCount(cartDto.getCount());
 	    return cartItem;

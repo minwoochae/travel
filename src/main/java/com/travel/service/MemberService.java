@@ -121,11 +121,10 @@ public class MemberService implements UserDetailsService {
 	}
 
 
-
 	  private final JavaMailSender javaMailSender;
 
-	  
-	  
+
+
 	  public void sendEmail(String to, String subject, String text) {
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo(to);

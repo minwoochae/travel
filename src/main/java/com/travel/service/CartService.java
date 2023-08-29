@@ -67,11 +67,9 @@ public class CartService {
 		
 		for (Cart cart : carts) {
 			CartListDto cartListDto = new CartListDto(cart);
-			List<CartItem> cartItems = cart.getCartitems();
+			List<CartItem> cartItems = cart.getCartItems();
 			for(CartItem cartItem : cartItems) {
-				ItemImg itemImg = itemImgRepository
-						.findByItemIdAndRepimgYn(cartItem.getItem().getId(), "Y");
-				CartItemDto cartItemDto = new CartItemDto(cartItem, itemImg.getImgUrl());
+				CartItemDto cartItemDto = new CartItemDto(cartItem);
 				cartListDto.addCartItemDto(cartItemDto);
 			}
 			cartListDtos.add(cartListDto);

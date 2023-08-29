@@ -484,10 +484,10 @@ public class AdminController {
 	// 문의사항
 	
 	// 문의사항 리스트 보여주기 
-	@GetMapping(value = "/adminAsk/asks")
-	public String askList(Model model, AskSearchDto askSearchDto, Optional<Integer> page) {
+	@GetMapping(value = { "/adminAsk/asks", "/adminAsk/asks/{page}"})
+	public String askList(Model model, AskSearchDto askSearchDto,@PathVariable Optional<Integer> page) {
 		
-		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 9);	
+		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 6);	
 		Page<AskBoard> asks = askService.getAdminAskPage(askSearchDto, pageable);
 		
 		 // Add askStatus to each AskResponseFormDto in the list
@@ -539,18 +539,33 @@ public class AdminController {
 	
 	// 문의사항 상세페이지
 	@GetMapping(value = "/askBoard/{askBoardId}")
-	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId) {
+	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId, Principal principal) {
 	    
 		AskFormDto askFormDto = askService.getAskDtl(askBoardId);
 	    
 		AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askBoardId);
 		
-	    if (askResponseFormDto != null) {
-	        model.addAttribute("askResponse", askResponseFormDto);
-	    }
+		 // 현재 로그인한 사용자의 아이디를 가져옴
+	    String loggedInUsername = principal.getName();
+		
+	    if (askFormDto != null) {
+	        // 문의사항 작성자의 아이디와 현재 로그인한 사용자의 아이디를 비교
+	        if (askFormDto.getCreateBy().equals(loggedInUsername)) {
+	            // 현재 로그인한 사용자가 글 작성자인 경우에만 상세 페이지 표시
+	            model.addAttribute("isOwner", true);
+	            model.addAttribute("ask", askFormDto);
+	            if (askResponseFormDto != null) {
+	                model.addAttribute("askResponse", askResponseFormDto);
+	            }
+	        } else {
+	            // 등록한 사람이 아닌 경우 메시지를 표시하고 상세 페이지 미표시
+	            model.addAttribute("isOwner", false);
+	        }
 	    
 	    model.addAttribute("ask", askFormDto);
 
+	   
+	    }
 	    return "admin/askDtl";
 	}
 	

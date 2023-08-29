@@ -8,13 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderDto {
-    private List<Long> selectedProductIds;
-
-    public List<Long> getSelectedProductIds() {
-        return selectedProductIds;
-    }
-
-    public void setSelectedProductIds(List<Long> selectedProductIds) {
-        this.selectedProductIds = selectedProductIds;
-    }
+	private String orderItemId;
+    private String itemName;
+    private String totalPrice;
+    private String orderName;
+    private String zipCode;
+    private String orderAddress;
+    private String phoneNumber;
 }

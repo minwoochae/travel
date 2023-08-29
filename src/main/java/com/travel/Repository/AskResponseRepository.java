@@ -9,6 +9,7 @@ import com.travel.entity.AskResponseBoard;
 
 public interface AskResponseRepository extends JpaRepository<AskResponseBoard, Long>, AskResponseCustom{
 
-	//Optional<AskResponseBoard> findById(Long askResponseId);
+	Optional<AskResponseBoard> findById(Long askResponseBoardId);
+
 	
 }

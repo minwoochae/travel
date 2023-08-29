@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanContent;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -60,7 +62,6 @@ public class PlanService {
 	}
 	
 	
-	
 	//플랜 찾기
 	public List<Plan> findPlan(Long memberId) {
 		return planRepository.findByPlanId(memberId);
@@ -69,6 +70,11 @@ public class PlanService {
 	//email을 사용해서 플랜 찾기
 	public List<Plan> findPlanByEmail(String email){
 		return planRepository.findByMember_Email(email);
+	}
+	
+	//email을 사용해서 최근 3개 플랜 가져오기
+	public List<Plan> findPlanTopByEmail(String email){
+		return planRepository.findTop3ByMember_EmailOrderByRegDateDesc(email);
 	}
 	
 	//최근 플랜 찾기
@@ -82,12 +88,27 @@ public class PlanService {
 	    List<Plan> plans = planRepository.findLatestByMemberId(memberId, pageable);
 	    return plans.isEmpty() ? null : plans.get(0);
 	}
-
 	
 	//플랜 컨텐츠 찾기
 	public List<PlanContent> findPlanContentsByPlanId(Long planId){
 		return planContentRepository.findByPlan_Id(planId);
 	}
+	
+	//플랜 리스트 불러오기
+	public List<Plan> getPlansByEmail(String email, Pageable pageable) {
+	    return planRepository.findPlansByEmailOrderByRegDateDesc(email, pageable);
+	}
+	
+	public PlanFormDto getPlanDtl(Long planId) {
+		Plan plan = planRepository.findById(planId).orElseThrow(EntityNotFoundException::new);
+		PlanFormDto planFormDto = PlanFormDto.of(plan);
+		
+		return planFormDto;
+	}
+	
+	public Optional<Plan> getPlanById(Long planId) {
+        return planRepository.findById(planId);
+    }
 	
 	
 }

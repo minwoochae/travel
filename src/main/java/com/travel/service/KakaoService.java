@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class KakaoService implements IKakaoLoginService {
 
-
+//사용 x
 
 	@Override
 	public String getAccessToken(String authorize_code) throws Exception {
@@ -170,16 +170,11 @@ public class KakaoService implements IKakaoLoginService {
         if (searchMember == null){
             memberRepository.save(member);
         }else {
-			/* throw new IllegalStateException("이미 사용중인 Email 입니다"); */
+			 throw new IllegalStateException("이미 사용중인 Email 입니다"); 
         }
     }
     
     
-	
-//	  private void insertUserInfoToDatabase(Member member) { Member findMember =
-//	 memberRepository.findByEmail(member.getEmail());
-//	 
-//	 if (findMember != null) { 
-//		 throw new IllegalStateException("이미 사용중인 Email 입니다"); } }
+
 	 
 	}

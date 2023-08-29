@@ -37,7 +37,7 @@
 				<div class="col-md-12">
 					<div class="p-3 p-lg-5 "
 						style="justify-content: center; align-items: center; margin: 0 auto; width: 60%;">
-						<form role="form" action="/kakao/new" method="post"
+						<form role="form" action="/oauth2/code/kakao" method="post"
 							th:object="${memberKakaoDto}">
 							<div class="form-group row">
 								<h4
@@ -69,17 +69,15 @@
 									<input type="text" class="form-control" style="width: 70%"
 										placeholder="번호는 - 를 제외하고 입력해주세요" th:field="*{phoneNumber}">
 								</div>
-								<p th:if="${#fields.hasErrors('phoneNumber')}"
+								<p style="margin: 0 auto;" th:if="${#fields.hasErrors('phoneNumber')}"
 									th:errors="*{phoneNumber}" class="fieldError"></p>
 							</div>
 							<input type="hidden" th:field="*{provider}" name="provider">
 							<input type="hidden" th:field="*{providerId}" name="providerId">
-							<input type="hidden" th:field="*{password}"
-								th:value="${memberKakaoDto.password}"> <input
-								type="hidden" id="name" name="name"
-								th:value="${memberKakaoDto.name}" /> <input type="hidden"
-								id="email" name="email" th:value="${memberKakaoDto.email}" />
-
+							<input type="hidden" th:field="*{password}" name="password">
+							<input type="hidden" th:field="*{email}" name="email">
+							<input type="hidden" th:field="*{name}" name="name">
+				
 							<div
 								style="display: flex; width: 100%; justify-content: center; margin: 0 auto; align-items: center; margin-bottom: 50px">
 								<button type="submit" class="btn btn-primary mb-3"

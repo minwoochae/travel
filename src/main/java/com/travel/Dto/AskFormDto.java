@@ -21,6 +21,8 @@ public class AskFormDto {
 	private String askTitle;
 	
 	private String askContent;
+	
+	private String createBy;
 
 	private List<AskImgDto> askImgDtoList = new ArrayList<>();
 	
