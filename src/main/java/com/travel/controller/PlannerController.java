@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -143,10 +144,10 @@ public class PlannerController {
 	
 	//플랜 리스트
 	@GetMapping(value={"/planner/myPlanList", "/planner/myPlanList/{page}"})
-	public String myPlanList(Principal principal, Model model, Pageable pageable, Optional<Integer> page) {
+	public String myPlanList(Principal principal, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
 		
 		String email = principal.getName();
-		List<Plan> plans = planService.getPlansByEmail(email, PageRequest.of(page.isPresent() ? page.get() : 0, 6));
+		Page<Plan> plans = planService.getPlansByEmail(email, PageRequest.of(page.isPresent() ? page.get() : 0, 5));
 		model.addAttribute("plan", plans);
 		model.addAttribute("maxPage", 5);
 		
@@ -158,7 +159,7 @@ public class PlannerController {
 	public String myPlanInfo(@PathVariable("planId") Long planId, Model model) {
 		PlanFormDto planFormDto = planService.getPlanDtl(planId);
 		model.addAttribute("plan", planFormDto);
-		Optional<Plan> plan = planService.getPlanById(planId);
+		Plan plan = planService.getPlanById(planId);
 		model.addAttribute("planData", plan);
 		
 		return "planner/myPlanInfo";
