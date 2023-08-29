@@ -58,13 +58,22 @@ public class AskResponseService {
 	public AskResponseFormDto getAskResponseDtl(Long askResponseBoardId) {
 
 		// ask_response_board 테이블에 있는 데이터를 가져온다.
-		AskResponseBoard askResponseBoard = askResponseRepository.findById(askResponseBoardId)
-				.orElseThrow(EntityNotFoundException::new);
+		try {
+			AskResponseBoard askResponseBoard = askResponseRepository.findById(askResponseBoardId)
+					.orElseThrow(EntityNotFoundException::new);			
 
-		// entity -> dto
-		AskResponseFormDto askResponseFormDto = AskResponseFormDto.of(askResponseBoard);
+			// entity -> dto
+			AskResponseFormDto askResponseFormDto = AskResponseFormDto.of(askResponseBoard);
+			askResponseFormDto.setAskStatus(askResponseBoard.getAskStatus());
+			
+			return askResponseFormDto;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("여기여기");
+			return null;
+		}
+		
 
-		return askResponseFormDto;
 	}
 
 	// 글 수정하기

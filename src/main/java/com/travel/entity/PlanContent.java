@@ -50,7 +50,6 @@ public class PlanContent {
 	@Column(name="place_img")
 	private String place_img;
 	
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "plan_id")
 	private Plan plan;
@@ -67,7 +66,6 @@ public class PlanContent {
 		planContent.setPlace_img(planContentDto.getPlace_img());
 
 		planContent.setPlan(plan);
-		
 		return planContent;
 	}
 	
