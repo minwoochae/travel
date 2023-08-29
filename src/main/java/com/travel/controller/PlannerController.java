@@ -28,6 +28,7 @@ import com.travel.Dto.PlanContentDto;
 import com.travel.Dto.PlanFormDto;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
+import com.travel.entity.PlanCommunity;
 import com.travel.entity.PlanContent;
 import com.travel.service.MemberService;
 import com.travel.service.PlanService;
@@ -114,7 +115,7 @@ public class PlannerController {
 				}
 	        }
 			Plan plan = planService.setPlan(no, planFormDto);
-			
+			PlanCommunity planCommunity = planService.createPlanCommunity(plan, no);
 			if (hashMap.containsKey("paramContent")) {
 				String jsonData = (String) hashMap.get("paramContent");
 				List<Map<String, Object>> paramData = objectMapper.readValue(jsonData, new TypeReference<List<Map<String, Object>>>() {});
@@ -132,6 +133,9 @@ public class PlannerController {
                 	
                 	planService.setPlanContent(planContentDto, plan);
                 }
+				
+				
+				
 			}
 			
 			
