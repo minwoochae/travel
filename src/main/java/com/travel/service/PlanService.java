@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,19 +96,22 @@ public class PlanService {
 	}
 	
 	//플랜 리스트 불러오기
-	public List<Plan> getPlansByEmail(String email, Pageable pageable) {
+	public Page<Plan> getPlansByEmail(String email, Pageable pageable) {
 	    return planRepository.findPlansByEmailOrderByRegDateDesc(email, pageable);
 	}
 	
 	public PlanFormDto getPlanDtl(Long planId) {
 		Plan plan = planRepository.findById(planId).orElseThrow(EntityNotFoundException::new);
 		PlanFormDto planFormDto = PlanFormDto.of(plan);
+		List<PlanContent> planContentList = planContentRepository.findByPlan_Id(planId);
+		planFormDto.setPlanContentDtoList(planContentList);
 		
 		return planFormDto;
 	}
 	
-	public Optional<Plan> getPlanById(Long planId) {
-        return planRepository.findById(planId);
+	
+	public Plan getPlanById(Long planId) {
+        return planRepository.findById(planId).orElseThrow(EntityNotFoundException::new);
     }
 	
 	

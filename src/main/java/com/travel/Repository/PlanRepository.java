@@ -2,6 +2,7 @@ package com.travel.Repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,6 +29,6 @@ public interface PlanRepository extends JpaRepository<Plan, Long>{
 	List<Plan> findPlansByMemberIdOrderByRegDateDesc(@Param("memberId") Long memberId, Pageable pageable);
 
 	@Query("SELECT p FROM Plan p WHERE p.member.email = :email ORDER BY p.regDate DESC")
-	List<Plan> findPlansByEmailOrderByRegDateDesc(@Param("email") String email, Pageable pageable);
+	Page<Plan> findPlansByEmailOrderByRegDateDesc(String email, Pageable pageable);
 
 }

@@ -51,17 +51,45 @@
 										<p class="card-text">
 											<small class="text-body-secondary"
 												th:text="${plan.planDate} + 일">2박 3일</small>
-												<a th:href="'/planner/myPlanInfo/' + ${plan.id}">상세보기</a>
 										</p>
 									</div>
-
+									<div class="dropdown-center">
+  										<button  class="3btn " data-bs-toggle="dropdown" aria-expanded="false"
+										 style="background-color:transparent; border:none; width:1%; text-align:right; display:flex; justify-content:center; font-size:xx-large; cursor: pointer;">&vellip;</button>
+  										<ul class="dropdown-menu">
+    										<li><a class="dropdown-item" th:href="'/planner/myPlanInfo/' + ${plan.id}">상세 보기</a></li>
+    										<li><a class="dropdown-item" href="#">플랜삭제하기</a></li>
+  										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
+			
+			<nav style="" th:with="start=${(plan.number/maxPage)*maxPage + 1}
+				,end=(${(plan.totalPages == 0) ? 1 : (start + (maxPage - 1) < plan.totalPages ? start + (maxPage - 1) : plan.totalPages)})"
+				aria-label="Page navigation example">
+				<ul class="pagination d-flex justify-content-center">
+					<li class="page-item" th:classappend="${plan.first}?'disabled'">
+						<a class="page-link"
+								th:onclick="'javascript:page(' + ${plan.number - 1} +')'">이전</a>
+					</li>
+					<li class="page-item"
+						th:each="page: ${#numbers.sequence(start, end)}"
+						th:classappend="${plan.number eq page-1}?'active':''">
+						<a
+						class="page-link" th:inline="text"
+						th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a>
+					</li>
+					<li class="page-item" th:classappend="${plan.last}?'disabled'">
+						<a class="page-link"
+								th:onclick="'javascript:page(' + ${plan.number + 1} +')'">다음</a>
+					</li>
+				</ul>
+			</nav>
+					
 	</div>
 
 </div>
@@ -94,8 +122,16 @@
 	        element.textContent = formattedDate;
 	    });
 	});
+	
+	
+	function page(page){
+			
+			//주소 이동
+			location.href = "/planner/myPlanList/" + page 
+		}
 
 	
 	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </th:block>	
 </html>

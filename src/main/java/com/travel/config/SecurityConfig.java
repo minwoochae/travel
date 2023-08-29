@@ -1,11 +1,8 @@
 package com.travel.config;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,11 +36,6 @@ public class SecurityConfig {
 
 
 
-
-	    
-
-
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// 로그인에 대한설정
@@ -55,14 +47,12 @@ public class SecurityConfig {
 						"/members/login/**", "/item/**", "/kakao/**", "/order/**", "/oauth2/code/**")
 				.permitAll().requestMatchers("favicon.ico", "/error").permitAll()
 				.requestMatchers("/error").permitAll()
-				// 'admin' 으로 시작하는 경로로 관리자만 접근가능하도록 설정
 
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				// 그 외의 페이지는 모두 로그인(인증을 받아야한다.)
 				.anyRequest().authenticated()).formLogin(formLogin -> formLogin // 2.로그인에 관련된 설정
 						.loginPage("/members/login") // 로그인 페이지 URL 설정
 						.defaultSuccessUrl("/") // 로그인 성공시 이동할 페이지
-						// .defaultSuccessUrl("/") //로그인 성공시 이동할 페이지
 						.usernameParameter("email") // 로그인시 id로 사용할 파라메터 이름
 						.failureUrl("/members/login/error")) // 로그인 실패시 이동할 URL
 				.oauth2Login(oauth2 -> oauth2
