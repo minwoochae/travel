@@ -50,7 +50,7 @@
 									th:text="${ask.askTitle}"> </a>
 								</td>
 								<td th:text="${ask.createBy}"></td>
-								<td th:text="${ask.createBy}"></td>
+								<td th:text="${askResponseFormDtos.askStatus}"></td>
 								<td><button type="button" class="btn btn-primary"
 										th:id="${ask.Id}" th:value="${ask.Id}"
 										th:onclick="'javascript:deleteAsk(' + ${ask.id} +')'"

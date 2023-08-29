@@ -1,6 +1,7 @@
 package com.travel.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -489,8 +490,19 @@ public class AdminController {
 		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 9);	
 		Page<AskBoard> asks = askService.getAdminAskPage(askSearchDto, pageable);
 		
+		 // Add askStatus to each AskResponseFormDto in the list
+	    List<AskResponseFormDto> askResponseFormDtos = new ArrayList<>();
+	    for (AskBoard ask : asks.getContent()) {
+	        AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(ask.getId());
+	        if (askResponseFormDto != null) {
+	            askResponseFormDto.setAskStatus(askResponseFormDto.getAskStatus());
+	        }
+	        askResponseFormDtos.add(askResponseFormDto);
+	    }
+		
 		model.addAttribute("asks", asks);
 		model.addAttribute("askSearchDto", askSearchDto);
+		model.addAttribute("askResponseFormDtos", askResponseFormDtos);
 		model.addAttribute("maxPage", 5);
 		
 		return "admin/askList";
@@ -635,7 +647,7 @@ public class AdminController {
 	}
 	
 	// 문의사항 답변 수정보여주기 - 관리자
-	@GetMapping(value = "/ask/response/{askResponseBoardId}")
+	@GetMapping(value = "/ask/response/{askResponseId}")
 	public String askResponseBoardIdModify(@PathVariable("askResponseBoardId") Long askResponseBoardId, Model model) {
 		
 		try {
