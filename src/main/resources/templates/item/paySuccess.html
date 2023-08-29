@@ -9,14 +9,15 @@
     <h1>결제가 완료되었습니다.</h1>
     <p>결제 상품: <span id="item_name" th:text="${item_name}"></span></p>
     <p>결제 금액: <span th:text="${total_price}"></span></p>
-    
+    <p>주문 번호: <span id="pay_number" th:text="${pay_number}"></span></p>
+    <input type="hidden" th:value="${pay_id}">
 	<input type="button" value="창닫기" onclick="sendParentAndClose();">
     
     
     
     <script>
     (function() {
-        var dataToSend = $("#item_name").text();
+        var dataToSend = $("#pay_number").text();
         window.opener.handleChildData(dataToSend);
     })();
     

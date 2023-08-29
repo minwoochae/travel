@@ -109,6 +109,7 @@ public class KakaoPayController {
 	        // HTML에 데이터 전달
 	        model.addAttribute("item_name", itemName);
 	        model.addAttribute("total_price", totalPrice);
+	        model.addAttribute("pay_number", pay.getPayNo());
 
 	        return "/item/paySuccess";
 	}

@@ -47,10 +47,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
                  .provider(provider).providerId(providerId).division(division)
                  .build();
      }
-     
-     if (member.getEmail() ==null) {
-		
-	}
+
      
      return new PrincipalDetails(member, oAuth2UserInfo);
 }}

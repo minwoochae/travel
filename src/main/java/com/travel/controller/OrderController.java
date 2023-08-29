@@ -72,7 +72,6 @@ public class OrderController {
         
         for (int i = 0; i < idsArray.length; i++) {
             ids[i] = Long.parseLong(idsArray[i]);
-            System.out.println(ids[i] + "MMMMMMMMM");
         }
         
         
@@ -92,6 +91,51 @@ public class OrderController {
 	
 
 	
+	@PostMapping(value="/order/success")
+	public @ResponseBody ResponseEntity order(@RequestBody Map<String, Object> requestData,BindingResult bindingResult, Model model) {
+		Long[] orderItemIds = ((List<?>) requestData.get("orderItemIds"))
+		        .stream()
+		        .map(value -> Long.valueOf(String.valueOf(value)))
+		        .toArray(Long[]::new);
+		
+	    String totalPrice = (String) requestData.get("totalPrice");
+	    String orderName = (String) requestData.get("orderName");
+	    String zipCode = (String) requestData.get("zipCode");
+	    String orderAddress = (String) requestData.get("orderAddress");
+	    String phoneNumber = (String) requestData.get("phoneNumber");
+	    
+	    
+		if(bindingResult.hasErrors()) {
+			StringBuilder sb = new StringBuilder();
+			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+			
+			for(FieldError fieldError : fieldErrors) {
+				sb.append(fieldError.getDefaultMessage()); //에러메세지를 합친다.
+			}
+			
+			return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+		}
+	
+	    Map<String, Object> responseData = new HashMap<>();
+	    responseData.put("orderItemIds", orderItemIds);
+	    responseData.put("totalPrice", totalPrice);
+	    responseData.put("orderName", orderName);
+	    responseData.put("zipCode", zipCode);
+	    responseData.put("orderAddress", orderAddress);
+	    responseData.put("phoneNumber", phoneNumber);
+	    
+	    
+		
+		return new ResponseEntity<>(responseData, HttpStatus.OK);
+	}
     
-    
+	@GetMapping(value= "/order/info/{payNumber}")
+	public String orderInfo(@PathVariable("payNumber") Object payNumber, Model model) {
+		 
+		
+		
+		
+		return "/item/orderInfo";
+	}
+	
 }
