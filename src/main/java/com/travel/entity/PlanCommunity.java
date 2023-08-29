@@ -38,10 +38,10 @@ public class PlanCommunity extends BaseEntity{
 	private String communityRegDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member")
+	@JoinColumn(name = "member_id")
 	private Member member;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "plan")
+	@JoinColumn(name = "plan_id")
 	private Plan plan;
 }

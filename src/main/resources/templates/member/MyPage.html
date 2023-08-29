@@ -89,10 +89,6 @@ li {
 	<div class="row justify-content-between"
 		style="width: 950px; justify-content: center; align-items: center; margin: 0 auto; margin-top: 50px">
 		<h1 style="font-weight: bold;">나의 최근 플랜</h1>
-<<<<<<< HEAD
-=======
-
->>>>>>> 1a2760ea832c2655891ab51a67470831e55079af
 		<a href="/planner/myPlanList" type="button"
 			class="btn btn-outline-danger m-1 justify-content-md-end">더 보러가기</a>
 	</div>
@@ -100,22 +96,11 @@ li {
 	<div th:if="${#lists.isEmpty(plan)}">
 		<p style="text-align: center; font-size: 50px; width:100%; height: 100px; margin-top: 50px; ">현재 나의 플랜이 없습니다.</p>
 	</div>
-<<<<<<< HEAD
 	
-	<a th:href="'/planner/myPlanInfo/' + ${plan.id}" class="card" th:each="plan : ${plan}"
-		style="width: 950px; display:flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
-=======
-	<a href="#" class="card" th:each="plan : ${plan}"
-		style="width: 950px; display: flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
-
-		<a href="/planner/myPlanList" type="button" class="btn btn-outline-danger m-1 justify-content-md-end" >더 보러가기</a>
-	</div>
-
 	<div>
 	<a th:href="'/planner/myPlanInfo/' + ${plan.id}" class="card" th:each="plan : ${plan}"
 		style="width: 950px; display:flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
 
->>>>>>> 1a2760ea832c2655891ab51a67470831e55079af
 		<div class="row g-0" style="display: flex;">
 			<div style="display: flex; align-items:center;">
 				<div class="col-md-4">
