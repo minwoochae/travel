@@ -28,7 +28,7 @@ import com.travel.Repository.CartItemRepository;
 import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
 import com.travel.entity.Item;
-import com.travel.entity.OrderInfo;
+import com.travel.entity.Orders;
 import com.travel.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -90,25 +90,8 @@ public class OrderController {
         return "/item/address";
 	}
 	
+
 	
-    @PostMapping(value = "/saveUserDataAndOrder")
-    public ResponseEntity orderSuccess(@RequestBody OrderInfo orderInfo, BindingResult bindingResult) {
-    	
-    	if(bindingResult.hasErrors()) {
-			StringBuilder sb = new StringBuilder();
-			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-			
-			for(FieldError fieldError : fieldErrors) {
-				sb.append(fieldError.getDefaultMessage()); //에러메세지를 합친다.
-			}
-			
-			return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
-		}
-    	
-    	System.out.println(orderInfo);
-		
-    	return new ResponseEntity<>(orderInfo, HttpStatus.OK);
-    }
     
     
 }

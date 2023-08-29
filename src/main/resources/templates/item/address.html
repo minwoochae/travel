@@ -5,6 +5,7 @@
 <head>
 	<meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
 <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+
 </head>
 
 <th:block layout:fragment="css">
@@ -103,9 +104,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="orderItem, index: ${selectedItems}">
+                    <tr th:each="orderItem, index: ${selectedItems}" th:data-index="${index}">
                     <td>
-                    <input class="orderItemId" type="hidden" th:value="${orderItem.id}">
+                    <input id="itemIndex" type="hidden" th:value="${index.size}">
+                    <input id="orderItemId" type="hidden" th:value="${orderItem.id}">
                     </td>
                         <td data-th="Product">
                             <div class="row">
@@ -178,8 +180,9 @@
 	            <span class="priceText"> -0 </span>
 	            <span class="priceText" th:text="${'=' + totalPrice}"></span>
     	</div>
+  <input type="text" id="parent">
     </div>
-    <button th:value="${totalPrice}" id="apibtn" style="display: flex; margin: 20px auto; border: none;" >
+    <button id="apibtn" style="display: flex; margin: 20px auto; border: none;" >
 	<div class="kakao-btn" style="margin: 0 auto;">
 		<span class="kakao-text">카카오페이로 결제</span>
     </div>
@@ -241,38 +244,33 @@
             }
         }).open();
     }
-
+    function receiveDataFromChild(data) {
+        // 받은 데이터를 처리하거나 원하는 대로 활용
+        $("#parent").val(data); // 데이터를 부모 창의 input에 설정
+    }
 	$("#apibtn").click(function(){
 		var address1 = document.getElementById("sample6_address").value;
 		var address2 = document.getElementById("sample6_detailAddress").value;
 		var address3 = document.getElementById("sample6_extraAddress").value;
 		
-		var itemId = $("input[id='orderItemId']");
+		var itemId = document.getElementById("orderItemId").value;
+		var itemIndex = document.getElementById("itemIndex").value;
 		var itemName = document.getElementById("itemName").textContent;
 		var totalPrice = document.getElementById("totalPrice").textContent;
 		var orderName = document.getElementById("orderInfoName").value;
 		var zipCode = document.getElementById("sample6_postcode").value;
 		var orderAddress = address1 + address2 + address3;
 		var phoneNumber = document.getElementById("orderInfoPhone").value;
-		var orderItemIds = [];
-		// 클래스명이 orderItemId인 input 요소들의 값을 배열에 추가
-		var orderItemIdInputs = document.querySelectorAll(".orderItemId");
-		for (var i = 0; i < orderItemIdInputs.length; i++) {
-		    orderItemIds.push(orderItemIdInputs[i].value);
-		}
-
-		// orderItemIds 배열을 활용하여 원하는 처리 수행
-		alert(orderItemIds);
+		
 		
 	    var data = {
-	    		//orderItemId : orderItemIds,
-	    		cartItemId : itemId,
-	    		itemName : itemName,
+	    		orderItemId : itemId,
+	    		itemName : itemName + "외 " + (itemIndex - 1) + "개",
 	    		totalPrice : totalPrice,
 	    		orderName : orderName,
-	    		zipCode : zipCode,
-	    		orderAddress : orderAddress,
-	    		phoneNumber : phoneNumber
+	    		//zipCode : zipCode,
+	    		//orderAddress : orderAddress,
+	    		//phoneNumber : phoneNumber
 	        };
 		
 		$.ajax({
@@ -293,6 +291,63 @@
 			}
 		})
 	});
+	
+    function handleChildData(data) {
+		var address1 = document.getElementById("sample6_address").value;
+		var address2 = document.getElementById("sample6_detailAddress").value;
+		var address3 = document.getElementById("sample6_extraAddress").value;
+		
+		var itemId = document.getElementById("orderItemId").value;
+		var itemIndex = document.getElementById("itemIndex").value;
+		var totalPrice = document.getElementById("totalPrice").textContent;
+		var orderName = document.getElementById("orderInfoName").value;
+		var zipCode = document.getElementById("sample6_postcode").value;
+		var orderAddress = address1 + address2 + address3;
+		var phoneNumber = document.getElementById("orderInfoPhone").value;
+    	
+	    var payData = {
+	    		orderItemId : itemId,
+	    		totalPrice : totalPrice,
+	    		orderName : orderName,
+	    		zipCode : zipCode,
+	    		orderAddress : orderAddress,
+	    		phoneNumber : phoneNumber
+	        };
+		
+        alert('부모 창에서 이벤트 발생: ' + data);
+        
+		var token = $("meta[name='_csrf']").attr("content"); // meta태그에서 값이 _csrf인 값을 가져오겠다~
+		var header = $("meta[name='_csrf_header']").attr("content");
+        
+		$.ajax({
+			url : '/order/success',
+			type : "POST", // 전송방식 
+			contentType : "application/json",
+			data : payData, // 서버에 전송할 데이터 var param = JSON.stringify(paramData); item_id, 수량 들어있음
+			beforeSend : function(xhr) {
+				// 데이터를 전송하기 전에 헤더에 csrf 값을 설정해줌
+				xhr.setRequestHeader(header, token);
+			},
+			dataType : "json",
+			cache : false,
+			success : function(result, status) {
+
+			},
+			error : function(jqXHR, status, error) {
+				if (jqXHR.status == '401') {
+					alert('로그인 후 이용해 주세요.')
+					location.href = '/members/login';
+				} else {
+					
+					// 에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
+					alert("안돼")
+					alert(jqXHR.responseText); 
+				}
+				
+			}
+		});
+    }
+ 	
  	
 </script>
 

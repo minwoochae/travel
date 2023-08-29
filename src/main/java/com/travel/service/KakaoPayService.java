@@ -1,6 +1,7 @@
 package com.travel.service;
 
 
+import java.util.LinkedHashMap;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,13 @@ import org.springframework.web.client.RestTemplate;
 import com.travel.Dto.KakaoPayApproveDto;
 import com.travel.Dto.KakaoPayReadyDto;
 import com.travel.Repository.OrderRepository;
+import com.travel.Repository.PayRepository;
 import com.travel.constant.OrderStatus;
 import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
 import com.travel.entity.OrderItem;
 import com.travel.entity.Orders;
+import com.travel.entity.Pay;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class KakaoPayService {
 	private final OrderRepository orderRepository;
+	private final PayRepository payRepository;
 
 
 	public KakaoPayReadyDto kakaoPay(Map<String, Object> params) {
@@ -68,7 +72,6 @@ public class KakaoPayService {
 		headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 		
 		MultiValueMap<String, Object> payParams = new LinkedMultiValueMap<String, Object>();
-		System.out.println(tid + "dddddddddddddddd");
 		
 		payParams.add("cid", "TC0ONETIME");
 		payParams.add("tid", tid);
@@ -86,31 +89,10 @@ public class KakaoPayService {
 		
 		return res;
 	}
+
 	
-    public void saveOrderAndPay(KakaoPayApproveDto kakaoPayApproveDto, Cart cart, Principal principal) {
-        // 주문 정보 생성
-        Orders orders = new Orders();
-        orders.setOrderStatus(OrderStatus.ORDER); // 주문 상태 설정
-        // 다른 주문 정보 설정
-
-        // 주문 상품 정보 가져와서 연결 (cart에서 또는 다른 방법으로 가져오세요)
-        List<OrderItem> orderItems = new ArrayList<>(); // 주문 상품 리스트 생성
-
-        System.out.println(cart.getCartItems() + "쫌!!");
-        for (CartItem cartItem : cart.getCartItems()) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrderCount(cartItem.getCount()); // 선택한 수량 설정
-            orderItem.setOrderPrice(cartItem.getItem().getPrice()); // 상품 가격 설정
-            orderItem.setOrders(orders); // Orders 정보 연결
-            System.out.println(orderItem + "뭔데");
-            orderItems.add(orderItem);
-        }
-        System.out.println(orderItems + "으아악");
-        
-        orders.setOrderItems(orderItems); // 주문 상품 연결
-
-        // 데이터베이스에 저장
-        orderRepository.save(orders);
+    public void savePay(Pay pay) {
+        payRepository.save(pay);
     }
-	
+    
 }
