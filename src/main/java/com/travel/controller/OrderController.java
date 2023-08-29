@@ -44,9 +44,6 @@ public class OrderController {
 	            .stream()
 	            .map(Long::valueOf)
 	            .toArray(Long[]::new);
-	    
-	    List<String> imgUrlArray = (List<String>) requestData.get("imgUrlArray");
-		
 		if(bindingResult.hasErrors()) {
 			StringBuilder sb = new StringBuilder();
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -60,27 +57,22 @@ public class OrderController {
 		
 	    
 	    Map<String, Object> responseData = new HashMap<>();
-	    responseData.put("imgUrlArray", imgUrlArray);
 	    responseData.put("selectedProductIds", selectedProductIds);
 	    
-	    System.out.println(responseData);
 
 	    return new ResponseEntity<>(responseData, HttpStatus.OK);	
 	    
 	}
 	
 	@GetMapping(value= "/order/{selectedProductIdsString}")
-	public String test(@RequestParam("selectedProductIdsString") String selectedProductIdsString,
-            @RequestParam("imgUrls") String imgUrls,
+	public String test(@PathVariable("selectedProductIdsString") Object selectedProductIdsString,
             Model model) {
-
-		String[] idsArray = selectedProductIdsString.split(",");
+		String[] idsArray = selectedProductIdsString.toString().split(",");
         Long[] ids = new Long[idsArray.length];
-        
-        String[] imgsArray = imgUrls.split(",");
         
         for (int i = 0; i < idsArray.length; i++) {
             ids[i] = Long.parseLong(idsArray[i]);
+            System.out.println(ids[i] + "MMMMMMMMM");
         }
         
         
@@ -94,15 +86,13 @@ public class OrderController {
         
         model.addAttribute("selectedItems", selectedItems);
         model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("imgsArray", imgsArray);
-        
+
         return "/item/address";
 	}
 	
 	
     @PostMapping(value = "/saveUserDataAndOrder")
     public ResponseEntity orderSuccess(@RequestBody OrderInfo orderInfo, BindingResult bindingResult) {
-		System.out.println("와라!!");
     	
     	if(bindingResult.hasErrors()) {
 			StringBuilder sb = new StringBuilder();
@@ -119,4 +109,6 @@ public class OrderController {
 		
     	return new ResponseEntity<>(orderInfo, HttpStatus.OK);
     }
+    
+    
 }

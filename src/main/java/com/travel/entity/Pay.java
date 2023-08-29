@@ -19,7 +19,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Pay extends BaseEntity{
+public class Pay{
 	
 	@Id
 	@Column(name="pay_id") 
@@ -32,6 +32,9 @@ public class Pay extends BaseEntity{
 	@Column(name="pay_no") 
 	private String payNo;
 	
+	@Column(name = "pay_date")
+	private String payDate;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
@@ -39,4 +42,8 @@ public class Pay extends BaseEntity{
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "item_id")
+	private Item item;
 }

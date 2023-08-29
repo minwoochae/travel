@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.Dto.PlanContentDto;
 import com.travel.Dto.PlanFormDto;
+import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanContent;
 import com.travel.service.MemberService;
@@ -139,5 +140,32 @@ public class PlannerController {
 		
 		return new ResponseEntity<String>(no, HttpStatus.OK);
 	}
+	
+	//플랜 리스트
+	@GetMapping(value={"/planner/myPlanList", "/planner/myPlanList/{page}"})
+	public String myPlanList(Principal principal, Model model, Pageable pageable, Optional<Integer> page) {
+		
+		String email = principal.getName();
+		List<Plan> plans = planService.getPlansByEmail(email, PageRequest.of(page.isPresent() ? page.get() : 0, 6));
+		model.addAttribute("plan", plans);
+		model.addAttribute("maxPage", 5);
+		
+		return "planner/myPlanList";
+	}
+	
+	//플랜 상세보기
+	@GetMapping(value = {"/planner/myPlanInfo", "/planner/myPlanInfo/{planId}"})
+	public String myPlanInfo(@PathVariable("planId") Long planId, Model model) {
+		PlanFormDto planFormDto = planService.getPlanDtl(planId);
+		model.addAttribute("plan", planFormDto);
+		Optional<Plan> plan = planService.getPlanById(planId);
+		model.addAttribute("planData", plan);
+		
+		return "planner/myPlanInfo";
+	}
+	
+	
+	
+	
 	
 }

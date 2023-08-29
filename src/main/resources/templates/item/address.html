@@ -105,14 +105,15 @@
                 <tbody>
                     <tr th:each="orderItem, index: ${selectedItems}">
                     <td>
+                    <input class="orderItemId" type="hidden" th:value="${orderItem.id}">
                     </td>
                         <td data-th="Product">
                             <div class="row">
                                 <div class="col-md-3 text-left">
-                                    <img th:src="${imgsArray[imgsArray.length - 1 - index.index]}" th:alt="${orderItem.itemNm}" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                    <img th:src="${orderItem.imgUrl}" th:alt="${orderItem.itemNm}" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                 </div>
                                 <div class="col-md-9 text-left mt-sm-2" style="display:flex;">
-                                    <h4 th:text="${orderItem.itemNm}"></h4>
+                                    <h4 id="itemName" th:text="${orderItem.itemNm}"></h4>
 
                                 </div>
                             </div>
@@ -240,71 +241,45 @@
             }
         }).open();
     }
-    
- 	// 카카오결제
-	/* function kakaoPay(){
-    		var token = $("meta[name='_csrf']").attr("content");
-    		var header = $("meta[name='_csrf_header']").attr("content");
-    		var totalPrice= document.getElementById("apibtn").value;
-			
-			$.ajax({
-		        url: '/ready',
-		        dataType: 'json',
-		        beforeSend: function(xhr) {
-		            //데이터를 전송하기 전에 헤더에 xsrf값
-		            xhr.setRequestHeader(header, token);
-		        },
-		        method: 'POST',
-		        contentType: 'application/json', // 데이터 형식 지정
-		        data: JSON.stringify({ totalPrice: totalPrice }),
-		        success: function(data) {
-		            var box = data.next_redirect_pc_url;
-		            var popupWidth = 500;
-		            var popupHeight = 800;
-		            var left = (screen.width - popupWidth) / 2;
-		            var top = (screen.height - popupHeight) / 2;
-		            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight + ",top=" + top + ",left=" + left;
-		            window.open(box, "KakaoPay", popupOptions);
 
-		            
-		            
-		            
-		            kakaoPaySuccess();
-		        },
-		        error: function(xhr, status, error) {
-		            var responseText = xhr.responseText;
-		            var responseJSON = xhr.responseJSON;
-		            alert("에러가 발생했습니다.\n" +
-		                  "Status: " + status + "\n" +
-		                  "Error: " + error + "\n" +
-		                  "Response Text: " + responseText + "\n" +
-		                  "Response JSON: " + JSON.stringify(responseJSON));
-		        }
-		    });
-	}; */
-	
-	
 	$("#apibtn").click(function(){
-   		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
+		var address1 = document.getElementById("sample6_address").value;
+		var address2 = document.getElementById("sample6_detailAddress").value;
+		var address3 = document.getElementById("sample6_extraAddress").value;
+		
+		var itemId = $("input[id='orderItemId']");
+		var itemName = document.getElementById("itemName").textContent;
+		var totalPrice = document.getElementById("totalPrice").textContent;
+		var orderName = document.getElementById("orderInfoName").value;
+		var zipCode = document.getElementById("sample6_postcode").value;
+		var orderAddress = address1 + address2 + address3;
+		var phoneNumber = document.getElementById("orderInfoPhone").value;
+		var orderItemIds = [];
+		// 클래스명이 orderItemId인 input 요소들의 값을 배열에 추가
+		var orderItemIdInputs = document.querySelectorAll(".orderItemId");
+		for (var i = 0; i < orderItemIdInputs.length; i++) {
+		    orderItemIds.push(orderItemIdInputs[i].value);
+		}
+
+		// orderItemIds 배열을 활용하여 원하는 처리 수행
+		alert(orderItemIds);
 		
 	    var data = {
-	            item_name: encodeURIComponent("아이폰 14 pro"),
-	            quantity: encodeURIComponent("1"),
-	            total_amount: encodeURIComponent("140000"),
-	            tax_free_amount: encodeURIComponent("0")
+	    		//orderItemId : orderItemIds,
+	    		cartItemId : itemId,
+	    		itemName : itemName,
+	    		totalPrice : totalPrice,
+	    		orderName : orderName,
+	    		zipCode : zipCode,
+	    		orderAddress : orderAddress,
+	    		phoneNumber : phoneNumber
 	        };
 		
 		$.ajax({
 		    type: 'GET',
 		    url: '/pay/ready',
-		    contentType: 'application/json',
+		    contentType: 'application/x-www-form-urlencoded;charset=utf-8',
 		    data: data,
-	        beforeSend: function(xhr) {
-	            //데이터를 전송하기 전에 헤더에 xsrf값
-	            xhr.setRequestHeader(header, token);
-	        },
-			
 			success:function(res){
 	            var box = res.next_redirect_pc_url;
 	            var popupWidth = 500;
@@ -317,70 +292,7 @@
 				
 			}
 		})
-	})
-	
-	
-	
-	
-	// 카카오 결제 성공 시 처리
-	function kakaoPaySuccess() {
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		var totalPrice= document.getElementById("apibtn").value;
-	    // 카카오 결제 성공 처리 로직
-		// 현재 페이지의 URL을 가져옵니다.
-		var currentUrl = window.location.href;
-		
-		// URL에서 쿼리 스트링 부분을 가져옵니다.
-		var queryString = currentUrl.split('?')[1];
-		
-		// URL에서 쿼리 스트링을 파싱하여 파라미터들을 추출합니다.
-		var urlParams = new URLSearchParams(queryString);
-		
-		// KakaoPay 서버에서 전달한 데이터의 예시 파라미터를 가져옵니다.
-		var resultValue = urlParams.get('result'); // 예시: result 파라미터
-		var paymentId = urlParams.get('payment_id'); // 예시: payment_id 파라미터
-		var orderId = urlParams.get('order_id'); // 예시: order_id 파라미터
-		
-		// 가져온 데이터를 출력하거나 필요한 작업을 수행합니다.
-		console.log('Result Value:', resultValue);
-		console.log('Payment ID:', paymentId);
-		console.log('Order ID:', orderId);
-	    // 서버로 입력한 정보를 전송하여 데이터베이스에 저장
-	    var orderInfoName = document.getElementById("orderInfoName").value;
-	    var orderInfoAddress = document.getElementById("sample6_address").value;
-	    var orderInfoPhone = document.getElementById("orderInfoPhone").value;
-	    var zipCode = document.getElementById("sample6_postcode").value;
-
-		
-		
-	    var userData = {
-	    	orderInfoName: orderInfoName,
-	        orderInfoAddress: orderInfoAddress,
-	        orderInfoPhone: orderInfoPhone,
-	        zipCode : zipCode
-	    };
-
-	    var jsonUserData = JSON.stringify(userData);
-
-	    $.ajax({
-	        url: '/saveUserDataAndOrder', // 적절한 엔드포인트 설정
-	        beforeSend: function(xhr) {
-	            //데이터를 전송하기 전에 헤더에 xsrf값
-	            xhr.setRequestHeader(header, token);
-	        },
-	        method: 'POST',
-	        contentType: 'application/json',
-	        data: jsonUserData,
-	        success: function(response) {
-	            // 성공 시 실행할 코드
-	        },
-	        error: function(xhr, status, error) {
-	            // 에러 처리
-	        }
-	    });
-	}
-	
+	});
  	
 </script>
 

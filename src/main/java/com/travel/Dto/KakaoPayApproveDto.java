@@ -8,6 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class KakaoPayApproveDto {
+	private Long cartId;
 	private String aid;
 	private String tid;
 	private String partner_order_is;

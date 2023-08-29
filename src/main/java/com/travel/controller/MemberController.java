@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.travel.Dto.MemberFormDto;
 import com.travel.Dto.PasswordDto;
+import com.travel.auth.PrincipalDetails;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanContent;
@@ -132,22 +134,25 @@ public class MemberController {
 
 	// Mypage
 	@GetMapping(value = "/member/mypage")
-	public String mainMypage(Principal principal, Model model) {
+	public String mainMypage(Principal principal, Model model, Authentication authentication) {
 		Member member = memberservice.memberMypage(principal.getName());
-		model.addAttribute("member", member);
 		
-		String memberId = principal.getName();
-		List<Plan> plans = planService.findPlanByEmail(memberId);
-		
-		Map<Long, List<PlanContent>> planContentsMap = new HashMap<>();
-		
-		for (Plan plan : plans) {
-		    List<PlanContent> planContents = planService.findPlanContentsByPlanId(plan.getId());
-		    planContentsMap.put(plan.getId(), planContents);
+		if(member == null) {
+			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+			Member principalDetail = principalDetails.getMember();
+			model.addAttribute("member", principalDetail);	
+		}else {
+			
+			model.addAttribute("member", member);
 		}
 		
+		
+		
+		
+		String memberId = principal.getName();
+		List<Plan> plans = planService.findPlanTopByEmail(memberId);
+		
 		model.addAttribute("plan", plans);
-		model.addAttribute("planContents", planContentsMap);
 		
 		
 		return "member/MyPage";
@@ -155,9 +160,18 @@ public class MemberController {
 
 	// 내 정보 수정
 	@GetMapping(value = "/member/mypageupdate")
-	public String mypageupdate(Principal principal, Model model) {
+	public String mypageupdate(Principal principal, Model model, Authentication authentication) {
 		Member member = memberservice.memberMypage(principal.getName());
-		model.addAttribute("member", member);
+		
+		if(member == null) {
+			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+			Member principalDetail = principalDetails.getMember();
+			model.addAttribute("member", principalDetail);	
+		}else {
+			
+			model.addAttribute("member", member);
+		}
+		
 		return "member/MypageupdateForm";
 	}
 
@@ -211,9 +225,7 @@ public class MemberController {
 			memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
 			return "redirect:/"; // Redirect after successful password update
 		}
-		// memberservice.updatepassword(principal.getName(),passwordEncoder.encode(password),passwordEncoder);
 
-		// return "redirect:/";
 
 	}
 
