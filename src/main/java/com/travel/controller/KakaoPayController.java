@@ -55,16 +55,10 @@ public class KakaoPayController {
 	   // params.put("zipCode", orderDto.getZipCode());
 	   // params.put("orderAddress", orderDto.getOrderAddress());
 	   // params.put("phoneNumber", orderDto.getPhoneNumber());
-	    System.out.println(params);
+
 	    
 		KakaoPayReadyDto res = kakaoPayService.kakaoPay(params);
-	    // tid 값을 세션에 저장
-	    session.setAttribute("tid", res.getTid());
 
-		
-	    // 주문 정보 생성 및 연결
-	    Orders orders = new Orders();
-	    orders.setOrderStatus(OrderStatus.CANCEL); // 예시: 주문 상태 설정
 		
 	    // tid 값을 세션에 저장
 	    session.setAttribute("tid", res.getTid());
@@ -83,7 +77,8 @@ public class KakaoPayController {
 	public String success(@RequestParam("pg_token")String pgToken,HttpSession session, Principal principal, Model model) {
 			String tid = (String) session.getAttribute("tid");
 			String itemName = (String) session.getAttribute("item_name");
-			String totalPrice = (String) session.getAttribute("total_price");
+			String totalPriceStr = (String) session.getAttribute("total_price");
+			int totalPrice = Integer.parseInt(totalPriceStr);
 
 			String email = principal.getName();
 			Member member = memberService.findByEmail(email);
@@ -110,6 +105,7 @@ public class KakaoPayController {
 	        model.addAttribute("item_name", itemName);
 	        model.addAttribute("total_price", totalPrice);
 	        model.addAttribute("pay_number", pay.getPayNo());
+	        model.addAttribute("pay_id", pay.getId());
 
 	        return "/item/paySuccess";
 	}

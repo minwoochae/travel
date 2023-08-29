@@ -56,8 +56,20 @@ public class Orders{
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
     
-    
-    public void addOrderItem(OrderItem orderItem) {
+    public Orders(Long[] orderItemIds,  String orderName, String zipCode, String orderAddress, String phoneNumber) {
+        this.orderStatus = OrderStatus.ORDER;
+        this.orderInfoName = orderName;
+        this.orderInfoAddress = orderAddress;
+        this.orderInfoPhone = phoneNumber;
+        this.zipCode = zipCode;
+		/*
+		 * for (Long orderItemId : orderItemIds) { OrderItem orderItem = new
+		 * OrderItem(orderItemId); this.addOrderItem(orderItem); }
+		 */
+    }
+
+
+	public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrders(this);
     }

@@ -28,6 +28,7 @@ import com.travel.Repository.CartItemRepository;
 import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
 import com.travel.entity.Item;
+import com.travel.entity.OrderItem;
 import com.travel.entity.Orders;
 import com.travel.service.OrderService;
 
@@ -97,6 +98,7 @@ public class OrderController {
 		        .stream()
 		        .map(value -> Long.valueOf(String.valueOf(value)))
 		        .toArray(Long[]::new);
+		System.out.println(Arrays.toString(orderItemIds) + "dmdkr");
 		
 	    String totalPrice = (String) requestData.get("totalPrice");
 	    String orderName = (String) requestData.get("orderName");
@@ -115,6 +117,8 @@ public class OrderController {
 			
 			return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 		}
+		
+
 	
 	    Map<String, Object> responseData = new HashMap<>();
 	    responseData.put("orderItemIds", orderItemIds);
@@ -123,6 +127,7 @@ public class OrderController {
 	    responseData.put("zipCode", zipCode);
 	    responseData.put("orderAddress", orderAddress);
 	    responseData.put("phoneNumber", phoneNumber);
+	    
 	    
 	    
 		
