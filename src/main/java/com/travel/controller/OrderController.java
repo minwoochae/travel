@@ -28,7 +28,7 @@ import com.travel.Repository.CartItemRepository;
 import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
 import com.travel.entity.Item;
-import com.travel.entity.OrderInfo;
+import com.travel.entity.Orders;
 import com.travel.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -72,7 +72,6 @@ public class OrderController {
         
         for (int i = 0; i < idsArray.length; i++) {
             ids[i] = Long.parseLong(idsArray[i]);
-            System.out.println(ids[i] + "MMMMMMMMM");
         }
         
         
@@ -90,11 +89,23 @@ public class OrderController {
         return "/item/address";
 	}
 	
+
 	
-    @PostMapping(value = "/saveUserDataAndOrder")
-    public ResponseEntity orderSuccess(@RequestBody OrderInfo orderInfo, BindingResult bindingResult) {
-    	
-    	if(bindingResult.hasErrors()) {
+	@PostMapping(value="/order/success")
+	public @ResponseBody ResponseEntity order(@RequestBody Map<String, Object> requestData,BindingResult bindingResult, Model model) {
+		Long[] orderItemIds = ((List<?>) requestData.get("orderItemIds"))
+		        .stream()
+		        .map(value -> Long.valueOf(String.valueOf(value)))
+		        .toArray(Long[]::new);
+		
+	    String totalPrice = (String) requestData.get("totalPrice");
+	    String orderName = (String) requestData.get("orderName");
+	    String zipCode = (String) requestData.get("zipCode");
+	    String orderAddress = (String) requestData.get("orderAddress");
+	    String phoneNumber = (String) requestData.get("phoneNumber");
+	    
+	    
+		if(bindingResult.hasErrors()) {
 			StringBuilder sb = new StringBuilder();
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 			
@@ -104,11 +115,27 @@ public class OrderController {
 			
 			return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 		}
-    	
-    	System.out.println(orderInfo);
+	
+	    Map<String, Object> responseData = new HashMap<>();
+	    responseData.put("orderItemIds", orderItemIds);
+	    responseData.put("totalPrice", totalPrice);
+	    responseData.put("orderName", orderName);
+	    responseData.put("zipCode", zipCode);
+	    responseData.put("orderAddress", orderAddress);
+	    responseData.put("phoneNumber", phoneNumber);
+	    
+	    
 		
-    	return new ResponseEntity<>(orderInfo, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(responseData, HttpStatus.OK);
+	}
     
-    
+	@GetMapping(value= "/order/info/{payNumber}")
+	public String orderInfo(@PathVariable("payNumber") Object payNumber, Model model) {
+		 
+		
+		
+		
+		return "/item/orderInfo";
+	}
+	
 }

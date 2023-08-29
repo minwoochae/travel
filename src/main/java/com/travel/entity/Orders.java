@@ -37,6 +37,18 @@ public class Orders{
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
 	
+	@Column(name = "order_info_name")
+	private String orderInfoName;
+	
+	@Column(name = "order_info_address")
+	private String orderInfoAddress;
+	
+	@Column(name = "order_info_phone")
+	private String orderInfoPhone;
+	
+	@Column(name= "zip_code")
+	private String zipCode;
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pay_id")
 	private Pay pay;
