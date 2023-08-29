@@ -3,6 +3,9 @@ package com.travel.Dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+
+import com.travel.entity.Plan;
 import com.travel.entity.PlanContent;
 
 import jakarta.validation.constraints.NotBlank;
@@ -22,4 +25,13 @@ public class PlanFormDto {
 	
 	private List<PlanContent> planContentDtoList = new ArrayList<>();
 	
+	private static ModelMapper modelMapper = new ModelMapper();
+	
+	public Plan createPlan() {
+		return modelMapper.map(this, Plan.class);
+	}
+	
+	public static PlanFormDto of(Plan plan) {
+		return modelMapper.map(plan, PlanFormDto.class);
+	}
 }

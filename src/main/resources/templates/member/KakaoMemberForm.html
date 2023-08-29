@@ -50,6 +50,21 @@
 								</div>
 							</div>
 
+
+							<div th:if="${#strings.isEmpty(memberKakaoDto.email)}">
+								<div class="form-group row">
+									<div
+										style="display: flex; height: 50px; width: 100%; font-size: 17px; margin-top: 42px">
+										<h4
+											style="font-weight: bolder; margin-top: 15px; width: 100px; margin-left: 100px">이메일</h4>
+										<input type="text" class="form-control" style="width: 70%"
+											placeholder="번호는 - 를 제외하고 입력해주세요" th:field="*{email}">
+									</div>
+									<p style="margin: 0 auto;"
+										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+										class="fieldError"></p>
+								</div>
+							</div>
 							<div class="form-group row">
 								<h4
 									style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px">이메일</h4>
@@ -69,15 +84,16 @@
 									<input type="text" class="form-control" style="width: 70%"
 										placeholder="번호는 - 를 제외하고 입력해주세요" th:field="*{phoneNumber}">
 								</div>
-								<p style="margin: 0 auto;" th:if="${#fields.hasErrors('phoneNumber')}"
+								<p style="margin: 0 auto;"
+									th:if="${#fields.hasErrors('phoneNumber')}"
 									th:errors="*{phoneNumber}" class="fieldError"></p>
 							</div>
 							<input type="hidden" th:field="*{provider}" name="provider">
 							<input type="hidden" th:field="*{providerId}" name="providerId">
 							<input type="hidden" th:field="*{password}" name="password">
-							<input type="hidden" th:field="*{email}" name="email">
-							<input type="hidden" th:field="*{name}" name="name">
-				
+							<input type="hidden" th:field="*{email}" name="email"> <input
+								type="hidden" th:field="*{name}" name="name">
+
 							<div
 								style="display: flex; width: 100%; justify-content: center; margin: 0 auto; align-items: center; margin-bottom: 50px">
 								<button type="submit" class="btn btn-primary mb-3"

@@ -86,7 +86,7 @@
                         <pre><p th:text="${item.itemDetail}" style=""></p></pre>
                         <div class="col-md-12">
 							<div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
-							<img th:if="${not #strings.isEmpty(itemImg.imgUrl)}"
+							<img id="itemImg" th:if="${not #strings.isEmpty(itemImg.imgUrl)}"
 							th:src="${itemImg.imgUrl}" class="rounded mgb-15" width="500px" style="margin: 20px 0">
 							</div>
 						</div>
@@ -155,7 +155,6 @@
 	});
   
 	function calculateTotalPrice() {
-		console.log("왜애애애ㅐ애ㅔ앵");
 		var count = $("#count").val(); //수량
 		console.log(count);
 		var price = $("#price").val(); //가격
@@ -169,14 +168,15 @@
 		var header = $("meta[name='_csrf_header']").attr("content");
 
 		var url = "/addCart";
-		
-		
+
+        var imgUrl = document.getElementById('itemImg').getAttribute('src');
+
 		// Controller(서버)에 전달할 데이터
 		var paramData = {
 			itemId : $("#itemId").val(), // class_id
 			price : $("#price").val(),
-			count : $("#count").val()
-			
+			count : $("#count").val(),
+			imgUrl : imgUrl
 		}
 		
 		// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.

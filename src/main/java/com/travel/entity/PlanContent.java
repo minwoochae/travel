@@ -51,7 +51,6 @@ public class PlanContent {
 	private String place_img;
 	
 
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "plan_id")
 	private Plan plan;

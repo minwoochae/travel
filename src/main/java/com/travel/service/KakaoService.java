@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class KakaoService implements IKakaoLoginService {
 
-
+//사용 x
 
 	@Override
 	public String getAccessToken(String authorize_code) throws Exception {

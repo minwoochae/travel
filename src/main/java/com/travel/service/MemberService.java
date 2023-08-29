@@ -120,7 +120,6 @@ public class MemberService implements UserDetailsService {
 
 
 
-	  
 	  public void sendEmail(String to, String subject, String text) {
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo(to);
