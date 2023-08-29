@@ -25,7 +25,7 @@ import lombok.ToString;
 public class AskResponseBoard extends BaseEntity{
 	
 	@Id
-	@Column(name="ask_response_id") 
+	@Column(name="ask_response_board_id") 
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
 	

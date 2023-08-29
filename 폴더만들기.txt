@@ -1,0 +1,2 @@
+C: 안에 travelShop ,
+travelShop 폴더 안에 info, ask, item, tour 폴더 만들기
