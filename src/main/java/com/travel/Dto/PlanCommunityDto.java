@@ -26,7 +26,10 @@ public class PlanCommunityDto {
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 	
-	public PlanCommunity createPlanCommunity() {
+	public PlanCommunity createPlanCommunity(String regDate, Member member) {
+		this.communityRegDate = regDate;
+		this.member = member;
+		this.communityDivision = "behind";
 		return modelMapper.map(this, PlanCommunity.class);
 	}
 	
