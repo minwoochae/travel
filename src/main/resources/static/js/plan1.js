@@ -1,56 +1,97 @@
-document.getElementById("searchButton").addEventListener("click",
- 	function() {
+document.getElementById("searchButton").addEventListener("click", function() {
     var selectedAreaCode = document.getElementById("areaCodeSelect").value;
     var selectedContentType = document.getElementById("contentTypeIdSelect").value;
-   
 
+
+    var currentPage = 1;
+    var searchData = []; // 전체 검색 결과를 저장할 배열
+    var itemsPerPage = Number.MAX_SAFE_INTEGER;// 한 페이지에 보여줄 결과 개수
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/search-data?areaCode=" + encodeURIComponent(selectedAreaCode) + "&contentType=" + encodeURIComponent(selectedContentType), true);
+    xhr.open("GET", "/search-data?areaCode=" + encodeURIComponent(selectedAreaCode) +
+             "&contentType=" + encodeURIComponent(selectedContentType), true);
+         
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            var searchData = JSON.parse(xhr.responseText);
+            searchData = JSON.parse(xhr.responseText);
+            showResultsWithLazyLoading();
+        }
+    };
 
-            var searchResultsElement = document.getElementById("results");
-            searchResultsElement.innerHTML = ""; // 결과 영역 초기화
-			
+    xhr.send();
+
+    function showResultsWithLazyLoading() {
+        var searchResultsElement = document.getElementById("results");
+        searchResultsElement.innerHTML = ""; // 결과 영역 초기화      
+
+        // 현재 페이지에 해당하는 결과만 표시
+        var startIndex = (currentPage - 1) * itemsPerPage;
+        var endIndex = Math.min(startIndex + itemsPerPage, searchData.length);
+
+        // 검색 결과 생성 코드
+        for (let i = startIndex; i < endIndex; i++) {
+            let data = searchData[i];
+            
+            var searchInput = document.getElementById("searchInput");
+      		var searchTerm = searchInput.value.toLowerCase(); // 검색어를 소문자로 변환하여 대소문자 구분 없이 검색
       		
-            for (let i = 0; i < searchData.length; i++) {
-		    let data = searchData[i];
-		    
-		    let resultItem = document.createElement("div");
-		    resultItem.className = "dataList";
-		    resultItem.style = "display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;";
+            let resultItem = document.createElement("div");
+            resultItem.className = "dataList";
+            resultItem.style = "display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;";
 			
-		    let placeimg = data.placeimg;
-		    let placeName = data.placeName;
-		    let placeAddress = data.placeAddress;
-		    let placeLatitude = data.placeLatitude;
-		    let placeLongitude = data.placeLongitude;
 		
-		
-		    resultItem.innerHTML = `
-		        <img src="${placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${placeName} Image">
-		        <h4 style="margin-left:15px;">${placeName}</h4>
-		    `;
-		    
-		    currentData = {
+			
+            let placeimg = data.placeimg;
+            let placeName = data.placeName; 
+            
+            let lazyImage = document.createElement("img");
+	        lazyImage.setAttribute("data-src", placeimg); // 지연 로딩을 위해 data-src 속성에 이미지 URL 설정
+	        lazyImage.style = "min-width:150px; width:150px; height:120px; background-size: cover;";
+	        lazyImage.alt = `${placeName} Image`;
+	
+	        let h4 = document.createElement("h4");
+	        h4.style = "margin-left:15px;";
+	        h4.textContent = placeName;
+	
+	        resultItem.appendChild(lazyImage);
+	        resultItem.appendChild(h4);
+	                   
+            if (placeName.toLowerCase().includes(searchTerm)){
+				
+            let placeAddress = data.placeAddress;
+            let placeLatitude = data.placeLatitude;
+            let placeLongitude = data.placeLongitude;
+
+            resultItem.innerHTML = `
+                <img src="${placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${placeName} Image">
+                <h4 style="margin-left:15px;">${placeName}</h4>
+            `;
+            
+            currentData = {
                     placeName: placeName,
                     placeAddress: placeAddress,
                     placeimg: placeimg,
                     placeLatitude: placeLatitude,
                     placeLongitude: placeLongitude
                 };
-		
-		     searchResultsElement.appendChild(resultItem);
-            addClickListener(resultItem, placeName, placeAddress, placeimg, placeLatitude, placeLongitude);
-			}
+			
+            searchResultsElement.appendChild(resultItem);
+            addClickListener(resultItem, data.placeName, data.placeAddress, data.placeimg, data.placeLatitude, data.placeLongitude);
+        	}
+        	
+        	// 이미지 지연 로딩 처리
+		    const lazyImages = document.querySelectorAll("img[data-src]");
+		    lazyImages.forEach(lazyImage => {
+		        lazyImage.src = lazyImage.getAttribute("data-src");
+		        lazyImage.removeAttribute("data-src");
+		    });
         }
-    };
-    
-    xhr.send();
-    
+
+    }
+
 });
+
 
 
 function addClickListener(element, placeName, placeAddress, placeimg, placeLatitude, placeLongitude) {

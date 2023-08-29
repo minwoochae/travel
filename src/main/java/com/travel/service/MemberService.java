@@ -1,13 +1,8 @@
 package com.travel.service;
 
-import java.io.*;
-import java.net.*;
 import java.security.SecureRandom;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;

@@ -10,6 +10,7 @@ import com.travel.Repository.MemberRepository;
 import com.travel.auth.KakaoMemberInfo;
 import com.travel.auth.OAuth2UserInfo;
 import com.travel.auth.PrincipalDetails;
+import com.travel.constant.Division;
 import com.travel.constant.Role;
 import com.travel.entity.Member;
 
@@ -24,9 +25,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
     
     @Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-	System.out.println("d");
 	 OAuth2User oAuth2User = super.loadUser(userRequest);
-	 System.out.println(oAuth2User + "ZZ");
 	 OAuth2UserInfo oAuth2UserInfo = null;
      String provider = userRequest.getClientRegistration().getRegistrationId();    
      oAuth2UserInfo = new KakaoMemberInfo(oAuth2User.getAttributes());
@@ -37,17 +36,21 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 	
      String email = oAuth2UserInfo.getEmail();
      Role role = Role.USER;
+     Division division = Division.KAKAO; 
+ 
+     
      
      Member member = memberRepository.findByEmail(email);
      if(member == null){
     	 member = Member.oauth2Register()
         		 .email(email).name(username).password(password).role(role)
-                 .provider(provider).providerId(providerId)
+                 .provider(provider).providerId(providerId).division(division)
                  .build();
      }
-     System.out.println(member.getEmail() + "JJJJJJJJJJ");
-     System.out.println(member.getProviderId() + "kasdjgkdjsakgjaskgd");
-     System.out.println(member.getPassword() + "password");
+     
+     if (member.getEmail() ==null) {
+		
+	}
      
      return new PrincipalDetails(member, oAuth2UserInfo);
 }}
