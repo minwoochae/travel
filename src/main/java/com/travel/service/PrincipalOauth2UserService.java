@@ -38,7 +38,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
  
      Division division = Division.KAKAO; 
      
-     
+     	
      Member member = memberRepository.findByEmail(email);
      if(member == null){
     	 member = Member.oauth2Register()

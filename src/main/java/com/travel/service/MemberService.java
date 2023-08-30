@@ -46,9 +46,9 @@ public class MemberService implements UserDetailsService {
 	}
 
 	public Member findByEmail(String email) {
-		return memberRepository.findByEmail(email);
+	    return memberRepository.findByEmail(email);
 	}
-
+	
 	public String emailFind(String name, String phone) {
 		Member member = memberRepository.findByNameAndPhoneNumber(name, phone);
 
@@ -107,11 +107,15 @@ public class MemberService implements UserDetailsService {
 
 	public String passwordFind(String email) {
 
-		Member member = memberRepository.findByEmail(email);
 
-		if (member == null) {
+		
+		
+		if (memberRepository.findByEmail(email) == null) {
 			return "일치하는 사용자가 없습니다";
-		} else if(member.getDivision() ==Division.KAKAO ){
+		}
+		Member member = memberRepository.findByEmail(email);
+		
+		if(member.getDivision() ==Division.KAKAO ){
 			return "카카오 사용자입니다";
 		}
 

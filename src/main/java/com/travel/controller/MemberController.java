@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import com.travel.Dto.MemberFormDto;
 import com.travel.Dto.PasswordDto;
 import com.travel.auth.PrincipalDetails;
+import com.travel.constant.Division;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanContent;
@@ -87,13 +88,13 @@ public class MemberController {
 		model.addAttribute("memberFormDto", new MemberFormDto());
 		return "member/LoginForm";
 	}
+
 	@PostMapping("/account/search")
 	@ResponseBody
 	public HashMap<String, String> members(@RequestBody Map<String, Object> data) {
 		String name = (String) data.get("memberName");
 		String phone = (String) data.get("memberPhoneNumber");
 
-		
 		HashMap<String, String> msg = new HashMap<>();
 		String email = memberservice.emailFind(name, phone);
 
@@ -114,21 +115,39 @@ public class MemberController {
 	@ResponseBody
 	public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata) {
 		String email = (String) psdata.get("memberEmail");
-		
 
+		Member member = memberservice.findByEmail(email);
 		HashMap<String, String> msg = new HashMap<>();
-		String pass = memberservice.passwordFind(email);
+
+		try {
+			   if (member == null) {
+		            throw new IllegalStateException("존재하지 않은 계정입니다. 아이디 찾기 혹은 회원가입 후 이용해주세요.");
+		        }
+			if (member.getDivision() == Division.NORMAL) {
+				String pass = memberservice.passwordFind(email);
+
+				// pass 암호화된 비밀번호
+				String ramdomps = memberservice.getRamdomPassword(12);
+
+				// ramdomps 를 view에 출력
+				String password = memberservice.updatePassword(ramdomps, email, passwordEncoder);
+				memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps);
+				String asd = "이메일로 임시 비밀번호가 발송되었습니다.";
+				msg.put("message", asd);
+			} else if (member.getDivision() == Division.KAKAO) {
+				String asd = "현재 계정은 카카오 계정이므로 변경이 불가능합니다..";
+				msg.put("message", asd);
+			} else {
+				String asd = "존재하지 않은 계정입니다. 아이디 찾기 혹은 회원가입 후 이용해주세요";
+				msg.put("message", asd);
+			}
+		} catch (IllegalStateException e) {
+		    String errorMessage = e.getMessage(); // 예외 메시지 가져오기
+	        msg.put("message", errorMessage);
+	        e.printStackTrace();
 			
-		// pass 암호화된 비밀번호
-		String ramdomps = memberservice.getRamdomPassword(12);
+		}
 
-		// ramdomps 를 view에 출력
-		String password = memberservice.updatePassword(ramdomps, email, passwordEncoder);
-
-		memberservice.sendEmail(email, "새로운 비밀번호", "새로운 비밀번호: " + ramdomps);
-
-		String asd = "이메일로 임시 비밀번호가 발송되었습니다.";
-		msg.put("message", asd);
 		return msg;
 	}
 
@@ -136,25 +155,22 @@ public class MemberController {
 	@GetMapping(value = "/member/mypage")
 	public String mainMypage(Principal principal, Model model, Authentication authentication) {
 		Member member = memberservice.memberMypage(principal.getName());
-		
-		if(member == null) {
+
+		if (member == null) {
 			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+
 			Member principalDetail = principalDetails.getMember();
-			model.addAttribute("member", principalDetail);	
-		}else {
-			
+			model.addAttribute("member", principalDetail);
+		} else {
+
 			model.addAttribute("member", member);
 		}
-		
-		
-		
-		
+
 		String memberId = principal.getName();
 		List<Plan> plans = planService.findPlanTopByEmail(memberId);
-		
+
 		model.addAttribute("plan", plans);
-		
-		
+
 		return "member/MyPage";
 	}
 
@@ -162,19 +178,20 @@ public class MemberController {
 	@GetMapping(value = "/member/mypageupdate")
 	public String mypageupdate(Principal principal, Model model, Authentication authentication) {
 		Member member = memberservice.memberMypage(principal.getName());
-		
-		if(member == null) {
+
+		if (member == null) {
 			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 			Member principalDetail = principalDetails.getMember();
-			model.addAttribute("member", principalDetail);	
-		}else {
-			
+			model.addAttribute("member", principalDetail);
+		} else {
+
 			model.addAttribute("member", member);
 		}
-		
+
 		return "member/MypageupdateForm";
 	}
 
+	// 카카오 이용자는 내 정보 수정이 불가능하여서 넣지 않아서 Authentication를 넣지 않음
 	@PostMapping("/member/mypageupdate")
 	public String mypageupdate(@Valid String name, @Valid String phoneNumber, Model model, Principal principal) {
 		Member members = memberservice.memberMypage(principal.getName());
@@ -218,14 +235,13 @@ public class MemberController {
 	public String passwordupdate(@RequestParam String password, Model model, Principal principal, Member member) {
 		Member members = memberservice.memberMypage(principal.getName());
 		if (passwordEncoder.matches(password, members.getPassword()) == true) {
-			model.addAttribute("errorMessage", "기존 비밀번호와 같습니다."); 
+			model.addAttribute("errorMessage", "기존 비밀번호와 같습니다.");
 			model.addAttribute("member", member);
-			return "member/EditMember"; 
+			return "member/EditMember";
 		} else {
 			memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
-			return "redirect:/"; 
+			return "redirect:/";
 		}
-
 
 	}
 
@@ -238,8 +254,5 @@ public class MemberController {
 
 		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
 	}
-	
 
-
-	
 }
