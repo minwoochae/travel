@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,25 +26,26 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class CommunityService {
-	
+
 	private final MemberRepository memberRepository;
 	private final PlanRepository planRepository;
 	private final PlanCommunityRepository planCommunityRepository;
 	
 	// 커뮤니티 작성
+
 	public Long saveCommunity(PlanCommunityDto planCommunityDto, String memberId, Long planId) throws Exception {
 		Member member = memberRepository.findByEmail(memberId);
 		LocalDateTime now = LocalDateTime.now();
 		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 		Optional<Plan> optionalPlan = planRepository.findById(planId);
-	    if (!optionalPlan.isPresent()) {
-	        // 예외 처리
-	        throw new Exception("Plan not found");
-	    }
-	    Plan plan = optionalPlan.get();
+		if (!optionalPlan.isPresent()) {
+			// 예외 처리
+			throw new Exception("Plan not found");
+		}
+		Plan plan = optionalPlan.get();
 		PlanCommunity planCommunity = planCommunityDto.createPlanCommunity(regDate, member, plan);
 		planCommunityRepository.save(planCommunity);
-		
+
 		return planCommunity.getId();
 	}
 	
@@ -66,6 +68,6 @@ public class CommunityService {
 	    return planCommunityRepository.findByMemberEmail(email, pageable);
 	}
 
-
 	
+
 }
