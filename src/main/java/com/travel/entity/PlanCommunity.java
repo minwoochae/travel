@@ -31,9 +31,6 @@ public class PlanCommunity extends BaseEntity{
 	@Column(name="plan_community_content") 
 	private String communityContent;
 	
-	@Column(name="plan_community_division") 
-	private String communityDivision;
-	
 	@Column(name="plan_community_reg_date") 
 	private String communityRegDate;
 	

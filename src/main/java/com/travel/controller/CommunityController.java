@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.travel.Dto.PlanCommunityDto;
 import com.travel.Dto.PlanFormDto;
@@ -31,22 +32,23 @@ public class CommunityController {
 		String no = principal.getName();
 		PlanFormDto planFormDto = planService.getPlanDtl(planId);
 		model.addAttribute("plan", planFormDto);
+		model.addAttribute("planCommunityDto", new PlanCommunityDto() );
 
 		return "community/writeCommunity";
 	}
 
 	@PostMapping(value = "/community/write")
-	public String createCommunity(@Valid PlanCommunityDto planCommunityDto, Model model, Principal principal) {
-
-
+	public String createCommunity(@Valid PlanCommunityDto planCommunityDto, Model model, Principal principal,
+				@RequestParam("planId") Long planId) {
+		
 		try {
 			String no = principal.getName();
-			communityService.saveCommunity(planCommunityDto, no);
+			communityService.saveCommunity(planCommunityDto, no, planId);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "작성 에러");
-			return "/";
+			return "redirect:/";
 		}
 
 		return "redirect:/";
