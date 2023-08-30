@@ -53,6 +53,9 @@ public class PlannerController {
 
 	@GetMapping(value = {"/planner/list", "/planner/list/{page}"})
 	public String planList(Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
+		Page<PlanCommunity> planCommunity = planService.findPaginated(PageRequest.of(page.isPresent() ? page.get() : 0, 6));
+		model.addAttribute("community", planCommunity);
+		model.addAttribute("maxPage", 5);
 		return "planner/planList";
 	}
 	
@@ -191,8 +194,6 @@ public class PlannerController {
 			Principal principal) {
 
 		planService.deleteplan(planId);
-		
-		
 		
 		return new ResponseEntity<Long>(planId, HttpStatus.OK);
 	}

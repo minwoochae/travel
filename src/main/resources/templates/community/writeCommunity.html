@@ -91,7 +91,7 @@
 	
 	
 	<form role="form" action="/community/write" method="post" enctype="multipart/form-data"
-            th:object="${planCommunityDto}" style="width: 917px; align-item: center; margin: 0 auto;">
+            th:object="${planCommunityDto}" style="width: 917px; align-item: center; margin: 0 auto; margin-bottom: 50px;">
         <div class="mb-3">
         	<label for="exampleInputEmail1" class="form-label">제목</label>
         	<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -107,7 +107,7 @@
                     
        
     	<input type="hidden" th:value="${plan.id}" name="planId">
-    	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" style="">
     	<button type="submit" class="btn btn-outline-primary">작성하기</button>
     </form>
 	
