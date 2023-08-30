@@ -47,7 +47,7 @@ public class AskResponseService {
         	 AskBoard askBoard = askBoardOptional.get();
              askResponseBoard.setAskBoard(askBoard);
         	askResponseRepository.save(askResponseBoard);
-        	System.out.println(askBoardId + "11111");
+        	
         }
 
 		return askResponseBoard.getId();

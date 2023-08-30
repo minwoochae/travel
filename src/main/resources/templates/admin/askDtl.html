@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
 
@@ -52,14 +53,14 @@
 		<div class="row">
 		
 		
-			<div th:unless="${isOwner}" class="col-md-12 mb-0">
+			<div th:unless="${isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')')}"class="col-md-12 mb-0">
 			  <p>등록한 사용자만 볼 수 있는 페이지입니다.</p>
 			</div>
 		</div>
 	</div>
 
 
-	<div class="container"  th:if="${isOwner}">
+	<div class="container" th:if="${isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
 		<div class="row">
 			<input type="hidden" id="askBoardId" th:value="${ask.id}"> <input
 				type="hidden" th:value="${ask.askTitle}" id="askTitle"
@@ -85,7 +86,7 @@
 
 			<!-- 관리자 답변 표시 -->
 			
-<div class="row" th:if="${askResponse != null}">
+<div class="row" th:if="${askResponse != null and (isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')'))}">
 <p>답변보기</p>
     <input type="hidden" id="askResponseBoardId"
         th:value="${askResponse.id}">

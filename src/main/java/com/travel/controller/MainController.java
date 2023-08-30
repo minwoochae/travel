@@ -18,7 +18,7 @@ public class MainController {
     private final PlanContentService planContentService;
 
     @GetMapping(value = "/")
-    public String main(Authentication authentication) {
+    public String main(Authentication authentication ) {
     	
     	
     	

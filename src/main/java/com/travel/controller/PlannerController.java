@@ -29,6 +29,7 @@ import com.travel.Dto.PlanContentDto;
 import com.travel.Dto.PlanFormDto;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
+import com.travel.entity.PlanCommunity;
 import com.travel.entity.PlanContent;
 import com.travel.service.MemberService;
 import com.travel.service.PlanService;
@@ -84,7 +85,6 @@ public class PlannerController {
 	}
 	
 	
-	
 	//플랜만들기
 	@PostMapping(value = "/planner/setplan")
 	public @ResponseBody ResponseEntity createPlan(Principal principal, Model model, @RequestBody HashMap<String, Object> hashMap, BindingResult bindingResult) {
@@ -115,7 +115,6 @@ public class PlannerController {
 				}
 	        }
 			Plan plan = planService.setPlan(no, planFormDto);
-			
 			if (hashMap.containsKey("paramContent")) {
 				String jsonData = (String) hashMap.get("paramContent");
 				List<Map<String, Object>> paramData = objectMapper.readValue(jsonData, new TypeReference<List<Map<String, Object>>>() {});
@@ -133,6 +132,9 @@ public class PlannerController {
                 	
                 	planService.setPlanContent(planContentDto, plan);
                 }
+				
+				
+				
 			}
 			
 			
@@ -164,6 +166,18 @@ public class PlannerController {
 		model.addAttribute("planData", plan);
 		
 		return "planner/myPlanInfo";
+	}
+	
+	//공유받은 플랜보기
+	@GetMapping(value = {"/planner/sharePlan", "/planner/sharePlan/{planId}"})
+	public String sharePlan(@PathVariable("planId") Long planId, Model model) {
+		PlanFormDto planFormDto = planService.getPlanDtl(planId);
+		model.addAttribute("plan", planFormDto);
+		Plan plan = planService.getPlanById(planId);
+		model.addAttribute("planData", plan);
+		
+		
+		return "planner/sharePlan";
 	}
 	
 	
