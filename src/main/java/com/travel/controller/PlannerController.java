@@ -51,10 +51,13 @@ public class PlannerController {
 	}
 	
 
-	@GetMapping(value = "/planner/list")
-	public String planList() {
+	@GetMapping(value = {"/planner/list", "/planner/list/{page}"})
+	public String planList(Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
 		return "planner/planList";
 	}
+	
+	
+	
 	
 	//플랜 완성 페이지
 	@GetMapping(value="/planComplete")
