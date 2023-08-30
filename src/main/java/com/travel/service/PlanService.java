@@ -11,13 +11,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.travel.Dto.PlanCommunityDto;
 import com.travel.Dto.PlanContentDto;
 import com.travel.Dto.PlanFormDto;
 import com.travel.Repository.MemberRepository;
+import com.travel.Repository.PlanCommunityRepository;
 import com.travel.Repository.PlanContentRepository;
 import com.travel.Repository.PlanRepository;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
+import com.travel.entity.PlanCommunity;
 import com.travel.entity.PlanContent;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -30,6 +33,7 @@ public class PlanService {
 	private final PlanContentRepository planContentRepository;
 	private final PlanRepository planRepository;
 	private final MemberRepository memberRepository;
+	private final PlanCommunityRepository planCommunityRepository;
 	
 	//플랜 만들기
 	public Plan setPlan(String no, PlanFormDto planFormDto) {
@@ -61,6 +65,23 @@ public class PlanService {
 		return savePlanContent;
 		
 	}
+	
+//	//플랜 커뮤니티 생성하기(비공개)
+//	public PlanCommunity createPlanCommunity(Plan plan, String no) {
+//		Member member = memberRepository.findByEmail(no);
+//		LocalDateTime now = LocalDateTime.now();
+//		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+//		
+//		PlanCommunity planCommunity = new PlanCommunity();
+//		planCommunity.setCommunityTitle(null);
+//		planCommunity.setCommunityContent(null);
+//		planCommunity.setCommunityRegDate(regDate);
+//		planCommunity.setMember(member);
+//		planCommunity.setPlan(plan);
+//		PlanCommunity savePlanCommunity = planCommunityRepository.save(planCommunity);
+//		
+//		return savePlanCommunity;
+//	}
 	
 	
 	//플랜 찾기

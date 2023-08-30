@@ -35,19 +35,20 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
      String password = "SNS 로그인";  // 사용자가 입력한 적은 없지만 만들어준다
 	
      String email = oAuth2UserInfo.getEmail();
-     Role role = Role.USER;
-     Division division = Division.KAKAO; 
  
+     Division division = Division.KAKAO; 
      
-     
+     	
      Member member = memberRepository.findByEmail(email);
      if(member == null){
     	 member = Member.oauth2Register()
-        		 .email(email).name(username).password(password).role(role)
+        		 .email(email).name(username).password(password)
                  .provider(provider).providerId(providerId).division(division)
                  .build();
      }
-
+     
+     
+     
      
      return new PrincipalDetails(member, oAuth2UserInfo);
 }}

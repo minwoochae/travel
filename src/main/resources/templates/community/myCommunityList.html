@@ -34,30 +34,30 @@
 
 <div layout:fragment="content">
 	<div class="item-cover">
-		<h1 class="cover-text">나의 여행 PLAN LIST</h1>
+		<h1 class="cover-text">공유 PLAN LIST</h1>
 	</div>
 
 	<div class="container text-center" style="margin-bottom: 50px;">
-		<div class="single_place" th:each="plan : ${plan}">
-			<div class="regTime" th:text="${plan.regDate}"
+		<div class="single_place" th:each="community : ${community}">
+			<div class="regTime" th:text="${community.communityRegDate}"
 				style="display: flex; justify-content: flex-start; font-weight: bold; margin-left: 80px;"></div>
 			<div class="card"
 				style="width: 950px; display: flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto; margin-top: 10px;">
 				<div class="row g-0" style="display: flex;">
 					<div style="display: flex; align-items: center;">
 						<div class="col-md-4">
-							<img th:src="${plan.planContent[0].place_img}"
+							<img th:src="${community.plan.planContent[0].place_img}"
 								class="img-fluid rounded-start"
-								th:alt="${plan.planContent[0].place_img}">
+								th:alt="${community.plan.planContent[0].place_img}">
 						</div>
 						<div class="col-md-8" style="display: flex;">
 							<div class="card-body" style="display: flex;">
 								<div style="display: block; width: 99%;">
-									<h5 class="card-title" th:text="${plan.planTitle}"
+									<h5 class="card-title" th:text="${community.communityTitle}"
 										style="width: 500px; font-size: x-large;"></h5>
 									<p class="card-text">
 										<small class="text-body-secondary"
-											th:text="${plan.planDate} + 일">2박 3일</small>
+											th:text="${community.plan.planDate} + 일">2박 3일</small>
 									</p>
 								</div>
 								<div class="dropdown-center">
@@ -66,13 +66,9 @@
 										style="background-color: transparent; border: none; width: 1%; text-align: right; display: flex; justify-content: center; font-size: xx-large; cursor: pointer;">&vellip;</button>
 									<ul class="dropdown-menu">
 										<li><a class="dropdown-item"
-											th:href="'/planner/myPlanInfo/' + ${plan.id}">상세 보기</a></li>
+											th:href="'/community/viewCommunityInfo/' + ${community.id}">상세 보기</a></li>
 										<li>
-											<button type="button" class="btn btn-danger dropdown-item"
-												th:id="${plan.id}" th:value="${plan.id}"
-												th:onclick="'javascript:deleteplan(' + ${plan.id} +')'"
-												style="float: right; background-color: white; color: black; border: none; font-weight: bolder;">플랜삭제하기
-											</button>
+											
 
 										</li>
 
@@ -86,23 +82,23 @@
 		</div>
 
 		<nav style=""
-			th:with="start=${(plan.number/maxPage)*maxPage + 1}
-				,end=(${(plan.totalPages == 0) ? 1 : (start + (maxPage - 1) < plan.totalPages ? start + (maxPage - 1) : plan.totalPages)})"
+			th:with="start=${(community.number/maxPage)*maxPage + 1}
+				,end=(${(community.totalPages == 0) ? 1 : (start + (maxPage - 1) < community.totalPages ? start + (maxPage - 1) : community.totalPages)})"
 			aria-label="Page navigation example">
 			<ul class="pagination d-flex justify-content-center">
-				<li class="page-item" th:classappend="${plan.first}?'disabled'">
+				<li class="page-item" th:classappend="${community.first}?'disabled'">
 					<a class="page-link"
-					th:onclick="'javascript:page(' + ${plan.number - 1} +')'">이전</a>
+					th:onclick="'javascript:page(' + ${community.number - 1} +')'">이전</a>
 				</li>
 				<li class="page-item"
 					th:each="page: ${#numbers.sequence(start, end)}"
-					th:classappend="${plan.number eq page-1}?'active':''"><a
+					th:classappend="${community.number eq page-1}?'active':''"><a
 					class="page-link" th:inline="text"
 					th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a>
 				</li>
-				<li class="page-item" th:classappend="${plan.last}?'disabled'">
+				<li class="page-item" th:classappend="${community.last}?'disabled'">
 					<a class="page-link"
-					th:onclick="'javascript:page(' + ${plan.number + 1} +')'">다음</a>
+					th:onclick="'javascript:page(' + ${community.number + 1} +')'">다음</a>
 				</li>
 			</ul>
 		</nav>
@@ -144,7 +140,7 @@
 	function page(page){
 			
 			//주소 이동
-			location.href = "/planner/myPlanList/" + page 
+			location.href = "/community/viewCommunityList/" + page 
 		}
 
 	
