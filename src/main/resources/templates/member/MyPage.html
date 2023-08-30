@@ -128,6 +128,48 @@ li {
 			</div>
 		</a>
 	</div>
+		
+		
+		<div class="row justify-content-between"
+			th:if="${!#lists.isEmpty(community)}"
+			style="width: 950px; justify-content: center; align-items: center; margin: 0 auto; margin-top: 50px">
+			<h1 style="font-weight: bold;">최근 플랜 공유</h1>
+			<a href="/community/viewCommunityList" type="button"
+			class="btn btn-outline-danger m-1 justify-content-md-end">더 보러가기</a>
+		</div>
+		<div th:if="${#lists.isEmpty(community)}">
+		<p
+			style="text-align: center; font-size: 50px; width: 100%; height: 400px; margin-top: 200px;">작성된 공유플랜이 없습니다.</p>
+		</div>
+		<div>
+			<a th:href="'/community/viewCommunityInfo/' + ${community.id}" class="card"
+				th:each="community : ${community}"
+				style="width: 950px; display: flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
+				<div class="row g-0" style="display: flex;">
+					<div style="display: flex; align-items: center;">
+						<div class="col-md-4">
+							<img th:src="${community.plan.planContent[0].place_img}"
+								class="img-fluid rounded-start"
+								th:alt="${community.plan.planContent[0].place_img}">
+						</div>
+						<div class="col-md-8" style="display: flex;">
+							<div class="card-body" style="display: flex;">
+								<div style="display: block; width: 99%;">
+									<h5 class="card-title" th:text="${community.communityTitle}"
+										style="width: 500px; font-size: x-large;"></h5>
+									<p class="card-text">
+										<small class="text-body-secondary"
+											th:text="${community.plan.planDate} + 일">2박 3일</small>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+		
+		
 
 	<!-- 각 페이지의 스크립트가 작성될 위치 -->
 	<th:block layout:fragment="script">
