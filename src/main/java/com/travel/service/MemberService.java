@@ -168,10 +168,12 @@ public class MemberService implements UserDetailsService {
 		if (member == null) {
 			throw new UsernameNotFoundException(email);
 		}
+		
+		
 
 		// 사용자가 있다면 DB에서 가져온 값으로 userDetails 객체를 만들어서 반환
 		return User.builder().username(member.getEmail()).password(member.getPassword())
-				.roles(member.getDivision().toString()).build();
+				.roles(member.getRole().toString()).build();
 	}
 
 	@Transactional(readOnly = true)
