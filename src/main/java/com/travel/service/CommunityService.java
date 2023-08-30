@@ -2,8 +2,11 @@ package com.travel.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,7 @@ public class CommunityService {
 	private final PlanRepository planRepository;
 	private final PlanCommunityRepository planCommunityRepository;
 	
+	// 커뮤니티 작성
 	public Long saveCommunity(PlanCommunityDto planCommunityDto, String memberId, Long planId) throws Exception {
 		Member member = memberRepository.findByEmail(memberId);
 		LocalDateTime now = LocalDateTime.now();
@@ -42,5 +46,26 @@ public class CommunityService {
 		
 		return planCommunity.getId();
 	}
+	
+	public PlanCommunityDto getCommunityDtl(Long communityId) {
+		PlanCommunity planCommunity = planCommunityRepository.findById(communityId).orElseThrow(EntityNotFoundException::new);
+		PlanCommunityDto planCommunityDto = PlanCommunityDto.of(planCommunity);
+		
+		
+		return planCommunityDto;
+	}
+	
+	
+	//email을 이용해서 최근 3개 커뮤니티 작성 글 가져오기
+	public List<PlanCommunity> getTop3RecentCommunitiesByMemberEmail(String email) {
+	    return planCommunityRepository.findTop3ByMemberEmailOrderByCommunityRegDateDesc(email);
+	}
+	
+	//플랜 리스트에 사용될 email로 플랜 전체 가져오기
+	public Page<PlanCommunity> getCommunitiesByMemberEmail(String email, Pageable pageable) {
+	    return planCommunityRepository.findByMemberEmail(email, pageable);
+	}
+
+
 	
 }

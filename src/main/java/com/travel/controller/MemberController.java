@@ -26,7 +26,9 @@ import com.travel.Dto.PasswordDto;
 import com.travel.auth.PrincipalDetails;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
+import com.travel.entity.PlanCommunity;
 import com.travel.entity.PlanContent;
+import com.travel.service.CommunityService;
 import com.travel.service.MemberService;
 import com.travel.service.PlanService;
 
@@ -39,6 +41,7 @@ public class MemberController {
 
 	private final MemberService memberservice;
 	private final PlanService planService;
+	private final CommunityService communityService;
 	private final PasswordEncoder passwordEncoder;
 
 	// 로그인 화면
@@ -146,13 +149,14 @@ public class MemberController {
 			model.addAttribute("member", member);
 		}
 		
-		
-		
-		
 		String memberId = principal.getName();
 		List<Plan> plans = planService.findPlanTopByEmail(memberId);
+		List<PlanCommunity> planCommunity = communityService.getTop3RecentCommunitiesByMemberEmail(memberId);
 		
 		model.addAttribute("plan", plans);
+		model.addAttribute("community", planCommunity);
+		
+		
 		
 		
 		return "member/MyPage";

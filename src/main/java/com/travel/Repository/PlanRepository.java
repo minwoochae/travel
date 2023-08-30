@@ -32,5 +32,7 @@ public interface PlanRepository extends JpaRepository<Plan, Long>{
 
 	@Query("SELECT p FROM Plan p WHERE p.member.email = :email ORDER BY p.regDate DESC")
 	Page<Plan> findPlansByEmailOrderByRegDateDesc(String email, Pageable pageable);
+	
+	
 
 }
