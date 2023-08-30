@@ -3,6 +3,7 @@ package com.travel.entity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -49,10 +50,6 @@ public class Pay{
 	@JoinColumn(name = "item_id")
 	private Item item;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@OnDelete(action= OnDeleteAction.CASCADE)
-	@JoinColumn(name = "pay_id")
-	private Orders orders;
 	
 	
 	

@@ -10,7 +10,7 @@ import lombok.Setter;
 public class OrderItemDto {
 	private String itemNm;
 	
-	private Long count;
+	private int count;
 	
 	private int orderPrice;
 	
