@@ -1,3 +1,11 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // 페이지가 로드되었을 때 실행되는 함수
+
+    // 검색 버튼 클릭 이벤트를 자동으로 트리거하여 검색 결과 출력
+    var searchButton = document.getElementById("searchButton2");
+    searchButton2.click();
+});
+
 document.getElementById("searchButton2").addEventListener("click", function() {
     var selectedAreaCode = document.getElementById("areaCodeSelect2").value;
     var selectedContentType = document.getElementById("contentTypeIdSelect2").value;

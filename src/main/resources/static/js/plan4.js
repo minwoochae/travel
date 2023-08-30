@@ -1,3 +1,11 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // 페이지가 로드되었을 때 실행되는 함수
+
+    // 검색 버튼 클릭 이벤트를 자동으로 트리거하여 검색 결과 출력
+    var searchButton = document.getElementById("searchButton");
+    searchButton.click();
+});
+
 document.getElementById("searchButton").addEventListener("click", function() {
     var selectedAreaCode = document.getElementById("areaCodeSelect").value;
     var selectedContentType = document.getElementById("contentTypeIdSelect").value;
@@ -7,8 +15,6 @@ document.getElementById("searchButton").addEventListener("click", function() {
     var searchData = []; // 전체 검색 결과를 저장할 배열
     var itemsPerPage = Number.MAX_SAFE_INTEGER;// 한 페이지에 보여줄 결과 개수
 	
-	// 초기 로드시 지역 코드를 기반으로 콘텐츠 유형 업데이트
-	showResultsWithLazyLoading()
 	
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/search-data?areaCode=" + encodeURIComponent(selectedAreaCode) +
@@ -21,9 +27,11 @@ document.getElementById("searchButton").addEventListener("click", function() {
             showResultsWithLazyLoading();
         }
     };
+	
 
     xhr.send();
-
+	
+	
 
     function showResultsWithLazyLoading() {
         var searchResultsElement = document.getElementById("results");
@@ -93,7 +101,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
         }
 
     }
-
+	
 });
 
 
