@@ -118,8 +118,13 @@ public class MemberController {
 	@ResponseBody
 	public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata) {
 		String email = (String) psdata.get("memberEmail");
+<<<<<<< HEAD
+		
+		
+=======
 
 		Member member = memberservice.findByEmail(email);
+>>>>>>> d3c10508e1307041b3935be30566d514ae401c9a
 		HashMap<String, String> msg = new HashMap<>();
 
 		try {
@@ -151,6 +156,16 @@ public class MemberController {
 			
 		}
 
+<<<<<<< HEAD
+		// ramdomps 를 view에 출력
+		String password = memberservice.updatePassword(ramdomps, email, passwordEncoder);
+							           
+		memberservice.sendEmail(email, "새로운 비밀번호" , "새로운 비밀번호: " + ramdomps);
+
+		String asd = "이메일로 임시 비밀번호가 발송되었습니다.";
+		msg.put("message", asd);
+=======
+>>>>>>> d3c10508e1307041b3935be30566d514ae401c9a
 		return msg;
 	}
 
