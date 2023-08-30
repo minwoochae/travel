@@ -37,6 +37,17 @@ public class CommunityController {
 		return "community/writeCommunity";
 	}
 
+	@GetMapping(value = { "/community/update", "/community/update/{planId}" })
+	public String updateCommunityPage(@PathVariable("planId") Long planId, Model model, Principal principal,
+			PlanCommunityDto planCommunityDto) {
+		String no = principal.getName();
+		PlanFormDto planFormDto = planService.getPlanDtl(planId);
+		model.addAttribute("plan", planFormDto);
+		model.addAttribute("planCommunityDto", new PlanCommunityDto() );
+
+		return "community/updateCommunity";
+	}
+	
 	@PostMapping(value = "/community/write")
 	public String createCommunity(@Valid PlanCommunityDto planCommunityDto, Model model, Principal principal,
 				@RequestParam("planId") Long planId) {
@@ -53,5 +64,7 @@ public class CommunityController {
 
 		return "redirect:/";
 	}
+	
+	
 
 }
