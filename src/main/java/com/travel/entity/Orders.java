@@ -3,6 +3,7 @@ package com.travel.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.travel.Dto.OrderDto;
 import com.travel.constant.OrderStatus;
 
 import jakarta.persistence.CascadeType;
@@ -49,6 +50,9 @@ public class Orders{
 	@Column(name= "zip_code")
 	private String zipCode;
 	
+	@Column(name = "total_price")
+	private int totalPrice;
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pay_id")
 	private Pay pay;
@@ -56,16 +60,21 @@ public class Orders{
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
     
-    public Orders(Long[] orderItemIds,  String orderName, String zipCode, String orderAddress, String phoneNumber) {
-        this.orderStatus = OrderStatus.ORDER;
-        this.orderInfoName = orderName;
-        this.orderInfoAddress = orderAddress;
-        this.orderInfoPhone = phoneNumber;
-        this.zipCode = zipCode;
-		/*
-		 * for (Long orderItemId : orderItemIds) { OrderItem orderItem = new
-		 * OrderItem(orderItemId); this.addOrderItem(orderItem); }
-		 */
+    public static Orders createOrders(OrderDto orderDto, List<OrderItem> orderItemList) {
+    	Orders orders = new Orders();
+    	orders.setTotalPrice(orderDto.getTotalPrice());
+    	orders.setOrderInfoName(orderDto.getItemName());
+    	orders.setZipCode(orderDto.getZipCode());
+    	orders.setOrderInfoAddress(orderDto.getOrderAddress());
+    	orders.setOrderInfoPhone(orderDto.getPhoneNumber());
+    	
+    	for(OrderItem orderItem : orderItemList) {
+    		orders.addOrderItem(orderItem);
+    	}
+    	
+    	orders.setOrderStatus(OrderStatus.ORDER);
+    	
+    	return orders;
     }
 
 

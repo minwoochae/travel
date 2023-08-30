@@ -66,23 +66,22 @@ public class PlanService {
 		
 	}
 	
-	//플랜 커뮤니티 생성하기(비공개)
-	public PlanCommunity createPlanCommunity(Plan plan, String no) {
-		Member member = memberRepository.findByEmail(no);
-		LocalDateTime now = LocalDateTime.now();
-		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
-		
-		PlanCommunity planCommunity = new PlanCommunity();
-		planCommunity.setCommunityTitle(null);
-		planCommunity.setCommunityContent(null);
-		planCommunity.setCommunityDivision("behind"); // behind(비공개) open(공개)
-		planCommunity.setCommunityRegDate(regDate);
-		planCommunity.setMember(member);
-		planCommunity.setPlan(plan);
-		PlanCommunity savePlanCommunity = planCommunityRepository.save(planCommunity);
-		
-		return savePlanCommunity;
-	}
+//	//플랜 커뮤니티 생성하기(비공개)
+//	public PlanCommunity createPlanCommunity(Plan plan, String no) {
+//		Member member = memberRepository.findByEmail(no);
+//		LocalDateTime now = LocalDateTime.now();
+//		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+//		
+//		PlanCommunity planCommunity = new PlanCommunity();
+//		planCommunity.setCommunityTitle(null);
+//		planCommunity.setCommunityContent(null);
+//		planCommunity.setCommunityRegDate(regDate);
+//		planCommunity.setMember(member);
+//		planCommunity.setPlan(plan);
+//		PlanCommunity savePlanCommunity = planCommunityRepository.save(planCommunity);
+//		
+//		return savePlanCommunity;
+//	}
 	
 	
 	//플랜 찾기

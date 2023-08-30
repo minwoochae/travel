@@ -51,15 +51,19 @@ public class PlannerController {
 	}
 	
 
-	@GetMapping(value = "/planner/list")
-	public String planList() {
+	@GetMapping(value = {"/planner/list", "/planner/list/{page}"})
+	public String planList(Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
 		return "planner/planList";
 	}
+	
+	
+	
 	
 	//플랜 완성 페이지
 	@GetMapping(value="/planComplete")
 	public String planComp(Principal principal, Model model, Optional<Integer> page) {
 	    String memberNo = principal.getName();
+	    
 	    Pageable pageable = PageRequest.of(page.orElse(0), 1);
 
 	    Plan Plan = planService.findLastPlan(memberNo, pageable);

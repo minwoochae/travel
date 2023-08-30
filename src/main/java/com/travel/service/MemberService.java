@@ -46,9 +46,9 @@ public class MemberService implements UserDetailsService {
 	}
 
 	public Member findByEmail(String email) {
-		return memberRepository.findByEmail(email);
+	    return memberRepository.findByEmail(email);
 	}
-
+	
 	public String emailFind(String name, String phone) {
 		Member member = memberRepository.findByNameAndPhoneNumber(name, phone);
 
@@ -107,11 +107,15 @@ public class MemberService implements UserDetailsService {
 
 	public String passwordFind(String email) {
 
-		Member member = memberRepository.findByEmail(email);
 
-		if (member == null) {
+		
+		
+		if (memberRepository.findByEmail(email) == null) {
 			return "일치하는 사용자가 없습니다";
-		} else if(member.getDivision() ==Division.KAKAO ){
+		}
+		Member member = memberRepository.findByEmail(email);
+		
+		if(member.getDivision() ==Division.KAKAO ){
 			return "카카오 사용자입니다";
 		}
 
@@ -119,7 +123,7 @@ public class MemberService implements UserDetailsService {
 	}
 
 
-	  private final JavaMailSender javaMailSender;
+	/* private final JavaMailSender javaMailSender; */
 
 
 
@@ -128,7 +132,7 @@ public class MemberService implements UserDetailsService {
 			message.setTo(to);
 			message.setSubject(subject);
 			message.setText(text);
-			javaMailSender.send(message);
+//			javaMailSender.send(message);
 		}
 
 	// 회원 상세정보
@@ -168,10 +172,12 @@ public class MemberService implements UserDetailsService {
 		if (member == null) {
 			throw new UsernameNotFoundException(email);
 		}
+		
+		
 
 		// 사용자가 있다면 DB에서 가져온 값으로 userDetails 객체를 만들어서 반환
 		return User.builder().username(member.getEmail()).password(member.getPassword())
-				.roles(member.getDivision().toString()).build();
+				.roles(member.getRole().toString()).build();
 	}
 
 	@Transactional(readOnly = true)

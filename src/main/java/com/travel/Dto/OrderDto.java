@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderDto {
-	private String orderItemId;
+	private Long[] orderItemIds;
     private String itemName;
-    private String totalPrice;
+    private int totalPrice;
     private String orderName;
     private String zipCode;
     private String orderAddress;
