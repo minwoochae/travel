@@ -63,6 +63,7 @@ public class PlannerController {
 	@GetMapping(value="/planComplete")
 	public String planComp(Principal principal, Model model, Optional<Integer> page) {
 	    String memberNo = principal.getName();
+	    
 	    Pageable pageable = PageRequest.of(page.orElse(0), 1);
 
 	    Plan Plan = planService.findLastPlan(memberNo, pageable);
