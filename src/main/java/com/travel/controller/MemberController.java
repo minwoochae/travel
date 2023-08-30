@@ -168,17 +168,12 @@ public class MemberController {
 
 			model.addAttribute("member", member);
 		}
-<<<<<<< HEAD
 
 		String memberId = principal.getName();
 		List<Plan> plans = planService.findPlanTopByEmail(memberId);
 
 		model.addAttribute("plan", plans);
-
-=======
 		
-		String memberId = principal.getName();
-		List<Plan> plans = planService.findPlanTopByEmail(memberId);
 		List<PlanCommunity> planCommunity = communityService.getTop3RecentCommunitiesByMemberEmail(memberId);
 		
 		model.addAttribute("plan", plans);
@@ -187,7 +182,6 @@ public class MemberController {
 		
 		
 		
->>>>>>> 7ccb95645577a68e1d314376a5d555081575594d
 		return "member/MyPage";
 	}
 
