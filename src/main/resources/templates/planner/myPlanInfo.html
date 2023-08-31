@@ -89,13 +89,10 @@
 	</div>
 	<div style="display:flex; justify-content: center; margin-top: 40px;">
 	<div class="more_place_btn text-center" style="margin-right: 20px;">
-        <a class="boxed-btn4" href="#">이미지 내려받기</a>
+        <a class="boxed-btn4" onclick="downloadAsImage()">이미지 내려받기</a>
     </div>
    	<div class="more_place_btn text-center" style="margin-left: 20px;">
         <a class="boxed-btn4" th:href="'/community/write/' + ${plan.id}">내 플랜 공유하기</a>
-    </div>
-    <div class="more_place_btn text-center" style="margin-left: 20px;">
-        <a class="boxed-btn4" th:href="'/community/update/' + ${plan.id}">내 플랜 수정하기</a>
     </div>
 </div>
 <div style="display: flex; margin: 40px 0;" onclick="'여기에 카카오 공유링크'">
@@ -192,6 +189,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
         dayId++;  // Move to the next day
     }
 });
+
+
+function downloadAsImage() {
+    html2canvas(document.querySelector(".planBox")).then(canvas => {
+        var img = canvas.toDataURL("image/png");
+        var link = document.createElement('a');
+        link.href = img;
+        link.download = 'your_travel_plan.png';
+        link.click();
+    });
+}
 	
 	</script>
 </th:block>	

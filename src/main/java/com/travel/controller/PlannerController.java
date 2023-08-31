@@ -52,7 +52,7 @@ public class PlannerController {
 	
 
 	@GetMapping(value = {"/planner/list", "/planner/list/{page}"})
-	public String planList(Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
+	public String planList(Model model, @PathVariable Optional<Integer> page) {
 		Page<PlanCommunity> planCommunity = planService.findPaginated(PageRequest.of(page.isPresent() ? page.get() : 0, 6));
 		model.addAttribute("community", planCommunity);
 		model.addAttribute("maxPage", 5);
@@ -132,6 +132,7 @@ public class PlannerController {
                 	planContentDto.setTravelDivision((String)data.get("travelDivision"));
                 	planContentDto.setPlanDay((String)data.get("planDay"));
                 	planContentDto.setPlaceAddress((String)data.get("placeAddress"));
+                	planContentDto.setPlaceTel((String)data.get("placeTel"));                	
                 	planContentDto.setPlaceLatitude((String)data.get("placeLatitude"));
                 	planContentDto.setPlaceLongitude((String)data.get("placeLongitude"));
                 	planContentDto.setPlace_img((String)data.get("place_img"));

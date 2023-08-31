@@ -136,7 +136,7 @@ public class PlanService {
     }
 	
 	public Page<PlanCommunity> findPaginated(Pageable pageable) {
-	    return planCommunityRepository.findAll(pageable);
+	    return planCommunityRepository.findAllByOrderByCommunityRegDateDesc(pageable);
 	} 
 	
 	

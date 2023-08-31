@@ -18,9 +18,13 @@ public interface PlanCommunityRepository extends JpaRepository<PlanCommunity, Lo
 
 	List<PlanCommunity> findTop3ByMemberEmailOrderByCommunityRegDateDesc(String email);
 
-	Page<PlanCommunity> findByMemberEmail(String email, Pageable pageable);
+	Page<PlanCommunity> findByMemberEmailOrderByCommunityRegDateDesc(String email, Pageable pageable);
 	
 	Optional<PlanCommunity> findById(Long id);
 
 	Page<PlanCommunity> findAll(Pageable pageable);
+	
+	Page<PlanCommunity> findAllByOrderByCommunityRegDateDesc(Pageable pageable);
+
+	
 }

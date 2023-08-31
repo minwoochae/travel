@@ -1,5 +1,5 @@
+// 페이지가 로드되었을 때 실행되는 함수
 document.addEventListener("DOMContentLoaded", function() {
-    // 페이지가 로드되었을 때 실행되는 함수
 
     // 검색 버튼 클릭 이벤트를 자동으로 트리거하여 검색 결과 출력
     var searchButton = document.getElementById("searchButton");
@@ -70,26 +70,27 @@ document.getElementById("searchButton").addEventListener("click", function() {
 	        resultItem.appendChild(h4);
 	                   
             if (placeName.toLowerCase().includes(searchTerm)){
-				
+			let placeTel = data.placeTel;
             let placeAddress = data.placeAddress;
             let placeLatitude = data.placeLatitude;
             let placeLongitude = data.placeLongitude;
 
             resultItem.innerHTML = `
                 <img src="${placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${placeName} Image">
-                <h4 style="margin-left:15px;">${placeName}</h4>
+                <h4 style="margin-left:15px; font-weight: bold; font-size:1.25rem;">${placeName}</h4>
             `;
             
             currentData = {
                     placeName: placeName,
                     placeAddress: placeAddress,
+                    placeTel: placeTel,
                     placeimg: placeimg,
                     placeLatitude: placeLatitude,
                     placeLongitude: placeLongitude
                 };
 			
             searchResultsElement.appendChild(resultItem);
-            addClickListener(resultItem, data.placeName, data.placeAddress, data.placeimg, data.placeLatitude, data.placeLongitude);
+            addClickListener(resultItem, data.placeName, data.placeAddress, data.placeTel,data.placeimg, data.placeLatitude, data.placeLongitude);
         	}
         	
         	// 이미지 지연 로딩 처리
@@ -106,23 +107,24 @@ document.getElementById("searchButton").addEventListener("click", function() {
 
 
 
-function addClickListener(element, placeName, placeAddress, placeimg, placeLatitude, placeLongitude) {
+function addClickListener(element, placeName, placeAddress, placeTel, placeimg, placeLatitude, placeLongitude) {
     element.addEventListener("click", function() {
         currentData = {
             placeName: placeName,
             placeAddress: placeAddress,
+            placeTel: placeTel,
             placeimg: placeimg,
             placeLatitude: placeLatitude,
             placeLongitude: placeLongitude
         };
-        showDetail(placeName, placeAddress, placeimg, placeLatitude, placeLongitude);
+        showDetail(placeName, placeAddress, placeTel, placeimg, placeLatitude, placeLongitude);
     });
 }
 
  var resultDetailDiv = document.getElementById("resultDetail");
  
 // 상세 정보 표시 함수
-function showDetail(placeName, placeAddress, placeimg, placeLatitude, placeLongitude) {
+function showDetail(placeName, placeAddress, placeTel, placeimg, placeLatitude, placeLongitude) {
     resultDetailDiv.innerHTML = `
     
     <div style="min-width:950px; max-width:950px; margin:30px; padding-bottom:20px; display:flex; border-bottom:1px solid black;">
@@ -132,9 +134,10 @@ function showDetail(placeName, placeAddress, placeimg, placeLatitude, placeLongi
     	</div>
     	<div style="margin-left:20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
         	<!-- flex: 1은 이 div가 가능한 모든 공간을 차지하게 합니다 -->
-        	<h3 style="align-self: flex-start; letter-spacing: 0.1em; font-weight: bold;">${placeName}</h3>
+        	<h3 style="align-self: flex-start; letter-spacing: 0.1em;">${placeName}</h3>
         	<div style="align-self: flex-start;">
             	<p>주소: ${placeAddress}</p>
+            	<p>Tel : ${placeTel}</p>
         	</div>
         	
         	<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:20px;">
@@ -185,6 +188,7 @@ function insertContent1() {
     <img class="place_img" name="place_img" src="${currentData.placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
     <h4 class="placeName" name="placeName" style="margin-left:15px; margin-right:5px; width:170px;">${currentData.placeName}</h4>
     <input type="hidden" class="placeAddress" name="placeAddress" value="${currentData.placeAddress}">
+    <input type="hidden" class="placeTel" name="placeTel" value="${currentData.placeTel}">
     <input type="hidden" class="placeLongitude" name="placeLongitude" value="${currentData.placeLongitude}">
     <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.placeLatitude}">
     <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent1(event)" style="height:30px; line-height: 0;">-</button>
