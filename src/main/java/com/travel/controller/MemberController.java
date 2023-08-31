@@ -153,34 +153,7 @@ public class MemberController {
 		return msg;
 	}
 
-	// Mypage
-/*	@GetMapping(value = "/member/mypage")
-	public String mainMypage(Principal principal, Model model, Authentication authentication) {
 
-		
-		PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
-		Member members = principals.getMember();
-		String email = members.getEmail();
-		Member member = memberservice.memberMypage(email);
-		
-
-			model.addAttribute("member", member);
-		
-		List<Plan> plans = planService.findPlanTopByEmail(email);
-
-		model.addAttribute("plan", plans);
-
-		
-		List<PlanCommunity> planCommunity = communityService.getTop3RecentCommunitiesByMemberEmail(email);
-		
-		model.addAttribute("community", planCommunity);
-		
-		
-		
-		
-		return "member/MyPage";
-	}
-	*/
 	@GetMapping(value = "/member/mypage")
 	public String mainMypage( Model model, Authentication authentication) {
 

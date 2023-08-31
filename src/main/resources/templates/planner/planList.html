@@ -32,13 +32,15 @@
 <div layout:fragment="content">
 	<div class="item-cover">
 		<h1 class="cover-text">플랜 둘러보기</h1>
-	</div>
+	</div> <!--백그라운드 이미지 활용  -->
+	    <div class="popular_places_area">
+
 	<!--백그라운드 이미지 활용  -->
 	<div class="popular_places_area">
 		<div class="container">
 
 			<div class="row">
-				<div class="col-lg-4 col-md-6" th:each="community : ${community}">
+				<a th:href="'/community/viewCommunityInfo/' + ${community.id}" class="col-lg-4 col-md-6" th:each="community : ${community}">
 					<div class="single_place">
 						<div class="thumb">
 							<img th:src="${community.plan.planContent[0].place_img}"
@@ -50,13 +52,13 @@
 								<h3>제목</h3>
 							</div>
 							<div style="display: flex; justify-content: space-between;">
-								<p th:text="${community.member.name}">작성자</p>
 								<p th:text="${community.communityRegDate}">작성시간</p>
 							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
+
 
 			<nav style=""
 				th:with="start=${(community.number/maxPage)*maxPage + 1}
@@ -84,14 +86,15 @@
 
 		</div>
 	</div>
+	</div>
 </div>
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-	function page(page){
+	function page(page){	
 		
 		//주소 이동
-		location.href = "/planner/myPlanList/" + page 
+		location.href = "/planner/list/" + page 
 	}
 	
 	</script>

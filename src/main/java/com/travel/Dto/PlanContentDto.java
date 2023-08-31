@@ -19,6 +19,8 @@ public class PlanContentDto {
 	
 	private String placeAddress;
 	
+	private String placeTel;
+	
 	private String placeLatitude;
 	
 	private String placeLongitude;

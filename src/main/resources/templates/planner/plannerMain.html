@@ -61,7 +61,25 @@
 	height: 81px;
 }
 
+.select {
+  z-index: 10;
+  position: relative;
+  display: block;
+  width: 120px;
+  padding: 3.5px 3.5px 3.5px 3.5px;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1;
+  text-decoration: none;
+  border: 1px solid #c8c8c8;
+  margin-left: 10px;
+}
 
+.button {
+    color: rgb(255, 255, 255);
+    background-color: rgb(92, 184, 92);
+    border-color:green;
+}
 </style>
 
 
@@ -204,7 +222,7 @@
 						<div class="d-flex w-100 align-items-center border-bottom"
 							style="width: 100%; height: 192px; background-color: white;">
 							
-							<select id="areaCodeSelect">
+							<select id="areaCodeSelect" class="select">
 							<option value = "1">서울특별시</option>
 							<option value = "2">인천광역시</option>
 							<option value = "31">경기도</option>
@@ -218,16 +236,16 @@
 							<option value = "5">광주광역시</option>
 							<option value = "3">대전광역시</option>
 							<option value = "4">대구광역시</option>
-							<option value = "6">울산광역시</option>
-							<option value = "7">부산광역시</option>
+							<option value = "7">울산광역시</option>
+							<option value = "6">부산광역시</option>
 							<option value = "39">제주도</option>
 							</select>
 							
 							
-							<input type="search" id="searchInput" placeholder="검색어를 입력하세요"
+							<input type="search" id="searchInput" placeholder=" 검색어를 입력하세요"
 							value = ""> 
 							<div class="d-flex w-100 align-items-center">
-								<button id="searchButton">검색</button>
+								<button id="searchButton" class="button">검색</button>
 							</div>
 
 						</div>
@@ -252,7 +270,7 @@
 						<div class="d-flex w-100 align-items-center border-bottom"
 							style="width: 100%; height: 192px; background-color: white;">
 
-							<select id="areaCodeSelect2">
+							<select id="areaCodeSelect2" class="select">
 							<option value = "1">서울특별시</option>
 							<option value = "2">인천광역시</option>
 							<option value = "31">경기도</option>
@@ -266,14 +284,14 @@
 							<option value = "5">광주광역시</option>
 							<option value = "3">대전광역시</option>
 							<option value = "4">대구광역시</option>
-							<option value = "6">울산광역시</option>
-							<option value = "7">부산광역시</option>
+							<option value = "7">울산광역시</option>
+							<option value = "6">부산광역시</option>
 							<option value = "39">제주도</option>
 							</select>
 							
-							<input type="text" id="searchInput2" placeholder="검색어를 입력하세요">
+							<input type="text" id="searchInput2" placeholder=" 검색어를 입력하세요">
 							<div class="d-flex w-100 align-items-center">
-								<button id="searchButton2">검색</button>
+								<button id="searchButton2" class="button">검색</button>
 							</div>
 
 						</div>
@@ -298,7 +316,7 @@
 						<div class="d-flex w-100 align-items-center border-bottom"
 							style="width: 100%; height: 192px; background-color: white;">
 
-							<select id="areaCodeSelect3">
+							<select id="areaCodeSelect3" class="select">
 							<option value = "1">서울특별시</option>
 							<option value = "2">인천광역시</option>
 							<option value = "31">경기도</option>
@@ -312,14 +330,14 @@
 							<option value = "5">광주광역시</option>
 							<option value = "3">대전광역시</option>
 							<option value = "4">대구광역시</option>
-							<option value = "6">울산광역시</option>
-							<option value = "7">부산광역시</option>
+							<option value = "7">울산광역시</option>
+							<option value = "6">부산광역시</option>
 							<option value = "39">제주도</option>
 							</select>
 							
-							<input type="text" id="searchInput3" placeholder="검색어를 입력하세요">
+							<input type="text" id="searchInput3" placeholder=" 검색어를 입력하세요">
 							<div class="d-flex w-100 align-items-center">
-								<button id="searchButton3">검색</button>
+								<button id="searchButton3" class="button">검색</button>
 							</div>
 
 						</div>
@@ -368,6 +386,10 @@
 	<script src="/js/plan4.js"></script>
 	<script src="/js/plan5.js"></script>
 	<script src="/js/plan6.js"></script>
+
+
+
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<script>
@@ -476,6 +498,7 @@
             let place_img = dataList.querySelector("img.place_img") ? dataList.querySelector("img.place_img").src : null;
             let placeName = dataList.querySelector("h4.placeName") ? dataList.querySelector("h4.placeName").textContent : null;
             let placeAddress = dataList.querySelector("input.placeAddress") ? dataList.querySelector("input.placeAddress").value : null;
+            let placeTel = dataList.querySelector("input.placeTel") ? dataList.querySelector("input.placeTel").value : null;
             let placeLongitude = dataList.querySelector("input.placeLongitude") ? dataList.querySelector("input.placeLongitude").value : null;
             let placeLatitude = dataList.querySelector("input.placeLatitude") ? dataList.querySelector("input.placeLatitude").value : null;
             let area_code = dataList.querySelector("input.area_code") ? dataList.querySelector("input.area_code").value : null;
@@ -489,6 +512,7 @@
                 travelDivision: travelDivision,
                 placeName: placeName,
                 placeAddress: placeAddress,
+                placeTel: placeTel,	
                 placeLatitude: placeLatitude,
                 placeLongitude: placeLongitude,
                 place_img: place_img,

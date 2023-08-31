@@ -103,7 +103,7 @@
 	
 <div style="display:flex; justify-content: center; margin-top: 40px;">
 	<div class="more_place_btn text-center" style="margin-right: 20px;">
-        <a class="boxed-btn4" href="#">이미지 내려받기</a>
+        <a class="boxed-btn4" onclick="downloadAsImage()">이미지 내려받기</a>
     </div>
    	<div class="more_place_btn text-center" style="margin-left: 20px;">
         <a class="boxed-btn4" th:href="'/community/write/' + ${plan.id}">내 플랜 공유하기</a>
@@ -122,6 +122,7 @@
 </div>
 
 <th:block layout:fragment="script">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 	<script th:inline="javascript">
 		
 		window.addEventListener('DOMContentLoaded', (event) => {
@@ -193,6 +194,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 });
 
+function downloadAsImage() {
+    html2canvas(document.querySelector(".planBox")).then(canvas => {
+        var img = canvas.toDataURL("image/png");
+        var link = document.createElement('a');
+        link.href = img;
+        link.download = 'your_travel_plan.png';
+        link.click();
+    });
+}
 
 
 		
