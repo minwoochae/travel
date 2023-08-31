@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <header th:fragment="header">
+    <header th:fragment="header" style="border-bottom:solid 0.5px #CCCCCC;">
     	<div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
     		<div style="margin-right: 40px;">
 	    		<button class="boxed-btn3" style="height: 40px; display:flex; align-items: center;" onclick="location.href='/admin'">관리자페이지로 이동</button>    		    		
