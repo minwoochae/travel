@@ -32,7 +32,6 @@ public class CommunityService {
 	private final PlanCommunityRepository planCommunityRepository;
 	
 	// 커뮤니티 작성
-
 	public Long saveCommunity(PlanCommunityDto planCommunityDto, String memberId, Long planId) throws Exception {
 		Member member = memberRepository.findByEmail(memberId);
 		LocalDateTime now = LocalDateTime.now();

@@ -38,7 +38,8 @@ public class PlanContentService {
     		            dataContent.setPlaceName(contentDto.getPlaceName());
     		            dataContent.setPlaceLatitude(contentDto.getPlaceLatitude());
     		            dataContent.setPlaceLongitude(contentDto.getPlaceLongitude());
-    		            dataContent.setPlaceimg(placeImg);  // Use the stored value
+    		            dataContent.setPlaceimg(placeImg);  // Use the stored value    		            
+    		            dataContent.setPlaceTel(contentDto.getPlaceTel());
     		            dataContent.setPlaceAddress(contentDto.getPlaceAddress());
     		            dataContent.setAreaCode(contentDto.getArea_code());
     		            dataContent.setSigunguCode(contentDto.getSigungu_code());
