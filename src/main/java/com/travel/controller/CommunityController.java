@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.travel.Dto.PlanCommunityDto;
 import com.travel.Dto.PlanFormDto;
+import com.travel.auth.PrincipalDetails;
+import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanCommunity;
 import com.travel.service.CommunityService;
@@ -50,12 +53,14 @@ public class CommunityController {
 	
 	//커뮤니티 글 작성
 	@PostMapping(value = "/community/write")
-	public String createCommunity(@Valid PlanCommunityDto planCommunityDto, Model model, Principal principal,
+	public String createCommunity(@Valid PlanCommunityDto planCommunityDto, Model model, Authentication authentication,
 				@RequestParam("planId") Long planId) {
 		
 		try {
-			String no = principal.getName();
-			communityService.saveCommunity(planCommunityDto, no, planId);
+			  PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+		        Member members = principals.getMember();
+				String memberNo = members.getEmail();
+			communityService.saveCommunity(planCommunityDto, memberNo, planId);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,8 +82,10 @@ public class CommunityController {
 	}
 	//커뮤니티 리스트
 	@GetMapping(value = {"/community/viewCommunityList", "/community/viewCommunityList/{page}"})
-	public String viewCommunityList(Principal principal, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
-		String email = principal.getName();
+	public String viewCommunityList(Authentication authentication, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
+		 PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+	        Member members = principals.getMember();
+			String email = members.getEmail();
 		Page<PlanCommunity> planCommunitys = communityService.getCommunitiesByMemberEmail(email, PageRequest.of(page.isPresent() ? page.get() : 0, 5));
 		model.addAttribute("community", planCommunitys);
 		model.addAttribute("maxPage", 5);
