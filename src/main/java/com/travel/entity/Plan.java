@@ -38,10 +38,11 @@ public class Plan {
 	@Column(name = "plan_date")
 	private String planDate;
 	
+
 	@ManyToOne(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "member_id")
 	private Member member;
-	
+
 	@Column(name = "reg_date")
 	private String regDate;
 	

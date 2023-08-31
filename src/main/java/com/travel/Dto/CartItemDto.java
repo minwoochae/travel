@@ -14,7 +14,7 @@ public class CartItemDto {
 	
 	private String itemNm;
 	
-	private Long count;
+	private int count;
 		
 	private String imgUrl;
 	

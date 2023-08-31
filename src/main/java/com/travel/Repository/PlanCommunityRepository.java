@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.travel.Dto.PlanCommunityDto;
 import com.travel.entity.PlanCommunity;
 
 @Repository
@@ -21,5 +22,5 @@ public interface PlanCommunityRepository extends JpaRepository<PlanCommunity, Lo
 	
 	Optional<PlanCommunity> findById(Long id);
 
-
+	Page<PlanCommunity> findAll(Pageable pageable);
 }

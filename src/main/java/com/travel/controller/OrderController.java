@@ -2,11 +2,15 @@ package com.travel.controller;
 
 
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.travel.Dto.CartItemDto;
 import com.travel.Dto.ItemImgDto;
+import com.travel.Dto.OrderDto;
 import com.travel.Dto.OrderItemDto;
 import com.travel.Repository.CartItemRepository;
 import com.travel.entity.Cart;
@@ -38,6 +43,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderController {
 	private final OrderService orderService;
+	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
 
 	@PostMapping(value= "/order/address")
 	public @ResponseBody ResponseEntity getAddress(@RequestBody Map<String, Object> requestData,BindingResult bindingResult, Model model) {
@@ -92,55 +99,6 @@ public class OrderController {
 	
 
 	
-	@PostMapping(value="/order/success")
-	public @ResponseBody ResponseEntity order(@RequestBody Map<String, Object> requestData,BindingResult bindingResult, Model model) {
-		Long[] orderItemIds = ((List<?>) requestData.get("orderItemIds"))
-		        .stream()
-		        .map(value -> Long.valueOf(String.valueOf(value)))
-		        .toArray(Long[]::new);
-		System.out.println(Arrays.toString(orderItemIds) + "dmdkr");
-		
-	    String totalPrice = (String) requestData.get("totalPrice");
-	    String orderName = (String) requestData.get("orderName");
-	    String zipCode = (String) requestData.get("zipCode");
-	    String orderAddress = (String) requestData.get("orderAddress");
-	    String phoneNumber = (String) requestData.get("phoneNumber");
-	    
-	    
-		if(bindingResult.hasErrors()) {
-			StringBuilder sb = new StringBuilder();
-			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-			
-			for(FieldError fieldError : fieldErrors) {
-				sb.append(fieldError.getDefaultMessage()); //에러메세지를 합친다.
-			}
-			
-			return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
-		}
-		
 
-	
-	    Map<String, Object> responseData = new HashMap<>();
-	    responseData.put("orderItemIds", orderItemIds);
-	    responseData.put("totalPrice", totalPrice);
-	    responseData.put("orderName", orderName);
-	    responseData.put("zipCode", zipCode);
-	    responseData.put("orderAddress", orderAddress);
-	    responseData.put("phoneNumber", phoneNumber);
-	    
-	    
-	    
-		
-		return new ResponseEntity<>(responseData, HttpStatus.OK);
-	}
-    
-	@GetMapping(value= "/order/info/{payNumber}")
-	public String orderInfo(@PathVariable("payNumber") Object payNumber, Model model) {
-		 
-		
-		
-		
-		return "/item/orderInfo";
-	}
 	
 }

@@ -135,6 +135,10 @@ public class PlanService {
         return planRepository.findById(planId).orElseThrow(EntityNotFoundException::new);
     }
 	
+	public Page<PlanCommunity> findPaginated(Pageable pageable) {
+	    return planCommunityRepository.findAll(pageable);
+	} 
+	
 	
 	
 	public void deleteplan(Long planId) {
@@ -142,6 +146,9 @@ public class PlanService {
 
 		planRepository.delete(plan);
 	}
+	
+	
+	
 	
 	
 	

@@ -84,7 +84,21 @@
         			</ul>
     			</div>
 			</div>
-
+		</div>
+	</div>
+	
+	<div style="height: 350px;">
+		<div class="communityTitleBox" 
+		style="width: 917px; height:50px; margin: 0 auto; background-color: #FF4A5233; margin-bottom: 30px; border-radius: 10px; padding: 0 15px; display: flex; justify-content: space-between;">
+  			<div class="title" th:text="${community.communityTitle}" style="font-size: 22px; font-weight: bold; line-height: 50px;">제목</div>
+  			<div style="display: flex;">
+  				<div th:text="${community.communityRegDate}" style="margin-right:10px; font-size: 14px; line-height: 60px;">날짜</div>
+  				<div th:text="${community.member.name}" style="font-size: 18px; line-height: 50px;">작성자</div>
+  			</div>
+		</div>
+	
+		<div class="communityContentBox" style="width: 917px; height: 200px; margin: 0 auto; border: 1px solid #FF4A52; border-radius: 10px; padding: 20px;">
+			<div th:text="${community.communityContent}">dd</div>
 		</div>
 	</div>
 	

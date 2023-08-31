@@ -3,108 +3,97 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
 <th:block layout:fragment="css">
-		<style>
-		.item-cover {
-			width: 100%;
-			height: 400px;
-			background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url("/img/planListBg.jpg");
-			background-repeat: no-repeat;
-			background-size: cover;
-			margin-bottom: 50px;
-			background-position: center;
-			display: flex;
-		}
+	<style>
+.item-cover {
+	width: 100%;
+	height: 400px;
+	background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+		url("/img/planListBg.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	margin-bottom: 50px;
+	background-position: center;
+	display: flex;
+}
 
-		.cover-text {
-			font-size: 40px;
-			text-decoration: underline;
-			margin: auto;
-			text-underline-position: under;
-			color: white;
-			font-weight: 600;
-			letter-spacing: 5px;
-			text-decoration-thickness: 5px;
-		}
-	</style>
+.cover-text {
+	font-size: 40px;
+	text-decoration: underline;
+	margin: auto;
+	text-underline-position: under;
+	color: white;
+	font-weight: 600;
+	letter-spacing: 5px;
+	text-decoration-thickness: 5px;
+}
+</style>
 </th:block>
 
 <div layout:fragment="content">
 	<div class="item-cover">
 		<h1 class="cover-text">플랜 둘러보기</h1>
-	</div> <!--백그라운드 이미지 활용  -->
-	    <div class="popular_places_area">
-        <div class="container">
+	</div>
+	<!--백그라운드 이미지 활용  -->
+	<div class="popular_places_area">
+		<div class="container">
 
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_place">
-                        <div class="thumb">
-                            <img src="img/place/1.png" alt="">
-                        </div>
-                        <div class="place_info">
-                            <a href="destination_details.html"><h3>California</h3></a>
-                            <p>United State of America</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_place">
-                        <div class="thumb">
-                            <img src="img/place/2.png" alt="">
-                        </div>
-                        <div class="place_info">
-                            <a href="destination_details.html"><h3>Korola Megna</h3></a>
-                            <p>United State of America</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_place">
-                        <div class="thumb">
-                            <img src="img/place/3.png" alt="">
-                        </div>
-                        <div class="place_info">
-                            <a href="destination_details.html"><h3>London</h3></a>
-                            <p>United State of America</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_place">
-                        <div class="thumb">
-                            <img src="img/place/4.png" alt="">
-                        </div>
-                        <div class="place_info">
-                            <a href="destination_details.html"><h3>Miami Beach</h3></a>
-                            <p>United State of America</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_place">
-                        <div class="thumb">
-                            <img src="img/place/5.png" alt="">
-                        </div>
-                        <div class="place_info">
-                            <a href="destination_details.html"><h3>California</h3></a>
-                            <p>United State of America</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_place">
-                        <div class="thumb">
-                            <img src="img/place/6.png" alt="">
-                        </div>
-                        <div class="place_info">
-                            <a href="destination_details.html"><h3>Saintmartine Iceland</h3></a>
-                            <p>United State of America</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-lg-4 col-md-6" th:each="community : ${community}">
+					<div class="single_place">
+						<div class="thumb">
+							<img th:src="${community.plan.planContent[0].place_img}"
+								th:alt="${community.plan.planContent[0].place_img}"
+								style="width: 100%; height: 233px;">
+						</div>
+						<div class="place_info">
+							<div th:text="${community.communityTitle}">
+								<h3>제목</h3>
+							</div>
+							<div style="display: flex; justify-content: space-between;">
+								<p th:text="${community.member.name}">작성자</p>
+								<p th:text="${community.communityRegDate}">작성시간</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-        </div>
-    </div>
+			<nav style=""
+				th:with="start=${(community.number/maxPage)*maxPage + 1}
+				,end=(${(community.totalPages == 0) ? 1 : (start + (maxPage - 1) < community.totalPages ? start + (maxPage - 1) : community.totalPages)})"
+				aria-label="Page navigation example">
+				<ul class="pagination d-flex justify-content-center">
+					<li class="page-item" th:classappend="${community.first}?'disabled'">
+						<a class="page-link"
+						th:onclick="'javascript:page(' + ${community.number - 1} +')'">이전</a>
+					</li>
+					<li class="page-item"
+						th:each="page: ${#numbers.sequence(start, end)}"
+						th:classappend="${community.number eq page-1}?'active':''"><a
+						class="page-link" th:inline="text"
+						th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a>
+					</li>
+					<li class="page-item" th:classappend="${community.last}?'disabled'">
+						<a class="page-link"
+						th:onclick="'javascript:page(' + ${community.number + 1} +')'">다음</a>
+					</li>
+				</ul>
+			</nav>
+
+
+
+		</div>
+	</div>
 </div>
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	function page(page){
+		
+		//주소 이동
+		location.href = "/planner/myPlanList/" + page 
+	}
+	
+	</script>
+</th:block>
 </html>
