@@ -36,6 +36,9 @@ public class DataContent {
 	@Column(name="place_address")
 	private String placeAddress;
 	
+	@Column(name="place_tel")
+	private String placeTel;
+	
 	@Column(name="place_latitude")
 	private String placeLatitude;
 	
@@ -72,6 +75,7 @@ public class DataContent {
 		DataContent dataContent = new DataContent();
 		dataContent.setPlaceName(dataContentDto.getPlaceName());
 		dataContent.setPlaceAddress(dataContentDto.getPlaceAddress());
+		dataContent.setPlaceTel(dataContentDto.getPlaceTel());
 		dataContent.setPlaceLatitude(dataContentDto.getPlaceLatitude());
 		dataContent.setPlaceLongitude(dataContentDto.getPlaceLongitude());
 		dataContent.setPlaceimg(dataContentDto.getPlace_img());

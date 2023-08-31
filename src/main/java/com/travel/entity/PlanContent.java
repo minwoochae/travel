@@ -38,6 +38,9 @@ public class PlanContent {
 	@Column(name="place_name")
 	private String placeName;
 	
+	@Column(name="place_tel")
+	private String placeTel;
+	
 	@Column(name="place_address")
 	private String placeAddress;
 	

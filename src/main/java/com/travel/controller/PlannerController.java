@@ -132,6 +132,7 @@ public class PlannerController {
                 	planContentDto.setTravelDivision((String)data.get("travelDivision"));
                 	planContentDto.setPlanDay((String)data.get("planDay"));
                 	planContentDto.setPlaceAddress((String)data.get("placeAddress"));
+                	planContentDto.setPlaceTel((String)data.get("placeTel"));                	
                 	planContentDto.setPlaceLatitude((String)data.get("placeLatitude"));
                 	planContentDto.setPlaceLongitude((String)data.get("placeLongitude"));
                 	planContentDto.setPlace_img((String)data.get("place_img"));

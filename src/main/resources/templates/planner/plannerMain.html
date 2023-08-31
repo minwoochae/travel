@@ -386,6 +386,10 @@
 	<script src="/js/plan4.js"></script>
 	<script src="/js/plan5.js"></script>
 	<script src="/js/plan6.js"></script>
+
+
+
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<script>
@@ -494,6 +498,7 @@
             let place_img = dataList.querySelector("img.place_img") ? dataList.querySelector("img.place_img").src : null;
             let placeName = dataList.querySelector("h4.placeName") ? dataList.querySelector("h4.placeName").textContent : null;
             let placeAddress = dataList.querySelector("input.placeAddress") ? dataList.querySelector("input.placeAddress").value : null;
+            let placeTel = dataList.querySelector("input.placeTel") ? dataList.querySelector("input.placeTel").value : null;
             let placeLongitude = dataList.querySelector("input.placeLongitude") ? dataList.querySelector("input.placeLongitude").value : null;
             let placeLatitude = dataList.querySelector("input.placeLatitude") ? dataList.querySelector("input.placeLatitude").value : null;
             let area_code = dataList.querySelector("input.area_code") ? dataList.querySelector("input.area_code").value : null;
@@ -507,6 +512,7 @@
                 travelDivision: travelDivision,
                 placeName: placeName,
                 placeAddress: placeAddress,
+                placeTel: placeTel,	
                 placeLatitude: placeLatitude,
                 placeLongitude: placeLongitude,
                 place_img: place_img,
