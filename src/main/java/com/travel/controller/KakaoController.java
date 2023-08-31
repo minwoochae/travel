@@ -76,5 +76,6 @@ public class KakaoController {
 
 		return "redirect:/";
 	}
+	
 
 }
