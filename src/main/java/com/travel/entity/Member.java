@@ -50,7 +50,10 @@ public class Member extends BaseEntity {
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	    private List<Plan> plans = new ArrayList<>();
+	
 
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private List<PlanCommunity> plancommunity = new ArrayList<>();
 
 
 	@CreatedDate

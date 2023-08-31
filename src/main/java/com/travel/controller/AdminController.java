@@ -16,12 +16,14 @@ import com.travel.Dto.MainAskDto;
 import com.travel.Dto.MemberFormDto;
 import com.travel.Dto.TourFormDto;
 import com.travel.Dto.TourSearchDto;
+import com.travel.auth.PrincipalDetails;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -97,8 +99,8 @@ public class AdminController {
 	
 	// 회원 탈퇴시키기
 	@DeleteMapping(value = "/admin/{memberId}/delete")
-	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
-			Principal principal) {
+	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId
+			) {
 		
 		memberService.deleteMember(memberId);
 		
@@ -138,10 +140,12 @@ public class AdminController {
 
 	// 상품, 상품이미지 등록
 	@PostMapping(value = "/adminShop/new")
-	public String itemNew(Principal principal, @Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model,
+	public String itemNew(Authentication authentication, @Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model,
 			@RequestParam("itemImgFile") List<MultipartFile> itemImgFileList) {
-
-		String no = principal.getName();
+		
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+		String email = members.getEmail();
 		
 		if (bindingResult.hasErrors()) {
 			return "/admin/itemRegist";
@@ -154,7 +158,7 @@ public class AdminController {
 		}
 
 		try {
-			itemService.saveItem(no,itemFormDto, itemImgFileList);
+			itemService.saveItem(email,itemFormDto, itemImgFileList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "상품 등록 중 에러가 발생했습니다.");
@@ -214,8 +218,7 @@ public class AdminController {
 	
 	// 상품 삭제
 	@DeleteMapping("/adminShop/{itemId}/delete")
-	public @ResponseBody ResponseEntity deletemovie(@RequestBody @PathVariable("itemId") Long itemId,
-			Principal principal) {
+	public @ResponseBody ResponseEntity deletemovie(@RequestBody @PathVariable("itemId") Long itemId) {
 		itemService.deleteItem(itemId);
 		return new ResponseEntity<Long>(itemId, HttpStatus.OK);
 	}
@@ -259,10 +262,12 @@ public class AdminController {
 
 	// 공지사항, 공지사항이미지 등록
 	@PostMapping(value = "/adminInfo/new")
-		public String InfoNew(Principal principal, @Valid InfoFormDto infoFormDto, BindingResult bindingResult, 
+		public String InfoNew(Authentication authentication, @Valid InfoFormDto infoFormDto, BindingResult bindingResult, 
 				Model model, @RequestParam("infoImgFile") List<MultipartFile> infoImgFileList) {
 
-		String memberNo = principal.getName();
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+		String memberNo = members.getEmail();
 		
 		if(bindingResult.hasErrors()) {
 			return "admin/infoRegist";
@@ -345,8 +350,7 @@ public class AdminController {
 	
 	// 공지사항 삭제하기
 	@DeleteMapping("/adminInfo/{infoBoardId}/delete")
-	public @ResponseBody ResponseEntity deleteInfo(@RequestBody @PathVariable("infoBoardId") Long infoBoardId,
-			Principal principal) {
+	public @ResponseBody ResponseEntity deleteInfo(@RequestBody @PathVariable("infoBoardId") Long infoBoardId) {
 		infoService.deleteInfo(infoBoardId);
 		return new ResponseEntity<Long>(infoBoardId, HttpStatus.OK);
 		}
@@ -382,10 +386,11 @@ public class AdminController {
 	
 	// 추천관광지 등록
 	@PostMapping(value = "/adminTour/new")
-	public String tourNew(Principal principal, @Valid TourFormDto tourFormDto, BindingResult bindingResult,
+	public String tourNew(Authentication authentication, @Valid TourFormDto tourFormDto, BindingResult bindingResult,
 			Model model, @RequestParam("tourImgFile") List<MultipartFile> tourImgFileList) {
-		
-		String memberNo = principal.getName();
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+		String memberNo = members.getEmail();
 		
 		if(bindingResult.hasErrors()) {
 			return "admin/tourRegist";
@@ -473,8 +478,7 @@ public class AdminController {
 	
 	// 추천관광지 삭제
 	@DeleteMapping("/adminTour/{touristId}/delete")
-	public @ResponseBody ResponseEntity deleteTour(@RequestBody @PathVariable("touristId") Long touristId,
-			Principal principal) {
+	public @ResponseBody ResponseEntity deleteTour(@RequestBody @PathVariable("touristId") Long touristId) {
 		tourService.deleteTour(touristId);
 		return new ResponseEntity<Long>(touristId, HttpStatus.OK);
 	}
@@ -517,16 +521,16 @@ public class AdminController {
 	
 	// 문의사항 등록하기 - 회원
 	@PostMapping(value = "/ask/new")
-	public String askNew(Principal principal, @Valid AskFormDto askFormDto, BindingResult bindingResult, Model model, @RequestParam("askImgFile") List<MultipartFile> askImgFileList) {
-		
-		String no = principal.getName();
-		
+	public String askNew(Authentication authentication, @Valid AskFormDto askFormDto, BindingResult bindingResult, Model model, @RequestParam("askImgFile") List<MultipartFile> askImgFileList) {
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+		String email = members.getEmail();
 		if(bindingResult.hasErrors()) {
 			return "admin/askRegist";
 		}
 		
 		try {
-			askService.saveAsk(no, askFormDto, askImgFileList);			
+			askService.saveAsk(email, askFormDto, askImgFileList);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "문의사항 등록 중 에러가 발생했습니다.");
@@ -539,14 +543,16 @@ public class AdminController {
 	
 	// 문의사항 상세페이지
 	@GetMapping(value = "/askBoard/{askBoardId}")
-	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId, Principal principal) {
+	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId, Authentication authentication) {
 	    
 		AskFormDto askFormDto = askService.getAskDtl(askBoardId);
 	    
 		AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askBoardId);
 		
 		 // 현재 로그인한 사용자의 아이디를 가져옴
-	    String loggedInUsername = principal.getName();
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+		String loggedInUsername = members.getEmail();
 		
 	    if (askFormDto != null) {
 	        // 문의사항 작성자의 아이디와 현재 로그인한 사용자의 아이디를 비교
@@ -611,8 +617,7 @@ public class AdminController {
 	
 	// 문의사항 삭제하기 - 회원
 		@DeleteMapping("/ask/{askBoardId}/delete")
-		public @ResponseBody ResponseEntity deleteAsk(@RequestBody @PathVariable("askBoardId") Long askBoardId,
-				Principal principal) {
+		public @ResponseBody ResponseEntity deleteAsk(@RequestBody @PathVariable("askBoardId") Long askBoardId) {
 			askService.deleteAsk(askBoardId);
 			return new ResponseEntity<Long>(askBoardId, HttpStatus.OK);
 		}
@@ -703,8 +708,7 @@ public class AdminController {
 
 	// 문의사항 답변 삭제 - 관리자 
 	@DeleteMapping("/askResponse/{askResponseBoardId}/delete")
-	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askResponseBoardId") Long askResponseBoardId,
-			Principal principal) {
+	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askResponseBoardId") Long askResponseBoardId) {
 		askResponseService.deleteAskResponse(askResponseBoardId);
 		return new ResponseEntity<Long>(askResponseBoardId, HttpStatus.OK);
 	}

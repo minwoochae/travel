@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.travel.Dto.KakaoPayApproveDto;
 import com.travel.Dto.KakaoPayReadyDto;
 import com.travel.Dto.OrderDto;
+import com.travel.auth.PrincipalDetails;
 import com.travel.constant.OrderStatus;
 import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
@@ -59,7 +60,7 @@ public class KakaoPayController {
 	        @RequestParam("zipCode") String zipCode,
 	        @RequestParam("orderAddress") String orderAddress,
 	        @RequestParam("phoneNumber") String phoneNumber,
-	        Model model, HttpSession session, Principal principal) {
+	        Model model, HttpSession session) {
 		
 		System.out.println(itemName + totalPrice);
 		Map<String, Object> params = new HashMap<>();
@@ -94,7 +95,7 @@ public class KakaoPayController {
 	}
 	
 	@GetMapping("/pay/success")
-	public String success(@RequestParam("pg_token")String pgToken,HttpSession session, Principal principal, Model model) {
+	public String success(@RequestParam("pg_token")String pgToken,HttpSession session, Authentication authentication, Model model) {
 			String tid = (String) session.getAttribute("tid");
 			String itemName = (String) session.getAttribute("item_name");
 			int totalPrice = (int) session.getAttribute("total_price");
@@ -105,7 +106,9 @@ public class KakaoPayController {
 
 		    Long[] orderItemIds = (Long[]) session.getAttribute("orderItemIds");
 
-			String email = principal.getName();
+		    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+	        Member members = principals.getMember();
+			String email = members.getEmail();
 			Member member = memberService.findByEmail(email);
 			
 	        // 카카오 결재 요청하기

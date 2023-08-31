@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.travel.Dto.MemberFormDto;
 import com.travel.Repository.MemberRepository;
+import com.travel.auth.PrincipalDetails;
 import com.travel.constant.Division;
 import com.travel.entity.Member;
 
@@ -123,7 +124,7 @@ public class MemberService implements UserDetailsService {
 	}
 
 
-	/* private final JavaMailSender javaMailSender; */
+	 private final JavaMailSender javaMailSender; 
 
 
 
@@ -132,7 +133,7 @@ public class MemberService implements UserDetailsService {
 			message.setTo(to);
 			message.setSubject(subject);
 			message.setText(text);
-//			javaMailSender.send(message);
+		javaMailSender.send(message);
 		}
 
 	// 회원 상세정보
@@ -174,10 +175,7 @@ public class MemberService implements UserDetailsService {
 		}
 		
 		
-
-		// 사용자가 있다면 DB에서 가져온 값으로 userDetails 객체를 만들어서 반환
-		return User.builder().username(member.getEmail()).password(member.getPassword())
-				.roles(member.getRole().toString()).build();
+		 return new PrincipalDetails(member);
 	}
 
 	@Transactional(readOnly = true)

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.Dto.PlanContentDto;
 import com.travel.Dto.PlanFormDto;
+import com.travel.auth.PrincipalDetails;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanCommunity;
@@ -52,7 +54,7 @@ public class PlannerController {
 	
 
 	@GetMapping(value = {"/planner/list", "/planner/list/{page}"})
-	public String planList(Model model, @PathVariable Optional<Integer> page) {
+	public String planList(Model model, @PathVariable Optional<Integer> page ) {
 		Page<PlanCommunity> planCommunity = planService.findPaginated(PageRequest.of(page.isPresent() ? page.get() : 0, 6));
 		model.addAttribute("community", planCommunity);
 		model.addAttribute("maxPage", 5);
@@ -64,8 +66,10 @@ public class PlannerController {
 	
 	//플랜 완성 페이지
 	@GetMapping(value="/planComplete")
-	public String planComp(Principal principal, Model model, Optional<Integer> page) {
-	    String memberNo = principal.getName();
+	public String planComp(Authentication authentication, Model model, Optional<Integer> page) {
+		  PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+	        Member members = principals.getMember();
+			String memberNo = members.getEmail();
 	    
 	    Pageable pageable = PageRequest.of(page.orElse(0), 1);
 
@@ -94,13 +98,14 @@ public class PlannerController {
 	
 	//플랜만들기
 	@PostMapping(value = "/planner/setplan")
-	public @ResponseBody ResponseEntity createPlan(Principal principal, Model model, @RequestBody HashMap<String, Object> hashMap, BindingResult bindingResult) {
+	public @ResponseBody ResponseEntity createPlan(Authentication authentication, Model model, @RequestBody HashMap<String, Object> hashMap, BindingResult bindingResult) {
 		// 로그인하지 않은 사용자에 대한 처리
-	    if (principal == null) {
+	    if (authentication == null) {
 	        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	    }
-		
-		String no = principal.getName();
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+		String no = members.getEmail();
 		PlanFormDto planFormDto = new PlanFormDto();
 		PlanContentDto planContentDto = new PlanContentDto();
 		
@@ -155,9 +160,11 @@ public class PlannerController {
 	
 	//플랜 리스트
 	@GetMapping(value={"/planner/myPlanList", "/planner/myPlanList/{page}"})
-	public String myPlanList(Principal principal, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
-		
-		String email = principal.getName();
+	public String myPlanList(Authentication authentication, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+		String email = members.getEmail();
+		System.out.println(email);
 		Page<Plan> plans = planService.getPlansByEmail(email, PageRequest.of(page.isPresent() ? page.get() : 0, 5));
 		model.addAttribute("plan", plans);
 		model.addAttribute("maxPage", 5);
@@ -191,8 +198,7 @@ public class PlannerController {
 	
 	// 플랜삭제하기
 	@DeleteMapping(value = "/planner/delete/{planId}")
-	public @ResponseBody ResponseEntity deleteplan(@RequestBody @PathVariable("planId") Long planId,
-			Principal principal) {
+	public @ResponseBody ResponseEntity deleteplan(@RequestBody @PathVariable("planId") Long planId) {
 
 		planService.deleteplan(planId);
 		
