@@ -107,7 +107,7 @@
                     <tr th:each="orderItem, index: ${selectedItems}" th:data-index="${index}">
                     <td>
                     <input id="itemIndex" type="hidden" th:value="${index.size}">
-                    <input id="orderItemId" type="hidden" th:value="${orderItem.id}">
+                    <input class="orderItemId" type="hidden" th:value="${orderItem.id}">
                     </td>
                         <td data-th="Product">
                             <div class="row">
@@ -253,7 +253,6 @@
 		var address2 = document.getElementById("sample6_detailAddress").value;
 		var address3 = document.getElementById("sample6_extraAddress").value;
 		
-		var itemId = document.getElementById("orderItemId").value;
 		var itemIndex = document.getElementById("itemIndex").value;
 		var itemName = document.getElementById("itemName").textContent;
 		var totalPrice = document.getElementById("totalPrice").textContent;
@@ -263,14 +262,24 @@
 		var phoneNumber = document.getElementById("orderInfoPhone").value;
 		
 		
+	    // orderItemId 값들을 저장할 배열 생성
+	    var orderItemIds = [];
+
+	    // orderItemId 클래스를 가진 숨겨진 input 엘리먼트들을 선택해서 값을 배열에 추가
+	    var inputElements = document.querySelectorAll('.orderItemId');
+	    inputElements.forEach(function(input) {
+	        orderItemIds.push(input.value);
+	    });
+	    
+	    alert(orderItemIds);
 	    var data = {
-	    		orderItemId : itemId,
+	    		orderItemIds : orderItemIds,
 	    		itemName : itemName + "외 " + (itemIndex - 1) + "개",
 	    		totalPrice : totalPrice,
 	    		orderName : orderName,
-	    		//zipCode : zipCode,
-	    		//orderAddress : orderAddress,
-	    		//phoneNumber : phoneNumber
+	    		zipCode : zipCode,
+	    		orderAddress : orderAddress,
+	    		phoneNumber : phoneNumber
 	        };
 		
 		$.ajax({
@@ -293,6 +302,8 @@
 	});
 	
     function handleChildData(payNumber) {
+
+    	
 		var address1 = document.getElementById("sample6_address").value;
 		var address2 = document.getElementById("sample6_detailAddress").value;
 		var address3 = document.getElementById("sample6_extraAddress").value;

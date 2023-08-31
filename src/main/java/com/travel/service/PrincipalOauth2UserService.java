@@ -35,10 +35,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
      String password = "SNS 로그인";  // 사용자가 입력한 적은 없지만 만들어준다
 	
      String email = oAuth2UserInfo.getEmail();
- 
      Division division = Division.KAKAO; 
      
-     
+     	
      Member member = memberRepository.findByEmail(email);
      if(member == null){
     	 member = Member.oauth2Register()

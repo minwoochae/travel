@@ -58,6 +58,9 @@ public class DataContent {
 	private int contentType;
 	
 	
+	
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "plan_id")
 	private Plan plan;

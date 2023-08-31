@@ -19,11 +19,15 @@ import com.travel.Repository.CartRepository;
 import com.travel.Repository.ItemImgRepository;
 import com.travel.Repository.ItemRepository;
 import com.travel.Repository.MemberRepository;
+import com.travel.Repository.OrderItemRepository;
+import com.travel.constant.OrderStatus;
 import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
 import com.travel.entity.Item;
 import com.travel.entity.ItemImg;
 import com.travel.entity.Member;
+import com.travel.entity.OrderItem;
+import com.travel.entity.Orders;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +40,8 @@ public class CartService {
 	private final ItemRepository itemRepository;
 	private final MemberRepository memberRepository;
 	private final ItemImgRepository itemImgRepository;
+	private final CartItemRepository cartItemRepository;
+	private final OrderItemRepository orderItemRepository;
 	
 	public Long cart(CartDto cartDto, String email) {
 		
@@ -97,4 +103,7 @@ public class CartService {
 		
 		cartRepository.delete(cart);
 	}
+	
+
+	 
 }

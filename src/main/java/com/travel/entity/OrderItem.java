@@ -30,12 +30,35 @@ public class OrderItem {
 	private int orderPrice;
 	
 	@Column(name = "order_item_count")
-	private Long orderCount;
+	private int orderCount;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "orders_id")
 	private Orders orders;
 	
-
+	/*
+	 * @ManyToOne(fetch = FetchType.LAZY)
+	 * 
+	 * @JoinColumn(name = "cart_item_id") private CartItem cartitem;
+	 */
+	
+	
+	public static OrderItem createOrderItem(CartItem cartItem, int orderCount) {
+		OrderItem orderItem = new OrderItem();
+		orderItem.setOrderCount(orderCount);
+		orderItem.setOrderPrice(cartItem.getItem().getPrice());
+		
+		
+		cartItem.getItem().removeStock(orderCount);
+		return orderItem;
+	}
+	
+	public static OrderItem createOrderCart(CartItem cartItem) {
+		OrderItem orderItem = new OrderItem();
+		orderItem.setOrderCount(cartItem.getCount());
+		orderItem.setOrderPrice(cartItem.getItem().getPrice());
+		return orderItem;
+	}
+	
 	
 }

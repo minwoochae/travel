@@ -1,5 +1,5 @@
+// 페이지가 로드되었을 때 실행되는 함수
 document.addEventListener("DOMContentLoaded", function() {
-    // 페이지가 로드되었을 때 실행되는 함수
 
     // 검색 버튼 클릭 이벤트를 자동으로 트리거하여 검색 결과 출력
     var searchButton = document.getElementById("searchButton");
@@ -77,7 +77,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
 
             resultItem.innerHTML = `
                 <img src="${placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${placeName} Image">
-                <h4 style="margin-left:15px;">${placeName}</h4>
+                <h4 style="margin-left:15px; font-weight: bold; font-size:1.25rem;">${placeName}</h4>
             `;
             
             currentData = {
@@ -132,7 +132,7 @@ function showDetail(placeName, placeAddress, placeimg, placeLatitude, placeLongi
     	</div>
     	<div style="margin-left:20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
         	<!-- flex: 1은 이 div가 가능한 모든 공간을 차지하게 합니다 -->
-        	<h3 style="align-self: flex-start; letter-spacing: 0.1em; font-weight: bold;">${placeName}</h3>
+        	<h3 style="align-self: flex-start; letter-spacing: 0.1em;>${placeName}</h3>
         	<div style="align-self: flex-start;">
             	<p>주소: ${placeAddress}</p>
         	</div>

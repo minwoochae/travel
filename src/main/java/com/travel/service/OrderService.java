@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.core.types.Order;
 import com.travel.Dto.CartDto;
 import com.travel.Dto.CartItemDto;
 import com.travel.Dto.KakaoPayApproveDto;
@@ -18,6 +19,7 @@ import com.travel.Dto.OrderDto;
 import com.travel.Dto.OrderItemDto;
 import com.travel.Repository.CartItemRepository;
 import com.travel.Repository.CartRepository;
+import com.travel.Repository.ItemRepository;
 import com.travel.Repository.MemberRepository;
 import com.travel.Repository.OrderItemRepository;
 import com.travel.Repository.OrderRepository;
@@ -25,6 +27,7 @@ import com.travel.Repository.PayRepository;
 import com.travel.constant.OrderStatus;
 import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
+import com.travel.entity.Item;
 import com.travel.entity.ItemImg;
 import com.travel.entity.OrderItem;
 import com.travel.entity.Orders;
@@ -41,6 +44,7 @@ public class OrderService {
 	private final OrderRepository orderRepository;
 	private final PayRepository payRepository;
     private final OrderItemRepository orderItemRepository;
+    private final ItemRepository itemRepository;
 	
 	public List<CartItemDto> findItemsByIds(Long[] itemIds) {
         List<CartItemDto> items = new ArrayList<>();
@@ -57,35 +61,26 @@ public class OrderService {
         return items;
     }
 
-/*
-	public ResponseEntity addOrderItem(String orderItemIds, String totalPrice, String orderName, String zipCode, String orderAddress, String phoneNumber) {
-        
-		Orders orders = new Orders();
-        orders.setOrderStatus(OrderStatus.ORDER); // Set the order status
-        orders.setOrderInfoName(orderName);
-        orders.setOrderInfoAddress(orderAddress);
-        orders.setOrderInfoPhone(phoneNumber);
-        orders.setZipCode(zipCode);
-        
-        for (Long orderItemId : orderItemIds) {
-            OrderItem orderItem = new OrderItem();
 
-            // Get the CartItem using the orderItemId
-            CartItem cartItem = cartItemRepository.findById(orderItemId).orElse(null);
-
-            if (cartItem != null) {
-                orderItem.setOrderPrice(cartItem.getPrice());
-                orderItem.setOrderCount(cartItem.getQuantity());
-                orderItem.setOrders(orders);
-                orderItemRepository.save(orderItem); // Save the order item to the database
-            }
-        }
-        
-        
-	}
-*/
-		
-
+	 public CartItem getCartItemById(Long itemId) {
+		 
+	        return cartItemRepository.findById(itemId).orElse(null); // itemId에 해당하는 카트 항목 조회
 	    }
+	 
+	 public void cartOrder(CartItem cartItem) {
+			OrderItem orderItem = OrderItem.createOrderCart(cartItem);
+			
+			orderItemRepository.save(orderItem);
+			
+			cartItemRepository.delete(cartItem);
+			
+	        Item item = cartItem.getItem();
+	        item.removeStock(cartItem.getCount());
+
+		}
+	 
+}
+	 
+
 	
 

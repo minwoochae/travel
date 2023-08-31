@@ -74,7 +74,7 @@ document.getElementById("searchButton2").addEventListener("click", function() {
 
             resultItem.innerHTML = `
                 <img src="${placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${placeName} Image">
-                <h4 style="margin-left:15px;">${placeName}</h4>
+                <h4 style="margin-left:15px; font-weight: bold; font-size:1.25rem;">${placeName}</h4>
             `;
             
             currentData = {
