@@ -52,7 +52,7 @@ public class PlannerController {
 	
 
 	@GetMapping(value = {"/planner/list", "/planner/list/{page}"})
-	public String planList(Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
+	public String planList(Model model, @PathVariable Optional<Integer> page) {
 		Page<PlanCommunity> planCommunity = planService.findPaginated(PageRequest.of(page.isPresent() ? page.get() : 0, 6));
 		model.addAttribute("community", planCommunity);
 		model.addAttribute("maxPage", 5);

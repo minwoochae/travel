@@ -91,16 +91,17 @@
 	
 	
 	<form role="form" action="/community/write" method="post" enctype="multipart/form-data"
-            th:object="${planCommunityDto}" style="width: 917px; align-item: center; margin: 0 auto; margin-bottom: 50px;">
+            th:object="${planCommunityDto}" style="width: 917px; align-item: center; margin: 0 auto; margin-bottom: 50px;"
+            onsubmit="return validateForm()">
         <div class="mb-3">
-        	<label for="exampleInputEmail1" class="form-label">제목</label>
-        	<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+        	<label for="titleInput" class="form-label">제목</label>
+        	<input type="text" class="form-control" id="titleInput" aria-describedby="emailHelp"
         	th:field="*{communityTitle}">
         </div>
                     
         <div class="mb-3">
-        	<label for="exampleInputPassword1" class="form-label">내용</label>
-        	<input type="text" class="form-control" id="exampleInputPassword1"
+        	<label for="contentInput" class="form-label">내용</label>
+        	<input type="text" class="form-control" id="contentInput"
         	style="height:150px; text-align:start; vertical-align: top;"
         	th:field="*{communityContent}">
     	</div>
@@ -194,6 +195,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
         dayId++;  // Move to the next day
     }
 });
+
+
+
+function validateForm() {
+        var title = document.getElementById("titleInput").value;
+        var content = document.getElementById("contentInput").value;
+        
+        if (title === "") {
+            alert("제목을 입력해주세요.");
+            return false;
+        }
+        
+        if (content === "") {
+            alert("내용을 입력해주세요.");
+            return false;
+        }
+        
+        return true;
+    }
 	
 	</script>
 </th:block>	

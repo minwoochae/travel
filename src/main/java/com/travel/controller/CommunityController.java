@@ -6,12 +6,17 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.travel.Dto.PlanCommunityDto;
 import com.travel.Dto.PlanFormDto;
@@ -42,18 +47,6 @@ public class CommunityController {
 
 		return "community/writeCommunity";
 	}
-
-	//커뮤니티 수정 페이지
-	@GetMapping(value = { "/community/update", "/community/update/{planId}" })
-	public String updateCommunityPage(@PathVariable("planId") Long planId, Model model, Principal principal,
-			PlanCommunityDto planCommunityDto) {
-		String no = principal.getName();
-		PlanFormDto planFormDto = planService.getPlanDtl(planId);
-		model.addAttribute("plan", planFormDto);
-		model.addAttribute("planCommunityDto", new PlanCommunityDto() );
-
-		return "community/updateCommunity";
-	}
 	
 	//커뮤니티 글 작성
 	@PostMapping(value = "/community/write")
@@ -72,7 +65,16 @@ public class CommunityController {
 
 		return "redirect:/";
 	}
-	
+
+	//커뮤니티 수정 페이지
+	@GetMapping(value = { "/community/update", "/community/update/{communityId}" })
+	public String updateCommunityPage(@PathVariable("communityId") Long communityId, Model model, Principal principal
+			) {
+		String no = principal.getName();
+		model.addAttribute("planCommunityDto", new PlanCommunityDto() );
+
+		return "community/updateCommunity";
+	}
 	//커뮤니티 리스트
 	@GetMapping(value = {"/community/viewCommunityList", "/community/viewCommunityList/{page}"})
 	public String viewCommunityList(Principal principal, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
@@ -91,6 +93,17 @@ public class CommunityController {
 		model.addAttribute("community", planCommunityDto);
 		return "community/myCommunityInfo";
 	}
+	
+	
+	// 커뮤니티삭제하기
+		@DeleteMapping(value = "/community/delete/{communityId}")
+		public @ResponseBody ResponseEntity deleteplan(@RequestBody @PathVariable("communityId") Long communityId,
+				Principal principal) {
+
+			communityService.deleteCommunity(communityId);
+			
+			return new ResponseEntity<Long>(communityId, HttpStatus.OK);
+		}
 	
 	
 }

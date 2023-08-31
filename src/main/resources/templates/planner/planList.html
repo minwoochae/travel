@@ -38,7 +38,7 @@
 		<div class="container">
 
 			<div class="row">
-				<div class="col-lg-4 col-md-6" th:each="community : ${community}">
+				<a th:href="'/community/viewCommunityInfo/' + ${community.id}" class="col-lg-4 col-md-6" th:each="community : ${community}">
 					<div class="single_place">
 						<div class="thumb">
 							<img th:src="${community.plan.planContent[0].place_img}"
@@ -55,7 +55,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 
 			<nav style=""
@@ -91,7 +91,7 @@
 	function page(page){
 		
 		//주소 이동
-		location.href = "/planner/myPlanList/" + page 
+		location.href = "/planner/list/" + page 
 	}
 	
 	</script>

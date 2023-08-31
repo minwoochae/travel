@@ -65,9 +65,15 @@ public class CommunityService {
 	
 	//플랜 리스트에 사용될 email로 플랜 전체 가져오기
 	public Page<PlanCommunity> getCommunitiesByMemberEmail(String email, Pageable pageable) {
-	    return planCommunityRepository.findByMemberEmail(email, pageable);
+	    return planCommunityRepository.findByMemberEmailOrderByCommunityRegDateDesc(email, pageable);
 	}
 
+	//커뮤니티 삭제하기
+	public void deleteCommunity(Long communityId) {
+		PlanCommunity planCommunity = planCommunityRepository.findById(communityId).orElseThrow(EntityNotFoundException::new);
+		
+		planCommunityRepository.delete(planCommunity);
+	}
 	
 
 }
