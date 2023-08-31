@@ -3,6 +3,8 @@ package com.travel.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +38,7 @@ public class Plan {
 	@Column(name = "plan_date")
 	private String planDate;
 	
-	@ManyToOne(fetch =FetchType.LAZY)
+	@ManyToOne(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "member_id")
 	private Member member;
 	
