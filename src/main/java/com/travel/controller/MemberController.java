@@ -118,7 +118,6 @@ public class MemberController {
 	@ResponseBody
 	public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata) {
 		String email = (String) psdata.get("memberEmail");
-
 		Member member = memberservice.findByEmail(email);
 		HashMap<String, String> msg = new HashMap<>();
 
@@ -173,7 +172,10 @@ public class MemberController {
 		List<Plan> plans = planService.findPlanTopByEmail(memberId);
 
 		model.addAttribute("plan", plans);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3a24adbbe11a87102789dfb43afcae8d42077c5a
 		
 		List<PlanCommunity> planCommunity = communityService.getTop3RecentCommunitiesByMemberEmail(memberId);
 		

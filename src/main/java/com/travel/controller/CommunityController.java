@@ -31,6 +31,7 @@ public class CommunityController {
 	private final MemberService memberService;
 	private final CommunityService communityService;
 
+	//커뮤니티 작성 페이지
 	@GetMapping(value = { "/community/write", "/community/write/{planId}" })
 	public String createCommunityPage(@PathVariable("planId") Long planId, Model model, Principal principal,
 			PlanCommunityDto planCommunityDto) {
@@ -42,6 +43,7 @@ public class CommunityController {
 		return "community/writeCommunity";
 	}
 
+	//커뮤니티 수정 페이지
 	@GetMapping(value = { "/community/update", "/community/update/{planId}" })
 	public String updateCommunityPage(@PathVariable("planId") Long planId, Model model, Principal principal,
 			PlanCommunityDto planCommunityDto) {
@@ -53,6 +55,7 @@ public class CommunityController {
 		return "community/updateCommunity";
 	}
 	
+	//커뮤니티 글 작성
 	@PostMapping(value = "/community/write")
 	public String createCommunity(@Valid PlanCommunityDto planCommunityDto, Model model, Principal principal,
 				@RequestParam("planId") Long planId) {
