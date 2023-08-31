@@ -154,28 +154,50 @@ public class MemberController {
 	}
 
 	// Mypage
-	@GetMapping(value = "/member/mypage")
+/*	@GetMapping(value = "/member/mypage")
 	public String mainMypage(Principal principal, Model model, Authentication authentication) {
-		Member member = memberservice.memberMypage(principal.getName());
 
-		if (member == null) {
-			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-
-			Member principalDetail = principalDetails.getMember();
-			model.addAttribute("member", principalDetail);
-		} else {
+		
+		PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+		Member members = principals.getMember();
+		String email = members.getEmail();
+		Member member = memberservice.memberMypage(email);
+		
 
 			model.addAttribute("member", member);
-		}
-
-		String memberId = principal.getName();
-		List<Plan> plans = planService.findPlanTopByEmail(memberId);
+		
+		List<Plan> plans = planService.findPlanTopByEmail(email);
 
 		model.addAttribute("plan", plans);
-<<<<<<< HEAD
 
-=======
->>>>>>> 3a24adbbe11a87102789dfb43afcae8d42077c5a
+		
+		List<PlanCommunity> planCommunity = communityService.getTop3RecentCommunitiesByMemberEmail(email);
+		
+		model.addAttribute("community", planCommunity);
+		
+		
+		
+		
+		return "member/MyPage";
+	}
+	*/
+	@GetMapping(value = "/member/mypage")
+	public String mainMypage( Model model, Authentication authentication) {
+
+		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		
+		Member principalDetail = principalDetails.getMember();
+
+		model.addAttribute("member", principalDetail);
+		
+		String memberId = principalDetail.getEmail();
+		
+		
+		
+		List<Plan> plans = planService.findPlanTopByEmail(memberId);
+		
+		
+
 		
 		List<PlanCommunity> planCommunity = communityService.getTop3RecentCommunitiesByMemberEmail(memberId);
 		
@@ -186,7 +208,10 @@ public class MemberController {
 		
 		
 		return "member/MyPage";
-	}
+	} 
+	
+	
+	
 
 	// 내 정보 수정
 	@GetMapping(value = "/member/mypageupdate")

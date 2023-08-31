@@ -48,6 +48,9 @@ public class Plan {
 			orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PlanContent> planContent = new ArrayList<>();
 	
+
+	
+	
 	public void addPlanContent(PlanContent planContent) {
 		this.planContent.add(planContent);
 		planContent.setPlan(this);
