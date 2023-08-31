@@ -67,7 +67,6 @@ public class PlanContent {
 		planContent.setPlaceLatitude(planContentDto.getPlaceLatitude());
 		planContent.setPlaceLongitude(planContentDto.getPlaceLongitude());
 		planContent.setPlace_img(planContentDto.getPlace_img());
-
 		planContent.setPlan(plan);
 		return planContent;
 	}
