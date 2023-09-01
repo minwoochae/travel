@@ -1,5 +1,8 @@
 package com.travel.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.travel.Dto.AskResponseFormDto;
 import com.travel.constant.AskStatus;
 
@@ -39,6 +42,7 @@ public class AskResponseBoard extends BaseEntity{
 	private AskStatus askStatus;
 	
 	@OneToOne
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	@JoinColumn(name="ask_board_id")
 	private AskBoard askBoard;
 	

@@ -3,9 +3,16 @@
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <header th:fragment="header" style="border-bottom:solid 0.5px #CCCCCC;">
-    	<div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
+<<<<<<< HEAD
+<!--       <b>Authenticated DTO:</b>
+<div sec:authorize="isAuthenticated()" sec:authentication="principal"></div>  -->
+  
+    	<div sec:authorize="hasAnyAuthority('ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
+=======
+    	<div sec:authorize="hasAnyRole('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
+>>>>>>> 5e0374f169a9ab0cb7a597a195170f50aa9eef9e
     		<div style="margin-right: 40px;">
-	    		<button class="boxed-btn3" style="height: 40px; display:flex; align-items: center;" onclick="location.href='/admin'">관리자페이지로 이동</button>    		    		
+	    		<button class="boxed-btn3" style="height: 40px; display:flex; align-items: center;" th:onclick="location.href='/admin'">관리자페이지로 이동</button>    		    		
     		</div>
     	</div>
         <div class="header-area ">
@@ -31,7 +38,7 @@
                                             <li><a class="" href=/adminInfo>공지사항</a></li>
 
 
-                                            <li><a href="adminAsk/asks">문의사항</a></li>
+                                            <li><a href="/adminAsk/asks">문의사항</a></li>
                                             <li><a href="/member/mypage" sec:authorize="isAuthenticated()">마이페이지</a></li>
 		                                    <li><a class="active" href="/cartList" sec:authorize="isAuthenticated()">장바구니</a></li>
                                         </ul>
