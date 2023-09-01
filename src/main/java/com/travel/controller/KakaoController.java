@@ -55,6 +55,7 @@ public class KakaoController {
 		return "member/KakaoMemberForm";
 		
 	}
+	
 	//카카오 회원가입
 	@PostMapping(value = "/oauth2/code/kakao")
 	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model)
@@ -77,6 +78,7 @@ public class KakaoController {
 		return "redirect:/";
 	}
 	
+
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
 
@@ -113,16 +115,11 @@ public class KakaoController {
         	return "member/KakaoMemberForm";
         }
         
-
-    	
-    	
-    	
-    	
-    	
 		return "redirect:/members/login";
 		
 		
 	}
+	
 	
 
 }

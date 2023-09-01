@@ -1,5 +1,5 @@
 package com.travel.constant;
 
 public enum Role {
-	ADMIN, USER
+	ROLE_ADMIN, ROLE_USER
 }
