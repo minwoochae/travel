@@ -1,6 +1,5 @@
 package com.travel.controller;
 
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,9 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.travel.Dto.MemberKakaoDto;
 import com.travel.auth.PrincipalDetails;
@@ -77,8 +73,13 @@ public class KakaoController {
 
 		return "redirect:/";
 	}
+
+
 	
 
+<<<<<<< HEAD
+
+=======
 
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
@@ -123,5 +124,6 @@ public class KakaoController {
 
 	
 	
+>>>>>>> 4f8c0c539f724153e8a286b57c86b21e88fb6c6c
 
 }

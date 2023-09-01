@@ -58,7 +58,7 @@
 </style>
 </th:block>
 
-<div layout:fragment="content">
+<div layout:fragment="content" style="margin: 50px 0 70px 0;">
 	<div class="planBox"
 		style="height: 1060px; overflow: hidden; border-radius: 5px;">
 		<h5 class="planTitle" th:text="${community.plan.planTitle}">플랜제목</h5>
@@ -127,8 +127,17 @@
 
 <th:block layout:fragment="script">
 	<script type="text/javascript" th:src="@{/js/cookie.js}"></script>
+<<<<<<< HEAD
+
+
+	<script th:inline="javascript">
+	
+
+	
+=======
 	<script th:inline="javascript">
 		
+>>>>>>> 4f8c0c539f724153e8a286b57c86b21e88fb6c6c
 	window.addEventListener('DOMContentLoaded', (event) => {
     		const tabContentDiv = document.querySelector('.tab-content');
     		const navTabsDiv = document.querySelector('.nav-tabs');
