@@ -68,7 +68,6 @@ public class AdminController {
 	@GetMapping(value = "/admin")
 	public String admin(Authentication authentication) {
 		PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
-		System.out.println("principals.getMember().getRole(): " + principals.getMember().getRole()); 
 		
 		return "admin/adminMain";
 	}
@@ -86,7 +85,7 @@ public class AdminController {
 		model.addAttribute("travel", travel);
 		model.addAttribute("maxPage", 5);
 
-		return "admin/MemberList";
+		return "admin/memberList";
 	}
 
 	//회원 리스트(회원 프로필)

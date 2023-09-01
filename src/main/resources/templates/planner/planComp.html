@@ -68,7 +68,7 @@
 	</style>
 </th:block>
 
-<div layout:fragment="content" style="margin-top: 30px;">
+<div layout:fragment="content" style="margin: 30px 0 50px 0;">
 	<div style="display:flex;">
 		<h1 class="title1">플랜을 완성했습니다.</h1>
 	</div>
@@ -111,7 +111,9 @@
    	<div class="more_place_btn text-center" style="margin-left: 20px;">
         <a class="boxed-btn4" th:href="'/community/update/' + ${plan.id}">내 플랜 수정하기</a>
     </div>
+    </div>
 
+	</div>
 
 <th:block layout:fragment="script">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
