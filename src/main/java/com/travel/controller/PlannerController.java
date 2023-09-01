@@ -93,7 +93,6 @@ public class PlannerController {
 
 	// 플랜만들기
 	@PostMapping(value = "/planner/setplan")
-
 	public @ResponseBody ResponseEntity createPlan(Authentication authentication, Model model, @RequestBody HashMap<String, Object> hashMap, BindingResult bindingResult) {
 		// 로그인하지 않은 사용자에 대한 처리
 	    if (authentication == null) {

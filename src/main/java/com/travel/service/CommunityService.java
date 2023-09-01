@@ -32,8 +32,12 @@ public class CommunityService {
 	private final PlanCommunityRepository planCommunityRepository;
 	
 	// 커뮤니티 작성
+
+
+
 	public Long saveCommunity(PlanCommunityDto planCommunityDto, String memberId, Long planId) throws Exception {
 		Member member = memberRepository.findByEmail(memberId);
+
 		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 		Optional<Plan> optionalPlan = planRepository.findById(planId);
 		if (!optionalPlan.isPresent()) {

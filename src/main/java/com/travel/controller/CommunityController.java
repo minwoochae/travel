@@ -72,6 +72,15 @@ public class CommunityController {
 
 	//커뮤니티 수정 페이지
 	@GetMapping(value = { "/community/update", "/community/update/{communityId}" })
+
+	public String updateCommunityPage(@PathVariable("communityId") Long communityId, Model model, Principal principal) {
+		String no = principal.getName();
+		model.addAttribute("planCommunityDto", new PlanCommunityDto() );
+
+		return "community/updateCommunity";
+	}
+	
+
 	public String updateCommunityPage(@PathVariable("communityId") Long communityId, Model model
 			) {
 		try {
@@ -106,6 +115,7 @@ public class CommunityController {
 	}
 	
 	
+
 	//커뮤니티 리스트
 	@GetMapping(value = {"/community/viewCommunityList", "/community/viewCommunityList/{page}"})
 	public String viewCommunityList(Authentication authentication, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {

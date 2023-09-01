@@ -216,7 +216,7 @@ public class MemberController {
 		return "member/checkPwd";
 	}
 
-	/** 회원 수정 전 비밀번호 확인 **/
+	// 회원 수정 전 비밀번호 확인 
 	@PostMapping(value = "/member/checkPwd")
 	public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
 

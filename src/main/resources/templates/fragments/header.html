@@ -4,7 +4,19 @@
 
     <header th:fragment="header" style="border-bottom:solid 0.5px #CCCCCC;">
 
+<<<<<<< HEAD
+=======
+
+<!--       <b>Authenticated DTO:</b>
+<div sec:authorize="isAuthenticated()" sec:authentication="principal"></div>  -->
+  
+
+
+
+
+>>>>>>> 4f8c0c539f724153e8a286b57c86b21e88fb6c6c
     	<div sec:authorize="hasAnyRole('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
+
     		<div style="margin-right: 40px;">
 	    		<button class="boxed-btn3" style="height: 40px; display:flex; align-items: center;" th:onclick="location.href='/admin'">관리자페이지로 이동</button>    		    		
     		</div>
