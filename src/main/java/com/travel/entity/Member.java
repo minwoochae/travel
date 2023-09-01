@@ -122,7 +122,6 @@ public class Member extends BaseEntity {
 
 	}
 
-	public static final String MAPPER = "ezen.dev.spring.kakao";
 
 	// 정보 저장
 	public void kakaoinsert(HashMap<String, Object> userInfo) {

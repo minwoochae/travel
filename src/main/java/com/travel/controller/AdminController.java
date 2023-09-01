@@ -66,7 +66,10 @@ public class AdminController {
 	private final MemberService memberService;
 
 	@GetMapping(value = "/admin")
-	public String admin() {
+	public String admin(Authentication authentication) {
+		PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+		System.out.println("principals.getMember().getRole(): " + principals.getMember().getRole()); 
+		
 		return "admin/adminMain";
 	}
 	
