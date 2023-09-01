@@ -80,8 +80,6 @@ public class KakaoController {
 	
 
 
-
-
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
 

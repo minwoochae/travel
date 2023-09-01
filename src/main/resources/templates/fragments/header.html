@@ -4,9 +4,13 @@
 
     <header th:fragment="header" style="border-bottom:solid 0.5px #CCCCCC;">
 
+
 <!--       <b>Authenticated DTO:</b>
 <div sec:authorize="isAuthenticated()" sec:authentication="principal"></div>  -->
   
+
+
+
 
     	<div sec:authorize="hasAnyRole('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
 

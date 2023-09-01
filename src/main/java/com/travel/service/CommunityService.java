@@ -32,9 +32,12 @@ public class CommunityService {
 	private final PlanCommunityRepository planCommunityRepository;
 	
 	// 커뮤니티 작성
-	public Long saveCommunity(PlanCommunityDto planCommunityDto, String memberid, Long planId) throws Exception {
-		Member member = memberRepository.findByEmail(memberid);
-		LocalDateTime now = LocalDateTime.now();
+
+
+
+	public Long saveCommunity(PlanCommunityDto planCommunityDto, String memberId, Long planId) throws Exception {
+		Member member = memberRepository.findByEmail(memberId);
+
 		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 		Optional<Plan> optionalPlan = planRepository.findById(planId);
 		if (!optionalPlan.isPresent()) {
@@ -54,6 +57,16 @@ public class CommunityService {
 		
 		
 		return planCommunityDto;
+	}
+	
+	public Long updateCommunity(PlanCommunityDto planCommunityDto) {
+		System.out.println(planCommunityDto.getId());
+		PlanCommunity planCommunity = planCommunityRepository.findById(planCommunityDto.getId()).orElseThrow(EntityNotFoundException::new);
+		System.out.println(planCommunity + "여긴 뭐야");
+		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+		planCommunity.updatecommunity(planCommunityDto, regDate);
+		
+		return planCommunity.getId();
 	}
 	
 	
