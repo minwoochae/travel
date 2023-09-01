@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -26,7 +27,6 @@ import lombok.*;
 @Table(name = "member")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class Member extends BaseEntity {
 
@@ -55,7 +55,10 @@ public class Member extends BaseEntity {
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	    private List<PlanCommunity> plancommunity = new ArrayList<>();
 
-
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+	
+	
 	@CreatedDate
 	@Column(updatable = false)
 	private LocalDateTime regtime;
@@ -151,5 +154,18 @@ public class Member extends BaseEntity {
 		this.providerId = providerId;
 		this.division = division;
 	}
+	
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return Objects.equals(id, member.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 }

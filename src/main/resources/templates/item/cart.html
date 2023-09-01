@@ -68,11 +68,11 @@
                   
                         <td data-th="Price"><span th:id="'totalPrice-' + ${cartIndex.index}" th:text="${item.price * item.count}">0</span></td>
                         <td data-th="Quantity">
-							<input type="number" min="1" class="form-control form-control-lg text-center" th:value="${item.count}">
+							<input type="number" min="1" class="form-control form-control-lg text-center" th:value="${item.count}" style="border: none;">
                         </td>
                         <td class="actions" data-th="">
                             <div class="text-right">
-                                <button class="btn btn-white border-secondary bg-white btn-md mb-2" th:value="${cart.cartId}" onclick="deleteCart(this.value)">
+                                <button class="btn btn-white border-secondary bg-white btn-md mb-2" th:value="${item.id}" onclick="deleteCart(this.value)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
