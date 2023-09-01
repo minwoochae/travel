@@ -1,5 +1,4 @@
-
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
@@ -55,6 +54,7 @@ li {
 .btnmember:hover {
 	color: red !important;
 }
+
 </style>
 </th:block>
 <div layout:fragment="content">
@@ -85,10 +85,9 @@ li {
 			</li>
 		</ul>
 	</form>
-
-
-	<div class="row justify-content-between"
-		th:if="${!#lists.isEmpty(plan)}"
+	
+	
+	<div class="row justify-content-between" th:if="${!#lists.isEmpty(plan)}"
 		style="width: 950px; justify-content: center; align-items: center; margin: 0 auto; margin-top: 50px">
 		<h1 style="font-weight: bold;">나의 최근 플랜</h1>
 		<a href="/planner/myPlanList" type="button"
@@ -96,15 +95,15 @@ li {
 	</div>
 
 	<div th:if="${#lists.isEmpty(plan)}">
-		<p
-			style="text-align: center; font-size: 50px; width: 100%; height: 400px; margin-top: 200px;">현재
-			나의 플랜이 없습니다.</p>
+		<p style="text-align: center; font-size: 50px; width:100%; height: 400px; margin-top: 200px; ">현재 나의 플랜이 없습니다.</p>
 	</div>
+	
 
 
 
 
-	<div>
+
+ 	<div>
 		<a th:href="'/planner/myPlanInfo/' + ${plan.id}" class="card"
 			th:each="plan : ${plan}"
 			style="width: 950px; display: flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
@@ -116,15 +115,18 @@ li {
 							class="img-fluid rounded-start"
 							th:alt="${plan.planContent[0].place_img}">
 					</div>
-					<div class="col-md-8" style="display: flex;">
+					<div class="col-md-8" style="display: flex; margin-bottom: 10%;">
 						<div class="card-body" style="display: flex;">
 							<div style="display: block; width: 99%;">
 								<h5 class="card-title" th:text="${plan.planTitle}"
-									style="width: 500px; font-size: x-large;"></h5>
+									style="width: 500px; font-size: x-large;"
+									></h5>
 								<p class="card-text">
 									<small class="text-body-secondary"
 										th:text="${plan.planDate} + 일">2박 3일</small>
-								</p>
+										<p th:text="${plan.planContent[0].placeAddress}"></p>
+								</p> 
+								
 							</div>
 
 						</div>
@@ -132,7 +134,7 @@ li {
 				</div>
 			</div>
 		</a>
-	</div>
+	</div> 
 		
 		
 		<div class="row justify-content-between"
@@ -158,14 +160,14 @@ li {
 								class="img-fluid rounded-start"
 								th:alt="${community.plan.planContent[0].place_img}">
 						</div>
-						<div class="col-md-8" style="display: flex;">
+						<div class="col-md-8" style="display: flex; margin-bottom: 10%;">
 							<div class="card-body" style="display: flex;">
 								<div style="display: block; width: 99%;">
 									<h5 class="card-title" th:text="${community.communityTitle}"
 										style="width: 500px; font-size: x-large;"></h5>
 									<p class="card-text">
 										<small class="text-body-secondary"
-											th:text="${community.plan.planDate} + 일">2박 3일</small>
+											th:text="${community.plan.planDate} + 일">2박 3일</small>									
 									</p>
 								</div>
 							</div>
@@ -173,46 +175,47 @@ li {
 					</div>
 				</div>
 			</a>
+
+		</div> 
+
 		</div>
-		</div>
-		
-		
 
-	<!-- 각 페이지의 스크립트가 작성될 위치 -->
-	<th:block layout:fragment="script">
-		<script th:inline="javascript">
-			function deleteMember(memberId) {
-				const deleteconf = confirm("정말 삭제하시겠습니까?");
-				if (!deleteconf)
-					return;
 
-				var token = $("meta[name='_csrf']").attr("content");
-				var header = $("meta[name='_csrf_header']").attr("content");
+<!-- 각 페이지의 스크립트가 작성될 위치 -->
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		function deleteMember(memberId) {
+			const deleteconf = confirm("정말 삭제하시겠습니까?");
+			if (!deleteconf)
+				return;
 
-				var url = "/member/" + memberId + "/delete";
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
 
-				$.ajax({
-					url : url,
-					type : "DELETE", //전송방식
-					contentType : "application/json",
-					beforeSend : function(xhr) {
-						//데이터를 전송하기 전에 헤더에 xsrf값
-						xhr.setRequestHeader(header, token);
-					},
-					dataType : "json",
-					cache : false,
-					success : function(result, status) {
-						location.href = "/members/logout";
-					},
-					error : function(jqXHR, status, error) {
-						if (jqXHR.status == "401") {
-							alert("로그인 후 이용해주세요.");
-						} else {
-							alert(jqXHR.responseText);
-						}
-					},
-				});
-			}
-		</script>
-	</th:block>
+			var url = "/member/" + memberId + "/delete";
+
+			$.ajax({
+				url : url,
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					location.href = "/members/logout";
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == "401") {
+						alert("로그인 후 이용해주세요.");
+					} else {
+						alert(jqXHR.responseText);
+					}
+				},
+			});
+		}
+	</script>
+</th:block>
 </html>

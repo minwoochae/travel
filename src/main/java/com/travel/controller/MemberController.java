@@ -28,7 +28,6 @@ import com.travel.constant.Division;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanCommunity;
-import com.travel.entity.PlanContent;
 import com.travel.service.CommunityService;
 import com.travel.service.MemberService;
 import com.travel.service.PlanService;
@@ -118,6 +117,7 @@ public class MemberController {
 	@ResponseBody
 	public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata) {
 		String email = (String) psdata.get("memberEmail");
+		
 		Member member = memberservice.findByEmail(email);
 		HashMap<String, String> msg = new HashMap<>();
 
@@ -189,25 +189,22 @@ public class MemberController {
 	// 내 정보 수정
 	@GetMapping(value = "/member/mypageupdate")
 	public String mypageupdate(Principal principal, Model model, Authentication authentication) {
-		Member member = memberservice.memberMypage(principal.getName());
-
-		if (member == null) {
+	
 			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 			Member principalDetail = principalDetails.getMember();
-			model.addAttribute("member", principalDetail);
-		} else {
-
+			Member member = memberservice.findByEmail(principalDetail.getEmail());
 			model.addAttribute("member", member);
-		}
 
 		return "member/MypageupdateForm";
 	}
 
 	// 카카오 이용자는 내 정보 수정이 불가능하여서 넣지 않아서 Authentication를 넣지 않음
 	@PostMapping("/member/mypageupdate")
-	public String mypageupdate(@Valid String name, @Valid String phoneNumber, Model model, Principal principal) {
-		Member members = memberservice.memberMypage(principal.getName());
-		memberservice.updateNamePhone(principal.getName(), name, phoneNumber);
+	public String mypageupdate(@Valid String name, @Valid String phoneNumber, Model model, Authentication authentication) {
+		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		Member principalDetail = principalDetails.getMember();
+		Member member = memberservice.findByEmail(principalDetail.getEmail());
+		memberservice.updateNamePhone(member.getEmail(), name, phoneNumber);
 
 		return "redirect:/";
 	}
@@ -219,7 +216,7 @@ public class MemberController {
 		return "member/checkPwd";
 	}
 
-	/** 회원 수정 전 비밀번호 확인 **/
+	// 회원 수정 전 비밀번호 확인 
 	@PostMapping(value = "/member/checkPwd")
 	public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
 

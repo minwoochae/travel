@@ -67,7 +67,9 @@ public class AdminController {
 	private final MemberService memberService;
 
 	@GetMapping(value = "/admin")
-	public String admin() {
+	public String admin(Authentication authentication) {
+		PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+		
 		return "admin/adminMain";
 	}
 	
@@ -84,7 +86,7 @@ public class AdminController {
 		model.addAttribute("travel", travel);
 		model.addAttribute("maxPage", 5);
 
-		return "admin/MemberList";
+		return "admin/memberList";
 	}
 
 	//회원 리스트(회원 프로필)

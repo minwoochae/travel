@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.travel.Dto.KakaoPayApproveDto;
 import com.travel.Dto.KakaoPayReadyDto;
+import com.travel.Repository.OrderItemRepository;
 import com.travel.Repository.OrderRepository;
 import com.travel.Repository.PayRepository;
 import com.travel.constant.OrderStatus;
@@ -35,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class KakaoPayService {
 	private final OrderRepository orderRepository;
 	private final PayRepository payRepository;
+	private final OrderItemRepository orderItemRepository;
 
 
 	public KakaoPayReadyDto kakaoPay(Map<String, Object> params) {
@@ -95,4 +97,13 @@ public class KakaoPayService {
         payRepository.save(pay);
     }
     
+    
+    public void saveOrders(Orders orders) {
+    	orderRepository.save(orders);
+    }
+    
+    
+    public void saveOrderItem(OrderItem orderItem) {
+    	orderItemRepository.save(orderItem);
+    }
 }
