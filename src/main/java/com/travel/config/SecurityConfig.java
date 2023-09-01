@@ -45,8 +45,7 @@ public class SecurityConfig {
 						"/members/login/**", "/item/**", "/kakao/**", "/order/**", "/oauth2/code/**", "/load/**", "/community/**")
 				.permitAll().requestMatchers("favicon.ico", "/error").permitAll()
 				.requestMatchers("/error").permitAll()
-
-				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/admin").hasRole("ADMIN")
 				// 그 외의 페이지는 모두 로그인(인증을 받아야한다.)
 				.anyRequest().authenticated())
 		.formLogin(formLogin -> formLogin // 2.로그인에 관련된 설정
