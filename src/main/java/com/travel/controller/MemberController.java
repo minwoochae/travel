@@ -153,25 +153,24 @@ public class MemberController {
 		return msg;
 	}
 
-	// Mypage
+
 	@GetMapping(value = "/member/mypage")
-	public String mainMypage(Principal principal, Model model, Authentication authentication) {
-		Member member = memberservice.memberMypage(principal.getName());
+	public String mainMypage( Model model, Authentication authentication) {
 
-		if (member == null) {
-			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		
+		Member principalDetail = principalDetails.getMember();
 
-			Member principalDetail = principalDetails.getMember();
-			model.addAttribute("member", principalDetail);
-		} else {
-
-			model.addAttribute("member", member);
-		}
-
-		String memberId = principal.getName();
+		model.addAttribute("member", principalDetail);
+		
+		String memberId = principalDetail.getEmail();
+		
+		
+		
 		List<Plan> plans = planService.findPlanTopByEmail(memberId);
+		
+		
 
-		model.addAttribute("plan", plans);
 		
 		List<PlanCommunity> planCommunity = communityService.getTop3RecentCommunitiesByMemberEmail(memberId);
 		
@@ -182,7 +181,10 @@ public class MemberController {
 		
 		
 		return "member/MyPage";
-	}
+	} 
+	
+	
+	
 
 	// 내 정보 수정
 	@GetMapping(value = "/member/mypageupdate")

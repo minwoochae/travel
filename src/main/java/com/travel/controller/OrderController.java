@@ -1,10 +1,5 @@
 package com.travel.controller;
 
-
-
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,19 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.travel.Dto.CartItemDto;
-import com.travel.Dto.ItemImgDto;
-import com.travel.Dto.OrderDto;
-import com.travel.Dto.OrderItemDto;
-import com.travel.Repository.CartItemRepository;
-import com.travel.entity.Cart;
-import com.travel.entity.CartItem;
-import com.travel.entity.Item;
-import com.travel.entity.OrderItem;
-import com.travel.entity.Orders;
+
 import com.travel.service.OrderService;
 
 import lombok.RequiredArgsConstructor;

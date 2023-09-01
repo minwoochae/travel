@@ -4,7 +4,12 @@
 	layout:decorate="~{layouts/layout1}">
 
 <th:block layout:fragment="css">
+<style>
 
+ th {
+        text-align: center;
+      }
+</style>
 </th:block>
 
 <head>
@@ -13,7 +18,7 @@
 </head>
 
 
-<div layout:fragment="content" style="height: 1000px">
+<div layout:fragment="content" style="height: 1000px; margin-top:70px ;" >
 
 	<div class="container">
 
@@ -32,7 +37,7 @@
 					<table class="table table-responsive-md">
 						<thead>
 							<tr>
-								<th scope="col">id</th>
+								<th scope="col">No</th>
 								<th scope="col">제목</th>
 								<th scope="col">등록자</th>
 								<th scope="col">수정</th>
@@ -58,7 +63,7 @@
 					<!-- 페이징 버튼 ◁ 1 2 3 4 5 ▷ -->
 					<!-- start = (현재 페이지 번호/보여줄 페이지 수) * 보여줄 페이지 수 +1, 페이지 시작 번호 -->
 					<!-- end = start + (보여줄 페이지 수) -1, 페이지 끝 번호 -->
-					<nav style=""
+					<nav style="margin-top:70px ;"
 						th:with="start=${(asks.number/maxPage)*maxPage + 1}
 			,end=(${(asks.totalPages == 0) ? 1 : (start + (maxPage - 1) < asks.totalPages ? start + (maxPage - 1) : asks.totalPages)})"
 						aria-label="Page navigation example">

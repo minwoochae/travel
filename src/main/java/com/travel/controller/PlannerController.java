@@ -51,15 +51,19 @@ public class PlannerController {
 		return "planner/plannerMain";
 	}
 
+
 	@GetMapping(value = { "/planner/list", "/planner/list/{page}" })
 	public String planList(Model model, @PathVariable Optional<Integer> page) {
 		Page<PlanCommunity> planCommunity = planService
 				.findPaginated(PageRequest.of(page.isPresent() ? page.get() : 0, 6));
+
 		model.addAttribute("community", planCommunity);
 		model.addAttribute("maxPage", 5);
 		return "planner/planList";
 	}
 
+	
+	
 	// 플랜 완성 페이지
 	@GetMapping(value = "/planComplete")
 	public String planComp(Authentication authentication, Model model, Optional<Integer> page) {
@@ -89,14 +93,15 @@ public class PlannerController {
 
 	// 플랜만들기
 	@PostMapping(value = "/planner/setplan")
-	public @ResponseBody ResponseEntity createPlan(Authentication authentication, Model model,
-			@RequestBody HashMap<String, Object> hashMap, BindingResult bindingResult) {
+
+	public @ResponseBody ResponseEntity createPlan(Authentication authentication, Model model, @RequestBody HashMap<String, Object> hashMap, BindingResult bindingResult) {
 		// 로그인하지 않은 사용자에 대한 처리
-		if (authentication == null) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		}
-		PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
-		Member members = principals.getMember();
+	    if (authentication == null) {
+	        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	    }
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+
 		String no = members.getEmail();
 		PlanFormDto planFormDto = new PlanFormDto();
 		PlanContentDto planContentDto = new PlanContentDto();
@@ -145,12 +150,15 @@ public class PlannerController {
 		return new ResponseEntity<String>(no, HttpStatus.OK);
 	}
 
-	// 플랜 리스트
-	@GetMapping(value = { "/planner/myPlanList", "/planner/myPlanList/{page}" })
-	public String myPlanList(Authentication authentication, Model model, Pageable pageable,
-			@PathVariable Optional<Integer> page) {
-		PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
-		Member members = principals.getMember();
+
+
+	
+	//플랜 리스트
+	@GetMapping(value={"/planner/myPlanList", "/planner/myPlanList/{page}"})
+	public String myPlanList(Authentication authentication, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
+	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
+        Member members = principals.getMember();
+
 		String email = members.getEmail();
 		System.out.println(email);
 		Page<Plan> plans = planService.getPlansByEmail(email, PageRequest.of(page.isPresent() ? page.get() : 0, 5));
