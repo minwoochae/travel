@@ -12,6 +12,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PlanCommunityDto {
+	private Long id;
+	
 	private String communityTitle;
 	
 	private String communityContent;

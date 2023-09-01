@@ -44,10 +44,10 @@ public class PlanCommunity extends BaseEntity{
 	@JoinColumn(name = "plan_id")
 	private Plan plan;
 	
-	public void updatecommunity(PlanCommunityDto planCommunityDto) {
+	public void updatecommunity(PlanCommunityDto planCommunityDto, String regDate) {
 		this.communityTitle = planCommunityDto.getCommunityTitle();
 		this.communityContent = planCommunityDto.getCommunityContent();
-		this.communityRegDate = planCommunityDto.getCommunityRegDate();
+		this.communityRegDate = regDate;
 	}
 	
 }

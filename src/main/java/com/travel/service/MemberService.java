@@ -127,17 +127,21 @@ public class MemberService implements UserDetailsService {
 	}
 
 
-	 private final JavaMailSender javaMailSender; 
-
-
-
+	
+	  private final JavaMailSender javaMailSender;
+	  
+	  
+	  
 	  public void sendEmail(String to, String subject, String text) {
-			SimpleMailMessage message = new SimpleMailMessage();
-			message.setTo(to);
-			message.setSubject(subject);
-			message.setText(text);
-		javaMailSender.send(message);
-		}
+	  SimpleMailMessage message = new SimpleMailMessage(); message.setTo(to);
+	  message.setSubject(subject); message.setText(text);
+	  
+	  javaMailSender.send(message);
+	  
+	  }
+	 
+	  
+	
 
 	// 회원 상세정보
 	@Transactional(readOnly = true)

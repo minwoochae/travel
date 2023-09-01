@@ -92,7 +92,7 @@
         			<ul th:if="${day} == ${content.planDay}" th:each="content : ${PlanContents}" style="margin-left:30px; margin-right:30px;">
             			<li class="content-list" style="width:100%; padding-top:30px; border-bottom: 1px solid; padding-left:10px; padding-bottom: 30px; float: left; display: flex;">
                 			<img th:src="@{${content.place_img}}" style="width: 300px; height: 240px;"/>
-                			<span th:text="${content.placeName}" style="margin-left:50px; line-height: 240px;"></span>
+                			<span th:text="${content.placeName}" style="margin-left:50px; font-weight:bold;"></span>
             			</li>
         			</ul>
     			</div>
@@ -111,16 +111,10 @@
    	<div class="more_place_btn text-center" style="margin-left: 20px;">
         <a class="boxed-btn4" th:href="'/community/update/' + ${plan.id}">내 플랜 수정하기</a>
     </div>
-    
-</div>
-<div style="display: flex; margin: 40px 0;" onclick="'여기에 카카오 공유링크'">
-	<div class="kakao-btn" style="margin: 0 auto;">
-		<img class="kakao-logo" alt="logo" src="/img/kakaoLogo.png">
-        <a class="kakao-text" href="#">카카오로 공유하기</a>
-    </div>
-</div>
 </div>
 
+
+</div>
 <th:block layout:fragment="script">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 	<script th:inline="javascript">
