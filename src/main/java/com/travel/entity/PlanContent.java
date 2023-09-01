@@ -63,6 +63,7 @@ public class PlanContent {
 		planContent.setPlanDay(planContentDto.getPlanDay());
 		planContent.setTravelDivision(planContentDto.getTravelDivision());
 		planContent.setPlaceName(planContentDto.getPlaceName());
+		planContent.setPlaceTel(planContentDto.getPlaceTel());
 		planContent.setPlaceAddress(planContentDto.getPlaceAddress());
 		planContent.setPlaceLatitude(planContentDto.getPlaceLatitude());
 		planContent.setPlaceLongitude(planContentDto.getPlaceLongitude());

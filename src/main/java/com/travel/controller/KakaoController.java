@@ -78,9 +78,9 @@ public class KakaoController {
 		return "redirect:/";
 	}
 	
-<<<<<<< HEAD
 
-=======
+
+
 
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
@@ -122,7 +122,7 @@ public class KakaoController {
 		
 		
 	}
->>>>>>> 5e0374f169a9ab0cb7a597a195170f50aa9eef9e
+
 	
 	
 
