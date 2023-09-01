@@ -58,7 +58,7 @@
 </style>
 </th:block>
 
-<div layout:fragment="content">
+<div layout:fragment="content" style="margin: 50px 0 70px 0;">
 	<div class="planBox"
 		style="height: 1060px; overflow: hidden; border-radius: 5px;">
 		<h5 class="planTitle" th:text="${community.plan.planTitle}">플랜제목</h5>
@@ -127,42 +127,9 @@
 
 <th:block layout:fragment="script">
 	<script type="text/javascript" th:src="@{/js/cookie.js}"></script>
-	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js"
-		integrity="sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh"
-		crossorigin="anonymous"></script>
 
-	<script>
-	
-	Kakao.init('97207c88fb92b7d1bbd5719ab5b56ffe'); // 사용하려는 앱의 JavaScript 키 입력
-	</script>
 
 	<script th:inline="javascript">
-	
-	Kakao.Link.sendDefault({
-	    objectType: 'feed',
-	    content: {
-	      title: '이젠어때',
-	      description: '플랜 둘러보기',
-
-	      link: {
-	        mobileWebUrl: 'https://developers.kakao.com',
-	        androidExecutionParams: 'test',
-	      },
-	    },
-	    itemContent: {
-	    },
-	    buttons: [
-	      {
-	        title: '플랜 둘러보기',
-	        link: {
-	          mobileWebUrl: "https://localhost/community/viewCommunityInfo/" + ${community.plan.id},
-	          webUrl: "https://localhost/community/viewCommunityInfo/" + ${community.plan.id}",
-	        },
-	      },
-	    ],
-	  });
-	
 	
 
 	

@@ -41,9 +41,8 @@ public class CommunityController {
 
 	//커뮤니티 작성 페이지
 	@GetMapping(value = { "/community/write", "/community/write/{planId}" })
-	public String createCommunityPage(@PathVariable("planId") Long planId, Model model, Principal principal,
+	public String createCommunityPage(@PathVariable("planId") Long planId, Model model,
 			PlanCommunityDto planCommunityDto) {
-		String no = principal.getName();
 		PlanFormDto planFormDto = planService.getPlanDtl(planId);
 		model.addAttribute("plan", planFormDto);
 		model.addAttribute("planCommunityDto", new PlanCommunityDto() );
@@ -73,13 +72,40 @@ public class CommunityController {
 
 	//커뮤니티 수정 페이지
 	@GetMapping(value = { "/community/update", "/community/update/{communityId}" })
-	public String updateCommunityPage(@PathVariable("communityId") Long communityId, Model model, Principal principal
+	public String updateCommunityPage(@PathVariable("communityId") Long communityId, Model model
 			) {
-		String no = principal.getName();
-		model.addAttribute("planCommunityDto", new PlanCommunityDto() );
-
+		try {
+			
+			PlanCommunityDto planCommunityDto = communityService.getCommunityDtl(communityId);
+			model.addAttribute("community", planCommunityDto);
+			model.addAttribute("planCommunityDto", new PlanCommunityDto() );
+			PlanFormDto planFormDto = planService.getPlanDtl(planCommunityDto.getPlan().getId());
+			model.addAttribute("plan", planFormDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "페이지 에러");
+			model.addAttribute("community", new PlanCommunityDto());
+			return "/";
+		}
+		
 		return "community/updateCommunity";
 	}
+	
+	//커뮤니티 수정
+	@PostMapping(value = "/community/update")
+	public String updateCommunity(@Valid PlanCommunityDto planCommunityDto, Model model) {
+		
+		try {
+			communityService.updateCommunity(planCommunityDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "작성 에러");
+		}
+		
+		return "redirect:/";
+	}
+	
+	
 	//커뮤니티 리스트
 	@GetMapping(value = {"/community/viewCommunityList", "/community/viewCommunityList/{page}"})
 	public String viewCommunityList(Authentication authentication, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {
