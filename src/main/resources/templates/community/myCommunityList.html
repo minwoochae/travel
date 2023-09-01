@@ -65,11 +65,22 @@
 										aria-expanded="false"
 										style="background-color: transparent; border: none; width: 1%; text-align: right; display: flex; justify-content: center; font-size: xx-large; cursor: pointer;">&vellip;</button>
 									<ul class="dropdown-menu">
-										<li><a class="dropdown-item"
-											th:href="'/community/viewCommunityInfo/' + ${community.id}">상세 보기</a></li>
 										<li>
-											
-
+											<a class="dropdown-item"
+											th:href="'/community/viewCommunityInfo/' + ${community.id}">상세 보기</a>
+										</li>
+										
+										<li>
+											<a class="dropdown-item"
+											th:href="'/community/update/' + ${community.id}">수정 하기</a>
+										</li>
+										
+										<li>
+											<button type="button" class="btn btn-danger dropdown-item"
+												th:id="${community.id}" th:value="${community.id}"
+												th:onclick="'javascript:deletecommunity(' + ${community.id} +')'"
+												style="float: right; background-color: white; color: black; border: none; font-weight: bolder;">플랜삭제하기
+											</button>
 										</li>
 
 									</ul>
@@ -144,7 +155,7 @@
 		}
 
 	
-	function deleteplan(planId) {
+	function deletecommunity(communityId) {
 		const deleteconf = confirm("정말 삭제하시겠습니까?");
 		if (!deleteconf)
 			return;
@@ -152,7 +163,7 @@
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 
-		var url = "/planner/delete/" + planId ;
+		var url = "/community/delete/" + communityId ;
 
 		$.ajax({
 			url : url,
@@ -165,7 +176,7 @@
 			dataType : "json",
 			cache : false,
 			success : function(result, status) {
-				location.href = "/planner/myPlanList";
+				location.href = "/member/mypage";
 			},
 			error : function(jqXHR, status, error) {
 				if (jqXHR.status == "401") {

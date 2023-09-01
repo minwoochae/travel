@@ -38,15 +38,14 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// 로그인에 대한설정
 		http.authorizeHttpRequests(authorize -> authorize // 1.페이지 접근에 관한
-
+				
 				// 모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
-				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/fonts/**").permitAll()
+				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/fonts/**", "/search-data/**").permitAll()
 				.requestMatchers("/", "/members/**", "/planner/**", "/account/**", "/pay/**", "/account/pssearch/**",
 						"/members/login/**", "/item/**", "/kakao/**", "/order/**", "/oauth2/code/**", "/load/**", "/community/**")
 				.permitAll().requestMatchers("favicon.ico", "/error").permitAll()
 				.requestMatchers("/error").permitAll()
-
-				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/admin").hasRole("ADMIN")
 				// 그 외의 페이지는 모두 로그인(인증을 받아야한다.)
 				.anyRequest().authenticated())
 		.formLogin(formLogin -> formLogin // 2.로그인에 관련된 설정

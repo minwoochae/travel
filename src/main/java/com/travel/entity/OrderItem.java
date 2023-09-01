@@ -36,12 +36,6 @@ public class OrderItem {
 	@JoinColumn(name = "orders_id")
 	private Orders orders;
 	
-	/*
-	 * @ManyToOne(fetch = FetchType.LAZY)
-	 * 
-	 * @JoinColumn(name = "cart_item_id") private CartItem cartitem;
-	 */
-	
 	
 	public static OrderItem createOrderItem(CartItem cartItem, int orderCount) {
 		OrderItem orderItem = new OrderItem();

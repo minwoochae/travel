@@ -2,6 +2,7 @@ package com.travel.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,24 +44,34 @@ public class CartService {
 	private final CartItemRepository cartItemRepository;
 	private final OrderItemRepository orderItemRepository;
 	
-	public Long cart(CartDto cartDto, String email) {
-		
-		Item item = itemRepository.findById(cartDto.getItemId())
-				.orElseThrow(EntityNotFoundException::new);
-		
-		Member member = memberRepository.findByEmail(email);
-		
-		
-		List<CartItem> cartItemList = new ArrayList<>();
-		
-		
-		CartItem cartItem = CartItem.addCartItem(item,  cartDto);
-		cartItemList.add(cartItem);
-		Cart cart = Cart.createCart(member, cartItemList);
-		
-		cartRepository.save(cart);
-		
-		return cart.getId();
+	public Long addToCart(CartDto cartDto, Member member) {
+	    System.out.println("오긴했는지?");
+	    Cart cart = member.getCart();
+	    System.out.println(cart);
+
+	    if (cart == null) {
+	        cart = Cart.createCart(member);
+	        member.setCart(cart);
+	    }
+
+	    Item item = itemRepository.findById(cartDto.getItemId())
+	            .orElseThrow(EntityNotFoundException::new);
+
+	    // 아이템 정보를 사용하여 CartItem 생성
+	    CartItem cartItem = new CartItem();
+	    cartItem.setItem(item);
+	    cartItem.setCount(cartDto.getCount());
+	    cartItem.setCart(cart);
+	    cartItem.setImgUrl(cartDto.getImgUrl());
+	    
+	    System.out.println(cartItem.getCount());
+	    System.out.println(cartItem.getItem().getPrice());
+	    System.out.println(cartItem.getCart());
+
+	    cartItemRepository.save(cartItem);
+	    cartRepository.save(cart); // Cart 저장
+
+	    return cart.getId();
 	}
 	
 	@Transactional(readOnly = true)
@@ -87,9 +98,9 @@ public class CartService {
 	@Transactional(readOnly = true)
 	public boolean validateCart(Long cartId, String email) {
 		Member curMember = memberRepository.findByEmail(email);
-		Cart cart = cartRepository.findById(cartId).orElseThrow(EntityNotFoundException::new);
+		CartItem cartItem = cartItemRepository.findById(cartId).orElseThrow(EntityNotFoundException::new);
 		
-		Member savedMember = cart.getMember();
+		Member savedMember = cartItem.getCart().getMember();
 		
 		if(!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
 			return false;
@@ -99,9 +110,9 @@ public class CartService {
 	
 	
 	public void deleteCart(Long cartId) {
-		Cart cart = cartRepository.findById(cartId).orElseThrow(EntityNotFoundException::new);
+		CartItem cartItem = cartItemRepository.findById(cartId).orElseThrow(EntityNotFoundException::new);
 		
-		cartRepository.delete(cart);
+		cartItemRepository.delete(cartItem);
 	}
 	
 

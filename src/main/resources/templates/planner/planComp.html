@@ -68,7 +68,7 @@
 	</style>
 </th:block>
 
-<div layout:fragment="content" style="margin-top: 30px;">
+<div layout:fragment="content" style="margin: 30px 0 50px 0;">
 	<div style="display:flex;">
 		<h1 class="title1">플랜을 완성했습니다.</h1>
 	</div>
@@ -92,7 +92,7 @@
         			<ul th:if="${day} == ${content.planDay}" th:each="content : ${PlanContents}" style="margin-left:30px; margin-right:30px;">
             			<li class="content-list" style="width:100%; padding-top:30px; border-bottom: 1px solid; padding-left:10px; padding-bottom: 30px; float: left; display: flex;">
                 			<img th:src="@{${content.place_img}}" style="width: 300px; height: 240px;"/>
-                			<span th:text="${content.placeName}" style="margin-left:50px; line-height: 240px;"></span>
+                			<span th:text="${content.placeName}" style="margin-left:50px; font-weight:bold;"></span>
             			</li>
         			</ul>
     			</div>
@@ -103,7 +103,7 @@
 	
 <div style="display:flex; justify-content: center; margin-top: 40px;">
 	<div class="more_place_btn text-center" style="margin-right: 20px;">
-        <a class="boxed-btn4" href="#">이미지 내려받기</a>
+        <a class="boxed-btn4" onclick="downloadAsImage()">이미지 내려받기</a>
     </div>
    	<div class="more_place_btn text-center" style="margin-left: 20px;">
         <a class="boxed-btn4" th:href="'/community/write/' + ${plan.id}">내 플랜 공유하기</a>
@@ -111,17 +111,17 @@
    	<div class="more_place_btn text-center" style="margin-left: 20px;">
         <a class="boxed-btn4" th:href="'/community/update/' + ${plan.id}">내 플랜 수정하기</a>
     </div>
-    
-</div>
-<div style="display: flex; margin: 40px 0;" onclick="'여기에 카카오 공유링크'">
-	<div class="kakao-btn" style="margin: 0 auto;">
-		<img class="kakao-logo" alt="logo" src="/img/kakaoLogo.png">
-        <a class="kakao-text" href="#">카카오로 공유하기</a>
+<<<<<<< HEAD
     </div>
+=======
 </div>
-</div>
+>>>>>>> 4f8c0c539f724153e8a286b57c86b21e88fb6c6c
 
+	</div>
+
+</div>
 <th:block layout:fragment="script">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 	<script th:inline="javascript">
 		
 		window.addEventListener('DOMContentLoaded', (event) => {
@@ -193,6 +193,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 });
 
+function downloadAsImage() {
+    html2canvas(document.querySelector(".planBox")).then(canvas => {
+        var img = canvas.toDataURL("image/png");
+        var link = document.createElement('a');
+        link.href = img;
+        link.download = 'your_travel_plan.png';
+        link.click();
+    });
+}
 
 
 		

@@ -106,31 +106,14 @@ public class KakaoPayController {
 		    Long[] orderItemIds = (Long[]) session.getAttribute("orderItemIds");
 
 			String email = principal.getName();
+			System.out.println(email);
 			Member member = memberService.findByEmail(email);
-			
+			System.out.println(member + "nnnnnnnnn");
 	        // 카카오 결재 요청하기
 	        KakaoPayApproveDto kakaoPayApproveDto = kakaoPayService.kakaoPayApprove(tid, pgToken);
 	        System.out.println(kakaoPayApproveDto);	        
 	        
-	        List<OrderItem> orderItemList = new ArrayList<>();
-	        Orders orders = new Orders();
-	        orders.setOrderInfoAddress(orderAddress);
-	        orders.setOrderInfoName(orderName);
-	        orders.setOrderInfoPhone(phoneNumber);
-	        orders.setOrderStatus(OrderStatus.ORDER);
-	        orders.setTotalPrice(totalPrice);
-	        orders.setZipCode(zipCode);
-	        for (Long orderItemId : orderItemIds) {
-	        	CartItem cartItem = orderService.getCartItemById(orderItemId);
-	        	orderService.cartOrder(cartItem);
-	        	
-	        	OrderItem orderItem = OrderItem.createOrderCart(cartItem);
-	        	orderItemList.add(orderItem);
-	        }
-	        //Orders 값 넣어주기
-	        orders.setOrderItems(orderItemList);
-	        
-	        
+
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			// 현재 시간을 가져옵니다.
@@ -145,7 +128,32 @@ public class KakaoPayController {
 			pay.setMember(member);
 			kakaoPayService.savePay(pay);
 	        
+			List<OrderItem> orderItemList = new ArrayList<>();
+			Orders orders = new Orders();
+			orders.setOrderInfoAddress(orderAddress);
+			orders.setOrderInfoName(orderName);
+			orders.setOrderInfoPhone(phoneNumber);
+			orders.setOrderStatus(OrderStatus.ORDER);
+			orders.setTotalPrice(totalPrice);
+			orders.setZipCode(zipCode);
 			orders.setPay(pay);
+			
+			kakaoPayService.saveOrders(orders);
+			
+			System.out.println(orders.getOrderInfoName());
+			for (Long orderItemId : orderItemIds) {
+				CartItem cartItem = orderService.getCartItemById(orderItemId);
+				
+				OrderItem orderItem = OrderItem.createOrderCart(cartItem);
+				orderItem.setOrders(orders);
+				kakaoPayService.saveOrderItem(orderItem);
+				
+				orderService.setOrderItem(cartItem, orderItem);
+				
+			}
+			//Orders 값 넣어주기
+			orders.setOrderItems(orderItemList);
+			
 	        
 	        
 	        

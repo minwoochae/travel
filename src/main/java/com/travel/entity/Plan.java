@@ -3,6 +3,8 @@ package com.travel.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,17 +38,20 @@ public class Plan {
 	@Column(name = "plan_date")
 	private String planDate;
 	
-	@ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
 
-	
+	@ManyToOne(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "member_id")
+	private Member member;
+
 	@Column(name = "reg_date")
 	private String regDate;
 	
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, 
 			orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PlanContent> planContent = new ArrayList<>();
+	
+
+	
 	
 	public void addPlanContent(PlanContent planContent) {
 		this.planContent.add(planContent);

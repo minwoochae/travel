@@ -47,7 +47,7 @@ public class AskResponseService {
         	 AskBoard askBoard = askBoardOptional.get();
              askResponseBoard.setAskBoard(askBoard);
         	askResponseRepository.save(askResponseBoard);
-        	System.out.println(askBoardId + "11111");
+        	
         }
 
 		return askResponseBoard.getId();
@@ -59,6 +59,7 @@ public class AskResponseService {
 
 		// ask_response_board 테이블에 있는 데이터를 가져온다.
 		try {
+			System.out.println("askResponseBoardId: " + askResponseBoardId);
 			AskResponseBoard askResponseBoard = askResponseRepository.findById(askResponseBoardId)
 					.orElseThrow(EntityNotFoundException::new);			
 

@@ -38,6 +38,9 @@ public class PlanContent {
 	@Column(name="place_name")
 	private String placeName;
 	
+	@Column(name="place_tel")
+	private String placeTel;
+	
 	@Column(name="place_address")
 	private String placeAddress;
 	
@@ -60,11 +63,11 @@ public class PlanContent {
 		planContent.setPlanDay(planContentDto.getPlanDay());
 		planContent.setTravelDivision(planContentDto.getTravelDivision());
 		planContent.setPlaceName(planContentDto.getPlaceName());
+		planContent.setPlaceTel(planContentDto.getPlaceTel());
 		planContent.setPlaceAddress(planContentDto.getPlaceAddress());
 		planContent.setPlaceLatitude(planContentDto.getPlaceLatitude());
 		planContent.setPlaceLongitude(planContentDto.getPlaceLongitude());
 		planContent.setPlace_img(planContentDto.getPlace_img());
-
 		planContent.setPlan(plan);
 		return planContent;
 	}

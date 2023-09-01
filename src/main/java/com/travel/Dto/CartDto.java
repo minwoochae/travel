@@ -14,4 +14,6 @@ public class CartDto {
 	private int count;
 	
 	private String imgUrl;
+	
+	private int price;
 }

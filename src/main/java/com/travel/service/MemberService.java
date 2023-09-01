@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.travel.Dto.MemberFormDto;
 import com.travel.Repository.MemberRepository;
+import com.travel.auth.PrincipalDetails;
 import com.travel.constant.Division;
 import com.travel.entity.Member;
 
@@ -46,7 +47,10 @@ public class MemberService implements UserDetailsService {
 	}
 
 	public Member findByEmail(String email) {
-	    return memberRepository.findByEmail(email);
+		System.out.println(email + "왜애애ㅐ애애애");
+		Member member = memberRepository.findByEmail(email);
+		System.out.println(member + "ㅏㅉ장ㅇ나나아아");
+	    return member;
 	}
 	
 	public String emailFind(String name, String phone) {
@@ -123,17 +127,21 @@ public class MemberService implements UserDetailsService {
 	}
 
 
-	/* private final JavaMailSender javaMailSender; */
-
-
-
+	
+	  private final JavaMailSender javaMailSender;
+	  
+	  
+	  
 	  public void sendEmail(String to, String subject, String text) {
-			SimpleMailMessage message = new SimpleMailMessage();
-			message.setTo(to);
-			message.setSubject(subject);
-			message.setText(text);
-//			javaMailSender.send(message);
-		}
+	  SimpleMailMessage message = new SimpleMailMessage(); message.setTo(to);
+	  message.setSubject(subject); message.setText(text);
+	  
+	  javaMailSender.send(message);
+	  
+	  }
+	 
+	  
+	
 
 	// 회원 상세정보
 	@Transactional(readOnly = true)
@@ -174,10 +182,7 @@ public class MemberService implements UserDetailsService {
 		}
 		
 		
-
-		// 사용자가 있다면 DB에서 가져온 값으로 userDetails 객체를 만들어서 반환
-		return User.builder().username(member.getEmail()).password(member.getPassword())
-				.roles(member.getRole().toString()).build();
+		 return new PrincipalDetails(member);
 	}
 
 	@Transactional(readOnly = true)

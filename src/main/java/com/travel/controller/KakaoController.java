@@ -1,5 +1,6 @@
 package com.travel.controller;
 
+
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,7 @@ public class KakaoController {
 		return "member/KakaoMemberForm";
 		
 	}
+	
 	//카카오 회원가입
 	@PostMapping(value = "/oauth2/code/kakao")
 	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model)
@@ -77,4 +79,49 @@ public class KakaoController {
 		return "redirect:/";
 	}
 
+
+	
+	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
+	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
+
+		// 1번
+		System.out.println("code:" + code);
+
+		// 2번
+		String access_Token = iKakaoS.getAccessToken(code);
+		System.out.println("###access_Token#### : " + access_Token);
+		// 위의 access_Token 받는 걸 확인한 후에 밑에 진행
+
+		// 3번
+		HashMap<String, Object> userInfo = iKakaoS.getUserInfo(access_Token);
+		System.out.println("###nickname#### : " + userInfo.get("nickname"));
+		System.out.println("###email#### : " + userInfo.get("email"));
+
+		String name = (String) userInfo.get("nickname");
+		String email = (String) userInfo.get("email");
+
+		
+		MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
+		memberKakaoDto.setEmail(email);
+		memberKakaoDto.setName(name);
+		System.out.println(memberKakaoDto.getEmail());
+
+   
+		Member existingMember = memberService.findByEmail(email);
+        if (existingMember == null) {
+        	
+        	String errorMessage = "가입이 되어 있지 않은 카카오 계정입니다.";
+        	model.addAttribute("errorMessage", errorMessage);
+        	model.addAttribute("memberKakaoDto" ,memberKakaoDto);
+        	
+        	return "member/KakaoMemberForm";
+        }
+        
+		return "redirect:/members/login";
+		
+		
+	}
+
+	
+	
 }

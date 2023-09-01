@@ -33,9 +33,11 @@ public class CommunityService {
 	
 	// 커뮤니티 작성
 
+
+
 	public Long saveCommunity(PlanCommunityDto planCommunityDto, String memberId, Long planId) throws Exception {
 		Member member = memberRepository.findByEmail(memberId);
-		LocalDateTime now = LocalDateTime.now();
+
 		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 		Optional<Plan> optionalPlan = planRepository.findById(planId);
 		if (!optionalPlan.isPresent()) {
@@ -57,6 +59,16 @@ public class CommunityService {
 		return planCommunityDto;
 	}
 	
+	public Long updateCommunity(PlanCommunityDto planCommunityDto) {
+		System.out.println(planCommunityDto.getId());
+		PlanCommunity planCommunity = planCommunityRepository.findById(planCommunityDto.getId()).orElseThrow(EntityNotFoundException::new);
+		System.out.println(planCommunity + "여긴 뭐야");
+		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+		planCommunity.updatecommunity(planCommunityDto, regDate);
+		
+		return planCommunity.getId();
+	}
+	
 	
 	//email을 이용해서 최근 3개 커뮤니티 작성 글 가져오기
 	public List<PlanCommunity> getTop3RecentCommunitiesByMemberEmail(String email) {
@@ -65,9 +77,15 @@ public class CommunityService {
 	
 	//플랜 리스트에 사용될 email로 플랜 전체 가져오기
 	public Page<PlanCommunity> getCommunitiesByMemberEmail(String email, Pageable pageable) {
-	    return planCommunityRepository.findByMemberEmail(email, pageable);
+	    return planCommunityRepository.findByMemberEmailOrderByCommunityRegDateDesc(email, pageable);
 	}
 
+	//커뮤니티 삭제하기
+	public void deleteCommunity(Long communityId) {
+		PlanCommunity planCommunity = planCommunityRepository.findById(communityId).orElseThrow(EntityNotFoundException::new);
+		
+		planCommunityRepository.delete(planCommunity);
+	}
 	
 
 }
