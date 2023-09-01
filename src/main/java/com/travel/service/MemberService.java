@@ -133,8 +133,12 @@ public class MemberService implements UserDetailsService {
 			message.setTo(to);
 			message.setSubject(subject);
 			message.setText(text);
-		javaMailSender.send(message);
+
+			javaMailSender.send(message);
+
 		}
+	  
+	
 
 	// 회원 상세정보
 	@Transactional(readOnly = true)

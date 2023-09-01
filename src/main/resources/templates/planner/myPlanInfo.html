@@ -88,19 +88,12 @@
 		</div>
 	</div>
 	<div style="display:flex; justify-content: center; margin-top: 40px;">
-	<div class="more_place_btn text-center" style="margin-right: 20px;">
-        <a class="boxed-btn4" onclick="downloadAsImage()">이미지 내려받기</a>
-    </div>
+	
    	<div class="more_place_btn text-center" style="margin-left: 20px;">
         <a class="boxed-btn4" th:href="'/community/write/' + ${plan.id}">내 플랜 공유하기</a>
     </div>
 </div>
-<div style="display: flex; margin: 40px 0;" onclick="'여기에 카카오 공유링크'">
-	<div class="kakao-btn" style="margin: 0 auto;">
-		<img class="kakao-logo" alt="logo" src="/img/kakaoLogo.png">
-        <a class="kakao-text" href="#">카카오로 공유하기</a>
-    </div>
-</div>
+
 
 </div>
 
@@ -112,15 +105,15 @@
 		integrity="sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh"
 		crossorigin="anonymous"></script>
 	
+	<script>	
+	Kakao.init('97207c88fb92b7d1bbd5719ab5b56ffe'); // 사용하려는 앱의 JavaScript 키 입력
+	</script>	
+	
+	function kakaoShare() {
+	
+	}
+	
 	<script th:inline="javascript">
-	
-	
-	
-	
-	
-	
-	
-	
 	window.addEventListener('DOMContentLoaded', (event) => {
     		const tabContentDiv = document.querySelector('.tab-content');
     		const navTabsDiv = document.querySelector('.nav-tabs');

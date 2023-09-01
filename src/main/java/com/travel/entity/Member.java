@@ -79,7 +79,7 @@ public class Member extends BaseEntity {
 		member.setEmail(memberFormDto.getEmail());
 		member.setPhoneNumber(memberFormDto.getPhoneNumber());
 		member.setPassword(password);
-		member.setRole(Role.USER);
+		member.setRole(Role.ROLE_USER);
 		member.setRegtime(memberFormDto.getRegtime());
 		member.setDivision(Division.NORMAL);
 		return member;
@@ -115,7 +115,7 @@ public class Member extends BaseEntity {
 		member.setPassword(memberKakaoDto.getPassword());
 		member.setName(memberKakaoDto.getName());
 		member.setPhoneNumber(memberKakaoDto.getPhoneNumber());
-		member.setRole(Role.USER);
+		member.setRole(Role.ROLE_USER);
 		member.setDivision(Division.KAKAO);
 
 		return member;
