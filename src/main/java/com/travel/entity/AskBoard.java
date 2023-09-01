@@ -48,4 +48,5 @@ public class AskBoard extends BaseEntity{
 			this.askContent = askFormDto.getAskContent();
 		}
 	
+	
 }

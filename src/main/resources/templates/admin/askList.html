@@ -47,13 +47,12 @@
 						</thead>
 						<tbody>
 							<!-- 조회된 데이터를 출력한다. -->
-							<tr th:each="ask, status:${asks.getContent()}">
+							<tr th:each="ask, status:${asks.getContent()}" style="text-align:center;">
 
 								<th th:text="${ask.id}" scope="row"></th>
 								<td><a th:href="'/askBoard/' + ${ask.id}"
 									th:text="${ask.askTitle}"> </a></td>
-								<td><a th:href="'/askBoard/' + ${ask.id}"
-									th:text="${ask.createBy}"> </a></td>
+								<td th:text="${ask.createBy}"> </td>
 								<td th:text="${ask.modifiedBy}"></td>
 						
 							</tr>
