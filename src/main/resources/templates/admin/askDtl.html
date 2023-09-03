@@ -96,10 +96,16 @@
 					th:value="${askResponse.id}">
 				<div class="card" style="margin-bottom: 20px; width: 1140px">
 					<div class="card-body">
-						<strong th:text="${askResponse.askResponseTitle}"></strong> <strong
-							th:text="${askResponse.askResponseContent}"></strong>
+						<strong th:text="${askResponse.askResponseTitle}"></strong>
 					</div>
 				</div>
+				<div class="card" style="margin-bottom: 20px; width: 1140px">
+				<div class="card-body">
+						<strong th:text="${askResponse.askResponseContent}"></strong>
+					</div>
+				
+				</div>
+				
 				<div class="row" th:unless="${askResponse != null}">
 					<p>등록된 답변이 없습니다.</p>
 				</div>
@@ -111,7 +117,7 @@
 		<div class="d-flex justify-content-center">
     <div class="row" style="margin-left:320px;">
         <div class="col-md-4 mb-3">
-            <a th:href="'/ask/' + ${ask.id}">
+            <a th:href="@{'/ask/' + ${ask.id}}">
                 <button type="button" class="btn btn-primary btn-block"
                     style="background-color: #FF6168; border: none;"
                     sec:authorize="hasAnyAuthority('ROLE_USER')">수정하기</button>
@@ -140,7 +146,7 @@
             </a>
         </div>
         <div class="col-md-4 mb-3">
-            <a href="'/ask/response/' + ${askResponse.id}">
+            <a th:href="@{'/ask/response/' + ${askResponse.id}}">
                 <button type="button" class="btn btn-primary btn-block"
                     style="background-color: #FF6168; border: none;"
                     sec:authorize="hasAnyAuthority('ROLE_ADMIN')">답변 수정</button>

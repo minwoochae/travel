@@ -58,17 +58,21 @@ public class AskResponseService {
 	public AskResponseFormDto getAskResponseDtl(Long askResponseBoardId) {
 
 		// ask_response_board 테이블에 있는 데이터를 가져온다.
+		
+		System.out.println("ssssssssssssssssssssssssss"+askResponseBoardId);
 		try {
-			System.out.println("askResponseBoardId: " + askResponseBoardId);
 			AskResponseBoard askResponseBoard = askResponseRepository.findById(askResponseBoardId)
 					.orElseThrow(EntityNotFoundException::new);			
-
+			System.out.println("11111111111111111111111111");
 			// entity -> dto
 			AskResponseFormDto askResponseFormDto = AskResponseFormDto.of(askResponseBoard);
+			System.out.println("22222222222222222222222222222");
 			askResponseFormDto.setAskStatus(askResponseBoard.getAskStatus());
+			System.out.println("33333333333333333333333333333333");
 			
 			return askResponseFormDto;
 		} catch (Exception e) {
+			System.out.println("444444444444444444444444444444");
 			e.printStackTrace();
 			System.out.println("여기여기");
 			return null;
