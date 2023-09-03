@@ -90,7 +90,7 @@
 	</div>
 	
 	
-	<form role="form" th:action="'/community/update/' + ${community.id}" method="post" enctype="multipart/form-data"
+	<form role="form" action="/community/update" method="post" enctype="multipart/form-data"
             th:object="${planCommunityDto}" style="width: 917px; align-item: center; margin: 0 auto;">
         <div class="mb-3">
         	<label for="exampleInputEmail1" class="form-label">제목</label>
