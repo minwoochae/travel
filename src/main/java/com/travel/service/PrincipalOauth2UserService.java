@@ -44,11 +44,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
      Member member = memberRepository.findByEmail(email);
      if(member == null){
     	 member = Member.oauth2Register()
-<<<<<<< HEAD
         		 .email(email).name(username).password(password).role(Role.ROLE_WAIT)
-=======
-        		 .email(email).name(username).password(password).role(role)
->>>>>>> f2301438ecb34e6ea3ee64b61640612a25af8867
                  .provider(provider).providerId(providerId).division(division)
                  .build();
      }
