@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
+import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanContent;
 
@@ -23,6 +24,7 @@ public class PlanFormDto {
 	@NotBlank(message = "플랜 날짜는 필수입니다.")
 	private String planDate;
 	
+	private Member member;
 	
 	private List<PlanContent> planContentDtoList = new ArrayList<>();
 	

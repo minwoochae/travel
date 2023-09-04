@@ -61,21 +61,12 @@
 		.slider {
 	width: 100%;
 	height: 300px;
-	background: #ccc;
+	background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url('/img/boat-4899802_1920.jpg'); 
+	background-size: cover;
 }
-.link {
-	width: 917px;
-	height: 200px;
-	margin: auto;
-	background: #fff;
-	margin-top: -200px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
+
 .titletext{
 margin-left:50px;
-margin-top:10px;
 font-size:22px;
 font-weight:bold;
 }
@@ -85,8 +76,8 @@ font-weight:bold;
 <div layout:fragment="content">
 <div class="slider"></div>
 <div class="link"></div>
-	<div class="planBox" style="height:1060px; overflow:hidden; border-radius:5px;">
-		<h5 class="planTitle" th:text="${plan.planTitle}">플랜제목</h5>
+	<div class="planBox" style="height:1060px; overflow:hidden; border-radius:5px; margin-top:60px;">
+		<h5 class="planTitle" th:text="${planData.member.name} + ' 님의 ' + ${plan.planTitle}">플랜제목</h5>
 		<div class="card text-center" style="border:none;">
   			<ul class="nav nav-tabs" id="myTab" role="tablist">
     			<th:block th:each="idx : ${#numbers.sequence(1, plan.planDate)}">
@@ -100,9 +91,9 @@ font-weight:bold;
 			<div class="tab-content " style="width:100%;">
     			<div th:each="day : ${#numbers.sequence(1, plan.planDate)}" th:id="'day' + ${day}" th:value="${day}" class="tab-pane fade " style="height:910px; overflow: overlay;">
         			<ul th:if="${day} == ${content.planDay}" th:each="content : ${plan.planContentDtoList}" style="margin-left:30px; margin-right:30px;">
-            			<li class="content-list" style="width:100%; padding-top:30px; border-bottom: 1px solid; padding-left:10px; padding-bottom: 30px; float: left; display: flex;">
+            			<li class="content-list" style="width:100%; padding-top:30px; border-bottom: 1px solid #aeaeb6; padding-left:10px; padding-bottom: 30px; float: left; display: flex;">
                 			<img th:src="@{${content.place_img}}" style="width: 300px; height: 240px;"/>
-                			<span th:text="${content.placeName}" class="titletext"></span>
+                			<span th:text="${content.placeName}" class="titletext" style="margin-left: 50px; line-height: 240px;"></span>
             			</li>
         			</ul>
     			</div>
@@ -110,8 +101,12 @@ font-weight:bold;
 
 		</div>
 	</div>
-	<div style="display:flex; justify-content: center; margin-top: 40px;">
+	<div style="display:flex; justify-content: center; margin-top: 40px; margin-bottom: 40px;">
 	
+	<div class="more_place_btn text-center" style="margin-left: 20px;">
+        
+        <button class="boxed-btn4" id="copyButton">URL 복사하기</button>
+    </div>
    	<div class="more_place_btn text-center" style="margin-left: 20px;">
         <a class="boxed-btn4" th:href="'/community/write/' + ${plan.id}">내 플랜 공유하기</a>
     </div>
@@ -216,6 +211,43 @@ function downloadAsImage() {
         link.click();
     });
 }
+
+
+function copyCurrentURL() {
+        // 임시 텍스트 영역을 생성하여 URL을 저장
+        var tempTextArea = document.createElement("textarea");
+
+        // 현재 URL을 텍스트 영역에 할당
+        tempTextArea.value = window.location.href;
+
+        // 텍스트 영역을 DOM에 추가
+        document.body.appendChild(tempTextArea);
+
+        // 텍스트 영역의 텍스트를 선택
+        tempTextArea.select();
+
+        // "copy" 명령어를 실행하여 텍스트를 클립보드에 복사
+        document.execCommand("copy");
+
+        // 임시 텍스트 영역을 DOM에서 제거
+        document.body.removeChild(tempTextArea);
+
+        // Popover 설정 및 표시
+        var popover = new bootstrap.Popover(document.getElementById('copyButton'), {
+            content: 'URL이 복사되었습니다.',
+            placement: 'top'
+        });
+        popover.show();
+
+        // 1초 후 Popover 숨기기
+        setTimeout(function() {
+            popover.hide();
+        }, 1000);
+    }
+
+    // 버튼에 클릭 이벤트 리스너 추가
+    document.getElementById('copyButton').addEventListener('click', copyCurrentURL);
+
 	
 	</script>
 </th:block>	

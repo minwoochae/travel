@@ -1,5 +1,6 @@
 package com.travel.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +18,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -28,7 +30,6 @@ import lombok.ToString;
 @Table(name="orders")
 @Getter
 @Setter
-@ToString
 public class Orders{
 
 	@Id
@@ -54,6 +55,8 @@ public class Orders{
 	@Column(name = "total_price")
 	private int totalPrice;
 	
+	private String orderDate;
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pay_id")
 	private Pay pay;
@@ -61,22 +64,14 @@ public class Orders{
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
     
-    public static Orders createOrders(OrderDto orderDto, List<OrderItem> orderItemList) {
-    	Orders orders = new Orders();
-    	orders.setTotalPrice(orderDto.getTotalPrice());
-    	orders.setOrderInfoName(orderDto.getItemName());
-    	orders.setZipCode(orderDto.getZipCode());
-    	orders.setOrderInfoAddress(orderDto.getOrderAddress());
-    	orders.setOrderInfoPhone(orderDto.getPhoneNumber());
-    	
-    	for(OrderItem orderItem : orderItemList) {
-    		orders.addOrderItem(orderItem);
-    	}
-    	
-    	orders.setOrderStatus(OrderStatus.ORDER);
-    	
-    	return orders;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;
+    
 
 
 	public void addOrderItem(OrderItem orderItem) {
@@ -88,6 +83,20 @@ public class Orders{
         orderItems.remove(orderItem);
         orderItem.setOrders(null);
     }
+    
+	//order객체를 생성해준다.
+	public static Orders createOrder(Member member, List<OrderItem> orderItemList) {
+		Orders order = new Orders();
+		order.setMember(member);
+		
+		for(OrderItem otderItem : orderItemList) {
+			order.addOrderItem(otderItem);
+		}
+		
+		order.setOrderStatus(OrderStatus.ORDER);
+		
+		return order;
+	}
     
     @Override
     public boolean equals(Object o) {

@@ -94,6 +94,22 @@ public class CartService {
 		return new PageImpl<CartListDto>(cartListDtos, pageable, totalCount);
 	}
 	
+	
+	public long getCartItemCount(String memberName) {
+	    Member member = memberRepository.findByEmail(memberName); // 사용자 엔티티 가져오기
+	    if (member != null) {
+	        Cart cart = member.getCart(); // 사용자의 장바구니 가져오기
+	        if (cart != null) {
+	            List<CartItem> cartItems = cart.getCartItems(); // 장바구니의 cartItem 목록 가져오기
+	            System.out.println(cartItems.size() +"먳개고");
+	            return cartItems.size(); // cartItem 개수 반환
+	        }
+	    }
+	    return 0; // 장바구니가 없거나 cartItem이 없는 경우 0 반환
+	}
+	
+	
+	
 	@Transactional(readOnly = true)
 	public boolean validateCart(Long cartId, String email) {
 		Member curMember = memberRepository.findByEmail(email);
@@ -113,6 +129,8 @@ public class CartService {
 		
 		cartItemRepository.delete(cartItem);
 	}
+	
+	
 	
 
 	 

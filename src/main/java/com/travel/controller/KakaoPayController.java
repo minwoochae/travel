@@ -50,7 +50,7 @@ public class KakaoPayController {
 	private final MemberService memberService;
 	private final CartService cartService;
 	private final OrderService orderService;
-	
+
 	@GetMapping("/pay/ready")
 	@ResponseBody
 	public KakaoPayReadyDto kakaoPay(@RequestParam(value = "orderItemIds[]", required = false) Long[] orderItemIds,
@@ -107,12 +107,9 @@ public class KakaoPayController {
 		    Long[] orderItemIds = (Long[]) session.getAttribute("orderItemIds");
 
 			String email = principal.getName();
-			System.out.println(email);
 			Member member = memberService.findByEmail(email);
-			System.out.println(member + "nnnnnnnnn");
 	        // 카카오 결재 요청하기
 	        KakaoPayApproveDto kakaoPayApproveDto = kakaoPayService.kakaoPayApprove(tid, pgToken);
-	        System.out.println(kakaoPayApproveDto);	        
 	        
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -121,7 +118,6 @@ public class KakaoPayController {
 			Date currentDate = new Date();
 			String currentDateString = dateFormat.format(currentDate); // 현재 시간을 문자열로 변환합니다.
 			
-			//Pay 값 넣어주기
 			Pay pay = new Pay();
 			pay.setPrice(totalPrice);
 			pay.setPayNo(generateRandomPayNo());
@@ -138,6 +134,8 @@ public class KakaoPayController {
 			orders.setTotalPrice(totalPrice);
 			orders.setZipCode(zipCode);
 			orders.setPay(pay);
+			orders.setMember(member);
+			orders.setOrderDate(pay.getPayDate());
 			
 			
 
@@ -152,11 +150,9 @@ public class KakaoPayController {
 				System.out.println(orderItemList);
 				kakaoPayService.saveOrders(orders);
 				kakaoPayService.saveOrderItem(orderItem);
+				cartService.deleteCart(cartItem.getId());
 			}
 
-	        
-	        
-	        
 	        // HTML에 데이터 전달
 	        model.addAttribute("item_name", itemName);
 	        model.addAttribute("total_price", totalPrice);
@@ -178,6 +174,7 @@ public class KakaoPayController {
 	    int randomNumber = random.nextInt(1000000000); // 0에서 999999 사이의 난수 생성
 	    return String.valueOf(randomNumber); // 숫자를 문자열로 변환하여 반환
 	}
+	
 	
 	
 }
