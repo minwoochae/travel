@@ -47,7 +47,7 @@ public class SecurityConfig {
 				.requestMatchers("/error").permitAll()
 				.requestMatchers("/admin").hasRole("ADMIN")
 				// 그 외의 페이지는 모두 로그인(인증을 받아야한다.)
-				.anyRequest().authenticated())
+				.anyRequest().authenticated())		
 		.formLogin(formLogin -> formLogin // 2.로그인에 관련된 설정
 						.loginPage("/members/login") // 로그인 페이지 URL 설정
 						.defaultSuccessUrl("/") // 로그인 성공시 이동할 페이지

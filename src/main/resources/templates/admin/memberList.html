@@ -15,7 +15,13 @@
 </style>
 </th:block>
 
-<div layout:fragment="content" style="height:400px">
+<div layout:fragment="content" style="height:1000px; margin-top:70px;">
+	
+	
+	<div class="container">
+	
+	<h2 class="h3 mb-3 text-black">회원관리</h2>
+	
 	<table
 		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 1150px; margin-bottom: 50px; height: 80px">
 		<tr style="border-top: solid 1.5px black;">
@@ -42,7 +48,7 @@
 		<ul class="pagination d-flex justify-content-center">
 			<li class="page-item" th:classappend="${travel.first}?'disabled'">
 				<a class="page-link"
-				th:onclick="'javascript:page(' + ${travel.number - 1} +')'"> < </a>
+				th:onclick="'javascript:page(' + ${travel.number - 1} +')'"> 이전 </a>
 			</li>
 			<li class="page-item"
 				th:each="page: ${#numbers.sequence(start, end)}"
@@ -51,12 +57,12 @@
 				th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a></li>
 			<li class="page-item" th:classappend="${travel.last}?'disabled'">
 				<a class="page-link"
-				th:onclick="'javascript:page(' + ${travel.number + 1} +')'"> > </a>
+				th:onclick="'javascript:page(' + ${travel.number + 1} +')'"> 다음 </a>
 			</li>
 		</ul>
 	</nav>
 
-
+</div>
 </div>
 
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
