@@ -77,6 +77,8 @@ public class CommunityController {
 		try {
 			
 			PlanCommunityDto planCommunityDto = communityService.getCommunityDtl(communityId);
+			PlanCommunity planCommunity = communityService.getCommunity(communityId);
+			planCommunityDto.setId(planCommunity.getId());
 			model.addAttribute("community", planCommunityDto);
 			model.addAttribute("planCommunityDto", new PlanCommunityDto() );
 			PlanFormDto planFormDto = planService.getPlanDtl(planCommunityDto.getPlan().getId());
@@ -93,11 +95,22 @@ public class CommunityController {
 	
 	//커뮤니티 수정
 	@PostMapping(value = "/community/update")
-	public String updateCommunity(@Valid PlanCommunityDto planCommunityDto, Model model) {
+	public String updateCommunity(@PathVariable("communityId") Long communityId, @Valid PlanCommunityDto planCommunityDto, Model model) {
+		
+//		if (planCommunityDto.getId() == null) {
+//			System.out.println(planCommunityDto.getId());
+//			PlanCommunity planCommunity = communityService.getCommunity(communityId);
+//			System.out.println(planCommunity);
+//	        model.addAttribute("errorMessage", "Invalid request: ID is missing");
+//	        return "redirect:/";
+//	    }
 		
 		try {
+			PlanCommunity planCommunity = communityService.getCommunity(communityId);
+			planCommunityDto.setId(planCommunity.getId());
 			communityService.updateCommunity(planCommunityDto);
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "작성 에러");
 		}
@@ -106,6 +119,7 @@ public class CommunityController {
 	}
 	
 	
+
 	//커뮤니티 리스트
 	@GetMapping(value = {"/community/viewCommunityList", "/community/viewCommunityList/{page}"})
 	public String viewCommunityList(Authentication authentication, Model model, Pageable pageable, @PathVariable Optional<Integer> page) {

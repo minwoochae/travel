@@ -67,20 +67,10 @@ public class OrderService {
 	        return cartItemRepository.findById(itemId).orElse(null); // itemId에 해당하는 카트 항목 조회
 	    }
 	 
-	 public void cartOrder(CartItem cartItem) {
-			OrderItem orderItem = OrderItem.createOrderCart(cartItem);
-			
-			orderItemRepository.save(orderItem);
-			
-			cartItemRepository.delete(cartItem);
+	 public void setOrderItem(CartItem cartItem, OrderItem orderItem) {
 			
 	        Item item = cartItem.getItem();
 	        item.removeStock(cartItem.getCount());
-
 		}
 	 
 }
-	 
-
-	
-

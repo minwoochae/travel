@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.travel.Dto.CartDto;
+import com.travel.Dto.CartItemDto;
 import com.travel.Dto.CartListDto;
 import com.travel.auth.PrincipalDetails;
 import com.travel.entity.Member;
@@ -33,30 +34,31 @@ public class CartController {
 	private final CartService cartService;
 	
 	@PostMapping(value = "/addCart")
-	public @ResponseBody ResponseEntity cart(@RequestBody @Valid CartDto cartDto, BindingResult bindingResult, Authentication authentication) {
-	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
-        Member members = principals.getMember();
-		String email = members.getEmail();
-		Long cartId;
-		
-		try {
-			cartId = cartService.cart(cartDto, email);
-		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<Long>(cartId, HttpStatus.OK);
+	public ResponseEntity<Long> addCart(@RequestBody @Valid CartDto cartDto, BindingResult bindingResult, Authentication authentication) {
+	    if (bindingResult.hasErrors()) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
+	    System.out.println(cartDto.getItemId()+"asdasdjeybfalkwe4al;erhjoerahg");
+	    PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+	    Member member = principalDetails.getMember();
 
+	    try {
+	        Long cartId = cartService.addToCart(cartDto, member);
+	        return new ResponseEntity<>(cartId, HttpStatus.OK);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@GetMapping(value = {"/cartList", "/cartList/{page}"})
 	public String cartList(@PathVariable("page") Optional<Integer>page, Authentication authentication, Model model) {
 		
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
-
 	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
         Member members = principals.getMember();
 		String email = members.getEmail();
 		Page<CartListDto> cartListDto = cartService.getCartList(email, pageable);
+		System.out.println(cartListDto.getContent());
 		
 		model.addAttribute("carts", cartListDto);
 		model.addAttribute("maxPage", 5);

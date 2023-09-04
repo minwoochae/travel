@@ -84,6 +84,11 @@ public class OrderController {
 	}
 	
 
+	@GetMapping(value = "/order/success/{payId}")
+	public String orderSuccess() {
+		
+		return "/item/orderInfo";
+	}
 	
 
 	

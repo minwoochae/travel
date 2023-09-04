@@ -90,7 +90,7 @@
 	</div>
 	
 	
-	<form role="form" th:action="'/community/update/' + ${community.id}" method="post" enctype="multipart/form-data"
+	<form role="form" action="/community/update" method="post" enctype="multipart/form-data"
             th:object="${planCommunityDto}" style="width: 917px; align-item: center; margin: 0 auto;">
         <div class="mb-3">
         	<label for="exampleInputEmail1" class="form-label">제목</label>
@@ -118,10 +118,7 @@
 
 <th:block layout:fragment="script">
 	<script type="text/javascript" th:src="@{/js/cookie.js}"></script>
-	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js"
-		integrity="sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh"
-		crossorigin="anonymous"></script>
+
 	
 	<script th:inline="javascript">
 	

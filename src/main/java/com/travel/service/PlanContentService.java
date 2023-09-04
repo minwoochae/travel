@@ -33,12 +33,12 @@ public class PlanContentService {
     		    for (PlanContentDto contentDto : contentList) {
     		        String placeImg = contentDto.getPlace_img();
 
-    		        if (placeImg != null && !placeImg.isEmpty()) {  // Check for null and non-empty string
+    		        if (placeImg != null && !placeImg.isEmpty()) {  //PlaceImg가 null 이거나 빈문자열""일 경우 가져오지않음
     		            DataContent dataContent = new DataContent();
     		            dataContent.setPlaceName(contentDto.getPlaceName());
     		            dataContent.setPlaceLatitude(contentDto.getPlaceLatitude());
     		            dataContent.setPlaceLongitude(contentDto.getPlaceLongitude());
-    		            dataContent.setPlaceimg(placeImg);  // Use the stored value    		            
+    		            dataContent.setPlaceimg(placeImg);     		            
     		            dataContent.setPlaceTel(contentDto.getPlaceTel());
     		            dataContent.setPlaceAddress(contentDto.getPlaceAddress());
     		            dataContent.setAreaCode(contentDto.getArea_code());

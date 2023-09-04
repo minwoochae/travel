@@ -28,7 +28,6 @@ import com.travel.constant.Division;
 import com.travel.entity.Member;
 import com.travel.entity.Plan;
 import com.travel.entity.PlanCommunity;
-import com.travel.entity.PlanContent;
 import com.travel.service.CommunityService;
 import com.travel.service.MemberService;
 import com.travel.service.PlanService;
@@ -118,6 +117,7 @@ public class MemberController {
 	@ResponseBody
 	public HashMap<String, String> memberps(@RequestBody Map<String, Object> psdata) {
 		String email = (String) psdata.get("memberEmail");
+		
 		Member member = memberservice.findByEmail(email);
 		HashMap<String, String> msg = new HashMap<>();
 
@@ -216,7 +216,7 @@ public class MemberController {
 		return "member/checkPwd";
 	}
 
-	/** 회원 수정 전 비밀번호 확인 **/
+	// 회원 수정 전 비밀번호 확인 
 	@PostMapping(value = "/member/checkPwd")
 	public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
 

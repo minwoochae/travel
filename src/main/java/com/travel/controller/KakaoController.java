@@ -1,5 +1,6 @@
 package com.travel.controller;
 
+
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,8 +78,9 @@ public class KakaoController {
 
 		return "redirect:/";
 	}
-	
 
+
+	
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
 
@@ -119,7 +121,7 @@ public class KakaoController {
 		
 		
 	}
-	
-	
 
+	
+	
 }
