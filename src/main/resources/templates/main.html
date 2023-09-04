@@ -7,7 +7,7 @@
 	  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 		<style>
-			.animated-text{
+.animated-text{
   color: #fff;
   position: absolute;
   left: 50%;
@@ -29,7 +29,7 @@ a{
 }
 
 .line:first-child{
-  animation: anim 12s infinite;
+  animation: anim 36s infinite;
 }
 
 @keyframes anim {
@@ -107,11 +107,12 @@ a{
 
     <div class="where_togo_area">
         <div class="container">
-	<div class ="animated-text">
-      <div class="line"><공지>공지사항1</div>
-      <div class="line"><공지>공지사항2</div>
-      <div class="line"><공지>공지사항3</div>
-      <div class="line"><공지>공지사항4</div>
+	<div class ="animated-text" >
+		<div class="line" th:each="info, status:${infos.getContent()}">
+      		<a style="color:white;" th:href="'/info/' + ${info.id}" th:text="'공지사항: ' + ${info.infoTitle}"></a>
+			
+		</div>
+      
     </div>
         </div>
     </div>
