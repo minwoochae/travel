@@ -41,7 +41,8 @@ public class SecurityConfig {
 				
 				// 모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
 				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/fonts/**", "/search-data/**").permitAll()
-				.requestMatchers("/", "/members/**", "/planner/**", "/account/**", "/pay/**", "/account/pssearch/**",
+				.requestMatchers("/", "/members/**", "/planner/**", "/account/**", "/pay/**", "/account/pssearch/**", 
+						"/adminInfo", "/adminAsk/asks", "/info/**",
 						"/members/login/**", "/item/**", "/kakao/**", "/order/**", "/oauth2/code/**", "/load/**", "/community/**")
 				.permitAll().requestMatchers("favicon.ico", "/error").permitAll()
 				.requestMatchers("/error").permitAll()
