@@ -4,6 +4,12 @@
 
     <header th:fragment="header" style="border-bottom:solid 0.5px #CCCCCC;">
 
+<<<<<<< HEAD
+=======
+<!--       <b>Authenticated DTO:</b>
+<div sec:authorize="isAuthenticated()" sec:authentication="principal"></div>  -->
+
+>>>>>>> 39f12372d77eede68a1ab1e088f57919ee1303b0
     	<div sec:authorize="hasAnyRole('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
 
     		<div style="margin-right: 40px;">
@@ -28,14 +34,18 @@
                                         <ul id="navigation">
                                             <li><a class="active" href="/">홈</a></li>
                                             <li><a href="/planner/list">플랜 둘러보기</a></li>
-                                            <li><a href="/item/list">여행상품 주문</a></li>
-
                                             <li><a class="" href=/adminInfo>공지사항</a></li>
-
-
                                             <li><a href="/adminAsk/asks">문의사항</a></li>
+                                            <li><a href="#">여행상품<i class="ti-angle-down"></i></a>
+                                                <ul class="submenu">
+                                                        <li><a href="/item/list">여행상품 주문</a></li>
+                                                        <li><a class="active" href="/cartList" sec:authorize="isAuthenticated()">장바구니</a></li>
+                                                        <li><a href="elements.html" sec:authorize="isAuthenticated()">주문이력</a></li>
+                                                </ul>
+                                            </li>
+
                                             <li><a href="/member/mypage" sec:authorize="isAuthenticated()">마이페이지</a></li>
-		                                    <li><a class="active" href="/cartList" sec:authorize="isAuthenticated()">장바구니</a></li>
+		                                    
                                         </ul>
                                     </nav>
                                 </div>

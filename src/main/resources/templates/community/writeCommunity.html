@@ -108,6 +108,7 @@
                     
        
     	<input type="hidden" th:value="${plan.id}" name="planId">
+    	<input type="hidden" th:value="${planCommunityDto.id}" name="id">
     	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" style="">
     	<button type="submit" class="btn btn-outline-primary">작성하기</button>
     </form>

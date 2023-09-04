@@ -301,75 +301,14 @@
 		})
 	});
 	
-    function handleChildData(payNumber) {
-
-    	
-		var address1 = document.getElementById("sample6_address").value;
-		var address2 = document.getElementById("sample6_detailAddress").value;
-		var address3 = document.getElementById("sample6_extraAddress").value;
-		
-		var itemId = document.getElementById("orderItemId").value;
-		var itemIndex = document.getElementById("itemIndex").value;
-		var totalPrice = document.getElementById("totalPrice").textContent;
-		var orderName = document.getElementById("orderInfoName").value;
-		var zipCode = document.getElementById("sample6_postcode").value;
-		var orderAddress = address1 + address2 + address3;
-		var phoneNumber = document.getElementById("orderInfoPhone").value;
-    	
-		// orderItem ID들을 저장할 배열을 생성
-		var orderItemIds = [];
-
-		// input 엘리먼트들을 선택해서 순회하며 값을 배열에 추가
-		var inputElements = document.querySelectorAll('input[id^="orderItemId"]');
-		inputElements.forEach(function(input) {
-		    orderItemIds.push(input.value);
-		});
-
-		
-	    var payData = {
-	    		orderItemIds : orderItemIds,
-	    		totalPrice : totalPrice,
-	    		orderName : orderName,
-	    		zipCode : zipCode,
-	    		orderAddress : orderAddress,
-	    		phoneNumber : phoneNumber
-	        };
-		
-        alert('부모 창에서 이벤트 발생: ' + payNumber);
+    function handleChildData(payId) {
+        console.log("Received payId from child:", payId);
         
-		var token = $("meta[name='_csrf']").attr("content"); // meta태그에서 값이 _csrf인 값을 가져오겠다~
-		var header = $("meta[name='_csrf_header']").attr("content");
-        
-		$.ajax({
-			url : '/order/success',
-			type : "POST", // 전송방식 
-			contentType : "application/json",
-			data : JSON.stringify(payData), // 서버에 전송할 데이터 var param = JSON.stringify(paramData); item_id, 수량 들어있음
-			beforeSend : function(xhr) {
-				// 데이터를 전송하기 전에 헤더에 csrf 값을 설정해줌
-				xhr.setRequestHeader(header, token);
-			},
-			dataType : "json",
-			cache : false,
-			success : function(responseData, response) {
-				alert(responseData);
-				
-                location.href = '/order/info/' + payNumber;
-		
-			},
-			error : function(jqXHR, status, error) {
-				if (jqXHR.status == '401') {
-					alert('로그인 후 이용해 주세요.')
-					location.href = '/members/login';
-				} else {
-					
-					// 에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
-					alert("안돼")
-					alert(jqXHR.responseText); 
-				}
-				
-			}
-		});
+        // payId를 사용하여 URL 구성
+        var targetUrl = "/order/success/" + payId;
+
+        // 다른 페이지로 이동
+        window.location.href = targetUrl;
     }
  	
  	
