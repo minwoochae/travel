@@ -72,10 +72,7 @@ public class MemberController {
 		    String message ="회원가입이 완료 되었습니다.";
 		    rttr.addAttribute("message", message);
 			memberservice.saveMember(member);
-<<<<<<< HEAD
-=======
 
->>>>>>> 2ffbdae6749e048cf87eed830ebcb3b29363660d
 			
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());
