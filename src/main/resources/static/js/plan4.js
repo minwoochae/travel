@@ -50,7 +50,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
       		
             let resultItem = document.createElement("div");
             resultItem.className = "dataList";
-            resultItem.style = "display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid black; cursor: pointer;";
+            resultItem.style = "display:flex; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid gainsboro; cursor: pointer;";
 			
 		
 			
@@ -77,7 +77,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
 
             resultItem.innerHTML = `
                 <img src="${placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${placeName} Image">
-                <h4 style="margin-left:15px; font-weight: bold; font-size:1.25rem;">${placeName}</h4>
+                <h4 style="margin-left:15px; font-weight: bold; font-size:1.33rem;">${placeName}</h4>
             `;
             
             currentData = {
@@ -186,12 +186,13 @@ function insertContent1() {
     
     dataListDiv.innerHTML = `
     <img class="place_img" name="place_img" src="${currentData.placeimg}" style="min-width:150px; width:150px; height:120px; background-size: cover;" alt="${currentData.title} Image">
-    <h4 class="placeName" name="placeName" style="margin-left:15px; margin-right:5px; width:170px;">${currentData.placeName}</h4>
+    <h4 class="placeName" name="placeName" style="margin-left:15px; margin-right:5px; width:170px; font-weight:bold; font-size:18px;">${currentData.placeName}</h4>
     <input type="hidden" class="placeAddress" name="placeAddress" value="${currentData.placeAddress}">
     <input type="hidden" class="placeTel" name="placeTel" value="${currentData.placeTel}">
     <input type="hidden" class="placeLongitude" name="placeLongitude" value="${currentData.placeLongitude}">
     <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.placeLatitude}">
-    <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent1(event)" style="height:30px; line-height: 0;">-</button>
+    <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent1(event)" style="height:30px; line-height: 0; 
+     margin-top:100px;"><i class="fas fa-trash"></i></button>
     `;
     
 
