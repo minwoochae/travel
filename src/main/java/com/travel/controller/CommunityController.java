@@ -81,6 +81,7 @@ public class CommunityController {
 			planCommunityDto.setId(planCommunity.getId());
 			model.addAttribute("community", planCommunityDto);
 			model.addAttribute("planCommunityDto", new PlanCommunityDto() );
+			model.addAttribute("planCommunityId", communityId);
 			PlanFormDto planFormDto = planService.getPlanDtl(planCommunityDto.getPlan().getId());
 			model.addAttribute("plan", planFormDto);
 		} catch (Exception e) {
@@ -95,7 +96,7 @@ public class CommunityController {
 	
 	//커뮤니티 수정
 	@PostMapping(value = "/community/update")
-	public String updateCommunity(@PathVariable("communityId") Long communityId, @Valid PlanCommunityDto planCommunityDto, Model model) {
+	public String updateCommunity(@Valid PlanCommunityDto planCommunityDto, Model model) {
 		
 //		if (planCommunityDto.getId() == null) {
 //			System.out.println(planCommunityDto.getId());
@@ -106,8 +107,8 @@ public class CommunityController {
 //	    }
 		
 		try {
-			PlanCommunity planCommunity = communityService.getCommunity(communityId);
-			planCommunityDto.setId(planCommunity.getId());
+//			PlanCommunity planCommunity = communityService.getCommunity(communityId);
+//			planCommunityDto.setId(planCommunity.getId());
 			communityService.updateCommunity(planCommunityDto);
 		} catch (Exception e) {
 			

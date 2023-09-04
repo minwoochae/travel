@@ -88,10 +88,13 @@
 
 
 
+<hr>
+
+
 
 			<!-- 관리자 답변 표시 -->
 
-			<div class="row"
+			<div class="row" style="margin-left:10px; margin-top:50px;"
 				th:if="${askResponse != null and (isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')'))}">
 				
 				<input type="hidden" id="askResponseBoardId"
@@ -114,32 +117,32 @@
 
 		<div class="d-flex justify-content-center">
     <div class="row" style="margin-left:320px;">
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3">
             <a th:href="@{'/ask/' + ${ask.id}}">
-                <button type="button" class="btn btn-primary btn-block"
-                    style="background-color: #FF6168; border: none;"
+                <button type="button" class="btn btn-primary btn-block" 
+                    style="background-color: #FF6168; border: none; width:100px;"
                     sec:authorize="hasAnyAuthority('ROLE_USER')">수정하기</button>
             </a>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3">
             <button type="button" class="btn btn-primary btn-block"
                 th:id="${ask.Id}" th:value="${ask.Id}"
                 th:onclick="'javascript:deleteAsk(' + ${ask.id} +')'"
-                style="background-color: #FF6168; border: none;"
+                style="background-color: #FF6168; border: none; width:100px;"
                 sec:authorize="hasAnyAuthority('ROLE_USER')">삭제</button>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3">
             <a href="/adminAsk/asks">
                 <button type="button" class="btn btn-primary btn-block"
-                    style="background-color: #FF6168; border: none;">
+                    style="background-color: #FF6168; border: none; width:100px;">
                     목록 보기
                 </button>
             </a>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3">
             <a th:href="@{'/response/' + ${ask.id}}">
                 <button type="button" class="btn btn-primary btn-block"
-                    style="background-color: #FF6168; border: none;"
+                    style="background-color: #FF6168; border: none; width:100px; margin-left:30px;"
                     sec:authorize="hasAnyAuthority('ROLE_ADMIN')">답변 달기</button>
             </a>
         </div>
