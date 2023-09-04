@@ -24,7 +24,11 @@
 	
 	<table
 		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 1150px; margin-bottom: 50px; height: 80px">
+<<<<<<< HEAD
 		<tr style="border-top: solid 1.5px black; height: 35px;">
+=======
+		<tr style="border-top: solid 1.5px black; height:40px;">
+>>>>>>> 2ffbdae6749e048cf87eed830ebcb3b29363660d
 			<th style="padding-left: 15px">No.</th>
 			<th>회원 아이디</th>
 			<th style="width: 150px">회원 이름</th>
@@ -32,7 +36,11 @@
 		</tr>
 		<tr th:each="member : ${travel.content}" 
 			th:if="${#strings.equals(member.role, T(com.travel.constant.Role).ROLE_USER)}"
+<<<<<<< HEAD
 			style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray;  height: 30px;">
+=======
+			style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray; height:40px;">
+>>>>>>> 2ffbdae6749e048cf87eed830ebcb3b29363660d
 			<td style="padding-left: 15px;" th:text="${member.id}"></td>
 			<td><a th:href="'/admin/profile/' + ${member.id}"
 				th:text="${member.email}"></a></td>
@@ -68,12 +76,10 @@
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-		$(document).ready(function() {
-			$("#searchBtn").on("click", function(e) {
-				e.preventDefault(); // submit되는걸 방지
-				page(0);
-			});
-		});
+	function page(pageNumber) {
+	    // 주소 이동
+	    location.href = "/admin/list/" + pageNumber;
+	}
 	</script>
 </th:block>
 </html>

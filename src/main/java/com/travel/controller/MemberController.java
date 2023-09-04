@@ -34,6 +34,7 @@ import com.travel.service.MemberService;
 import com.travel.service.PlanService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -71,6 +72,10 @@ public class MemberController {
 		    String message ="회원가입이 완료 되었습니다.";
 		    rttr.addAttribute("message", message);
 			memberservice.saveMember(member);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2ffbdae6749e048cf87eed830ebcb3b29363660d
 			
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());
@@ -211,8 +216,9 @@ public class MemberController {
 
 		return "redirect:/";
 	}
-
+	
 	@GetMapping("/member/checkPwd")
+	@NotBlank
 	public String checkPwdView(Model model) {
 		model.addAttribute("passwordDto", new PasswordDto());
 
