@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -138,23 +139,21 @@ public class KakaoPayController {
 			orders.setZipCode(zipCode);
 			orders.setPay(pay);
 			
-			kakaoPayService.saveOrders(orders);
 			
-			System.out.println(orders.getOrderInfoName());
+
 			for (Long orderItemId : orderItemIds) {
 				CartItem cartItem = orderService.getCartItemById(orderItemId);
 				
 				OrderItem orderItem = OrderItem.createOrderCart(cartItem);
 				orderItem.setOrders(orders);
-				kakaoPayService.saveOrderItem(orderItem);
 				
 				orderService.setOrderItem(cartItem, orderItem);
-				
+				orderItemList.add(orderItem);
+				System.out.println(orderItemList);
+				kakaoPayService.saveOrders(orders);
+				kakaoPayService.saveOrderItem(orderItem);
 			}
-			//Orders 값 넣어주기
-			orders.setOrderItems(orderItemList);
-			
-	        
+
 	        
 	        
 	        

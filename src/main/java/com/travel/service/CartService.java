@@ -45,7 +45,6 @@ public class CartService {
 	private final OrderItemRepository orderItemRepository;
 	
 	public Long addToCart(CartDto cartDto, Member member) {
-	    System.out.println("오긴했는지?");
 	    Cart cart = member.getCart();
 	    System.out.println(cart);
 
