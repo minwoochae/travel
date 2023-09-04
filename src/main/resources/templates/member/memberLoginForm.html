@@ -85,6 +85,9 @@ a {
 </style>
 </th:block>
 <div layout:fragment="content">
+<div  class="alert alert-success">
+    <span th:text="${param.message}"></span>
+</div>
 	<div class="login-cover"></div>
 	<!--백그라운드 이미지 활용  -->
 	<div class="site-section">
@@ -113,7 +116,7 @@ a {
 						<div class="form-group">
 							<p th:if="${loginErrorMsg}" class="error"
 								th:text="${loginErrorMsg}"></p>
-
+									
 							<div style="margin-bottom: 50px;">
 								<button type="submit" class="btn btn-primary mb-3" id="loginbtn"
 									style="width: 100%; background-color: #FF4A52; border: none; font-weight: bold;">로그인</button>
