@@ -49,7 +49,7 @@ public class KakaoPayController {
 	private final MemberService memberService;
 	private final CartService cartService;
 	private final OrderService orderService;
-	
+
 	@GetMapping("/pay/ready")
 	@ResponseBody
 	public KakaoPayReadyDto kakaoPay(@RequestParam(value = "orderItemIds[]", required = false) Long[] orderItemIds,
@@ -136,6 +136,8 @@ public class KakaoPayController {
 			orders.setOrderStatus(OrderStatus.ORDER);
 			orders.setTotalPrice(totalPrice);
 			orders.setZipCode(zipCode);
+			orders.setMember(member);
+			orders.setOrderDate(pay.getPayDate());
 			orders.setPay(pay);
 			
 			kakaoPayService.saveOrders(orders);
@@ -148,16 +150,12 @@ public class KakaoPayController {
 				orderItem.setOrders(orders);
 				kakaoPayService.saveOrderItem(orderItem);
 				
-				orderService.setOrderItem(cartItem, orderItem);
-				
+
 			}
 			//Orders 값 넣어주기
 			orders.setOrderItems(orderItemList);
 			
-	        
-	        
-	        
-	        
+
 	        // HTML에 데이터 전달
 	        model.addAttribute("item_name", itemName);
 	        model.addAttribute("total_price", totalPrice);

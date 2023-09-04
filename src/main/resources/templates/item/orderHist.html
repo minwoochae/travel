@@ -1,10 +1,144 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
 
-</body>
+<th:block layout:fragment="css">
+	<style>
+/* .buyList {
+    width: calc(1024px - 150px);
+    float: left;
+} */
+.buyList .header {
+    position: relative;
+}
+.buyList .header a {
+    position: absolute;
+    right: 0px;
+    top: -9px;
+    border: 1px solid lightgray;
+    color: gray;
+    padding: 0.8rem 1rem 0.8rem 1rem;
+}
+.buyList .header a span {
+    padding-left: 4rem;
+}
+.buyList .list_order {
+    margin-top: 30px;
+    list-style: none;
+    padding: 0px;
+}
+.buyList .list_order .date {
+    background-color: white;
+    color: gray;
+    padding: 1em 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+.buyList .list_order .order_goods {
+    border: 1px solid lightgray;
+    position: relative;
+}
+.buyList .list_order .order_goods .name {
+    font-size: 20px;
+    font-weight: bold;
+    padding : 1rem;
+}
+.buyList .list_order .order_goods .order_info {
+    background-color: white;
+    margin : 0 1rem;
+    border-top: 1px solid lightgrey;
+    padding : 1rem 0;
+}
+.buyList .list_order .order_goods .order_info::after {
+    content: "";
+    clear: both;
+    display: block;
+}
+.buyList .list_order .order_goods .order_info .thumb {
+    float: left;
+}
+
+.buyList .list_order .order_goods .order_info img{
+    width: 100px;
+    height: 100px;
+}
+.buyList .list_order .order_goods .order_info .dsec {
+    float: left;
+    margin-left: 20px;
+    font-size: 12px;
+    width: 50%;
+    margin-top: 8px;
+    
+}
+.buyList .list_order .order_goods .order_info .dsec dd,
+.buyList .list_order .order_goods .order_info .dsec dt {
+    display: inline;
+}
+.buyList .list_order .order_goods .order_info .dsec dd {
+    margin: 0 0 0 10px;
+    font-size: 13px;
+    font-weight: 700;
+}
+.buyList .list_order .order_goods .order_status {
+    position: absolute;
+    top: 55%;
+    right: 10px;
+    border: 1px solid gray;
+    padding: 8px 32px;
+    margin-right: 10px;
+}
+.buyList .list_order .order_goods .order_status a{
+    color: gray;
+    font-size: 13px;
+}
+
+	</style>
+</th:block>
+
+<div layout:fragment="content" >
+<div>
+
+</div>
+                <section class="buyList">
+                    <header class="header">
+                        <a href="#">전체기간<span>∇</span></a>
+                    </header>
+                    <hr>
+                    <ul class="list_order">
+                        <li th:each="orders, index : ${orders.getContent()}">
+                            <div class="date" th:text="${orders.orderDate}">2020.03.23 (17시 05분)</div>
+                            <div class="order_goods" th:each="orderItem : ${orders.orderItemDtoList}">
+                                <div class="name" th:text="${orderItem.itemNm}"></div>
+                                <div class="order_info">
+                                    <div class="thumb">
+                                        <img src="img/03-pro.png">
+                                    </div>
+                                    <div class="dsec">
+                                        <dl>
+                                            <dt>주문번호</dt>
+                                            <dd>354435234</dd>
+                                        </dl>
+                                        <dl>
+                                            <dt>결제금액</dt>
+                                            <dd>10,500원</dd>
+                                        </dl>
+                                        <dl>
+                                            <dt>주문상태</dt>
+                                            <dd>배송완료</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                                <div class="order_status">
+                                    <a href="#">문의하기</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </section> <!-- 주문내역 조회 --> 
+</div>
+
+<th:block layout:fragment="script">
+
+</th:block>
 </html>
