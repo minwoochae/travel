@@ -55,6 +55,9 @@ public class Member extends BaseEntity implements UserDetails  {
 	@Enumerated(EnumType.STRING)
 	private Division division; //역할
 	
+	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+	
 
 	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
 		String password = passwordEncoder.encode(memberFormDto.getPassword());
@@ -64,7 +67,7 @@ public class Member extends BaseEntity implements UserDetails  {
 		member.setEmail(memberFormDto.getEmail());
 		member.setPhoneNumber(memberFormDto.getPhoneNumber());
 		member.setPassword(password);
-		member.setRole(Role.USER);
+		member.setRole(Role.Role.USER);
 		member.setRegtime(memberFormDto.getRegtime());
 		member.setDivision(Division.NORMAL);
 		return member;
