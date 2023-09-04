@@ -60,25 +60,22 @@ public class MemberController {
 
 	// 회원가입
 	@PostMapping(value = "/members/new")
-	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model ) {
+	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model,	RedirectAttributes rttr) {
 		if (bindingResult.hasErrors()) {
 			return "member/memberForm";
 		}
 
 		try {
 			Member member = Member.createMember(memberFormDto, passwordEncoder);
-			
 
+		    String message ="회원가입이 완료 되었습니다.";
+		    rttr.addAttribute("message", message);
 			memberservice.saveMember(member);
-			RedirectAttributes re = new RedirectAttributes();
-
-			re.addFlashAttribute("message", "회원가입이 완료되었습니다.");
 			
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return "member/memberForm";
 		}
-	
 		return "redirect:/members/login";
 	}
 
