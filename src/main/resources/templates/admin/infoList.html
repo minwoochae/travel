@@ -9,6 +9,25 @@
  th {
         text-align: center;
       }
+      
+button:hover {
+       cursor: pointer;
+    }
+    
+    
+ table th,
+    table td {
+        text-align: center;
+    }
+    
+    /* 테이블 헤더의 너비를 조정 */
+    table th[scope="col"] {
+        width: 10%;
+    }
+    
+    table th[scope="col" style="width: 60%"] {
+        width: 60%;
+    }    
 </style>
 </th:block>
 
@@ -39,7 +58,7 @@
 						<thead>
 							<tr>
 								<th scope="col" style="width: 10%">NO.</th>
-								<th scope="col" style="width: 70%">제목</th>
+								<th scope="col" style="width: 60%">제목</th>
 								<th scope="col">등록자</th>
 								<th scope="col" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">삭제</th>
 							</tr>
@@ -48,13 +67,13 @@
 							<!-- 조회된 데이터를 출력한다. -->
 							 <tr th:each="info, status:${infos.getContent()}">
 								<th th:text="${info.id}" scope="row"></th>
-								<td>
+								<td style="width: 60%">
 								<a
 								
 									th:href="'/info/' + ${info.id}"
 									th:text="${info.infoTitle}"> </a>
 								</td>
-								<td th:text="${info.createBy}"></td>
+								<td th:text="관리자"></td>
 								<td><button type="button" class="btn btn-primary"
 										th:id="${info.Id}" th:value="${info.Id}"
 										th:onclick="'javascript:deleteInfo(' + ${info.id} +')'"

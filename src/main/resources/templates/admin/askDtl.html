@@ -39,6 +39,8 @@
 	white-space: nowrap;
 	overflow-x: auto;
 }
+
+
 </style>
 </th:block>
 
@@ -55,7 +57,7 @@
 
 			<div
 				th:unless="${isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')')}"
-				class="col-md-12 mb-0" style="margin-top:200px; margin-left:350px;">
+				class="col-md-12 mb-0" style="text-align: center; margin-top:300px;">
 				<img alt="금지" src="../img/danger.png" width="280px;">
 				<p>등록한 사용자만 볼 수 있는 페이지입니다.</p>
 			</div>

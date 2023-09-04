@@ -6,6 +6,12 @@
 
 <th:block layout:fragment="css">
 
+<style>
+button:hover {
+       cursor: pointer;
+    }
+</style>
+
 </th:block>
 
 <head>
@@ -23,7 +29,7 @@
 					style="display: flex; justify-content: space-between; align-items: center;">
 					<h2 class="h3 mb-3 text-black">추천 관광지</h2>
 					
-						<a href="/adminInfo/new" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="margin-right: 0;">
+						<a href="/adminTour/new" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="margin-right: 0;">
 					<button style="width: 120px; background-color: #FF6168; border:none; color: white; height:35px; border-radius:5px;">
 						등록하기
 					</button>
@@ -51,7 +57,7 @@
 									th:href="'/tour/' + ${tour.id}"
 									th:text="${tour.touristTitle}"> </a>
 								</td>
-								<td th:text="${tour.createBy}"></td>
+								<td th:text="관리자"></td>
 								<td><button type="button" class="btn btn-primary"
 										th:id="${tour.Id}" th:value="${tour.Id}"
 										th:onclick="'javascript: deletetour(' + ${tour.id} +')'" 

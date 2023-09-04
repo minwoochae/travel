@@ -4,7 +4,12 @@
 	layout:decorate="~{layouts/layout1}">
 
 <th:block layout:fragment="css">
+<style>
 
+button:hover {
+       cursor: pointer;
+    }
+</style>
 </th:block>
 
 <head>
@@ -52,7 +57,7 @@
 									th:text="${item.itemNm}"> </a>
 								</td>
 								<td th:text="${item.itemSellStatus}"></td>
-								<td th:text="${item.createBy}"></td>
+								<td th:text="관리자"></td>
 								<td th:text="${item.stockNumber}"></td>
 								<td><button type="button" class="btn btn-primary"
 										th:id="${item.Id}" th:value="${item.Id}"
