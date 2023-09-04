@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -59,21 +60,26 @@ public class MemberController {
 
 	// 회원가입
 	@PostMapping(value = "/members/new")
-	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
+	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model ) {
 		if (bindingResult.hasErrors()) {
 			return "member/memberForm";
 		}
 
 		try {
 			Member member = Member.createMember(memberFormDto, passwordEncoder);
+			
 
 			memberservice.saveMember(member);
+			RedirectAttributes re = new RedirectAttributes();
+
+			re.addFlashAttribute("message", "회원가입이 완료되었습니다.");
+			
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return "member/memberForm";
 		}
-
-		return "redirect:/";
+	
+		return "redirect:/members/login";
 	}
 
 	// 로크인에러
