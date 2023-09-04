@@ -3,7 +3,10 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
 <!-- 각 페이지의 CSS가 작성될 위치 -->
-
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
 <th:block layout:fragment="css">
 	<style>
 .login-cover {
@@ -93,7 +96,7 @@ a {
 							<div class="col-md-12">
 								<label th:for="email" class="text-black"
 									style="width: 100%; justify-content: center; margin: 15px auto; align-items: center; font-size: 25px; font-weight: bold;">아이디/이메일</label>
-								<input type="email" class="form-control" id="email" name="email"
+								<input type="email" class="form-control" id="email" name="email" autocomplete="off"
 									placeholder="Email">
 							</div>
 						</div>

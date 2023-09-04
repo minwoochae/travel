@@ -81,8 +81,6 @@ public class KakaoController {
 
 
 	
-<<<<<<< HEAD
-=======
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
 
@@ -126,5 +124,4 @@ public class KakaoController {
 
 	
 	
->>>>>>> 39f12372d77eede68a1ab1e088f57919ee1303b0
 }
