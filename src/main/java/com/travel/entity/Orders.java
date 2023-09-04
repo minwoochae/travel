@@ -1,5 +1,6 @@
 package com.travel.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,8 @@ public class Orders{
 	
 	@Column(name = "total_price")
 	private int totalPrice;
+	
+	private LocalDateTime orderDate;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pay_id")
