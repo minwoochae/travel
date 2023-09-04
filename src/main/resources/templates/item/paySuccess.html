@@ -20,6 +20,7 @@
         var dataToSend = $("#pay_number").text();
         var payId = $("#pay_id").text();
         window.opener.handleChildData(dataToSend);
+        window.close();
     })();
     
     function sendParentAndClose() {
