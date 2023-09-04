@@ -106,12 +106,9 @@ public class KakaoPayController {
 		    Long[] orderItemIds = (Long[]) session.getAttribute("orderItemIds");
 
 			String email = principal.getName();
-			System.out.println(email);
 			Member member = memberService.findByEmail(email);
-			System.out.println(member + "nnnnnnnnn");
 	        // 카카오 결재 요청하기
 	        KakaoPayApproveDto kakaoPayApproveDto = kakaoPayService.kakaoPayApprove(tid, pgToken);
-	        System.out.println(kakaoPayApproveDto);	        
 	        
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -128,7 +125,6 @@ public class KakaoPayController {
 			pay.setMember(member);
 			kakaoPayService.savePay(pay);
 	        
-			List<OrderItem> orderItemList = new ArrayList<>();
 			Orders orders = new Orders();
 			orders.setOrderInfoAddress(orderAddress);
 			orders.setOrderInfoName(orderName);
@@ -140,21 +136,31 @@ public class KakaoPayController {
 			orders.setOrderDate(pay.getPayDate());
 			orders.setPay(pay);
 			
-			kakaoPayService.saveOrders(orders);
 			
+			// OrderItem을 저장할 리스트 생성
+			List<OrderItem> orderItemList = new ArrayList<>();
+
 			System.out.println(orders.getOrderInfoName());
 			for (Long orderItemId : orderItemIds) {
-				CartItem cartItem = orderService.getCartItemById(orderItemId);
-				
-				OrderItem orderItem = OrderItem.createOrderCart(cartItem);
-				orderItem.setOrders(orders);
-				kakaoPayService.saveOrderItem(orderItem);
-				
-
+			    CartItem cartItem = orderService.getCartItemById(orderItemId);
+			    
+			    OrderItem orderItem = OrderItem.createOrderCart(cartItem);
+			    System.out.println("11111111111111111111");
+			   // kakaoPayService.saveOrderItem(orderItem);
+			    
+			    
+			    // OrderItem을 리스트에 추가
+			    orderItemList.add(orderItem);
+			    System.out.println(orderItemList + "쫌!!!!");
 			}
-			//Orders 값 넣어주기
+
+			System.out.println("2222222222222222222222222");
+			// Orders 객체에 OrderItem 리스트 설정
 			orders.setOrderItems(orderItemList);
 			
+			System.out.println("333333333333333333333333");
+			// Orders 객체를 저장
+			kakaoPayService.saveOrders(orders);
 
 	        // HTML에 데이터 전달
 	        model.addAttribute("item_name", itemName);

@@ -1,5 +1,6 @@
 package com.travel.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,11 +33,11 @@ public class OrderItem {
 	@Column(name = "order_item_count")
 	private int orderCount;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "orders_id")
 	private Orders orders;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "item_id")
 	private Item item;
 	
@@ -58,6 +59,7 @@ public class OrderItem {
 		orderItem.setOrderCount(cartItem.getCount());
 		orderItem.setOrderPrice(cartItem.getItem().getPrice());
 		orderItem.setItem(cartItem.getItem());
+		
 
 		return orderItem;
 	}
