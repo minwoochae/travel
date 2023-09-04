@@ -4,15 +4,22 @@
 	layout:decorate="~{layouts/layout1}">
 
 <th:block layout:fragment="css">
+
 <style>
 
  th {
         text-align: center;
       }
+      
+button:hover {
+       cursor: pointer;
+    }      
 </style>
 </th:block>
 
 <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+
 <meta name="_csrf" th:content="${_csrf.token}" />
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
@@ -29,8 +36,17 @@
 				<div
 					style="display: flex; justify-content: space-between; align-items: center;">
 					<h2 class="h3 mb-3 text-black">문의사항</h2>
-					<a href="/ask/new" style="margin-right: 0;"
-						sec:authorize="hasAnyAuthority('ROLE_USER')">등록하기</a>
+				
+						
+						
+					<a href="/ask/new" sec:authorize="hasAnyAuthority('ROLE_USER')">
+					<button style="width: 120px; background-color: #FF6168; border:none; color: white; height:35px; border-radius:5px;">
+						등록하기
+					</button>
+					</a>	
+						
+						
+						
 				</div>
 				<form th:action="@{'/ask/' + ${asks.number}}" method="get"
 					th:object="${asks}">
@@ -40,21 +56,31 @@
 								<th scope="col">No</th>
 								<th scope="col">제목</th>
 								<th scope="col">등록자</th>
-								<th scope="col">수정</th>
+								<th scope="col">상태</th>
 								
 							
 							</tr>
 						</thead>
 						<tbody>
 							<!-- 조회된 데이터를 출력한다. -->
-							<tr th:each="ask, status:${asks.getContent()}">
+							<tr th:each="ask, status:${asks.getContent()}" style="text-align:center;">
 
-								<th th:text="${ask.id}" scope="row"></th>
+
+								<td>
+								<img alt="" src="../img/padlock.png" width="15px;">
+								<span th:text="${ask.id}"></span>
+								</td>
 								<td><a th:href="'/askBoard/' + ${ask.id}"
 									th:text="${ask.askTitle}"> </a></td>
-								<td><a th:href="'/askBoard/' + ${ask.id}"
-									th:text="${ask.createBy}"> </a></td>
-								<td th:text="${ask.modifiedBy}"></td>
+								<td th:text="${ask.createBy}"> </td>
+								<td>
+								<span th:if="${askResponse != null and askResponse.askBoardId == ask.id}">
+								답변 완료
+								</span>
+								<span th:unless="${askResponse != null and askResponse.askBoardId == ask.id}">
+								답변 대기
+								</span>
+								</td>
 						
 							</tr>
 						</tbody>

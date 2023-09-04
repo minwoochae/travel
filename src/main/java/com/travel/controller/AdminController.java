@@ -1,10 +1,11 @@
-package com.travel.controller;
+ package com.travel.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.nimbusds.oauth2.sdk.Role;
 import com.travel.Dto.AskFormDto;
 import com.travel.Dto.AskResponseFormDto;
 import com.travel.Dto.AskSearchDto;
@@ -76,7 +77,6 @@ public class AdminController {
 
 
 	// 회원 리스트
-
 	@GetMapping(value = { "/admin/list", "/admin/list/{page}" })
 	public String memberManage(@PathVariable("page") Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -88,8 +88,7 @@ public class AdminController {
 		return "admin/memberList";
 	}
 
-	//회원 리스트(회원 프로필)
-	
+	//회원 리스트(회원 프로필)	
 	@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
 	public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
 		MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
@@ -492,23 +491,26 @@ public class AdminController {
 	// 문의사항 리스트 보여주기 
 	@GetMapping(value = { "/adminAsk/asks", "/adminAsk/asks/{page}"})
 	public String askList(Model model, AskSearchDto askSearchDto,@PathVariable Optional<Integer> page) {
-		
 		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 6);	
 		Page<AskBoard> asks = askService.getAdminAskPage(askSearchDto, pageable);
 		
+		
+		
 		 // Add askStatus to each AskResponseFormDto in the list
-	    List<AskResponseFormDto> askResponseFormDtos = new ArrayList<>();
+	    //List<AskResponseFormDto> askResponseFormDtos = new ArrayList<>();
 	    for (AskBoard ask : asks.getContent()) {
 	        AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(ask.getId());
 	        if (askResponseFormDto != null) {
 	            askResponseFormDto.setAskStatus(askResponseFormDto.getAskStatus());
+	            model.addAttribute("askResponse", askResponseFormDto);
 	        }
-	        askResponseFormDtos.add(askResponseFormDto);
+	        //askResponseFormDtos.add(askResponseFormDto);
 	    }
 		
 		model.addAttribute("asks", asks);
 		model.addAttribute("askSearchDto", askSearchDto);
-		model.addAttribute("askResponseFormDtos", askResponseFormDtos);
+		
+		//model.addAttribute("askResponseFormDtos", askResponseFormDtos);
 		model.addAttribute("maxPage", 5);
 		
 		return "admin/askList";
@@ -546,7 +548,6 @@ public class AdminController {
 	// 문의사항 상세페이지
 	@GetMapping(value = "/askBoard/{askBoardId}")
 	public String asksDtl(Model model, @PathVariable("askBoardId") Long askBoardId, Authentication authentication) {
-	    
 		AskFormDto askFormDto = askService.getAskDtl(askBoardId);
 	    
 		AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askBoardId);
@@ -555,24 +556,21 @@ public class AdminController {
 	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
         Member members = principals.getMember();
 		String loggedInUsername = members.getEmail();
-		
 	    if (askFormDto != null) {
+	    
 	        // 문의사항 작성자의 아이디와 현재 로그인한 사용자의 아이디를 비교
-	        if (askFormDto.getCreateBy().equals(loggedInUsername)) {
+	        if (askFormDto.getCreateBy().equals(loggedInUsername) || members.getRole().toString().equals("ROLE_ADMIN")) {
 	            // 현재 로그인한 사용자가 글 작성자인 경우에만 상세 페이지 표시
 	            model.addAttribute("isOwner", true);
 	            model.addAttribute("ask", askFormDto);
 	            if (askResponseFormDto != null) {
 	                model.addAttribute("askResponse", askResponseFormDto);
-	            }
-	        } else {
+	            }} 
+	        else {
 	            // 등록한 사람이 아닌 경우 메시지를 표시하고 상세 페이지 미표시
 	            model.addAttribute("isOwner", false);
 	        }
-	    
 	    model.addAttribute("ask", askFormDto);
-
-	   
 	    }
 	    return "admin/askDtl";
 	}
@@ -669,8 +667,8 @@ public class AdminController {
 	}
 	
 	// 문의사항 답변 수정보여주기 - 관리자
-	@GetMapping(value = "/ask/response/{askResponseId}")
-	public String askResponseBoardIdModify(@PathVariable("askResponseBoardId") Long askResponseBoardId, Model model) {
+	@GetMapping(value = "/ask/response/{askBoardId}")
+	public String askResponseBoardIdModify(@PathVariable("askBoardId") Long askResponseBoardId, Model model) {
 		
 		try {
 			AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askResponseBoardId);
@@ -689,7 +687,7 @@ public class AdminController {
 	
 	
 	// 문의사항 답변 수정하기 - 관리자 
-	@PostMapping(value = "/ask/response/{askResponseBoardId}")
+	@PostMapping(value = "/ask/response/{askBoardId}")
 	public String askResponseUpdate(@Valid AskResponseFormDto askResponseFormDto, Model model,
 			BindingResult bindingResult) {
 		
@@ -698,6 +696,7 @@ public class AdminController {
 		}
 		
 		try {
+	
 			askResponseService.updateAskResponse(askResponseFormDto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -709,8 +708,8 @@ public class AdminController {
 	}
 
 	// 문의사항 답변 삭제 - 관리자 
-	@DeleteMapping("/askResponse/{askResponseBoardId}/delete")
-	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askResponseBoardId") Long askResponseBoardId) {
+	@DeleteMapping("/askResponse/{askBoardId}/delete")
+	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askBoardId") Long askResponseBoardId) {
 		askResponseService.deleteAskResponse(askResponseBoardId);
 		return new ResponseEntity<Long>(askResponseBoardId, HttpStatus.OK);
 	}

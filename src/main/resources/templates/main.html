@@ -4,12 +4,10 @@
 	layout:decorate="~{layouts/layout1}">
 	
 	<th:block layout:fragment="css">
-	  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
-  />
+	  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 		<style>
-			.animated-text{
+.animated-text{
   color: #fff;
   position: absolute;
   left: 50%;
@@ -20,6 +18,10 @@
   font-size: 18px;
 }
 
+a{
+	text-decoration: none;
+}
+
 .line{
   text-transform: uppercase;
   text-align: center;
@@ -27,7 +29,7 @@
 }
 
 .line:first-child{
-  animation: anim 12s infinite;
+  animation: anim 36s infinite;
 }
 
 @keyframes anim {
@@ -105,11 +107,12 @@
 
     <div class="where_togo_area">
         <div class="container">
-	<div class ="animated-text">
-      <div class="line"><공지>공지사항1</div>
-      <div class="line"><공지>공지사항2</div>
-      <div class="line"><공지>공지사항3</div>
-      <div class="line"><공지>공지사항4</div>
+	<div class ="animated-text" >
+		<div class="line" th:each="info, status:${infos.getContent()}">
+      		<a style="color:white;" th:href="'/info/' + ${info.id}" th:text="'공지사항: ' + ${info.infoTitle}"></a>
+			
+		</div>
+      
     </div>
         </div>
     </div>
@@ -192,19 +195,19 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">새로운 플랜</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <label for="inputTravelNm" class="form-label" style="color: black;">이번 여행의 이름을 정해주세요.</label>
-			<input type="text" id="travelNm" class="form-control" aria-describedby="passwordHelpBlock">
+			<input type="text" id="travelNm" class="form-control" aria-describedby="passwordHelpBlock" placeholder="최대 12글자">
 			<div id="passwordHelpBlock" class="form-text"></div>
 		<label for="inputDate" class="form-label" style="color: black;">며칠동안 여행을 하시나요?</label>
-			<input type="number" min="1" max="15" id="date" class="form-control" placeholder="최대 15일" aria-describedby="passwordHelpBlock">
+			<input type="number" min="1" max="10" id="date" class="form-control" placeholder="최대 10일" aria-describedby="passwordHelpBlock">
 			<div id="passwordHelpBlock" class="form-text"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border: 1.5px solid #FF4A52; background-color: white; color: black;">닫기</button>
         <button type="button" class="btn btn-primary" onclick="sendData()" style="background-color: #FF4A52; border: none;">플랜 만들기</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border: 1.5px solid #FF4A52; background-color: white; color: black;">닫기</button>
       </div>
     </div>
   </div>
@@ -213,21 +216,24 @@
 </div>
 
 <th:block layout:fragment="script">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 	<script>
 		function sendData() {
-            var input1 = document.getElementById("travelNm").value;
-            var input2 = document.getElementById("date").value;
-            
-    		if(input1 == null || input1 == "") {
-    			alert("여행 이름을 입력해주세요.");
-    		} else if(input2 < 1 || input2 > 15) {
-    			alert("최대 여행일수는 15일 입니다.");
-    		} else {
-	            var queryParams = "?travelNm=" + encodeURIComponent(input1) + "&date=" + encodeURIComponent(input2);
-	            window.location.href = "/planner" + queryParams;    			
-    		}
-		}
+    var input1 = document.getElementById("travelNm").value;
+    var input2 = document.getElementById("date").value;
+    
+    if(input1 == null || input1 == "") {
+        alert("여행 이름을 입력해주세요.(최대 12자)");
+    } else if(input1.length > 12) {
+        alert("여행 이름은 최대 12자까지만 가능합니다.");
+    } else if(input2 < 1 || input2 > 10) {
+        alert("최대 여행일수는 10일 입니다.");
+    } else {
+        var queryParams = "?travelNm=" + encodeURIComponent(input1) + "&date=" + encodeURIComponent(input2);
+        window.location.href = "/planner" + queryParams;    			
+    }
+}
+
 		
 		$(document).ready(function() {
             // 페이지가 로드될 때 데이터를 비동기적으로 가져와서 표시

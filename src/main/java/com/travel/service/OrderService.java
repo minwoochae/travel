@@ -1,11 +1,15 @@
 package com.travel.service;
 
+
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -16,9 +20,11 @@ import com.travel.Dto.CartDto;
 import com.travel.Dto.CartItemDto;
 import com.travel.Dto.KakaoPayApproveDto;
 import com.travel.Dto.OrderDto;
+import com.travel.Dto.OrderHistDto;
 import com.travel.Dto.OrderItemDto;
 import com.travel.Repository.CartItemRepository;
 import com.travel.Repository.CartRepository;
+import com.travel.Repository.ItemImgRepository;
 import com.travel.Repository.ItemRepository;
 import com.travel.Repository.MemberRepository;
 import com.travel.Repository.OrderItemRepository;
@@ -45,6 +51,7 @@ public class OrderService {
 	private final PayRepository payRepository;
     private final OrderItemRepository orderItemRepository;
     private final ItemRepository itemRepository;
+    private final ItemImgRepository itemImgRepository;
 	
 	public List<CartItemDto> findItemsByIds(Long[] itemIds) {
         List<CartItemDto> items = new ArrayList<>();
@@ -67,10 +74,47 @@ public class OrderService {
 	        return cartItemRepository.findById(itemId).orElse(null); // itemId에 해당하는 카트 항목 조회
 	    }
 	 
-	 public void setOrderItem(CartItem cartItem, OrderItem orderItem) {
-			
-	        Item item = cartItem.getItem();
-	        item.removeStock(cartItem.getCount());
-		}
+	 
+	 @Transactional(readOnly = true)
+	 public Page<OrderHistDto> getOrderList(String email, Pageable pageable) {
+	     List<Orders> orders = orderRepository.findOrdersByEmail(email, pageable);
+	     System.out.println(orders + "어디부터 없는건데 진짜 개망했네");
+	     Long totalCount = orderRepository.countOrders(email);
+
+	     List<OrderHistDto> orderHistDtos = new ArrayList<>();
+
+	     for (Orders order : orders) {
+	         OrderHistDto orderHistDto = new OrderHistDto(order);
+
+	         // OrderItem 리스트 가져오기
+	         List<OrderItem> orderItems = order.getOrderItems();
+	         System.out.println(orderItems + "아니 이게없다고..?");
+	         // OrderItemDto 리스트 생성
+	         List<OrderItemDto> orderItemDtoList = new ArrayList<>();
+	         for (OrderItem orderItem : orderItems) {
+	             System.out.println(orderItem + "뭔가 여기부터 없겠다");
+
+	             // ItemImg 가져오기
+	             ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(orderItem.getItem().getId(), "Y");
+
+	             // OrderItemDto 생성 및 값 설정
+	             OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
+
+	             // OrderItemDto를 리스트에 추가
+	             orderItemDtoList.add(orderItemDto);
+
+	             System.out.println(orderItemDto + "살려줘 제발 이러지마 ");
+	         }
+
+	         // OrderHistDto에 OrderItemDto 리스트 설정
+	         orderHistDto.setOrderItemDtoList(orderItemDtoList);
+
+	         // OrderHistDto를 결과 리스트에 추가
+	         orderHistDtos.add(orderHistDto);
+	     }
+
+	     return new PageImpl<OrderHistDto>(orderHistDtos, pageable, totalCount);
+	 }
+	 
 	 
 }

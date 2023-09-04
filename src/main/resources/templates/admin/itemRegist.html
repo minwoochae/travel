@@ -75,9 +75,9 @@
 						placeholder="상품재고를 작성해주세요.">
 				</div>
 
-				<div style="padding-bottom: 20px;">
+				<div style="padding-bottom: 20px; width:895px; margin-left:13px;">
 					<label for="exampleFormControlInput1" class="form-label"
-						style="font-weight: bold; font-size: large; color: black">상품상태를
+						style="font-weight: bold; font-size: large; color: black;">상품상태를
 						표시해주세요.</label> <select class="form-select form-select-sm"
 						th:field="*{itemSellStatus}" aria-label="Small select example"
 						style="width: 200px; !important">
@@ -87,10 +87,11 @@
 				</div>
 
 				<div class="mb-3" style="margin-top: 50px; margin-bottom: 50px;">
-					<label for="exampleFormControlTextarea1" class="form-label">상품
+					<label for="exampleFormControlTextarea1" class="form-label" style="margin-left:13px; width:895px;">상품
+					
 						상세설명</label>
 					<textarea class="form-control" id="exampleFormControlTextarea1"
-						th:field="*{itemDetail}" rows="3" style="width: 895px"></textarea>
+						th:field="*{itemDetail}" rows="3" style="width: 895px; margin-left:13px; "></textarea>
 				</div>
 
 
@@ -99,8 +100,8 @@
 					th:if="${#lists.isEmpty(itemFormDto.itemImgDtoList)}"
 					th:each="num: ${#numbers.sequence(1,3)}">
 					<div class="col-md-12">
-						<label for="formFile" class="form-label" th:text="상품이미지 + ${num}"></label>
-						<input class="form-control" type="file" id="itemImgFile"
+						<label for="formFile" class="form-label" th:text="상품이미지 + ${num}" style="margin-left:13px; width:895px;"></label>
+						<input class="form-control" type="file" id="itemImgFile" style="margin-left:13px; width:895px;"
 							name="itemImgFile">
 							
 					</div>

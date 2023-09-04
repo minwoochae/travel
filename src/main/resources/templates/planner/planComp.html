@@ -9,6 +9,37 @@
 	text-align: center;
 	font-size: 34px;
 }
+		.title1 {
+			margin: 20px auto;
+    		text-align: center;
+    		font-size: 34px;
+		}
+		
+		.title2 {
+			margin: 10px auto;
+    		font-size: 16px;
+    		text-align: center;
+    		color: #828282;
+		}
+		
+		.planBox {
+			width: 917px;
+    		height: 706px;
+    		border: 1px solid #d7d7d7;
+    		margin: 20px auto;
+		}
+		
+		.planTitle {
+			font-size: 25px;
+    		text-align: center;
+    		margin: 32px 0 52px 0;
+		}
+		
+		.titletext{
+		margin-left:50px;
+		font-size:22px;
+		font-weight:bold;
+		}
 
 .title2 {
 	margin: 10px auto;
@@ -81,7 +112,7 @@
 						th:text="'Day ' + ${idx}"></a></li>
 				</th:block>
 			</ul>
-
+	</div>
 			<!-- Tab panes -->
 			<div class="tab-content " style="width: 100%;">
 				<div th:each="day : ${#numbers.sequence(1, plan.planDate)}"
@@ -99,6 +130,31 @@
 						</li>
 					</ul>
 				</div>
+				</div>
+	<div style="display:flex;">
+		<h5 class="title2">이 플랜을 여러 사람들과 공유할 수 있습니다.</h5>
+	</div>
+	<div class="planBox" style="height:1060px; overflow:hidden; border-radius:5px;">
+		<h5 class="planTitle" th:text="${plan.member.name} + ' 님의 ' + ${plan.planTitle}">플랜제목</h5>
+		<div class="card text-center" style="border:none;">
+  			<ul class="nav nav-tabs" id="myTab" role="tablist">
+    			<th:block th:each="idx : ${#numbers.sequence(1, plan.planDate)}">
+        			<li class="nav-item" role="presentation">
+            			<a class="nav-link " th:id="'planday' + ${idx}" th:data-toggle="tab" th:href="'#day' + ${idx}" role="tab" th:aria-controls="'day' + ${idx}" aria-selected="true" th:text="'Day ' + ${idx}"></a>
+        			</li>
+    			</th:block>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content " style="width:100%;">
+    			<div th:each="day : ${#numbers.sequence(1, plan.planDate)}" th:id="'day' + ${day}" th:value="${day}" class="tab-pane fade " style="height:910px; overflow: overlay;">
+        			<ul th:if="${day} == ${content.planDay}" th:each="content : ${PlanContents}" style="margin-left:30px; margin-right:30px;">
+            			<li class="content-list" style="width:100%; padding-top:30px; border-bottom: 1px solid #aeaeb6; padding-left:10px; padding-bottom: 30px; float: left; display: flex;">
+                			<img th:src="@{${content.place_img}}" style="width: 300px; height: 240px;"/>
+                			<span th:text="${content.placeName}" class="titletext" style="font-size: 22px; line-height: 240px; margin-left:50px; font-weight:bold;"></span>
+            			</li>
+        			</ul>
+    			</div>
 			</div>
 
 		</div>
@@ -114,6 +170,16 @@
 		</div>
 
 	</div>
+	
+	<div style="display:flex; justify-content: center; margin-top: 40px;">
+   		<div class="more_place_btn text-center" style="margin-right: 20px;">
+    	    <a class="boxed-btn4" th:href="'/community/write/' + ${plan.id}">내 플랜 공유하기</a>
+    	</div>
+		<div class="more_place_btn text-center" style=" margin-left: 20px;">
+    	    <a href="/member/mypage" class="boxed-btn4">내 플랜보기</a>
+    	</div>
+    </div>
+</div>
 </div>
 
 
@@ -191,15 +257,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 });
 
-function downloadAsImage() {
-    html2canvas(document.querySelector(".planBox")).then(canvas => {
-        var img = canvas.toDataURL("image/png");
-        var link = document.createElement('a');
-        link.href = img;
-        link.download = 'your_travel_plan.png';
-        link.click();
-    });
-}
 
 
 		

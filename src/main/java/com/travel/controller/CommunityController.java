@@ -77,8 +77,11 @@ public class CommunityController {
 		try {
 			
 			PlanCommunityDto planCommunityDto = communityService.getCommunityDtl(communityId);
+			PlanCommunity planCommunity = communityService.getCommunity(communityId);
+			planCommunityDto.setId(planCommunity.getId());
 			model.addAttribute("community", planCommunityDto);
 			model.addAttribute("planCommunityDto", new PlanCommunityDto() );
+			model.addAttribute("planCommunityId", communityId);
 			PlanFormDto planFormDto = planService.getPlanDtl(planCommunityDto.getPlan().getId());
 			model.addAttribute("plan", planFormDto);
 		} catch (Exception e) {
@@ -95,9 +98,20 @@ public class CommunityController {
 	@PostMapping(value = "/community/update")
 	public String updateCommunity(@Valid PlanCommunityDto planCommunityDto, Model model) {
 		
+//		if (planCommunityDto.getId() == null) {
+//			System.out.println(planCommunityDto.getId());
+//			PlanCommunity planCommunity = communityService.getCommunity(communityId);
+//			System.out.println(planCommunity);
+//	        model.addAttribute("errorMessage", "Invalid request: ID is missing");
+//	        return "redirect:/";
+//	    }
+		
 		try {
+//			PlanCommunity planCommunity = communityService.getCommunity(communityId);
+//			planCommunityDto.setId(planCommunity.getId());
 			communityService.updateCommunity(planCommunityDto);
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "작성 에러");
 		}

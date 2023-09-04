@@ -8,7 +8,13 @@
 .card {
 	margin: 0 auto;
 	margin-bottom: 30px !important;
+	
 }
+.box-hover {
+ cursor: pointer; /* 예시: 마우스 커서를 손모양으로 변경 */
+
+}	
+	
 </style>
 </th:block>
 
@@ -20,11 +26,12 @@
 
 	<div class="container" style="padding: 100px 250px 100px;">
 
-		<div class="card mb-3" style="max-width: 540px" onclick="location.href ='/admin/list'">
+		<div class="card mb-3 box-hover" style="max-width: 540px" onclick="location.href ='/admin/list'">
 			<div class="row g-0" >
 				<div class="col-md-4">
-					<img src="../img/member.png" class="img-fluid rounded-start"
-						alt="문의사항 아이콘" />
+					<img src="../img/group.png"  width="120px" height="80px" class="img-fluid rounded-start" 
+					style="margin:20px"
+						alt="회원관리" />
 				</div>
 				<div class="col-md-8"
 					style="display: flex; justify-content: center; align-items: center;">
@@ -35,10 +42,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="card mb-3" style="max-width: 540px" onclick="location.href ='/adminAsk/asks'">
+		<div class="card mb-3 box-hover" style="max-width: 540px" onclick="location.href ='/adminAsk/asks'">
 			<div class="row g-0">
 				<div class="col-md-4">
-					<img src="../img/ask.png" class="img-fluid rounded-start"
+					<img src="../img/asking.png" width="120px" height="80px" style="margin:20px" class="img-fluid rounded-start"
 						alt="문의사항 아이콘" />
 				</div>
 				<div class="col-md-8"
@@ -52,11 +59,11 @@
 		</div>
 
 
-		<div class="card mb-3" style="max-width: 540px">
+		<div class="card mb-3 box-hover" style="max-width: 540px" onclick="location.href = '/adminTour/tours'">
 			<div class="row g-0">
 				<div class="col-md-4">
 					<a href="/adminTour/tours">
-						<img src="../img/recommend.png" class="img-fluid rounded-start"
+						<img src="../img/quality.png" width="120px" height="80px" style="margin:20px" class="img-fluid rounded-start"
 							alt="추천관광지" />
 					</a>
 				</div>
@@ -70,10 +77,10 @@
 			</div>
 		</div>
 
-		<div class="card mb-3" style="max-width: 540px">
+		<div class="card mb-3 box-hover" style="max-width: 540px" onclick="location.href = '/adminInfo'">
 			<div class="row g-0">
 				<div class="col-md-4">
-					<a href="/adminInfo"> <img src="../img/info.png" class="img-fluid rounded-start"
+					<a href="/adminInfo"> <img src="../img/board.png" width="120px" height="80px" style="margin:20px" class="img-fluid rounded-start"
 						alt="공지사항 아이콘" />
 						</a>
 				</div>
@@ -87,10 +94,10 @@
 			</div>
 		</div>
 
-		<div class="card mb-3" style="max-width: 540px">
+		<div class="card mb-3 box-hover" style="max-width: 540px" onclick="location.href = '/adminShop'">
 			<div class="row g-0">
 				<div class="col-md-4">
-					<a href="/adminShop"> <img src="../img/shopping.png"
+					<a href="/adminShop"> <img src="../img/shopping-cart.png"  width="120px" height="80px" style="margin:20px"
 						class="img-fluid rounded-start" alt="쇼핑몰 아이콘" />
 					</a>
 				</div>

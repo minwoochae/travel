@@ -99,11 +99,13 @@ public class KakaoPayService {
     
     
     public void saveOrders(Orders orders) {
+    	System.err.println("에라이 퉤" + orders.getTotalPrice());
     	orderRepository.save(orders);
     }
     
     
     public void saveOrderItem(OrderItem orderItem) {
+    	System.err.println("에라이" + orderItem.getOrderPrice());
     	orderItemRepository.save(orderItem);
     }
 }

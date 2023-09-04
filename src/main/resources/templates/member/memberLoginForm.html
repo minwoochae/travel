@@ -3,7 +3,10 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
 <!-- 각 페이지의 CSS가 작성될 위치 -->
-
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
 <th:block layout:fragment="css">
 	<style>
 .login-cover {
@@ -82,6 +85,9 @@ a {
 </style>
 </th:block>
 <div layout:fragment="content">
+<div  class="alert alert-success">
+    <span th:text="${param.message}"></span>
+</div>
 	<div class="login-cover"></div>
 	<!--백그라운드 이미지 활용  -->
 	<div class="site-section">
@@ -93,7 +99,7 @@ a {
 							<div class="col-md-12">
 								<label th:for="email" class="text-black"
 									style="width: 100%; justify-content: center; margin: 15px auto; align-items: center; font-size: 25px; font-weight: bold;">아이디/이메일</label>
-								<input type="email" class="form-control" id="email" name="email"
+								<input type="email" class="form-control" id="email" name="email" autocomplete="off"
 									placeholder="Email">
 							</div>
 						</div>
@@ -110,7 +116,7 @@ a {
 						<div class="form-group">
 							<p th:if="${loginErrorMsg}" class="error"
 								th:text="${loginErrorMsg}"></p>
-
+									
 							<div style="margin-bottom: 50px;">
 								<button type="submit" class="btn btn-primary mb-3" id="loginbtn"
 									style="width: 100%; background-color: #FF4A52; border: none; font-weight: bold;">로그인</button>
@@ -159,10 +165,7 @@ a {
 	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js"
 		integrity="sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh"
 		crossorigin="anonymous"></script>
-	<script>
-	
-	Kakao.init('97207c88fb92b7d1bbd5719ab5b56ffe'); // 사용하려는 앱의 JavaScript 키 입력
-</script>
+	<script>Kakao.init('97207c88fb92b7d1bbd5719ab5b56ffe'); // 사용하려는 앱의 JavaScript 키 입력</script>
 	<script th:inline="javascript">
 	let errorMessage = [[${errorMessage}]]
 	
