@@ -4,6 +4,7 @@
 	layout:decorate="~{layouts/layout1}">
 
 <th:block layout:fragment="css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 <style>
 
  th {
@@ -40,7 +41,7 @@
 								<th scope="col">No</th>
 								<th scope="col">제목</th>
 								<th scope="col">등록자</th>
-								<th scope="col">수정</th>
+								<th scope="col">상태</th>
 								
 							
 							</tr>
@@ -49,11 +50,17 @@
 							<!-- 조회된 데이터를 출력한다. -->
 							<tr th:each="ask, status:${asks.getContent()}" style="text-align:center;">
 
-								<th th:text="${ask.id}" scope="row"></th>
+								<td th:text="${ask.id}" scope="row" ></td>
 								<td><a th:href="'/askBoard/' + ${ask.id}"
 									th:text="${ask.askTitle}"> </a></td>
 								<td th:text="${ask.createBy}"> </td>
-								<td th:text="${ask.modifiedBy}"></td>
+								<td>
+								<span th:if="${askResponse != null and askResponse.askBoardId == ask.id}" th:text="${askResponse.askStatus}">
+								</span>
+								<span th:unless="${askResponse != null and askResponse.askBoardId == ask.id}">
+								PROCESSING
+								</span>
+								</td>
 						
 							</tr>
 						</tbody>

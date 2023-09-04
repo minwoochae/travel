@@ -54,6 +54,10 @@ public class Member extends BaseEntity implements UserDetails  {
 	
 	@Enumerated(EnumType.STRING)
 	private Division division; //역할
+
+	private String provider;
+
+	private String providerId;
 	
 
 	 @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -155,6 +159,25 @@ public class Member extends BaseEntity implements UserDetails  {
     public boolean isEnabled() {
         return true; // 계정 활성 여부 설정
     }
+    
+	@Builder(builderClassName = "MemberDetailRegister", builderMethodName = "MemberDetailRegister")
+	public Member(String email, String password, String name, Role role) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.role = role;
+	}
+
+	@Builder(builderClassName = "OAuth2Register", builderMethodName = "oauth2Register")
+	public Member(String email, String password, String name, Role role, String provider, String providerId, Division division) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.role = role;
+		this.provider = provider;
+		this.providerId = providerId;
+		this.division = division;
+	}
 	
 
 }

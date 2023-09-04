@@ -45,6 +45,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
      if(member == null){
     	 member = Member.oauth2Register()
 
+
         		 .email(email).name(username).password(password).role(Role.ROLE_WAIT)
 
         		 .email(email).name(username).password(password).role(role)

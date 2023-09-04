@@ -51,7 +51,7 @@
 	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
-<div layout:fragment="content">
+<div layout:fragment="content" >
 
 	<div class="item-cover">
 		<h1 class="cover-text">공지 등록하기</h1>
@@ -63,7 +63,7 @@
 			enctype="multipart/form-data" th:object="${infoFormDto}"
 			name="infoForm">
 
-			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:field="*{id}" autocomplete="off" />
 
 			<h5 style="font-weight: bold; font-size: larger;">공지 등록</h5>
 

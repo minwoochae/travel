@@ -60,6 +60,10 @@ public class CommunityService {
 	}
 	
 	public Long updateCommunity(PlanCommunityDto planCommunityDto) {
+		if (planCommunityDto.getId() == null) {
+	        throw new IllegalArgumentException("The given id must not be null");
+	    }
+		
 		System.out.println(planCommunityDto.getId());
 		PlanCommunity planCommunity = planCommunityRepository.findById(planCommunityDto.getId()).orElseThrow(EntityNotFoundException::new);
 		System.out.println(planCommunity + "여긴 뭐야");
@@ -67,6 +71,12 @@ public class CommunityService {
 		planCommunity.updatecommunity(planCommunityDto, regDate);
 		
 		return planCommunity.getId();
+	}
+	
+	public PlanCommunity getCommunity(Long communityId) {
+		PlanCommunity planCommunity = planCommunityRepository.findById(communityId).orElseThrow(EntityNotFoundException::new);
+		
+		return planCommunity;
 	}
 	
 	
