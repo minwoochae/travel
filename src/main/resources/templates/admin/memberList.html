@@ -24,7 +24,7 @@
 	
 	<table
 		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 1150px; margin-bottom: 50px; height: 80px">
-		<tr style="border-top: solid 1.5px black;">
+		<tr style="border-top: solid 1.5px black; height:40px;">
 			<th style="padding-left: 15px">No.</th>
 			<th>회원 아이디</th>
 			<th style="width: 150px">회원 이름</th>
@@ -32,7 +32,7 @@
 		</tr>
 		<tr th:each="member : ${travel.content}" 
 			th:if="${#strings.equals(member.role, T(com.travel.constant.Role).ROLE_USER)}"
-			style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray; ">
+			style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray; height:40px;">
 			<td style="padding-left: 15px;" th:text="${member.id}"></td>
 			<td><a th:href="'/admin/profile/' + ${member.id}"
 				th:text="${member.email}"></a></td>

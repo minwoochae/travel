@@ -70,9 +70,7 @@ public class MemberController {
 			
 
 			memberservice.saveMember(member);
-			RedirectAttributes re = new RedirectAttributes();
 
-			re.addFlashAttribute("message", "회원가입이 완료되었습니다.");
 			
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());
