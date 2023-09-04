@@ -1,4 +1,4 @@
-package com.travel.controller;
+ package com.travel.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -68,7 +68,6 @@ public class AdminController {
 	@GetMapping(value = "/admin")
 	public String admin(Authentication authentication) {
 		PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
-		System.out.println("principals.getMember().getRole(): " + principals.getMember().getRole()); 
 		
 		return "admin/adminMain";
 	}
