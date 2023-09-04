@@ -110,7 +110,7 @@ li {
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
 	
-	let errorMessage = [[${errorMessage}]]
+	let errorMessage = [[${errorMessages}]]
 	
 	$(document).ready(function () {
 		if(errorMessage != null) {
