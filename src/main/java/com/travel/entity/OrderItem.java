@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,6 @@ import lombok.ToString;
 @Table(name="order_item") 
 @Getter
 @Setter
-@ToString
 public class OrderItem {
 
 	@Id
@@ -36,10 +36,16 @@ public class OrderItem {
 	@JoinColumn(name = "orders_id")
 	private Orders orders;
 	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "item_id")
+	private Item item;
+	
 	
 	public static OrderItem createOrderItem(CartItem cartItem, int orderCount) {
 		OrderItem orderItem = new OrderItem();
 		orderItem.setOrderCount(orderCount);
+		orderItem.setItem(cartItem.getItem());
+		System.out.println("에이설마 여기 안와?");
 		orderItem.setOrderPrice(cartItem.getItem().getPrice());
 		
 		
@@ -51,6 +57,8 @@ public class OrderItem {
 		OrderItem orderItem = new OrderItem();
 		orderItem.setOrderCount(cartItem.getCount());
 		orderItem.setOrderPrice(cartItem.getItem().getPrice());
+		orderItem.setItem(cartItem.getItem());
+
 		return orderItem;
 	}
 	
