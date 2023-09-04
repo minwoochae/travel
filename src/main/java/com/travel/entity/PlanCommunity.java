@@ -1,5 +1,7 @@
 package com.travel.entity;
 
+import com.travel.Dto.PlanCommunityDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,11 +33,21 @@ public class PlanCommunity extends BaseEntity{
 	@Column(name="plan_community_content") 
 	private String communityContent;
 	
+	@Column(name="plan_community_reg_date") 
+	private String communityRegDate;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member")
+	@JoinColumn(name = "member_id")
 	private Member member;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "plan")
+	@JoinColumn(name = "plan_id")
 	private Plan plan;
+	
+	public void updatecommunity(PlanCommunityDto planCommunityDto, String regDate) {
+		this.communityTitle = planCommunityDto.getCommunityTitle();
+		this.communityContent = planCommunityDto.getCommunityContent();
+		this.communityRegDate = regDate;
+	}
+	
 }

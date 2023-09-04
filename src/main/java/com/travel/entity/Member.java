@@ -55,6 +55,13 @@ public class Member extends BaseEntity implements UserDetails  {
 	@Enumerated(EnumType.STRING)
 	private Division division; //역할
 	
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+    
+	private String provider;
+
+	private String providerId;
+	
 
 	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
 		String password = passwordEncoder.encode(memberFormDto.getPassword());
@@ -64,7 +71,7 @@ public class Member extends BaseEntity implements UserDetails  {
 		member.setEmail(memberFormDto.getEmail());
 		member.setPhoneNumber(memberFormDto.getPhoneNumber());
 		member.setPassword(password);
-		member.setRole(Role.USER);
+		member.setRole(Role.ROLE_USER);
 		member.setRegtime(memberFormDto.getRegtime());
 		member.setDivision(Division.NORMAL);
 		return member;
@@ -97,7 +104,7 @@ public class Member extends BaseEntity implements UserDetails  {
     	Member member = new Member();
     	member.setName(memberKakaoDto.getName());
     	member.setEmail(memberKakaoDto.getEmail());
-    	member.setRole(Role.USER);
+    	member.setRole(Role.ROLE_USER);
     	member.setPassword(password);
 		member.setPhoneNumber(memberKakaoDto.getPhoneNumber());
 		member.setRegtime(memberKakaoDto.getRegtime());
@@ -152,7 +159,25 @@ public class Member extends BaseEntity implements UserDetails  {
     public boolean isEnabled() {
         return true; // 계정 활성 여부 설정
     }
+    
+	@Builder(builderClassName = "MemberDetailRegister", builderMethodName = "MemberDetailRegister")
+	public Member(String email, String password, String name, Role role) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.role = role;
+	}
+
+	@Builder(builderClassName = "OAuth2Register", builderMethodName = "oauth2Register")
+	public Member(String email, String password, String name, Role role, String provider, String providerId, Division division) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.role = role;
+		this.provider = provider;
+		this.providerId = providerId;
+		this.division = division;
+	}
 	
 
 }
-

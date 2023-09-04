@@ -11,10 +11,11 @@
 <!-- 각 페이지의 CSS가 작성될 위치 -->
 <th:block layout:fragment="css">
 	<style>
+	
 </style>
 </th:block>
 
-<div layout:fragment="content">
+<div layout:fragment="content" style="height:400px">
 	<table
 		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 1150px; margin-bottom: 50px; height: 80px">
 		<tr style="border-top: solid 1.5px black;">
@@ -23,9 +24,9 @@
 			<th style="width: 150px">회원 이름</th>
 			<th style="margin: 0 auto; width: 200px">가입 날짜</th>
 		</tr>
-		<tr th:each="member : ${travel.content}"
-			th:if="${#strings.equals(member.role, T(com.travel.constant.Role).USER)}"
-			style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray;">
+		<tr th:each="member : ${travel.content}" 
+			th:if="${#strings.equals(member.role, T(com.travel.constant.Role).ROLE_USER)}"
+			style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray; ">
 			<td style="padding-left: 15px;" th:text="${member.id}"></td>
 			<td><a th:href="'/admin/profile/' + ${member.id}"
 				th:text="${member.email}"></a></td>
@@ -41,7 +42,7 @@
 		<ul class="pagination d-flex justify-content-center">
 			<li class="page-item" th:classappend="${travel.first}?'disabled'">
 				<a class="page-link"
-				th:onclick="'javascript:page(' + ${travel.number - 1} +')'"> </a>
+				th:onclick="'javascript:page(' + ${travel.number - 1} +')'"> < </a>
 			</li>
 			<li class="page-item"
 				th:each="page: ${#numbers.sequence(start, end)}"

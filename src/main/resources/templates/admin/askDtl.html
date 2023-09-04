@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
 
@@ -50,67 +51,203 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12 mb-0">
-				
+
+
+			<div
+				th:unless="${isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+				class="col-md-12 mb-0">
+				<p>등록한 사용자만 볼 수 있는 페이지입니다.</p>
 			</div>
 		</div>
 	</div>
 
 
-	<div class="container">
+	<div class="container"
+		th:if="${isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
 		<div class="row">
-			<input type="hidden" id="askBoardId" th:value="${ask.id}">
+			<input type="hidden" id="askBoardId" th:value="${ask.id}"> <input
+				type="hidden" th:value="${ask.askTitle}" id="askTitle"
+				name="askTitle"> <strong th:text="${ask.askTitle}"
+				style="font-size: larger; padding-bottom: 20px; margin-top: 50px;"></strong>
 
-
-		
-				<input type="hidden" th:value="${ask.askTitle}" id="askTitle" name="askTitle">
-					<strong th:text="${ask.askTitle}"
-					style="font-size:larger; padding-bottom:20px; margin-top:50px;"
-					></strong>				
-			
-			<div class="card" style="width:1140px; margin-bottom:20px">
+			<div class="card" style="width: 1140px; margin-bottom: 20px">
 				<div class="card-body">
-				<input type="hidden" th:value="${ask.askContent}" id="askContent" name="askContent">
-					<strong th:text="${ask.askContent}"></strong>				
+					<input type="hidden" th:value="${ask.askContent}" id="askContent"
+						name="askContent"> <strong th:text="${ask.askContent}"></strong>
 				</div>
 			</div>
-			
-<div class="card" style="margin-bottom:20px; width:1140px">
-    <div class="card-body text-center">
-        <div th:each="imgDto : ${ask.askImgDtoList}">
-            <img th:src="${imgDto.imgUrl}" class="rounded repImg" th:alt="${ask.askTitle}"
-                 style="width:900px; height:400px; padding-bottom:30px;">
+
+			<div class="col-md-12">
+				<div th:each="askImg : ${ask.askImgDtoList}" class="text-center">
+					<img th:if="${not #strings.isEmpty(askImg.imgUrl)}"
+						th:src="${askImg.imgUrl}" class="rounded mgb-15" width="500px"
+						style="margin: 20px 0">
+				</div>
+			</div>
+
+
+
+			<!-- 관리자 답변 표시 -->
+
+			<div class="row"
+				th:if="${askResponse != null and (isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')'))}">
+				<p>답변보기</p>
+				<input type="hidden" id="askResponseBoardId"
+					th:value="${askResponse.id}">
+				<div class="card" style="margin-bottom: 20px; width: 1140px">
+					<div class="card-body">
+						<strong th:text="${askResponse.askResponseTitle}"></strong>
+					</div>
+				</div>
+				<div class="card" style="margin-bottom: 20px; width: 1140px">
+				<div class="card-body">
+						<strong th:text="${askResponse.askResponseContent}"></strong>
+					</div>
+				
+				</div>
+				
+				<div class="row" th:unless="${askResponse != null}">
+					<p>등록된 답변이 없습니다.</p>
+				</div>
+			</div>
+
+
+
+
+		<div class="d-flex justify-content-center">
+    <div class="row" style="margin-left:320px;">
+        <div class="col-md-4 mb-3">
+            <a th:href="@{'/ask/' + ${ask.id}}">
+                <button type="button" class="btn btn-primary btn-block"
+                    style="background-color: #FF6168; border: none;"
+                    sec:authorize="hasAnyAuthority('ROLE_USER')">수정하기</button>
+            </a>
         </div>
-        <!-- 이미지가 등록되지 않은 경우 아무 내용도 출력하지 않음 -->
-        <div th:unless="${ask.askImgDtoList}">
-            <!-- 아무 내용도 출력하지 않음 -->
+        <div class="col-md-4 mb-3">
+            <button type="button" class="btn btn-primary btn-block"
+                th:id="${ask.Id}" th:value="${ask.Id}"
+                th:onclick="'javascript:deleteAsk(' + ${ask.id} +')'"
+                style="background-color: #FF6168; border: none;"
+                sec:authorize="hasAnyAuthority('ROLE_USER')">삭제</button>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="/adminAsk/asks">
+                <button type="button" class="btn btn-primary btn-block"
+                    style="background-color: #FF6168; border: none;">
+                    목록 보기
+                </button>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a th:href="@{'/response/' + ${ask.id}}">
+                <button type="button" class="btn btn-primary btn-block"
+                    style="background-color: #FF6168; border: none;"
+                    sec:authorize="hasAnyAuthority('ROLE_ADMIN')">답변 달기</button>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a th:href="@{'/ask/response/' + ${askResponse.id}}">
+                <button type="button" class="btn btn-primary btn-block"
+                    style="background-color: #FF6168; border: none;"
+                    sec:authorize="hasAnyAuthority('ROLE_ADMIN')">답변 수정</button>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <button type="button" class="btn btn-primary btn-block"
+                style="background-color: #FF6168; border: none;"
+                sec:authorize="hasAnyAuthority('ROLE_ADMIN')">답변 삭제</button>
         </div>
     </div>
 </div>
 
-		
-		
-				<div class="d-flex justify-content-center">
-						<a th:href="'/ask/' + ${ask.id}"> 
-						<button type="button" 
-							class="btn btn-primary mb-3" style="width: 150px; background-color:#FF6168; border:none; margin-left:350px;"
-							sec:authorize="hasAnyAuthority('ROLE_ADMIN')">수정하기
-							</button>
-						</a>
-						<a href="/adminAsk/asks"> 
-						<button type="button" 
-							class="btn btn-primary mb-3" style="width: 150px; background-color:#FF6168; border:none; margin-left:120px;">목록 보기
-					    </button>
-						</a>
-						<a href="/"> 
-						<button type="button" 
-							class="btn btn-primary mb-3" style="width: 150px; background-color:#FF6168; border:none; margin-left:120px;">답변 달기
-					    </button>
-						</a>
-				</div>	
-			
+
 		</div>
 	</div>
 </div>
 
+
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		function deleteAskResponse(askResponseBoardId) {
+			const deleteConf = confirm("삭제하시겠습니까?");
+			if (!deleteConf)
+				return;
+
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+
+			console.log("Header:", header);
+
+			if (header === undefined) {
+				console.error("Header is undefined.");
+				return;
+			}
+
+			var url = "/askResponse/" + askResponseBoardId + "/delete";
+
+			$.ajax({
+				url : url,
+				type : "DELETE",
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					location.href = '/';
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/memberLoginForm';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+
+		function deleteAsk(askBoardId) {
+			const deleteConf = confirm("삭제하시겠습니까?");
+			if (!deleteConf)
+				return;
+
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+
+			console.log("Header:", header);
+
+			if (header === undefined) {
+				console.error("Header is undefined.");
+				return;
+			}
+
+			var url = "/ask/" + askBoardId + "/delete";
+
+			$.ajax({
+				url : url,
+				type : "DELETE",
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					location.href = '/';
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/memberLoginForm';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+	</script>
+</th:block>
 </html>

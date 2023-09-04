@@ -28,7 +28,7 @@ public class KakaoOAuth2UserService implements OAuth2UserService<OAuth2UserReque
         Collection<? extends GrantedAuthority> authorities = Collections.singletonList(
                 new OAuth2UserAuthority(userAttributes)
         );
-
+        System.out.println(authorities + "AAAAAAAAAAAA");
         return new DefaultOAuth2User(authorities, userAttributes, "id"); // 예시로 "id"를 기본 이름으로 설정
     }
 }

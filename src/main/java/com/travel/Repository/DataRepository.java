@@ -4,17 +4,19 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.travel.entity.DataContent;
 
-public interface DataRepository extends JpaRepository<DataContent, Long>{
-	List<DataContent> findByContentType(int content_type);
+public interface DataRepository extends JpaRepository<DataContent, Long> {
+	List<DataContent> findByAreaCodeInAndContentTypeIn(List<Integer> areaCodes, List<Integer> contentTypes);
 	
-	// 새로운 메소드 추가: 지역 코드 목록을 가져오는 메소드
-    @Query(value = "select areaCode from DataContent")
-    List<DataContent> findAllAreaCodes();
-    
-    List<DataContent> findByContentTypeAndAreaCode(int contentType, int areaCode);
-    
-    
+	 // 검색어에 따른 쿼리 작성
+    @Query("SELECT d FROM DataContent d WHERE d.areaCode = :areaCode AND d.contentType = :contentType " +
+            "AND (:searchTerm IS NULL OR LOWER(d.placeName) LIKE %:searchTerm%)")
+    List<DataContent> findByAreaCodeAndContentTypeAndPlaceName(
+            @Param("areaCode") int areaCode,
+            @Param("contentType") int contentType,
+            @Param("searchTerm") String searchTerm
+    );
 }

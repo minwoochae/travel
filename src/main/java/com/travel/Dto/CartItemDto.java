@@ -14,7 +14,7 @@ public class CartItemDto {
 	
 	private String itemNm;
 	
-	private Long count;
+	private int count;
 		
 	private String imgUrl;
 	
@@ -22,10 +22,10 @@ public class CartItemDto {
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 	
-	public CartItemDto(CartItem cartItem, String imgUrl) {
+	public CartItemDto(CartItem cartItem) {
 		this.id = cartItem.getId();
 		this.count = cartItem.getCount();
-		this.imgUrl = imgUrl;
+		this.imgUrl = cartItem.getImgUrl();
 		this.price = cartItem.getItem().getPrice();
 		this.itemNm = cartItem.getItem().getItemNm();
 	}

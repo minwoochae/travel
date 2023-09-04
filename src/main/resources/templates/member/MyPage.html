@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
-	
-	
+
+
 <head>
 <meta name="_csrf" th:content="${_csrf.token}" />
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
@@ -54,6 +54,7 @@ li {
 .btnmember:hover {
 	color: red !important;
 }
+
 </style>
 </th:block>
 <div layout:fragment="content">
@@ -64,7 +65,7 @@ li {
 			style="background-image: url('/img/users.png'); background-size: cover;"></p>
 	</div>
 	<form th:action="@{'/member/mypage}" method="get" th:object="${member}">
-		<input type="hidden" id="memberId" th:value="${member.id}" />
+		<input type="hidden" id="memberId" th:value="${member.Id}" />
 		<ul>
 			<li>
 				<button type="button"
@@ -84,33 +85,102 @@ li {
 			</li>
 		</ul>
 	</form>
-	<div
+	
+	
+	<div class="row justify-content-between" th:if="${!#lists.isEmpty(plan)}"
 		style="width: 950px; justify-content: center; align-items: center; margin: 0 auto; margin-top: 50px">
 		<h1 style="font-weight: bold;">나의 최근 플랜</h1>
+		<a href="/planner/myPlanList" type="button"
+			class="btn btn-outline-danger m-1 justify-content-md-end">더 보러가기</a>
 	</div>
 
-	<div class="card"
-		style="width: 950px; padding: 20px 0; box-shadow: 0px 5px 10px; justify-content: center; align-items: center; margin: 30px auto;">
-		<div class="row g-0">
-			<div style="display: flex;">
-				<div class="col-md-4">
-					<img src="" class="img-fluid rounded-start" alt="...">
-				</div>
-				<div class="col-md-8">
-					<div class="card-body" style="display: flex;">
-						<div style="display: block;">
-							<h5 class="card-title">즐거운 여행</h5>
-							<p class="card-text">
-								<small class="text-body-secondary">2박 3일</small>
-							</p>
+	<div th:if="${#lists.isEmpty(plan)}">
+		<p style="text-align: center; font-size: 50px; width:100%; height: 400px; margin-top: 200px; ">현재 나의 플랜이 없습니다.</p>
+	</div>
+	
+
+
+
+
+
+ 	<div>
+		<a th:href="'/planner/myPlanInfo/' + ${plan.id}" class="card"
+			th:each="plan : ${plan}"
+			style="width: 950px; display: flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
+
+			<div class="row g-0" style="display: flex;">
+				<div style="display: flex; align-items: center;">
+					<div class="col-md-4">
+						<img th:src="${plan.planContent[0].place_img}"
+							class="img-fluid rounded-start"
+							th:alt="${plan.planContent[0].place_img}">
+					</div>
+					<div class="col-md-8" style="display: flex; margin-bottom: 10%;">
+						<div class="card-body" style="display: flex;">
+							<div style="display: block; width: 99%;">
+								<h5 class="card-title" th:text="${plan.planTitle}"
+									style="width: 500px; font-size: x-large;"
+									></h5>
+								<p class="card-text">
+									<small class="text-body-secondary"
+										th:text="${plan.planDate} + 일">2박 3일</small>
+										<p th:text="${plan.planContent[0].placeAddress}"></p>
+								</p> 
+								
+							</div>
+
 						</div>
 					</div>
 				</div>
 			</div>
-			<div>&vellip;</div>
+		</a>
+	</div> 
+		
+		
+		<div class="row justify-content-between"
+			th:if="${!#lists.isEmpty(community)}"
+			style="width: 950px; justify-content: center; align-items: center; margin: 0 auto; margin-top: 50px">
+			<h1 style="font-weight: bold;">최근 플랜 공유</h1>
+			<a href="/community/viewCommunityList" type="button"
+			class="btn btn-outline-danger m-1 justify-content-md-end">더 보러가기</a>
 		</div>
-	</div>
-</div>
+
+		<div th:if="${#lists.isEmpty(community)}">
+		<p
+			style="text-align: center; font-size: 50px; width: 100%; height: 400px; margin-top: 200px;">작성된 공유플랜이 없습니다.</p>
+		</div>
+		<div>
+			<a th:href="'/community/viewCommunityInfo/' + ${community.id}" class="card"
+				th:each="community : ${community}"
+				style="width: 950px; display: flex; padding: 20px; box-shadow: 0px 5px 5px; justify-content: center; align-items: center; margin: 30px auto;">
+				<div class="row g-0" style="display: flex;">
+					<div style="display: flex; align-items: center;">
+						<div class="col-md-4">
+							<img th:src="${community.plan.planContent[0].place_img}"
+								class="img-fluid rounded-start"
+								th:alt="${community.plan.planContent[0].place_img}">
+						</div>
+						<div class="col-md-8" style="display: flex; margin-bottom: 10%;">
+							<div class="card-body" style="display: flex;">
+								<div style="display: block; width: 99%;">
+									<h5 class="card-title" th:text="${community.communityTitle}"
+										style="width: 500px; font-size: x-large;"></h5>
+									<p class="card-text">
+										<small class="text-body-secondary"
+											th:text="${community.plan.planDate} + 일">2박 3일</small>									
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+
+		</div> 
+
+		</div>
+
+
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
@@ -146,7 +216,6 @@ li {
 				},
 			});
 		}
-		
 	</script>
 </th:block>
 </html>

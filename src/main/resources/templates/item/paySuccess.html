@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<title>결제가 완료되었습니다.</title>
+</head>
+<body>
+    <h1>결제가 완료되었습니다.</h1>
+    <p>결제 상품: <span id="item_name" th:text="${item_name}"></span></p>
+    <p>결제 금액: <span th:text="${total_price}"></span></p>
+    <p>주문 번호: <span id="pay_number" th:text="${pay_number}"></span></p>
+    <input type="hidden" id="pay_id" th:value="${pay_id}">
+	<input type="button" value="창닫기" onclick="sendParentAndClose();">
+    
+    
+    
+    <script>
+    (function() {
+        var dataToSend = $("#pay_number").text();
+        var payId = $("#pay_id").text();
+        window.opener.handleChildData(dataToSend);
+    })();
+    
+    function sendParentAndClose() {
+        var itemName = $("#item_name").text();
+        window.opener.receiveDataFromChild(itemName); // 부모 창의 함수 호출
+        window.close();
+    }
+    </script>
+</body>
+</html>

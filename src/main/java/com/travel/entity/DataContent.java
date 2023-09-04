@@ -36,6 +36,9 @@ public class DataContent {
 	@Column(name="place_address")
 	private String placeAddress;
 	
+	@Column(name="place_tel")
+	private String placeTel;
+	
 	@Column(name="place_latitude")
 	private String placeLatitude;
 	
@@ -56,17 +59,19 @@ public class DataContent {
 	
 	@Column(name="content_type")
 	private int contentType;
-	
-	
+			
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "plan_id")
 	private Plan plan;
+	
+
 	
 	
 	public static DataContent createContent(PlanContentDto dataContentDto, Plan plan) {
 		DataContent dataContent = new DataContent();
 		dataContent.setPlaceName(dataContentDto.getPlaceName());
 		dataContent.setPlaceAddress(dataContentDto.getPlaceAddress());
+		dataContent.setPlaceTel(dataContentDto.getPlaceTel());
 		dataContent.setPlaceLatitude(dataContentDto.getPlaceLatitude());
 		dataContent.setPlaceLongitude(dataContentDto.getPlaceLongitude());
 		dataContent.setPlaceimg(dataContentDto.getPlace_img());
@@ -77,6 +82,7 @@ public class DataContent {
 		
 		return dataContent;
 	}
+	
 	
 	
 	

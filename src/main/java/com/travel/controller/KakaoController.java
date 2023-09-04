@@ -1,23 +1,22 @@
 package com.travel.controller;
 
+
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.travel.Dto.MemberKakaoDto;
+import com.travel.auth.PrincipalDetails;
 import com.travel.entity.Member;
 import com.travel.service.IKakaoLoginService;
 import com.travel.service.KakaoService;
@@ -31,12 +30,6 @@ import lombok.RequiredArgsConstructor;
 public class KakaoController {
 	@Autowired
 	public IKakaoLoginService iKakaoS;
-	
-	@Autowired
-	private AuthenticationSuccessHandler kakaoAuthenticationSuccessHandler;
-
-	   @Autowired
-	    private AuthenticationManager authenticationManager;
 
 
 	@Autowired
@@ -45,6 +38,49 @@ public class KakaoController {
 	public MemberService memberService;
 	@Autowired
 	public  PasswordEncoder  passwordEncoder;
+
+	//카카오 회원가입
+	@GetMapping(value = "/oauth2/code/kakao")
+	public String memberForm(Authentication authentication, Model model) throws Throwable{
+		PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        Member member = principal.getMember();
+		
+		
+		MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
+		memberKakaoDto.setEmail(member.getEmail());
+		memberKakaoDto.setName(member.getName());
+		memberKakaoDto.setPassword("SNS 비밀번호");
+		model.addAttribute("memberKakaoDto", memberKakaoDto);
+
+    	
+		return "member/KakaoMemberForm";
+		
+	}
+	
+	//카카오 회원가입
+	@PostMapping(value = "/oauth2/code/kakao")
+	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model)
+	{
+		if (bindingResult.hasErrors()) {
+			
+			return "member/KakaoMemberForm";
+		}
+
+		try {
+			Member member = Member.createKaKao(memberKakaoDto, passwordEncoder);
+			kakaoService.saveMember(member);
+		
+
+		} catch (IllegalStateException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return "member/KakaoMemberForm";
+		}
+
+		return "redirect:/";
+	}
+
+
+	
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
 
@@ -81,48 +117,11 @@ public class KakaoController {
         	return "member/KakaoMemberForm";
         }
         
-        // 가입되어 있는 경우
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(email, null)
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    	
-    	
-    	
-    	
-    	
-		return "redirect:/";
+		return "redirect:/members/login";
 		
 		
 	}
-	
 
 	
-	//카카오 회원가입
-	@PostMapping(value = "/kakao/new")
-	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors()) {
-			return "member/KakaoMemberForm";
-		}
-
-		try {
-			System.out.println(memberKakaoDto.getEmail() + "fdwsp.jfklwajgkkjawg;l");
-			
-			Member member = Member.createKaKao(memberKakaoDto, passwordEncoder);
-			kakaoService.saveMember(member);
-			
-		    // 가입 후 자동 로그인
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(memberKakaoDto.getEmail(), null)
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		} catch (IllegalStateException e) {
-			model.addAttribute("errorMessage", e.getMessage());
-			return "member/KakaoMemberForm";
-		}
-
-		return "redirect:/";
-	}
-
+	
 }

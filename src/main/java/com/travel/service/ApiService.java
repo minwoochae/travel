@@ -35,6 +35,7 @@ public class ApiService {
                 PlanContentDto contentDto = new PlanContentDto();
                 contentDto.setPlaceName(item.getElementsByTagName("title").item(0).getTextContent());
                 contentDto.setPlaceAddress(item.getElementsByTagName("addr1").item(0).getTextContent());
+                contentDto.setPlaceTel(item.getElementsByTagName("tel").item(0).getTextContent());
                 contentDto.setPlaceLatitude(item.getElementsByTagName("mapx").item(0).getTextContent());
                 contentDto.setPlaceLongitude(item.getElementsByTagName("mapy").item(0).getTextContent());
                 contentDto.setPlace_img(item.getElementsByTagName("firstimage").item(0).getTextContent());

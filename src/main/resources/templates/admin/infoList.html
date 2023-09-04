@@ -4,7 +4,12 @@
 	layout:decorate="~{layouts/layout1}">
 
 <th:block layout:fragment="css">
+<style>
 
+ th {
+        text-align: center;
+      }
+</style>
 </th:block>
 
 <head>
@@ -12,7 +17,7 @@
 	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
-<div layout:fragment="content" style="height:1000px">
+<div layout:fragment="content" style="height:1000px; margin-top:70px; ">
 
 <div class="container">
 
@@ -22,7 +27,7 @@
 			<div class="col-md-12">
 				<div
 					style="display: flex; justify-content: space-between; align-items: center;">
-					<h2 class="h3 mb-3 text-black">공지사항 관리</h2>
+					<h2 class="h3 mb-3 text-black">공지사항</h2>
 					 <a href="/adminInfo/new" style="margin-right: 0;" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">등록하기</a> 
 				</div>
 				<form th:action="@{'/adminInfo/' + ${infos.number}}" method="get"
@@ -30,8 +35,8 @@
 					<table class="table table-responsive-md">
 						<thead>
 							<tr>
-								<th scope="col">id</th>
-								<th scope="col">제목</th>
+								<th scope="col" style="width: 10%">NO.</th>
+								<th scope="col" style="width: 70%">제목</th>
 								<th scope="col">등록자</th>
 								<th scope="col" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">삭제</th>
 							</tr>
@@ -60,7 +65,7 @@
 					<!-- 페이징 버튼 ◁ 1 2 3 4 5 ▷ -->
 					<!-- start = (현재 페이지 번호/보여줄 페이지 수) * 보여줄 페이지 수 +1, 페이지 시작 번호 -->
 					<!-- end = start + (보여줄 페이지 수) -1, 페이지 끝 번호 -->
-					<nav style=""
+					<nav style="margin-top: 60px"
     
 					
 						th:with="start=${(infos.number/maxPage)*maxPage + 1}

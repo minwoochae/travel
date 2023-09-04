@@ -2,10 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <header th:fragment="header">
-    	<div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
+    <header th:fragment="header" style="border-bottom:solid 0.5px #CCCCCC;">
+
+<!--       <b>Authenticated DTO:</b>
+<div sec:authorize="isAuthenticated()" sec:authentication="principal"></div>  -->
+
+    	<div sec:authorize="hasAnyRole('ROLE_ADMIN')" style="height: 60px; border-bottom: 1px solid gray; display:flex; align-items:center; justify-content:flex-end;">
+
     		<div style="margin-right: 40px;">
-	    		<button class="boxed-btn3" style="height: 40px; display:flex; align-items: center;" onclick="location.href='/admin'">관리자페이지로 이동</button>    		    		
+	    		<button class="boxed-btn3" style="height: 40px; display:flex; align-items: center;" th:onclick="location.href='/admin'">관리자페이지로 이동</button>    		    		
     		</div>
     	</div>
         <div class="header-area ">
@@ -26,11 +31,18 @@
                                         <ul id="navigation">
                                             <li><a class="active" href="/">홈</a></li>
                                             <li><a href="/planner/list">플랜 둘러보기</a></li>
-                                            <li><a href="/item/list">여행상품 주문</a></li>
-                                            <li><a class="" href="travel_destination.html">공지사항</a></li>
-                                            <li><a href="adminAsk/asks">문의사항</a></li>
+                                            <li><a class="" href=/adminInfo>공지사항</a></li>
+                                            <li><a href="/adminAsk/asks">문의사항</a></li>
+                                            <li><a href="#">여행상품<i class="ti-angle-down"></i></a>
+                                                <ul class="submenu">
+                                                        <li><a href="/item/list">여행상품 주문</a></li>
+                                                        <li><a class="active" href="/cartList" sec:authorize="isAuthenticated()">장바구니</a></li>
+                                                        <li><a href="elements.html" sec:authorize="isAuthenticated()">주문이력</a></li>
+                                                </ul>
+                                            </li>
+
                                             <li><a href="/member/mypage" sec:authorize="isAuthenticated()">마이페이지</a></li>
-		                                    <li><a class="active" href="/cartList" sec:authorize="isAuthenticated()">장바구니</a></li>
+		                                    
                                         </ul>
                                     </nav>
                                 </div>

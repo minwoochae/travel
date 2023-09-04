@@ -1,58 +1,68 @@
 package com.travel.service;
 
 
+import java.util.LinkedHashMap;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.catalina.manager.util.SessionUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.travel.Dto.CartDto;
-import com.travel.Dto.CartItemDto;
+
 import com.travel.Dto.KakaoPayApproveDto;
 import com.travel.Dto.KakaoPayReadyDto;
+import com.travel.Repository.OrderItemRepository;
+import com.travel.Repository.OrderRepository;
+import com.travel.Repository.PayRepository;
+import com.travel.constant.OrderStatus;
+import com.travel.entity.Cart;
+import com.travel.entity.CartItem;
+import com.travel.entity.OrderItem;
+import com.travel.entity.Orders;
+import com.travel.entity.Pay;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class KakaoPayService {
-	
+	private final OrderRepository orderRepository;
+	private final PayRepository payRepository;
+	private final OrderItemRepository orderItemRepository;
+
+
 	public KakaoPayReadyDto kakaoPay(Map<String, Object> params) {
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "KakaoAK 826f9676e26b9186cb6767cddf17d62b");
-		
+		headers.set("Authorization", "KakaoAK d08ec3ab35a48fa351e5d8a58985ccdf");
+		headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
 		MultiValueMap<String, Object> payParams = new LinkedMultiValueMap<String, Object>();
-		
+		System.out.println(params.get("itemName")+ "ddddddddddddddd" );
 		payParams.add("cid", "TC0ONETIME");
-		payParams.add("partner_order_id", "KAO20230318001");
-		payParams.add("partner_user_id", "kakaopayTest");
-		payParams.add("item_name", params.get("item_name"));
-		payParams.add("quantity", params.get("quantity"));
-		payParams.add("total_amount", params.get("total_amount"));
-		payParams.add("tax_free_amount", params.get("tax_free_amount"));
+		payParams.add("partner_order_id", "partner_order_id");
+		payParams.add("partner_user_id", "partner_user_id");
+		payParams.add("item_name", params.get("itemName"));
+		payParams.add("quantity", "1");
+		payParams.add("total_amount", params.get("totalPrice"));
+		payParams.add("tax_free_amount", "0");
 		payParams.add("approval_url", "http://localhost/pay/success");
-		payParams.add("fail_url", "http://localhost/pay/fail");
 		payParams.add("cancel_url", "http://localhost/pay/cancel");
+		payParams.add("fail_url", "http://localhost/pay/fail");
 		
-		HttpEntity<Map> request = new HttpEntity<Map>(payParams, headers);
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(payParams, headers);
 		
 		RestTemplate template = new RestTemplate();
 		String url = "https://kapi.kakao.com/v1/payment/ready";
-		
 		KakaoPayReadyDto res = template.postForObject(url, request, KakaoPayReadyDto.class);
-		System.out.println(res + "55555555555555");
 		
 		return res;
 	}
@@ -60,17 +70,17 @@ public class KakaoPayService {
 	
 	public KakaoPayApproveDto kakaoPayApprove(String tid, String pgToken) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "KakaoAK 826f9676e26b9186cb6767cddf17d62b");
+		headers.set("Authorization", "KakaoAK d08ec3ab35a48fa351e5d8a58985ccdf");
 		headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 		
 		MultiValueMap<String, Object> payParams = new LinkedMultiValueMap<String, Object>();
-		System.out.println(tid + "dddddddddddddddd");
 		
 		payParams.add("cid", "TC0ONETIME");
 		payParams.add("tid", tid);
-		payParams.add("partner_order_id", "KAO20230318001");
-		payParams.add("partner_user_id", "kakaopayTest");
+		payParams.add("partner_order_id", "partner_order_id");
+		payParams.add("partner_user_id", "partner_user_id");
 		payParams.add("pg_token", pgToken);
+		
 		
 		HttpEntity<Map> request = new HttpEntity<Map>(payParams, headers);
 		
@@ -81,4 +91,19 @@ public class KakaoPayService {
 		
 		return res;
 	}
+
+	
+    public void savePay(Pay pay) {
+        payRepository.save(pay);
+    }
+    
+    
+    public void saveOrders(Orders orders) {
+    	orderRepository.save(orders);
+    }
+    
+    
+    public void saveOrderItem(OrderItem orderItem) {
+    	orderItemRepository.save(orderItem);
+    }
 }

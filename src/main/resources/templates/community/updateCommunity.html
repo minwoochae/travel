@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<th:block layout:fragment="css">
+	<style>
+	.title1 {
+			margin: 20px auto;
+    		text-align: center;
+    		font-size: 34px;
+		}
+		
+		.title2 {
+			margin: 10px auto;
+    		font-size: 16px;
+    		text-align: center;
+    		color: #828282;
+		}
+		
+		.planBox {
+			width: 917px;
+    		height: 706px;
+    		border: 1px solid #d7d7d7;
+    		margin: 20px auto;
+		}
+		
+		.planTitle {
+			font-size: 25px;
+    		text-align: center;
+    		margin: 32px 0 52px 0;
+		}
+		.kakao-btn {
+			width: 309.16px;
+			height: 51px;
+			background: #FEE500;
+			border-radius: 5px;
+			display: flex;
+   		 	margin: 0 auto;
+    		padding-top: 15px;
+    		justify-content: space-around;
+		}
+		
+		
+		.kakao-text {
+			width: 194px;
+			height: 24.48px;
+			font-family: 'Inter';
+			font-style: normal;
+			font-weight: 600;
+			font-size: 20px;
+			line-height: 24px;
+
+		
+		}
+		
+		.kakao-logo {
+			width: 29.61px;
+			height: 27px;
+		
+		}
+</style>
+</th:block>
+
+<div layout:fragment="content">
+	<div class="planBox" style="height:1060px; overflow:hidden; border-radius:5px;">
+		<h5 class="planTitle" th:text="${community.plan.planTitle}">플랜제목</h5>
+		
+		<div class="card text-center" style="border:none;">
+  			<ul class="nav nav-tabs" id="myTab" role="tablist">
+    			<th:block th:each="idx : ${#numbers.sequence(1, community.plan.planDate)}">
+        			<li class="nav-item" role="presentation">
+            			<a class="nav-link " th:id="'planday' + ${idx}" th:data-toggle="tab" th:href="'#day' + ${idx}" role="tab" th:aria-controls="'day' + ${idx}" aria-selected="true" th:text="'Day ' + ${idx}"></a>
+        			</li>
+    			</th:block>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content " style="width:100%;">
+    			<div th:each="day : ${#numbers.sequence(1, community.plan.planDate)}" th:id="'day' + ${day}" th:value="${day}" class="tab-pane fade " style="height:910px; overflow: overlay;">
+        			<ul th:if="${day} == ${content.planDay}" th:each="content : ${community.plan.planContent}" style="margin-left:30px; margin-right:30px;">
+            			<li class="content-list" style="width:100%; padding-top:30px; border-bottom: 1px solid; padding-left:10px; padding-bottom: 30px; float: left; display: flex;">
+                			<img th:src="@{${content.place_img}}" style="width: 300px; height: 240px;"/>
+                			<span th:text="${content.placeName}" style="margin-left:50px; line-height: 240px;"></span>
+            			</li>
+        			</ul>
+    			</div>
+			</div>
+
+		</div>
+	</div>
+	
+	
+	<form role="form" action="/community/update" method="post" enctype="multipart/form-data"
+            th:object="${planCommunityDto}" style="width: 917px; align-item: center; margin: 0 auto;">
+        <div class="mb-3">
+        	<label for="exampleInputEmail1" class="form-label">제목</label>
+        	<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+        	th:field="*{communityTitle}" name="communityTitle">
+        </div>
+                    
+        <div class="mb-3">
+        	<label for="exampleInputPassword1" class="form-label">내용</label>
+        	<input type="text" class="form-control" id="exampleInputPassword1"
+        	style="height:150px; text-align:start; vertical-align: top;"
+        	th:field="*{communityContent}" name="communityContent">
+    	</div>
+                    
+    	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    	<button type="submit" class="btn btn-outline-primary">작성하기</button>
+    </form>
+	
+	
+	
+	
+
+</div>
+
+
+<th:block layout:fragment="script">
+	<script type="text/javascript" th:src="@{/js/cookie.js}"></script>
+
+	
+	<script th:inline="javascript">
+	
+	
+	window.addEventListener('DOMContentLoaded', (event) => {
+    		const tabContentDiv = document.querySelector('.tab-content');
+    		const navTabsDiv = document.querySelector('.nav-tabs');
+    
+    		if (tabContentDiv) {
+    		    const day1Div = tabContentDiv.querySelector('#day1');
+    		    if (day1Div) {
+   		         day1Div.classList.add('active');
+   		         day1Div.classList.add('show');
+   		    }
+    		}
+    
+    		if (navTabsDiv) {
+    		    const planDay1Div = navTabsDiv.querySelector('#planday1');
+    		    if (planDay1Div) {
+    		        planDay1Div.classList.add('active');
+    		        planDay1Div.classList.add('show');
+    		    }
+    		}
+		});
+		
+		window.addEventListener('DOMContentLoaded', (event) => {
+    // Check initially
+    updateNavLinkBackgroundColor();
+
+    // Also update when the nav-link is clicked
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('nav-link')) {
+            updateNavLinkBackgroundColor();
+        }
+    });
+});
+
+function updateNavLinkBackgroundColor() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach((navLink) => {
+        if (navLink.classList.contains('active') && navLink.classList.contains('show')) {
+            navLink.style.backgroundColor = '#FF6666';
+            navLink.style.color = 'white';
+        } else {
+            navLink.style.backgroundColor = '';  // Reset to default
+            navLink.style.color = '';
+        }
+    });
+}
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    // Assuming day IDs start from 1 and go up to some number N
+    let dayId = 1;
+
+    while (true) {
+        const dayDiv = document.getElementById('day' + dayId);
+        
+        if (!dayDiv) {
+            break;  // Exit if the dayDiv is not found
+        }
+        
+        const contentLists = dayDiv.querySelectorAll('ul li.content-list');
+        const lastContentList = contentLists[contentLists.length - 1];
+        
+        if (lastContentList) {
+            lastContentList.style.borderBottom = 'none';
+        }
+        
+        dayId++;  // Move to the next day
+    }
+});
+	
+	</script>
+</th:block>	
+</html>

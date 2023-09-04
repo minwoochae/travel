@@ -1,13 +1,8 @@
 package com.travel.service;
 
-import java.io.*;
-import java.net.*;
 import java.security.SecureRandom;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.travel.Dto.MemberFormDto;
 import com.travel.Repository.MemberRepository;
+import com.travel.auth.PrincipalDetails;
+import com.travel.constant.Division;
 import com.travel.entity.Member;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional // 퀘리문 오류시 이전데이터 롤백
-@RequiredArgsConstructor // autowired를 사용하지 않고 필드의 의존성을 주입 시켜준다
+@RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
@@ -50,9 +47,12 @@ public class MemberService implements UserDetailsService {
 	}
 
 	public Member findByEmail(String email) {
-		return memberRepository.findByEmail(email);
+		System.out.println(email + "왜애애ㅐ애애애");
+		Member member = memberRepository.findByEmail(email);
+		System.out.println(member + "ㅏㅉ장ㅇ나나아아");
+	    return member;
 	}
-
+	
 	public String emailFind(String name, String phone) {
 		Member member = memberRepository.findByNameAndPhoneNumber(name, phone);
 
@@ -111,30 +111,37 @@ public class MemberService implements UserDetailsService {
 
 	public String passwordFind(String email) {
 
-		Member member = memberRepository.findByEmail(email);
 
-		if (member == null) {
+		
+		
+		if (memberRepository.findByEmail(email) == null) {
 			return "일치하는 사용자가 없습니다";
+		}
+		Member member = memberRepository.findByEmail(email);
+		
+		if(member.getDivision() ==Division.KAKAO ){
+			return "카카오 사용자입니다";
 		}
 
 		return member.getPassword();
 	}
 
 
-
+	
 	  private final JavaMailSender javaMailSender;
-
-
+	  
 	  
 	  
 	  public void sendEmail(String to, String subject, String text) {
-			SimpleMailMessage message = new SimpleMailMessage();
-			message.setTo(to);
-			message.setSubject(subject);
-			message.setText(text);
-			javaMailSender.send(message);
-		}
-
+	  SimpleMailMessage message = new SimpleMailMessage(); message.setTo(to);
+	  message.setSubject(subject); message.setText(text);
+	  
+	  javaMailSender.send(message);
+	  
+	  }
+	 
+	  
+	
 
 	// 회원 상세정보
 	@Transactional(readOnly = true)
@@ -173,10 +180,9 @@ public class MemberService implements UserDetailsService {
 		if (member == null) {
 			throw new UsernameNotFoundException(email);
 		}
-
-		// 사용자가 있다면 DB에서 가져온 값으로 userDetails 객체를 만들어서 반환
-		return User.builder().username(member.getEmail()).password(member.getPassword())
-				.roles(member.getRole().toString()).build();
+		
+		
+		 return new PrincipalDetails(member);
 	}
 
 	@Transactional(readOnly = true)

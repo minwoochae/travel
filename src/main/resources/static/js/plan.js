@@ -21,7 +21,7 @@ searchButton.addEventListener("click", updateResults);
 var currentData = null;
 
 
-/*// 초기 로드시 지역 코드 목록을 가져옴
+// 초기 로드시 지역 코드 목록을 가져옴
 fetch(
   "https://apis.data.go.kr/B551011/KorService1/areaCode1?numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=gOVD3%2BBlrMTRtX3Mo4DWCe0dDc%2FSzwpdZW%2FiVE3cw5j5YDl6zOb59oeZgcuj3M6XRj8vV9wd0Ukt6tZ1l%2FilPQ%3D%3D"
 )
@@ -81,7 +81,7 @@ function updateContentTypes() {
 
   // 초기 로드시 콘텐츠 결과 업데이트
   //   updateResults();
-}*/
+}
 
 
 
@@ -271,11 +271,11 @@ function insertContent1() {
 }
 
 
-<<<<<<< HEAD
+
 function deleteContent(event) {
-=======
+
 function deleteContent1(event) {
->>>>>>> 42adfe47e7bf7482a87059859cb84c2f9ec679c6
+
     // 클릭한 버튼의 가장 가까운 .dataList 부모 요소를 찾음
     let dataListDiv = event.target.closest(".dataList1");
     
@@ -371,3 +371,4 @@ function loadMoreResults() {
 
 
 
+}

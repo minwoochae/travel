@@ -61,7 +61,25 @@
 	height: 81px;
 }
 
+.select {
+  z-index: 10;
+  position: relative;
+  display: block;
+  width: 120px;
+  padding: 3.5px 3.5px 3.5px 3.5px;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1;
+  text-decoration: none;
+  border: 1px solid #c8c8c8;
+  margin-left: 10px;
+}
 
+.button {
+    color: rgb(255, 255, 255);
+    background-color: rgb(92, 184, 92);
+    border-color:green;
+}
 </style>
 
 
@@ -101,8 +119,8 @@
 				<!--<li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>-->
 				<button type="button" class="btn btn-danger"
 					style="margin-right: 20px;" onclick="createPlan()">저장하기</button>
-				<button type="button" class="btn btn-dark"
-					style="margin-right: 40px;">여행가지말기</button>
+				<a href="/" type="button" class="btn btn-dark"
+					style="margin-right: 40px;">여행가지말기</a>
 <!-- 				<button  id="saveButton" class="btn btn-danger"
 					style="margin-right: 20px;">저장해보기</button> -->
 			</ul>
@@ -179,19 +197,19 @@
 				<li class="nav-item " role="presentation" style="width: 33.3333%;">
 					<button class="nav-link active" id="contentTypeIdSelect" data-bs-toggle="tab"
 						data-bs-target="#home-tab-pane" type="button" role="tab"
-						aria-controls="home-tab-pane" aria-selected="true" value="2"
+						aria-controls="home-tab-pane" aria-selected="true" value="32"
 						style="width: 100%; height: 63px;">숙소</button>	
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
 					<button class="nav-link" id="contentTypeIdSelect2" data-bs-toggle="tab"
 						data-bs-target="#profile-tab-pane" type="button" role="tab"
-						aria-controls="profile-tab-pane" aria-selected="false" value="3"
+						aria-controls="profile-tab-pane" aria-selected="false" value="12"
 						style="width: 100%; height: 63px;">관광지</button>
 				</li>
 				<li class="nav-item" role="presentation" style="width: 33.3333%;">
 					<button class="nav-link" id="contentTypeIdSelect3" data-bs-toggle="tab"
 						data-bs-target="#contact-tab-pane" type="button" role="tab"
-						aria-controls="contact-tab-pane" aria-selected="false" value="1"
+						aria-controls="contact-tab-pane" aria-selected="false" value="39"
 						style="width: 100%; height: 63px;">식당</button>
 				</li>
 			</ul>
@@ -204,7 +222,7 @@
 						<div class="d-flex w-100 align-items-center border-bottom"
 							style="width: 100%; height: 192px; background-color: white;">
 							
-							<select id="areaCodeSelect">
+							<select id="areaCodeSelect" class="select">
 							<option value = "1">서울특별시</option>
 							<option value = "2">인천광역시</option>
 							<option value = "31">경기도</option>
@@ -218,26 +236,27 @@
 							<option value = "5">광주광역시</option>
 							<option value = "3">대전광역시</option>
 							<option value = "4">대구광역시</option>
-							<option value = "6">울산광역시</option>
-							<option value = "7">부산광역시</option>
+							<option value = "7">울산광역시</option>
+							<option value = "6">부산광역시</option>
 							<option value = "39">제주도</option>
 							</select>
 							
 							
-							<input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+							<input type="search" id="searchInput" placeholder=" 검색어를 입력하세요"
+							value = ""> 
 							<div class="d-flex w-100 align-items-center">
-								<button id="searchButton">검색</button>
+								<button id="searchButton" class="button">검색</button>
 							</div>
 
 						</div>
 
 
-
+						   
 						<div id="results" href="#" style="height: 700px; overflow: overlay; padding: 10px;">
 							
 						</div>
-						<button id="loadMoreResults">더 보기</button>
-
+						
+					
 	
 					</div>
 
@@ -251,7 +270,7 @@
 						<div class="d-flex w-100 align-items-center border-bottom"
 							style="width: 100%; height: 192px; background-color: white;">
 
-							<select id="areaCodeSelect2">
+							<select id="areaCodeSelect2" class="select">
 							<option value = "1">서울특별시</option>
 							<option value = "2">인천광역시</option>
 							<option value = "31">경기도</option>
@@ -265,25 +284,24 @@
 							<option value = "5">광주광역시</option>
 							<option value = "3">대전광역시</option>
 							<option value = "4">대구광역시</option>
-							<option value = "6">울산광역시</option>
-							<option value = "7">부산광역시</option>
+							<option value = "7">울산광역시</option>
+							<option value = "6">부산광역시</option>
 							<option value = "39">제주도</option>
 							</select>
 							
-							<input type="text" id="searchInput2" placeholder="검색어를 입력하세요">
+							<input type="text" id="searchInput2" placeholder=" 검색어를 입력하세요">
 							<div class="d-flex w-100 align-items-center">
-								<button id="searchButton2">검색</button>
+								<button id="searchButton2" class="button">검색</button>
 							</div>
 
 						</div>
 
 
-
+					
 						<div id="results2" href="#" style="height: 700px; overflow: overlay; padding: 10px;">
 								
 						</div>
-						<button id="loadMoreResults2">더 보기</button>
-
+						
 
 
 					</div>
@@ -298,7 +316,7 @@
 						<div class="d-flex w-100 align-items-center border-bottom"
 							style="width: 100%; height: 192px; background-color: white;">
 
-							<select id="areaCodeSelect3">
+							<select id="areaCodeSelect3" class="select">
 							<option value = "1">서울특별시</option>
 							<option value = "2">인천광역시</option>
 							<option value = "31">경기도</option>
@@ -312,14 +330,14 @@
 							<option value = "5">광주광역시</option>
 							<option value = "3">대전광역시</option>
 							<option value = "4">대구광역시</option>
-							<option value = "6">울산광역시</option>
-							<option value = "7">부산광역시</option>
+							<option value = "7">울산광역시</option>
+							<option value = "6">부산광역시</option>
 							<option value = "39">제주도</option>
 							</select>
 							
-							<input type="text" id="searchInput3" placeholder="검색어를 입력하세요">
+							<input type="text" id="searchInput3" placeholder=" 검색어를 입력하세요">
 							<div class="d-flex w-100 align-items-center">
-								<button id="searchButton3">검색</button>
+								<button id="searchButton3" class="button">검색</button>
 							</div>
 
 						</div>
@@ -329,7 +347,7 @@
 						<div id="results3" href="#" style="height: 700px; overflow: overlay; padding: 10px;">
 								
 						</div>
-						<button id="loadMoreResults3">더 보기</button>
+						
 
 
 
@@ -362,21 +380,23 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
 		crossorigin="anonymous">
-		</script>
+	</script>
 	<script src="/js/sidebars.js"></script>
 
-	<script src="/js/plan.js"></script>
+	<script src="/js/plan4.js"></script>
+	<script src="/js/plan5.js"></script>
+	<script src="/js/plan6.js"></script>
+
+
+
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<script>
 
 	    var urlParams = new URLSearchParams(window.location.search);
 	    var input1 = urlParams.get('travelNm');
-	    var input2 = urlParams.get('date');
-	    
-	    
-	    
-	    
+	    var input2 = urlParams.get('date');	    
         var output1Element = document.getElementById("outputTravelNm");
         var output2Element = document.getElementById("outputDate");
         
@@ -478,6 +498,7 @@
             let place_img = dataList.querySelector("img.place_img") ? dataList.querySelector("img.place_img").src : null;
             let placeName = dataList.querySelector("h4.placeName") ? dataList.querySelector("h4.placeName").textContent : null;
             let placeAddress = dataList.querySelector("input.placeAddress") ? dataList.querySelector("input.placeAddress").value : null;
+            let placeTel = dataList.querySelector("input.placeTel") ? dataList.querySelector("input.placeTel").value : null;
             let placeLongitude = dataList.querySelector("input.placeLongitude") ? dataList.querySelector("input.placeLongitude").value : null;
             let placeLatitude = dataList.querySelector("input.placeLatitude") ? dataList.querySelector("input.placeLatitude").value : null;
             let area_code = dataList.querySelector("input.area_code") ? dataList.querySelector("input.area_code").value : null;
@@ -491,6 +512,7 @@
                 travelDivision: travelDivision,
                 placeName: placeName,
                 placeAddress: placeAddress,
+                placeTel: placeTel,	
                 placeLatitude: placeLatitude,
                 placeLongitude: placeLongitude,
                 place_img: place_img,
@@ -508,79 +530,63 @@
 }
 
         
-        function createPlan() {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
+    function createPlan() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
 
-			var url = "/planner/setplan";
-			
-			
-			// Controller(서버)에 전달할 데이터
-			var paramData = {
-				planTitle : input1, 
-				planDate : input2
-			}
-			
-			let allData = getAllTabPaneContentData();
-			
-			var param = JSON.stringify(paramData);
-			var paramContent = JSON.stringify(allData);
-			
-			var allParam = {param, paramContent};
-			
-			var jsonParam =  JSON.stringify(allParam);
-			$.ajax({
-				url : url, // request URL 서버에 요청할 url 쓰면 됨 위에서 url이란 변수에 담아놨기 때문에 url 써줌 
-				type : "POST", // 전송방식
-				contentType : "application/json",
-				data : jsonParam, // 서버에 전송할 데이터 var param = JSON.stringify(paramData); item_id, 수량 들어있음
-				beforeSend : function(xhr) {
-					// 데이터를 전송하기 전에 헤더에 csrf 값을 설정해줌
-					xhr.setRequestHeader(header, token);
-				},
-				cache : false,
-				success : function(result, status) {
-					alert("플랜 저장이 완료되었습니다.")
-					location.href = '/planComplete';
-				},
-				error : function(jqXHR, status, error) {
-					if (jqXHR.status == '401') {
-						alert('로그인 후 이용해 주세요.')
-						location.href = '/members/login';
-					} else {
-						// 에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
-						console.error(jqXHR.responseText);
-						console.log({param, allData});
-						alert(jqXHR.responseText); 
-					}
-				}
-			});
-			
-		}
-        
-/*==         document.getElementById("saveButton").addEventListener("click", function() {
-        	DataSave();
-        });
+        var url = "/planner/setplan";
 
-        function DataSave() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/save-content", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        alert("저장되었습니다.");
-                    } else {
-                        alert("저장되지않았습니다.");
-                    }
+        var paramData = {
+            planTitle: input1,
+            planDate: input2
+        }
+
+        let allData = getAllTabPaneContentData();
+
+        // allData가 null이거나 없을경우 
+        if (!allData || allData.length === 0) {
+            alert("정보 입력은 필수입니다.");
+            return; 
+        }
+
+        var param = JSON.stringify(paramData);
+        var paramContent = JSON.stringify(allData);
+
+        var allParam = { param, paramContent };
+
+        var jsonParam = JSON.stringify(allParam);
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: jsonParam,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            cache: false,
+            success: function (result, status) {
+                alert("플랜 저장이 완료되었습니다.");
+                location.href = '/planComplete';
+            },
+            error: function (jqXHR, status, error) {
+                if (jqXHR.status == '401') {
+                    alert('로그인 후 이용해 주세요.');
+                    location.href = '/members/login';
+                } else {
+                    console.error(jqXHR.responseText);
+                    console.log({ param, allData });
+                    alert(jqXHR.responseText);
                 }
-            };
-            xhr.send();
-        } */
+            }
+        });
+    }
+                
+
         
+
         
-        
-        
-        
+  
 	</script>
 	
 </body>

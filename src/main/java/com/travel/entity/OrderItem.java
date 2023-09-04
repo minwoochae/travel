@@ -25,6 +25,7 @@ public class OrderItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	
 	@Column(name = "order_item_price")
 	private int orderPrice;
 	
@@ -35,8 +36,23 @@ public class OrderItem {
 	@JoinColumn(name = "orders_id")
 	private Orders orders;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "item_id")
-	private Item item;
+	
+	public static OrderItem createOrderItem(CartItem cartItem, int orderCount) {
+		OrderItem orderItem = new OrderItem();
+		orderItem.setOrderCount(orderCount);
+		orderItem.setOrderPrice(cartItem.getItem().getPrice());
+		
+		
+		cartItem.getItem().removeStock(orderCount);
+		return orderItem;
+	}
+	
+	public static OrderItem createOrderCart(CartItem cartItem) {
+		OrderItem orderItem = new OrderItem();
+		orderItem.setOrderCount(cartItem.getCount());
+		orderItem.setOrderPrice(cartItem.getItem().getPrice());
+		return orderItem;
+	}
+	
 	
 }

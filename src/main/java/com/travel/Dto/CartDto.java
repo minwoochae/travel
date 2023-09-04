@@ -11,7 +11,9 @@ public class CartDto {
 	
 	private String member;
 	
-	private Long count;
+	private int count;
 	
 	private String imgUrl;
+	
+	private int price;
 }

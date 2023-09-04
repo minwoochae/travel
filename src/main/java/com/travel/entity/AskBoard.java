@@ -38,9 +38,6 @@ public class AskBoard extends BaseEntity{
 	private String askContent;
 	
 	
-	@Enumerated(EnumType.STRING)
-	private AskStatus askStatus;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
@@ -50,5 +47,6 @@ public class AskBoard extends BaseEntity{
 			this.askTitle = askFormDto.getAskTitle();
 			this.askContent = askFormDto.getAskContent();
 		}
+	
 	
 }
