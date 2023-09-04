@@ -64,9 +64,7 @@ public class CommunityService {
 	        throw new IllegalArgumentException("The given id must not be null");
 	    }
 		
-		System.out.println(planCommunityDto.getId());
 		PlanCommunity planCommunity = planCommunityRepository.findById(planCommunityDto.getId()).orElseThrow(EntityNotFoundException::new);
-		System.out.println(planCommunity + "여긴 뭐야");
 		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 		planCommunity.updatecommunity(planCommunityDto, regDate);
 		
