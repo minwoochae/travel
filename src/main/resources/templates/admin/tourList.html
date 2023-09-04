@@ -13,7 +13,7 @@
 	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
-<div layout:fragment="content">
+<div layout:fragment="content" style="height:1000px; margin-top:70px;">
 
 	<div class="container">
 		<div class="row">
@@ -22,7 +22,14 @@
 				<div
 					style="display: flex; justify-content: space-between; align-items: center;">
 					<h2 class="h3 mb-3 text-black">추천 관광지</h2>
-					 <a href="/adminTour/new" style="margin-right: 0;" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">등록하기</a> 
+					
+						<a href="/adminInfo/new" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="margin-right: 0;">
+					<button style="width: 120px; background-color: #FF6168; border:none; color: white; height:35px; border-radius:5px;">
+						등록하기
+					</button>
+					</a>
+					
+					
 				</div>
 				<form th:action="@{'/admin/tour/' + ${tours.number}}" method="get"
 					th:object="${tours}">

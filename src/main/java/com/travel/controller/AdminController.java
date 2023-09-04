@@ -496,19 +496,23 @@ public class AdminController {
 		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 6);	
 		Page<AskBoard> asks = askService.getAdminAskPage(askSearchDto, pageable);
 		
+		
+		
 		 // Add askStatus to each AskResponseFormDto in the list
-	    List<AskResponseFormDto> askResponseFormDtos = new ArrayList<>();
+	    //List<AskResponseFormDto> askResponseFormDtos = new ArrayList<>();
 	    for (AskBoard ask : asks.getContent()) {
 	        AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(ask.getId());
 	        if (askResponseFormDto != null) {
 	            askResponseFormDto.setAskStatus(askResponseFormDto.getAskStatus());
+	            model.addAttribute("askResponse", askResponseFormDto);
 	        }
-	        askResponseFormDtos.add(askResponseFormDto);
+	        //askResponseFormDtos.add(askResponseFormDto);
 	    }
 		
 		model.addAttribute("asks", asks);
 		model.addAttribute("askSearchDto", askSearchDto);
-		model.addAttribute("askResponseFormDtos", askResponseFormDtos);
+		
+		//model.addAttribute("askResponseFormDtos", askResponseFormDtos);
 		model.addAttribute("maxPage", 5);
 		
 		return "admin/askList";
@@ -665,8 +669,8 @@ public class AdminController {
 	}
 	
 	// 문의사항 답변 수정보여주기 - 관리자
-	@GetMapping(value = "/ask/response/{askResponseId}")
-	public String askResponseBoardIdModify(@PathVariable("askResponseBoardId") Long askResponseBoardId, Model model) {
+	@GetMapping(value = "/ask/response/{askBoardId}")
+	public String askResponseBoardIdModify(@PathVariable("askBoardId") Long askResponseBoardId, Model model) {
 		
 		try {
 			AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askResponseBoardId);
@@ -685,7 +689,7 @@ public class AdminController {
 	
 	
 	// 문의사항 답변 수정하기 - 관리자 
-	@PostMapping(value = "/ask/response/{askResponseBoardId}")
+	@PostMapping(value = "/ask/response/{askBoardId}")
 	public String askResponseUpdate(@Valid AskResponseFormDto askResponseFormDto, Model model,
 			BindingResult bindingResult) {
 		
@@ -694,6 +698,7 @@ public class AdminController {
 		}
 		
 		try {
+	
 			askResponseService.updateAskResponse(askResponseFormDto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -705,8 +710,8 @@ public class AdminController {
 	}
 
 	// 문의사항 답변 삭제 - 관리자 
-	@DeleteMapping("/askResponse/{askResponseBoardId}/delete")
-	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askResponseBoardId") Long askResponseBoardId) {
+	@DeleteMapping("/askResponse/{askBoardId}/delete")
+	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askBoardId") Long askResponseBoardId) {
 		askResponseService.deleteAskResponse(askResponseBoardId);
 		return new ResponseEntity<Long>(askResponseBoardId, HttpStatus.OK);
 	}

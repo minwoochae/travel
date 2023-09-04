@@ -53,7 +53,9 @@ public class Member extends BaseEntity implements UserDetails {
 	private Role role; // 역할
 
 	@Enumerated(EnumType.STRING)
-	private Division division; // 역할
+
+	private Division division; //역할
+
 
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Cart cart;
@@ -62,6 +64,7 @@ public class Member extends BaseEntity implements UserDetails {
 
 	private String providerId;
 
+	
 	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
 		String password = passwordEncoder.encode(memberFormDto.getPassword());
 
