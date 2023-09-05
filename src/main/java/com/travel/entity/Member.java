@@ -66,6 +66,14 @@ public class Member extends BaseEntity implements UserDetails {
 			orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Plan> plan = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, 
+			orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Pay> pay = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, 
+			orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Orders> orders = new ArrayList<>();
+	
 	private String provider;
 
 	private String providerId;

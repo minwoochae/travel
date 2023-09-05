@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.travel.Dto.OrderDto;
 import com.travel.constant.OrderStatus;
 
@@ -66,6 +69,7 @@ public class Orders{
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
     
     @ManyToOne(fetch = FetchType.LAZY)
