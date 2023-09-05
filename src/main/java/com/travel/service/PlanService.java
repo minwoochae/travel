@@ -121,6 +121,7 @@ public class PlanService {
 	    return planRepository.findPlansByEmailOrderByRegDateDesc(email, pageable);
 	}
 	
+	//플랜 검색해서 데이터 가져오기
 	public PlanFormDto getPlanDtl(Long planId) {
 		Plan plan = planRepository.findById(planId).orElseThrow(EntityNotFoundException::new);
 		PlanFormDto planFormDto = PlanFormDto.of(plan);
@@ -131,16 +132,18 @@ public class PlanService {
 	}
 	
 	
+	//planid로 검색해서 plan가져오기
 	public Plan getPlanById(Long planId) {
         return planRepository.findById(planId).orElseThrow(EntityNotFoundException::new);
     }
 	
+	//planCommunity 페이징
 	public Page<PlanCommunity> findPaginated(Pageable pageable) {
 	    return planCommunityRepository.findAllByOrderByCommunityRegDateDesc(pageable);
 	} 
 	
 	
-	
+	//플랜 삭제하기
 	public void deleteplan(Long planId) {
 		Plan plan = planRepository.findById(planId).orElseThrow(EntityNotFoundException::new);
 

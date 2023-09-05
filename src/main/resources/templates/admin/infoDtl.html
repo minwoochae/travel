@@ -63,11 +63,19 @@
 			<input type="hidden" id="infoBoardId" th:value="${info.id}">
 
 
-		
+		<div style="display: flex; justify-content: space-between; align-items: center;">
 				<input type="hidden" th:value="${info.infoTitle}" id="infoTitle" name="infoTitle">
 					<strong th:text="${info.infoTitle}"
 					style="font-size:larger; padding-bottom:20px; margin-top:50px;"
 					></strong>				
+			
+			<button type="button" class="btn btn-primary"
+										th:id="${info.Id}" th:value="${info.Id}"
+										th:onclick="'javascript:deleteInfo(' + ${info.id} +')'"
+										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
+										style="background-color:#FF6168; border:none; margin-left:750px; margin-top:30px;">삭제</button>
+			
+			</div>
 			
 			<div class="card" style="width:1140px; margin-bottom:20px">
 				<div class="card-body">
@@ -110,6 +118,57 @@
 	</div>
 </div>
 
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	
+	function deleteInfo(infoBoardId) {
+		const deleteConf = confirm("삭제하시겠습니까?");
+		if (!deleteConf)
+			return; //취소버튼 누르면
+
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		
+		// header 변수의 값 확인
+        console.log("Header:", header);
+
+        if (header === undefined) {
+            console.error("Header is undefined.");
+            return;
+        }
+		
+		var url = "/adminInfo/" + infoBoardId + "/delete";
+
+		$.ajax({
+			url : url, //request url
+			type : "DELETE", //전송방식
+			contentType : "application/json",
+			beforeSend : function(xhr) {
+				//데이터 전송 전에 헤더에  csrf값을 설정. 
+				xhr.setRequestHeader(header, token);
+
+			},
+			dataType : "json",
+			cache : false,
+			success : function(result, status) {
+				location.href = '/admin';
+
+			},
+			error : function(jqXHR, status, error) {
+				if (jqXHR.status == '401') {
+					alert('로그인 후 이용해주세요.');
+					location.href = '/member/memberLoginForm';
+				} else {
+					alert(jqXHR.responseText);
+				}
+			}
+		});
+	}
+	
+	</script>
+</th:block>
 
 </html>
 

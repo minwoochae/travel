@@ -43,6 +43,7 @@ public class CommunityController {
 	@GetMapping(value = { "/community/write", "/community/write/{planId}" })
 	public String createCommunityPage(@PathVariable("planId") Long planId, Model model,
 			PlanCommunityDto planCommunityDto) {
+		
 		PlanFormDto planFormDto = planService.getPlanDtl(planId);
 		model.addAttribute("plan", planFormDto);
 		model.addAttribute("planCommunityDto", new PlanCommunityDto() );

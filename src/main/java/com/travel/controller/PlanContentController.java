@@ -17,10 +17,12 @@ import com.travel.service.DataService;
 
 @Controller
 public class PlanContentController {
-
+	
+	
 	@Autowired
 	private DataService dataService;
 
+	//데이터 불러오기
 	@GetMapping("/search-data")
     @ResponseBody
     public ResponseEntity<List<DataContent>> searchData(

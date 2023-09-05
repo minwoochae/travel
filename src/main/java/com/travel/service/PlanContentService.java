@@ -21,6 +21,7 @@ public class PlanContentService {
         this.apiService = apiService;
     }
 
+    //api 불러와서 db에 저장
     public void DataSave() {
     	 List<String> apiUrls = new ArrayList<>();
     	 apiUrls.add("https://apis.data.go.kr/B551011/KorService1/areaBasedSyncList1?numOfRows=3000&pageNo=1&MobileOS=ETC&MobileApp=TEST&serviceKey=bWi7itZDsVW8U1exI%2BALv2Eys5Aq6ELHC0tumPmSeA%2Bb221ygrItwTu0OKj%2BXDcb61FoPzn5Ut7PlCRAHy94Zw%3D%3D&showflag=1&listYN=Y&arrange=Y&contentTypeId=12");
@@ -53,6 +54,7 @@ public class PlanContentService {
     		}
     }
     
+    //초기 메인화면 db확인해서 저장하기
     public Long recordCount(){
     	long recordCount = dataRepository.count();
         
