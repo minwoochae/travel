@@ -46,12 +46,13 @@ public class PlannerController {
 	private final MemberService memberService;
 	private final ObjectMapper objectMapper;
 
+	//플랜 만들기
 	@GetMapping(value = "/planner")
 	public String plannerMain() {
 		return "planner/plannerMain";
 	}
 
-
+	//플랜 둘러보기
 	@GetMapping(value = { "/planner/list", "/planner/list/{page}" })
 	public String planList(Model model, @PathVariable Optional<Integer> page) {
 		Page<PlanCommunity> planCommunity = planService
