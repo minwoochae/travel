@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import com.travel.Dto.CartDto;
 import com.travel.Dto.CartItemDto;
@@ -56,7 +57,7 @@ public class OrderService {
     
     
     
-    
+    //카트에 넣은 아이템 불러오기
 	public List<CartItemDto> findItemsByIds(Long[] itemIds) {
         List<CartItemDto> items = new ArrayList<>();
 
@@ -72,13 +73,14 @@ public class OrderService {
         return items;
     }
 
-
+	
 	 public CartItem getCartItemById(Long itemId) {
 		 
 	        return cartItemRepository.findById(itemId).orElse(null); // itemId에 해당하는 카트 항목 조회
 	    }
 	 
 	 
+	 //주문한 상품 리스트 불러오기
 	 @Transactional(readOnly = true)
 	 public Page<OrderHistDto> getOrderList(String email, Pageable pageable) {
 	     List<Orders> orders = orderRepository.findOrdersByEmail(email, pageable);
@@ -115,10 +117,47 @@ public class OrderService {
 	     return new PageImpl<OrderHistDto>(orderHistDtos, pageable, totalCount);
 	 }
 	 
+	 //주문상품 정보 추가
 	 public void setOrderItem(CartItem cartItem, OrderItem orderItem) {
 			orderItem.setItem(cartItem.getItem());
 	        Item item = cartItem.getItem();
 	        item.removeStock(cartItem.getCount());
+		}
+	 
+		//본인확인(현재 로그인한 사용자와 주문 데이터를 생성한 서술자가 같은지
+		@Transactional(readOnly = true)
+		public boolean validateOrder(Long orderId, String email) {
+			Member curMember = memberRepository.findByEmail(email); //로그인한 사용자 찾기
+			Orders order = orderRepository.findById(orderId) .orElseThrow(EntityNotFoundException :: new); //주문내역
+			
+			Member savedMember = order.getMember(); //주문한 사용자 찾기
+			
+			
+			//로그인한 사용자의 이메일과 주문한 이메일이 같은지 최종 비교
+			if(!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
+				//걸지않으면
+				return false;
+			}
+			
+			return true;
+		}
+		
+		//주문취소
+		public void cancelOrder(Long orderId) {
+			Orders order = orderRepository.findById(orderId)
+										.orElseThrow(EntityNotFoundException::new);
+			
+			//OrderSatus를 update -> entity 의 필트값을 바꿔준다.
+			order.cancelOrder();
+		}
+		
+		//주문삭제
+		public void deleteOrder(Long orderId) {
+			Orders order = orderRepository.findById(orderId)
+					.orElseThrow(EntityNotFoundException::new);
+		
+			
+			orderRepository.delete(order);
 		}
 
 	 

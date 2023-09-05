@@ -51,6 +51,7 @@ public class KakaoPayController {
 	private final CartService cartService;
 	private final OrderService orderService;
 
+	//카카오페이 큐알 호출하기
 	@GetMapping("/pay/ready")
 	@ResponseBody
 	public KakaoPayReadyDto kakaoPay(@RequestParam(value = "orderItemIds[]", required = false) Long[] orderItemIds,
@@ -94,6 +95,7 @@ public class KakaoPayController {
 		return res;
 	}
 	
+	//카카오페이로 결제한 정보 DB저장하기
 	@GetMapping("/pay/success")
 	public String success(@RequestParam("pg_token")String pgToken,HttpSession session, Principal principal, Model model) {
 			String tid = (String) session.getAttribute("tid");

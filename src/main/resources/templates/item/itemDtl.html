@@ -13,12 +13,6 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
   />
 	<style>
-		.item-cover {
-			width: 100%;
-			height: 60px;
-			background-color: black;
-			display: flex;
-		}
 		
 	input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
@@ -47,9 +41,7 @@
 </th:block>
 
 <div layout:fragment="content">
-	<div class="item-cover">
-		<p style="color: white; font-size: 26px;"> <i class="fa-solid fa-chevron-left" style="color: #ffffff;"></i> </p>
-	</div> <!--백그라운드 이미지 활용  -->
+
 	<section class="py-5">
 		<input type="hidden" id="itemId" th:value="${item.id}">
             <div class="container px-4 px-lg-5 my-5">
@@ -171,6 +163,14 @@
 
         var imgUrl = document.getElementById('itemImg').getAttribute('src');
 
+	    // Input 요소의 값 가져오기
+	    var countValue = parseInt($("#count").val());
+
+	    if (countValue < 1) {
+	        // 최소 주문 수량 조건을 만족하지 않으면 알림창 띄우기
+	        alert("최소 주문 수량은 1개 이상입니다.");
+	        return; // 함수 종료
+	    }
 		// Controller(서버)에 전달할 데이터
 		var paramData = {
 			itemId : $("#itemId").val(), // class_id
@@ -182,6 +182,7 @@
 		// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
 
 		var param = JSON.stringify(paramData);
+		
 		
 		$.ajax({
 			url : url, // request URL 서버에 요청할 url 쓰면 됨 위에서 url이란 변수에 담아놨기 때문에 url 써줌 

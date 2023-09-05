@@ -6,8 +6,126 @@
 <th:block layout:fragment="css">
 </th:block>
 
-<div layout:fragment="content" style= "margin: 50px 0;">
-	
+<div class="container" layout:fragment="content" style= "margin: 50px 0;">
+	<div class="sc-fimazj-0 gKYVxm container">
+	<div class="sc-abukv2-0 kcHmyx">
+		<div class="sc-abukv2-1 kSZYgn" th:text="${orders.orderDate} + ' 주문'">
+			
+		</div>
+
+	</div>
+	<div class="sc-gnmni8-0 hCVtNj" th:each="orderItem : ${orders.orderItemDtoList}">
+		<table class="sc-gnmni8-1 eSpcfO">
+		<colgroup><col width="600"><col width=""></colgroup>
+		<tbody class="sc-gnmni8-2 hryMPB">
+		<tr class="sc-gnmni8-3 gmGnuU">
+			<td class="sc-gnmni8-5 hUzAOG">
+				<div class="sc-ki5ja7-0 bQVZKC">
+					<div class="sc-ki5ja7-1 krPkOP" >
+						<span font-weight="bold" color="#111111" class="sc-755zt3-0 hullgd" style="font-size: 1.25rem;" th:text="${orders.orderStatus == orders.orderStatus.ORDER ? '주문완료' : '주문취소'}"></span>
+					</div>
+				</div>
+				<div class="sc-fe2r96-0 hmCrGF">
+				</div>
+				<div class="sc-1jiyjbz-0 dGiGeF">
+					<div class="sc-gnmni8-9 kCcQTc">
+						<div class="sc-g8964r-0 oRzGt">
+						</div>
+						<div class="sc-9cwg9-1 gLgexz">
+							<div class="sc-9cwg9-2 cNiGzR">
+								<div class="sc-9cwg9-3 eEDOvs">
+									<a class="sc-1uwk3m0-0 kdlGbA sc-9cwg9-0 gujsmv" href="" th:alt="${orderItem.itemNm}"><img width="64px" th:src="${orderItem.imgUrl}"></img></a>
+								</div>
+								<div class="sc-9cwg9-5 bmwSdh">
+									<div class="sc-9cwg9-6 jBCCpd">
+										<a class="sc-gnmni8-10 yma-DD"></a><a href="" target="_blank" class="sc-gnmni8-10 sc-8q24ha-0 yma-DD hPjYZj"><span color="#111111" class="sc-755zt3-1 sc-8q24ha-1 inmgHC ifMZxv" th:text="${orderItem.itemNm}"></span></a><a class="sc-gnmni8-10 yma-DD"></a><a class="sc-gnmni8-10 sc-8q24ha-5 yma-DD iDQVMP">
+										<div class="sc-8q24ha-3 gFbjJh">
+											<div class="sc-uaa4l4-0 jxRaeI">
+												<span font-weight="normal" class="sc-755zt3-0 kftgZM" th:text="${orderItem.orderPrice} + ' 원'">18,800 원</span><span class="sc-13xhsmd-0 kYtEGM"><span class="sc-13xhsmd-1 joIhoV"></span></span><span class="sc-755zt3-0 jtWNEg" th:text="${orderItem.count} + ' 개'"></span>
+											</div>
+										</div>
+										<div class="sc-8q24ha-4 cUFnye">
+											<button class="sc-1k9quwu-0 iCTfhh sc-xuyxga-0 bZaQeF">장바구니 담기</button>
+											<div class="sc-xuyxga-1 hxalxw">
+											</div>
+										</div>
+										</a>
+										<div class="sc-fxyxvg-0 igPkOG">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</td>
+			<td class="sc-gnmni8-6 gbTJl">
+				<div class="sc-gnmni8-7 bCQoer">
+					<button class="sc-1k9quwu-0 fUUUKW sc-4d0nwb-0 iiEWkt">주문 상세보기</button>
+					<th:block th:if="${#strings.equals(orders.orderStatus, 'ORDER')}">
+						<button th:value="${orders.orderId}" onclick="cancelOrder(this.value)" class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">주문취소</button>					
+					</th:block>
+					<th:block th:unless="${#strings.equals(orders.orderStatus, 'ORDER')}">
+						<button th:value="${orders.orderId}" onclick="deleteOrder(this.value)" class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">주문삭제</button>					
+					</th:block>
+				</div>
+			</td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+</div>
+
+	<div class="sc-1m6uvm7-0 khiofo">
+	<h1 class="sc-1m6uvm7-2 berHYP"><span>받는사람 정보</span></h1>
+	<table class="sc-1m6uvm7-3 jqnXTj">
+	<caption class="sc-1m6uvm7-1 dSygCD">받는사람 정보</caption><colgroup><col width="105"><col><col width="100"></colgroup>
+	<tbody class="sc-zknpht-1 dMXLkO">
+	<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			받는사람
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB">
+			이지희
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+	<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			연락처
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB">
+			010-5332-6198
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+	<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			받는주소
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB">
+			(21615) 인천광역시 남동구 서창남순환로 140 207동 2004호 ( 서창동, 더포레스트 )
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+	<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			배송요청사항
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB">
+			<div class="sc-1r8o5gz-0 jSLuUU">
+				<span>문 앞 (20**********)</span>
+			</div>
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+	</tbody>
+	</table>
+</div>
 </div>
 
 <th:block layout:fragment="script">

@@ -19,6 +19,12 @@ public class OrderHistDto {
 	
 	private OrderStatus orderStatus;
 	
+	private String orderInfoNm;
+	
+	private String orderInfoPhone;
+	
+	private String orderInfoAdd;
+	
 	private String payNo;
 	
 	private List<OrderItemDto> orderItemDtoList = new ArrayList<>();
@@ -28,7 +34,9 @@ public class OrderHistDto {
 	}
 	
 	public OrderHistDto(Orders orders) {
-		
+		this.orderInfoAdd = orders.getOrderInfoAddress();
+		this.orderInfoPhone = orders.getOrderInfoPhone();
+		this.orderInfoNm = orders.getOrderInfoName();
 		this.payNo = orders.getPay().getPayNo();
 		this.orderId = orders.getId();
 		this.orderDate = orders.getPay().getPayDate()

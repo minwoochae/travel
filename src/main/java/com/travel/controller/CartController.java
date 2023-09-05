@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class CartController {
 	private final CartService cartService;
 	
+	//카트에 상품 추가하기
 	@PostMapping(value = "/addCart")
 	public ResponseEntity<Long> addCart(@RequestBody @Valid CartDto cartDto, BindingResult bindingResult, Authentication authentication) {
 	    if (bindingResult.hasErrors()) {
@@ -51,6 +52,7 @@ public class CartController {
 	    }
 	}
 	
+	//카트 상품 불러오기
 	@GetMapping(value = {"/cartList", "/cartList/{page}"})
 	public String cartList(@PathVariable("page") Optional<Integer>page, Model model, Principal principal) {
 		
@@ -68,6 +70,7 @@ public class CartController {
 		return "/item/cart";
 	}
 	
+	//카트 상품 삭제하기
 	@DeleteMapping("/cartList/{cartId}/delete")
 	public @ResponseBody ResponseEntity deleteCart(@PathVariable("cartId")Long cartId, Authentication authentication) {
 	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
