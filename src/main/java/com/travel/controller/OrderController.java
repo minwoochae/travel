@@ -46,34 +46,6 @@ public class OrderController {
 	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 	
 	
-	//상품 바로 주문하기
-	@PostMapping("/orderItem")
-	public @ResponseBody ResponseEntity orderItem(
-	    @RequestParam("itemId") Long itemId,
-	    @RequestParam("count") int count
-	) {
-		System.out.println(itemId);
-		System.out.println(count);
-	    String redirectUrl = "/orderItem/address?itemId=" + itemId + "&count=" + count;
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.add("Location", redirectUrl);
-	    return new ResponseEntity<>(headers, HttpStatus.FOUND);
-	}
-    
-    @GetMapping("/orderItem/address")
-    public String orderItemOneAddress(@RequestParam("itemId") Long itemId, @RequestParam("count") int count, Model model) {
-        System.out.println("여긴옴??");
-    	// 받아온 itemId와 count를 사용하여 필요한 로직을 수행
-        // 예를 들어, 주문 상품 정보를 조회하거나 다른 처리를 수행할 수 있습니다.
-
-        // 아래는 예시로 모델에 데이터를 추가하는 부분입니다.
-        // 실제 필요한 데이터를 모델에 추가하세요.
-        model.addAttribute("itemId", itemId);
-        model.addAttribute("count", count);
-
-        return "item/address2"; // 주소가 맞는지 확인하세요
-    }
-
 	//장바구니에서 주문하기
 	@PostMapping(value= "/order/address")
 	public @ResponseBody ResponseEntity getAddress(@RequestBody Map<String, Object> requestData,BindingResult bindingResult, Model model) {
@@ -101,6 +73,7 @@ public class OrderController {
 	    
 	}
 	
+	//장바구니에서 선택한 상품 주문하러 가기
 	@GetMapping(value= "/order/{selectedProductIdsString}")
 	public String test(@PathVariable("selectedProductIdsString") Object selectedProductIdsString,
             Model model) {
@@ -128,6 +101,7 @@ public class OrderController {
 	
 	
 
+	//결제완료 페이지
 	@GetMapping(value = "/order/success/{payId}")
 	public String orderSuccess() {
 		
@@ -135,10 +109,10 @@ public class OrderController {
 	}
 	
 	
+	//주문 내역 리스트
 	@GetMapping(value = {"/orders", "/orders/{page}"})
 	public String orderHist(@PathVariable("page") Optional<Integer>page, Principal principal, Model model) {
 		Pageable pageable =  PageRequest.of(page.isPresent() ? page.get() : 0, 4);
-		System.out.println(principal.getName());
 		Page<OrderHistDto> orderHistDto = orderService.getOrderList(principal.getName(), pageable);
 		
 		model.addAttribute("orders", orderHistDto);
@@ -148,7 +122,36 @@ public class OrderController {
 		return "/item/orderHist";
 	}
 
+	
+	//주문 취소하기
+	@PostMapping("/orders/{orderId}/cancel")
+	public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId, Principal principal) {
+		//1. 주문취소 권한이 있는지 확인(본인확인)
+		if(!orderService.validateOrder(orderId, principal.getName())) {
 
+			return new ResponseEntity<String>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
+		
+		}
+
+		//2. 주문취소
+		orderService.cancelOrder(orderId);
+		return new ResponseEntity <Long>(orderId, HttpStatus.OK); //성공했을때 
+	}
+	
+	//주문삭제하기
+	@DeleteMapping("/order/{orderId}/delete")
+	public @ResponseBody ResponseEntity deleteOrder(@PathVariable("orderId")Long orderId, Principal principal) {
+		//★delete하기 전에 select 를 한번 해준다. -> 영속성 컨텍스트에 엔티티를 저장한 후 변경 감지를 하도록 하기 위해
+		//1. 본인인증
+		if(!orderService.validateOrder(orderId, principal.getName())) {
+			return new ResponseEntity<String>("주문 삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
+		}
+		
+		orderService.deleteOrder(orderId);
+		
+		//2. 주문삭제
+		return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+	}
 	
 
 	

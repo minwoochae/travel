@@ -250,14 +250,19 @@
         // 받은 데이터를 처리하거나 원하는 대로 활용
         $("#parent").val(data); // 데이터를 부모 창의 input에 설정
     }
-	$("#apibtn").click(function(){
+	$("#apibtn").click(function(event){
 		var address1 = document.getElementById("sample6_address").value;
 		var address2 = document.getElementById("sample6_detailAddress").value;
 		var address3 = document.getElementById("sample6_extraAddress").value;
 		
 		var itemIndex = document.getElementById("itemIndex").value;
 		var itemName = document.getElementById("itemName").textContent;
-		var totalPrice = document.getElementById("totalPrice").textContent;
+		if (itemIndex > 1) {
+		    itemName = itemName + "외 " + (itemIndex - 1) + "개";
+		}
+		var totalPriceElement = document.getElementById("totalPrice");
+		var totalPriceText = totalPriceElement.textContent; // 또는 totalPriceElement.innerText
+		var totalPriceInt = parseInt(totalPriceText.replace(/[^0-9]/g, ''), 10);
 		var orderName = document.getElementById("orderInfoName").value;
 		var zipCode = document.getElementById("sample6_postcode").value;
 		var orderAddress = address1 + address2 + address3;
@@ -282,8 +287,8 @@
 	    alert(orderItemIds);
 	    var data = {
 	    		orderItemIds : orderItemIds,
-	    		itemName : itemName + "외 " + (itemIndex - 1) + "개",
-	    		totalPrice : totalPrice,
+	    		itemName : itemName,
+	    		totalPrice : totalPriceInt,
 	    		orderName : orderName,
 	    		zipCode : zipCode,
 	    		orderAddress : orderAddress,

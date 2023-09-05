@@ -97,6 +97,17 @@ public class Orders{
 		
 		return order;
 	}
+	
+	//주문취소
+	public void cancelOrder() {
+		this.orderStatus = OrderStatus.CANCEL;
+		
+		//재고 원래대로
+		for(OrderItem orderItem : orderItems) {
+			orderItem.cancel();
+		}
+	}
+	
     
     @Override
     public boolean equals(Object o) {

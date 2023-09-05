@@ -73,6 +73,11 @@ public class OrderItem {
 		return orderItem;
 	}
 	
+	//재고를 원래대로
+	public void cancel() {
+		this.getItem().addStock(count);
+		
+	}
 	
 	
 	

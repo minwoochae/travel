@@ -38,7 +38,7 @@ public class KakaoPayService {
 	private final PayRepository payRepository;
 	private final OrderItemRepository orderItemRepository;
 
-
+	//카카오페이 호출하기
 	public KakaoPayReadyDto kakaoPay(Map<String, Object> params) {
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -67,7 +67,7 @@ public class KakaoPayService {
 		return res;
 	}
 	
-	
+	//카카오페이
 	public KakaoPayApproveDto kakaoPayApprove(String tid, String pgToken) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "KakaoAK d08ec3ab35a48fa351e5d8a58985ccdf");
@@ -92,17 +92,17 @@ public class KakaoPayService {
 		return res;
 	}
 
-	
+	//결제정보 저장
     public void savePay(Pay pay) {
         payRepository.save(pay);
     }
     
-    
+    //주문정보 저장
     public void saveOrders(Orders orders) {
     	orderRepository.save(orders);
     }
     
-    
+    //주문상품 정보 저장
     public void saveOrderItem(OrderItem orderItem) {
     	orderItemRepository.save(orderItem);
     }
