@@ -30,7 +30,6 @@ public class MailController {
 	    @PostMapping("/mail/send")
 	    public String sendMail(MailFormDto mailDto) throws MessagingException, IOException {
 	    	mailService.sendMultipleMessage(mailDto);
-	        System.out.println("메일 전송 완료");
 	        return "result";
 	    }
 	 

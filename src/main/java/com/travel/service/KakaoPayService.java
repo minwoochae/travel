@@ -46,7 +46,6 @@ public class KakaoPayService {
 		headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
 		MultiValueMap<String, Object> payParams = new LinkedMultiValueMap<String, Object>();
-		System.out.println(params.get("itemName")+ "ddddddddddddddd" );
 		payParams.add("cid", "TC0ONETIME");
 		payParams.add("partner_order_id", "partner_order_id");
 		payParams.add("partner_user_id", "partner_user_id");

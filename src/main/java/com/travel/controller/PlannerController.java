@@ -160,7 +160,6 @@ public class PlannerController {
         Member members = principals.getMember();
 
 		String email = members.getEmail();
-		System.out.println(email);
 		Page<Plan> plans = planService.getPlansByEmail(email, PageRequest.of(page.isPresent() ? page.get() : 0, 5));
 		model.addAttribute("plan", plans);
 		model.addAttribute("maxPage", 5);

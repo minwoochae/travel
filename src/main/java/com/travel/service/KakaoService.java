@@ -59,7 +59,6 @@ public class KakaoService implements IKakaoLoginService {
 
 			// 결과 코드가 200이라면 성공
 			int responseCode = conn.getResponseCode();
-			System.out.println("responseCode : " + responseCode);
 
 			// 요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -69,7 +68,6 @@ public class KakaoService implements IKakaoLoginService {
 			while ((line = br.readLine()) != null) {
 				result += line;
 			}
-			System.out.println("response body : " + result);
 
 			// jackson objectmapper 객체 생성
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -80,8 +78,6 @@ public class KakaoService implements IKakaoLoginService {
 			access_Token = jsonMap.get("access_token").toString();
 			refresh_Token = jsonMap.get("refresh_token").toString();
 
-			System.out.println("access_token : " + access_Token);
-			System.out.println("refresh_token : " + refresh_Token);
 
 			br.close();
 			bw.close();
@@ -108,7 +104,6 @@ public class KakaoService implements IKakaoLoginService {
 			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
 			int responseCode = conn.getResponseCode();
-			System.out.println("responseCode : " + responseCode);
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -118,8 +113,7 @@ public class KakaoService implements IKakaoLoginService {
 			while ((line = br.readLine()) != null) {
 				result += line;
 			}
-			System.out.println("response body : " + result);
-			System.out.println("result type" + result.getClass().getName()); // java.lang.String
+
 
 			try {
 				// jackson objectmapper 객체 생성
@@ -128,13 +122,10 @@ public class KakaoService implements IKakaoLoginService {
 				Map<String, Object> jsonMap = objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {
 				});
 
-				System.out.println(jsonMap.get("properties"));
 
 				Map<String, Object> properties = (Map<String, Object>) jsonMap.get("properties");
 				Map<String, Object> kakao_account = (Map<String, Object>) jsonMap.get("kakao_account");
 
-				// System.out.println(properties.get("nickname"));
-				// System.out.println(kakao_account.get("email"));
 
 				String name = properties.get("nickname").toString();
 				String email = kakao_account.get("email").toString();

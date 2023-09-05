@@ -63,7 +63,6 @@ public class KakaoPayController {
 	        @RequestParam("phoneNumber") String phoneNumber,
 	        Model model, HttpSession session, Principal principal) {
 		
-		System.out.println(itemName + totalPrice);
 		Map<String, Object> params = new HashMap<>();
 	    params.put("orderItemIds", orderItemIds);
 	    params.put("totalPrice", totalPrice);
@@ -149,7 +148,6 @@ public class KakaoPayController {
 				
 				orderService.setOrderItem(cartItem, orderItem);
 				orderItemList.add(orderItem);
-				System.out.println(orderItemList);
 				kakaoPayService.saveOrders(orders);
 				kakaoPayService.saveOrderItem(orderItem);
 				cartService.deleteCart(cartItem.getId());

@@ -88,18 +88,12 @@ public class KakaoController {
 	@RequestMapping(value = "/members/login/kakao", method = RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model) throws Throwable {
 
-		// 1번
-		System.out.println("code:" + code);
 
-		// 2번
 		String access_Token = iKakaoS.getAccessToken(code);
-		System.out.println("###access_Token#### : " + access_Token);
 		// 위의 access_Token 받는 걸 확인한 후에 밑에 진행
 
 		// 3번
 		HashMap<String, Object> userInfo = iKakaoS.getUserInfo(access_Token);
-		System.out.println("###nickname#### : " + userInfo.get("nickname"));
-		System.out.println("###email#### : " + userInfo.get("email"));
 
 		String name = (String) userInfo.get("nickname");
 		String email = (String) userInfo.get("email");
@@ -108,7 +102,6 @@ public class KakaoController {
 		MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
 		memberKakaoDto.setEmail(email);
 		memberKakaoDto.setName(name);
-		System.out.println(memberKakaoDto.getEmail());
 
    
 		Member existingMember = memberService.findByEmail(email);

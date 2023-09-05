@@ -47,7 +47,6 @@ public class CartService {
 	//카트에 상품 추가하기
 	public Long addToCart(CartDto cartDto, Member member) {
 	    Cart cart = member.getCart();
-	    System.out.println(cart);
 
 	    if (cart == null) {
 	        cart = Cart.createCart(member);
@@ -64,9 +63,6 @@ public class CartService {
 	    cartItem.setCart(cart);
 	    cartItem.setImgUrl(cartDto.getImgUrl());
 	    
-	    System.out.println(cartItem.getCount());
-	    System.out.println(cartItem.getItem().getPrice());
-	    System.out.println(cartItem.getCart());
 
 	    cartItemRepository.save(cartItem);
 	    cartRepository.save(cart); // Cart 저장
@@ -103,7 +99,6 @@ public class CartService {
 	        Cart cart = member.getCart(); // 사용자의 장바구니 가져오기
 	        if (cart != null) {
 	            List<CartItem> cartItems = cart.getCartItems(); // 장바구니의 cartItem 목록 가져오기
-	            System.out.println(cartItems.size() +"먳개고");
 	            return cartItems.size(); // cartItem 개수 반환
 	        }
 	    }
