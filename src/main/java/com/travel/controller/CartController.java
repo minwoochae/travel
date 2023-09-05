@@ -40,7 +40,6 @@ public class CartController {
 	    if (bindingResult.hasErrors()) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
-	    System.out.println(cartDto.getItemId()+"asdasdjeybfalkwe4al;erhjoerahg");
 	    PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 	    Member member = principalDetails.getMember();
 

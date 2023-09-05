@@ -113,7 +113,6 @@ public class OrderController {
 	@GetMapping(value = {"/orders", "/orders/{page}"})
 	public String orderHist(@PathVariable("page") Optional<Integer>page, Principal principal, Model model) {
 		Pageable pageable =  PageRequest.of(page.isPresent() ? page.get() : 0, 4);
-		System.out.println(principal.getName());
 		Page<OrderHistDto> orderHistDto = orderService.getOrderList(principal.getName(), pageable);
 		
 		model.addAttribute("orders", orderHistDto);
