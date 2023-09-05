@@ -28,6 +28,7 @@ button:hover {
     table th[scope="col" style="width: 60%"] {
         width: 60%;
     }    
+ 
 </style>
 </th:block>
 
@@ -47,7 +48,8 @@ button:hover {
 					style="display: flex; justify-content: space-between; align-items: center;">
 					<h2 class="h3 mb-3 text-black">공지사항</h2>
 					<a href="/adminInfo/new" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-					<button style="width: 120px; background-color: #FF6168; border:none; color: white; height:35px; border-radius:5px;">
+					<button class="custom-button" style="width: 120px; background-color: #FF6168; border:none; color: white; height:35px; border-radius:5px;
+					">
 						등록하기
 					</button>
 					</a>
@@ -58,9 +60,9 @@ button:hover {
 						<thead>
 							<tr>
 								<th scope="col" style="width: 10%">NO.</th>
-								<th scope="col" style="width: 60%">제목</th>
+								<th scope="col" style="width: 70%">제목</th>
 								<th scope="col">등록자</th>
-								<th scope="col" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">삭제</th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -74,12 +76,7 @@ button:hover {
 									th:text="${info.infoTitle}"> </a>
 								</td>
 								<td th:text="관리자"></td>
-								<td><button type="button" class="btn btn-primary"
-										th:id="${info.Id}" th:value="${info.Id}"
-										th:onclick="'javascript:deleteInfo(' + ${info.id} +')'"
-										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
-										style="background-color:#FF6168; border:none;">삭제</button>
-								</td>
+								
 							</tr>
 						</tbody>
 					</table>

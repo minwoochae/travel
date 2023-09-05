@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 public class ApiService {
 
+	//크롤링
     public List<PlanContentDto> fetchApiData(String apiUrl) {
         List<PlanContentDto> contentList = new ArrayList<>();
 

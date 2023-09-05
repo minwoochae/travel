@@ -160,7 +160,7 @@ public class KakaoService implements IKakaoLoginService {
     public Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
-
+    //이메일 검사후 저장 
     public void saveMember(Member member) {
 //        insertUserInfoToDatabase(member);
 

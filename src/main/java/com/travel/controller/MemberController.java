@@ -161,7 +161,7 @@ public class MemberController {
 		return msg;
 	}
 
-
+	//마이페이지
 	@GetMapping(value = "/member/mypage")
 	public String mainMypage( Model model, Authentication authentication) {
 
