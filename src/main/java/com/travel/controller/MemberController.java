@@ -229,6 +229,10 @@ public class MemberController {
 	@PostMapping(value = "/member/checkPwd")
 	public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
 
+		  if (passwordDto.getPassword() == null || passwordDto.getPassword().trim().isEmpty()) {
+		        model.addAttribute("errorMessage", "비밀번호 값이 입력되어 있지 않습니다..");
+		        return "member/checkPwd";
+		    }
 		Member member = memberservice.findByEmail(principal.getName());
 
 		boolean result = passwordEncoder.matches(passwordDto.getPassword(), member.getPassword());
@@ -252,11 +256,20 @@ public class MemberController {
 	@PostMapping("/member/EditMember")
 	public String passwordupdate(@RequestParam String password, Model model, Principal principal, Member member) {
 		Member members = memberservice.memberMypage(principal.getName());
+		   if (password == null || password.trim().isEmpty()) {
+		        model.addAttribute("errorMessage", "비밀번호 값이 없습니다.");
+		        model.addAttribute("member", member);
+		        return "member/EditMember";
+		    }
+		    
+		
 		if (passwordEncoder.matches(password, members.getPassword()) == true) {
 			model.addAttribute("errorMessage", "기존 비밀번호와 같습니다.");
 			model.addAttribute("member", member);
 			return "member/EditMember";
-		} else {
+		}
+		
+		else {
 			memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
 			return "redirect:/member/mypage";
 		}

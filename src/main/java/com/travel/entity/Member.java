@@ -1,9 +1,11 @@
 package com.travel.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -60,6 +62,10 @@ public class Member extends BaseEntity implements UserDetails {
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Cart cart;
 
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, 
+			orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Plan> plan = new ArrayList<>();
+	
 	private String provider;
 
 	private String providerId;
