@@ -288,8 +288,7 @@ public class AdminController {
 			return "admin/infoRegist";
 		}
 		
-		System.out.println("1111111111");
-			return "redirect:/";
+		return "redirect:/";
 		}
 	
 
@@ -442,7 +441,6 @@ public class AdminController {
 			BindingResult bindingResult, @RequestParam("tourImgFile") List<MultipartFile> tourImgFileList) {
 		
 		if(bindingResult.hasErrors()) {
-			System.out.println("Tid");
 			return "admin/tourRegist";
 		}
 		
@@ -452,14 +450,12 @@ public class AdminController {
 			return "admin/tourRegist";
 		}
 		
-		System.out.println("11111111111");
 		try {
 			tourService.updateTour(tourFormDto, tourImgFileList);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "상품 수정 중 에러가 발생했습니다.");
-			System.out.println("22222222222");
 			return "admin/tourList";
 		}
 		
@@ -646,20 +642,16 @@ public class AdminController {
 		
 		 askResponseFormDto.setAskBoardId(askBoardId);
 		
-		System.out.println("여기온다");
 		
 		if(bindingResult.hasErrors()) {
-			System.out.println("너냐");
 			return "admin/askResponseRegist";
 		}
 		
 		try {
 			askResponseService.saveAskResponse(askBoardId, askResponseFormDto);		
-			System.out.println("여기오니");
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "답변 등록 중 에러가 발생했습니다.");
-			System.out.println(askResponseFormDto.getAskResponseTitle());
 			return "admin/askResponseRegist";
 		}
 		

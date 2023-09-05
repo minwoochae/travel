@@ -41,7 +41,6 @@ public class OrderHistDto {
 		this.orderId = orders.getId();
 		this.orderDate = orders.getPay().getPayDate()
 				.formatted(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
-		System.out.println(orders.getOrderStatus());
 		this.orderStatus = orders.getOrderStatus();
 	}
 	

@@ -2,9 +2,17 @@ package com.travel.service;
 
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.Repository.MemberRepository;
 import com.travel.entity.Member;
 
@@ -15,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
+	
 public class KakaoService {
 
     private final MemberRepository memberRepository;
