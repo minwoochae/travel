@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.travel.Dto.MemberKakaoDto;
 import com.travel.auth.PrincipalDetails;
@@ -59,7 +60,7 @@ public class KakaoController {
 	
 	//카카오 회원가입
 	@PostMapping(value = "/oauth2/code/kakao")
-	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model)
+	public String memberForm(@Valid MemberKakaoDto memberKakaoDto, BindingResult bindingResult, Model model , RedirectAttributes rttr)
 	{
 		if (bindingResult.hasErrors()) {
 			
@@ -68,6 +69,9 @@ public class KakaoController {
 
 		try {
 			Member member = Member.createKaKao(memberKakaoDto, passwordEncoder);
+
+		    String message ="카카오 회원가입이 완료 되었습니다.";
+		    rttr.addAttribute("message", message);
 			kakaoService.saveMember(member);
 		
 
@@ -76,7 +80,7 @@ public class KakaoController {
 			return "member/KakaoMemberForm";
 		}
 
-		return "redirect:/";
+		return "redirect:/members/login";
 	}
 
 
