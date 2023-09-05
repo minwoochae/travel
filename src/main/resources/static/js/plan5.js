@@ -177,7 +177,7 @@ function insertContent2() {
     
     // dataList 클래스를 가진 새로운 div 생성 및 내용 설정
     let dataListDiv = document.createElement("div");
-    dataListDiv.className = "dataList1";
+    dataListDiv.className = "dataList2";
     dataListDiv.style = "display:flex;  padding:10px; border-bottom:1px solid black;";
     
     dataListDiv.innerHTML = `
