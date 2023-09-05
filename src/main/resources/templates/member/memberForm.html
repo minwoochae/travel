@@ -42,7 +42,7 @@
 									<p style="width: 80px;">이름:</p>
 								<div class="col-md-10">
 									<!-- th:field => id, name , 속성을 자동으로 생성해준다.  -->
-									<input type="text" class="form-control" placeholder="Name"
+									<input type="text" class="form-control" placeholder="Name" autocomplete="off"
 										th:field="*{name}">
 									<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
 										class="fieldError"></p>
@@ -52,7 +52,7 @@
 							<div class="form-group row">
 							<p style="width: 80px;">이메일:</p>
 								<div class="col-md-10">
-									<input type="email" class="form-control" placeholder="Email"
+									<input type="email" class="form-control" placeholder="Email" autocomplete="off"
 										th:field="*{email}">
 									<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
 										class="fieldError"></p>
@@ -62,7 +62,7 @@
 							<div class="form-group row">
 							<p style="width: 80px;">전화번호:</p>
 								<div class="col-md-10">
-									<input type="text" class="form-control"
+									<input type="text" class="form-control" autocomplete="off"
 										placeholder="번호는 - 를 제외하고 입력해주세요" th:field="*{phoneNumber}">
 									<p th:if="${#fields.hasErrors('phoneNumber')}"
 										th:errors="*{phoneNumber}" class="fieldError"></p>

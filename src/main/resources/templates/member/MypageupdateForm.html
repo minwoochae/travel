@@ -82,7 +82,7 @@
 				<div>
 					<label th:for="name" class="text-black"
 						style="width: 100%; justify-content: center; margin: 15px auto; align-items: center; font-size: 25px;"></label>
-					<input type="text" class="form-control" id="name" name="name"
+					<input type="text" class="form-control" id="name" name="name" autocomplete="off"
 						style="width: 400px;" placeholder="Name" th:value="${member.name}">
 				</div>
 			</div>
@@ -121,7 +121,7 @@
 					<label th:for="phoneNumber" class="text-black"
 						style="width: 100%; justify-content: center; margin: 15px auto; align-items: center; font-size: 25px;"></label>
 					<input type="text" class="form-control" id="phoneNumber"
-						style="width: 400px;" name="phoneNumber" placeholder="PhoneNumber"
+						style="width: 400px;" name="phoneNumber" placeholder="PhoneNumber" autocomplete="off"
 						th:value="${member.phoneNumber}">
 				</div>
 			</div>
