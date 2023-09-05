@@ -206,7 +206,7 @@ function insertContent2() {
 function deleteContent2(event) {
 
     // 클릭한 버튼의 가장 가까운 .dataList 부모 요소를 찾음
-    let dataListDiv = event.target.closest(".dataList1");
+    let dataListDiv = event.target.closest(".dataList2");
     
     if (dataListDiv) {
         dataListDiv.remove(); // 해당 div 삭제
