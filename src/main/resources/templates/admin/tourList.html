@@ -42,10 +42,10 @@ button:hover {
 					<table class="table table-responsive-md">
 						<thead>
 							<tr>
-								<th scope="col">id</th>
-								<th scope="col">제목</th>
+								<th scope="col" style="width: 20%">id</th>
+								<th scope="col" style="width: 70%">제목</th>
 								<th scope="col">등록자</th>
-								<th scope="col" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">삭제</th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -58,12 +58,7 @@ button:hover {
 									th:text="${tour.touristTitle}"> </a>
 								</td>
 								<td th:text="관리자"></td>
-								<td><button type="button" class="btn btn-primary"
-										th:id="${tour.Id}" th:value="${tour.Id}"
-										th:onclick="'javascript: deletetour(' + ${tour.id} +')'" 
-										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
-										style="background-color:#FF6168; border:none;">삭제</button>
-								</td>
+								
 							</tr>
 						</tbody>
 					</table>

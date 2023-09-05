@@ -197,7 +197,7 @@
 			cache : false,
 			success : function(result, status) {
 				alert("장바구니에 저장되었습니다.")
-				location.href = '/';
+				
 			},
 			error : function(jqXHR, status, error) {
 				if (jqXHR.status == '401') {
@@ -206,7 +206,7 @@
 				} else {
 					
 					// 에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
-					alert("안돼")
+					
 					alert(jqXHR.responseText); 
 				}
 				
