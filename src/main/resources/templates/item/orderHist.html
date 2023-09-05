@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+	<head>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+
+<th:block layout:fragment="css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<style>
+	
+	a {
+		text-decoration: none;
+	}
+/* 여기부터 쿠팡 */
+.gKYVxm {
+	width: 800px;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 4px 0px, rgba(0, 0, 0, 0.16) 0px 0px 1px 0px;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 20px;
+    padding: 24px 24px 16px;
+}
+
+.kcHmyx {
+	    height: 28px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.kSZYgn {
+	display: inline-block;
+    width: 50%;
+    height: 28px;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+    color: rgb(17, 17, 17);
+}
+
+.hCVtNj {
+	    border-radius: 8px;
+    border: 1px solid rgb(238, 238, 238);
+    background-color: rgb(255, 255, 255);
+    margin-top: 16px;
+}
+
+.hUzAOG {
+	    height: 100%;
+    padding: 20px;
+    vertical-align: top;
+}
+
+.bQVZKC {
+	display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.krPkOP {
+	-webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    line-height: 1.5;
+}
+
+.grCKyH {
+	display: flex;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.kCcQTc:first-child {
+	    margin-top: 20px;
+}
+
+.oRzGt:empty {
+	display: none;
+}
+
+.gLgexz {
+	overflow: hidden;
+}
+
+.cNiGzR {
+	display: flex;
+    flex-direction: row;
+}
+
+.eEDOvs {
+	display: flex;
+    width: 64px;
+    position: relative;
+    margin-right: 16px;
+}
+
+.__next-wrap a, .__next button {
+	-webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+}
+
+.bmwSdh {
+	user-select: none;
+    overflow: hidden;
+    flex: 1 1 0%;
+    display: flex;
+}
+
+.jBCCpd {
+	display: flex;
+    flex: 1 1 0%;
+    user-select: none;
+    min-width: 0px;
+    flex-direction: column;
+}
+
+.gbTJl {
+	width: 200px;
+    height: 100%;
+    text-align: center;
+    border-left: 1px solid rgb(238, 238, 238);
+}
+
+.bCQoer {
+	display: flex;
+    flex-flow: column wrap;
+    height: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.iiEWkt {
+	    min-height: 2.25rem;
+    font-size: 0.875rem;
+    width: 160px;
+    margin: 5px 0px;
+}
+
+.fUUUKW {
+	    display: inline-flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    appearance: none;
+    height: 2.25rem;
+    width: 100%;
+    border-radius: 4px;
+    color: rgb(52, 106, 255);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(52, 106, 255);
+    -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+    font-size: 0.875rem;
+}
+
+.kiiuoA {
+	min-height: 2.25rem;
+    font-size: 0.875rem;
+    width: 160px;
+    margin: 4px 0px;
+}
+
+.fTrGbC {
+	display: inline-flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    appearance: none;
+    height: 2.25rem;
+    width: 100%;
+    border-radius: 4px;
+    color: rgb(17, 17, 17);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(221, 221, 221);
+    -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+    font-size: 0.875rem;
+}
+
+.bZaQeF {
+	min-height: 2.25rem;
+    padding: 0px 12px;
+}
+
+.iDQVMP {
+	-webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.yma-DD {
+	display: flex;
+    line-height: 1.5;
+}
+
+.iCTfhh {
+	display: inline-flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    appearance: none;
+    height: 2.25rem;
+    border-radius: 4px;
+    color: rgb(17, 17, 17);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(221, 221, 221);
+    -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+    font-size: 0.875rem;
+}
+
+.joIhoV {
+	    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: rgb(17, 17, 17);
+    opacity: 0.2;
+    
+}
+
+.kYtEGM{
+	    position: relative;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 2px;
+    height: 1em;
+    vertical-align: middle;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.sc-cdh0rx-0 {
+	line-height: 40px;
+}
+
+ul {
+	margin-bottom : 0px;
+}
+
+.section_title p {
+	font-size: 16px;
+    color: #7A838B;
+    line-height: 28px;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+	</style>
+</th:block>
+
+<div layout:fragment="content" style= "margin: 50px 0;">
+<div>
+<div style="margin-bottom: 70px;">
+	<h5 class="section_title h3 text-center" style="font-size: 24px; color: #001D38;">주문내역</h5>
+	<p class="text-center">주문 내역와 주문 정보를 확인할 수 있습니다.</p>
+
+</div>
+<div class="container" th:each="orders, index : ${orders.getContent()}"> 
+<div class="sc-fimazj-0 gKYVxm container">
+	<div class="sc-abukv2-0 kcHmyx">
+		<div class="sc-abukv2-1 kSZYgn" th:text="${orders.orderDate} + ' 주문'">
+			
+		</div>
+
+	</div>
+	<div class="sc-gnmni8-0 hCVtNj" th:each="orderItem : ${orders.orderItemDtoList}">
+		<table class="sc-gnmni8-1 eSpcfO">
+		<colgroup><col width="600"><col width=""></colgroup>
+		<tbody class="sc-gnmni8-2 hryMPB">
+		<tr class="sc-gnmni8-3 gmGnuU">
+			<td class="sc-gnmni8-5 hUzAOG">
+				<div class="sc-ki5ja7-0 bQVZKC">
+					<div class="sc-ki5ja7-1 krPkOP" >
+						<span font-weight="bold" color="#111111" class="sc-755zt3-0 hullgd" style="font-size: 1.25rem;" th:text="${orders.orderStatus == orders.orderStatus.ORDER ? '주문완료' : '주문취소'}"></span>
+					</div>
+				</div>
+				<div class="sc-fe2r96-0 hmCrGF">
+				</div>
+				<div class="sc-1jiyjbz-0 dGiGeF">
+					<div class="sc-gnmni8-9 kCcQTc">
+						<div class="sc-g8964r-0 oRzGt">
+						</div>
+						<div class="sc-9cwg9-1 gLgexz">
+							<div class="sc-9cwg9-2 cNiGzR">
+								<div class="sc-9cwg9-3 eEDOvs">
+									<a class="sc-1uwk3m0-0 kdlGbA sc-9cwg9-0 gujsmv" th:href="'/item/' + ${orderItem.itemId}" th:alt="${orderItem.itemNm}"><img width="64px" th:src="${orderItem.imgUrl}"></img></a>
+								</div>
+								<div class="sc-9cwg9-5 bmwSdh">
+									<div class="sc-9cwg9-6 jBCCpd">
+										<a class="sc-gnmni8-10 yma-DD"></a><a th:href="'/item/' + ${orderItem.itemId}" target="_blank" class="sc-gnmni8-10 sc-8q24ha-0 yma-DD hPjYZj"><span style="color: black;" class="sc-755zt3-1 sc-8q24ha-1 inmgHC ifMZxv" th:text="${orderItem.itemNm}"></span></a><a class="sc-gnmni8-10 yma-DD"></a><a class="sc-gnmni8-10 sc-8q24ha-5 yma-DD iDQVMP">
+										<div class="sc-8q24ha-3 gFbjJh">
+											<div class="sc-uaa4l4-0 jxRaeI">
+												<span font-weight="normal" class="sc-755zt3-0 kftgZM" th:text="${orderItem.orderPrice} + ' 원'">18,800 원</span><span class="sc-13xhsmd-0 kYtEGM"><span class="sc-13xhsmd-1 joIhoV"></span></span><span class="sc-755zt3-0 jtWNEg" th:text="${orderItem.count} + ' 개'"></span>
+											</div>
+										</div>
+
+										</a>
+										<div class="sc-fxyxvg-0 igPkOG">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</td>
+			<td class="sc-gnmni8-6 gbTJl">
+				<div class="sc-gnmni8-7 bCQoer">
+						<button class="sc-1k9quwu-0 fUUUKW sc-4d0nwb-0 iiEWkt" data-bs-toggle="modal" th:data-bs-target="'#orderDetailModal-' + ${orders.orderId}" data-order-id="${orders.orderId}"
+						 style="border: 1px solid #FF4A52; color: #FF4A52;" >주문 상세보기</button>
+					<th:block th:if="${#strings.equals(orders.orderStatus, 'ORDER')}">
+						<button th:value="${orders.orderId}" onclick="cancelOrder(this.value)" class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">주문취소</button>					
+					</th:block>
+					<th:block th:unless="${#strings.equals(orders.orderStatus, 'ORDER')}">
+						<button th:value="${orders.orderId}" onclick="deleteOrder(this.value)" class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">주문삭제</button>					
+					</th:block>
+				</div>
+			</td>
+		</tr>
+		</tbody>
+		</table>
+    <div class="modal fade" th:id="'orderDetailModal-' + ${orders.orderId}" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="${orderItem.itemNm}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="orderDetailContent">
+                    	<div class="sc-1m6uvm7-0 khiofo">
+	<h4 class="sc-1m6uvm7-2 berHYP"><span>받는사람 정보</span></h4>
+	<table class="sc-1m6uvm7-3 jqnXTj">
+	<caption class="sc-1m6uvm7-1 dSygCD"></caption><colgroup><col width="105"><col><col width="100"></colgroup>
+	<tbody class="sc-zknpht-1 dMXLkO">
+	<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			받는사람
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB" th:text="${orders.orderInfoNm}">
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+	<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			연락처
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB" th:text="${orders.orderInfoPhone}">
+
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+	<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			받는주소
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB" th:text="${orders.orderInfoAdd}" style="line-height: 20px !important;">
+
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+	<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			결제정보
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB">
+			<div class="sc-1r8o5gz-0 jSLuUU">
+				<span>카카오페이</span>
+			</div>
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+		<tr class="sc-cdh0rx-0 kpnmCu">
+		<th class="sc-cdh0rx-1 hYQyEN" style="color: rgb(85, 85, 85);">
+			주문번호
+		</th>
+		<td class="sc-cdh0rx-2 jRUPB">
+			<div class="sc-1r8o5gz-0 jSLuUU">
+				<span th:text="${orders.payNo}"></span>
+			</div>
+		</td>
+		<td class="sc-cdh0rx-2 gIRWDV">
+		</td>
+	</tr>
+	</tbody>
+	</table>
+</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="boxed-btn4" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+    </div>
+	</div>
+</div>
+</div>  
+						<div class="col-md-12 text-center">
+							<nav
+								th:with="start=${(orders.number/maxPage)*maxPage + 1}, 
+									end=(${(orders.totalPages == 0) ? 1 
+									: (start + (maxPage - 1) <orders.totalPages ? 
+									start + (maxPage - 1) : orders.totalPages)})"
+								aria-label="Page navigation example">
+								<ul class="pagination d-flex justify-content-center">
+									<li class="page-item"
+										th:classappend="${orders.first}?'disabled'"><a
+										class="page-link"
+										th:href="@{'/orders' + '/' + ${orders.number - 1}}">이전</a></li>
+									<li class="page-item"
+										th:each="page: ${#numbers.sequence(start, end)}"
+										th:classappend="${orders.number eq page-1}?'active':''"><a
+										class="page-link" th:inline="text"
+										th:href="@{'/orders' + '/' + ${page - 1}}">[[${page}]]</a>
+									</li>
+									<li class="page-item" th:classappend="${orders.last}?'disabled'">
+										<a class="page-link"
+										th:href="@{'/orders' + '/' + ${orders.number + 1}}">다음</a>
+									</li>
+								</ul>
+							</nav>
+						</div>  
+</div>
+</div>
+
+<th:block layout:fragment="script">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
+
+	<script>
+	
+	$(document).ready(function () {
+	    $('#orderDetailModal').one('show.bs.modal', function (event) {
+	        var button = $(event.relatedTarget);
+	        var orderId = button.data('order-id');
+	        var modal = $(this);
+
+	        // 서버로부터 주문 상세 내용을 가져오는 AJAX 요청
+	        $.ajax({
+	            type: 'GET',
+	            url: '/getOrderDetail/' + orderId, // 서버에서 주문 상세 정보를 가져오는 엔드포인트
+	            success: function (data) {
+	                // 가져온 데이터를 모달 내용에 추가
+	                modal.find('#orderDetailContent').html(data);
+	            },
+	            error: function () {
+	                // 에러 처리
+	                alert('주문 상세 정보를 가져오는 데 실패했습니다.');
+	            }
+	        });
+	    });
+	});
+
+	
+	function cancelOrder(ordersId) {
+		const cancelconf = confirm("주문 취소하시겠습니까?");
+		if(!cancelconf) return;
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		var url = "/orders/" + ordersId + "/cancel";
+		
+		//서버로 보내줄 데이터(반드시 JSON  -> string 타입으로 바꿔야한다.)
+		var paramData = {
+			orderId : ordersId	
+		};
+		
+		var param = JSON.stringify(paramData);
+		
+			$.ajax({
+				url : url,
+				type : "POST", //전송방식
+				contentType : "application/json",
+				data : param,
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					var path = location.pathname;
+					var page = path.substring(path.lastIndexOf("/") + 1);
+					
+					if(page == 'orders') {
+						page = 0;
+					}
+					//주문취소 후에 해당 페이지로 이동시켜준다.
+					location.href= '/orders/' + page;
+				},
+				error : function(jqXHR, status, error) {
+					if(jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/login';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+	}
+	
+	function deleteOrder(ordersId) {
+		const deleteconf = confirm("삭제하시겠습니까?");
+		if(!deleteconf) return;
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		var url = "/order/" + ordersId + "/delete";
+			$.ajax({
+				url : url,
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+
+					location.href= '/orders'
+				},
+				error : function(jqXHR, status, error) {
+					if(jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/login';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+	}
+	</script>
+	
+	
+</th:block>
+</html>

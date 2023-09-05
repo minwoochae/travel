@@ -44,10 +44,9 @@ public class CartService {
 	private final CartItemRepository cartItemRepository;
 	private final OrderItemRepository orderItemRepository;
 	
+	//카트에 상품 추가하기
 	public Long addToCart(CartDto cartDto, Member member) {
-	    System.out.println("오긴했는지?");
 	    Cart cart = member.getCart();
-	    System.out.println(cart);
 
 	    if (cart == null) {
 	        cart = Cart.createCart(member);
@@ -64,9 +63,6 @@ public class CartService {
 	    cartItem.setCart(cart);
 	    cartItem.setImgUrl(cartDto.getImgUrl());
 	    
-	    System.out.println(cartItem.getCount());
-	    System.out.println(cartItem.getItem().getPrice());
-	    System.out.println(cartItem.getCart());
 
 	    cartItemRepository.save(cartItem);
 	    cartRepository.save(cart); // Cart 저장
@@ -74,6 +70,7 @@ public class CartService {
 	    return cart.getId();
 	}
 	
+	//카트 상품리스트 불러오기
 	@Transactional(readOnly = true)
 	public Page<CartListDto> getCartList(String email, Pageable pageable) {
 		List<Cart> carts = cartRepository.findCarts(email, pageable);
@@ -95,6 +92,21 @@ public class CartService {
 		return new PageImpl<CartListDto>(cartListDtos, pageable, totalCount);
 	}
 	
+	//카트에 상품 몇개 들었는지 계산하기
+	public long getCartItemCount(String memberName) {
+	    Member member = memberRepository.findByEmail(memberName); // 사용자 엔티티 가져오기
+	    if (member != null) {
+	        Cart cart = member.getCart(); // 사용자의 장바구니 가져오기
+	        if (cart != null) {
+	            List<CartItem> cartItems = cart.getCartItems(); // 장바구니의 cartItem 목록 가져오기
+	            return cartItems.size(); // cartItem 개수 반환
+	        }
+	    }
+	    return 0; // 장바구니가 없거나 cartItem이 없는 경우 0 반환
+	}
+	
+	
+	//카트 본인확인하기
 	@Transactional(readOnly = true)
 	public boolean validateCart(Long cartId, String email) {
 		Member curMember = memberRepository.findByEmail(email);
@@ -108,12 +120,14 @@ public class CartService {
 		return true;
 	}
 	
-	
+	//카트 삭제하기
 	public void deleteCart(Long cartId) {
 		CartItem cartItem = cartItemRepository.findById(cartId).orElseThrow(EntityNotFoundException::new);
 		
 		cartItemRepository.delete(cartItem);
 	}
+	
+	
 	
 
 	 

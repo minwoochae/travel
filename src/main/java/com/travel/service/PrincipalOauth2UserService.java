@@ -26,7 +26,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
     @Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 	 OAuth2User oAuth2User = super.loadUser(userRequest);
-	 System.out.println(oAuth2User + "LLLLLLLLLLLLL");
 	 OAuth2UserInfo oAuth2UserInfo = null;
      String provider = userRequest.getClientRegistration().getRegistrationId();    
      oAuth2UserInfo = new KakaoMemberInfo(oAuth2User.getAttributes());
@@ -39,13 +38,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
      
      String email = oAuth2UserInfo.getEmail();
      Division division = Division.KAKAO; 
-     Role role = Role.ROLE_USER;
      	
      Member member = memberRepository.findByEmail(email);
      if(member == null){
     	 member = Member.oauth2Register()
         		 .email(email).name(username).password(password).role(Role.ROLE_WAIT)
-                 .provider(provider).providerId(providerId).division(division)
+                  .provider(provider).providerId(providerId).division(division)
                  .build();
      }
      

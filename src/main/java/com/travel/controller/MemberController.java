@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -33,6 +34,7 @@ import com.travel.service.MemberService;
 import com.travel.service.PlanService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -59,7 +61,7 @@ public class MemberController {
 
 	// 회원가입
 	@PostMapping(value = "/members/new")
-	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
+	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model,	RedirectAttributes rttr) {
 		if (bindingResult.hasErrors()) {
 			return "member/memberForm";
 		}
@@ -67,13 +69,16 @@ public class MemberController {
 		try {
 			Member member = Member.createMember(memberFormDto, passwordEncoder);
 
+		    String message ="회원가입이 완료 되었습니다.";
+		    rttr.addAttribute("message", message);
 			memberservice.saveMember(member);
+
+			
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return "member/memberForm";
 		}
-
-		return "redirect:/";
+		return "redirect:/members/login";
 	}
 
 	// 로크인에러
@@ -122,7 +127,10 @@ public class MemberController {
 		HashMap<String, String> msg = new HashMap<>();
 
 		try {
-			   if (member == null) {
+				if(email == ""){
+					 throw new IllegalStateException("이메일을 입력해주세요.");
+				}
+				else if (member == null) {
 		            throw new IllegalStateException("존재하지 않은 계정입니다. 아이디 찾기 혹은 회원가입 후 이용해주세요.");
 		        }
 			if (member.getDivision() == Division.NORMAL) {
@@ -153,7 +161,7 @@ public class MemberController {
 		return msg;
 	}
 
-
+	//마이페이지
 	@GetMapping(value = "/member/mypage")
 	public String mainMypage( Model model, Authentication authentication) {
 
@@ -208,8 +216,9 @@ public class MemberController {
 
 		return "redirect:/";
 	}
-
+	
 	@GetMapping("/member/checkPwd")
+	@NotBlank
 	public String checkPwdView(Model model) {
 		model.addAttribute("passwordDto", new PasswordDto());
 
@@ -220,6 +229,10 @@ public class MemberController {
 	@PostMapping(value = "/member/checkPwd")
 	public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
 
+		  if (passwordDto.getPassword() == null || passwordDto.getPassword().trim().isEmpty()) {
+		        model.addAttribute("errorMessage", "비밀번호 값이 입력되어 있지 않습니다..");
+		        return "member/checkPwd";
+		    }
 		Member member = memberservice.findByEmail(principal.getName());
 
 		boolean result = passwordEncoder.matches(passwordDto.getPassword(), member.getPassword());
@@ -243,13 +256,22 @@ public class MemberController {
 	@PostMapping("/member/EditMember")
 	public String passwordupdate(@RequestParam String password, Model model, Principal principal, Member member) {
 		Member members = memberservice.memberMypage(principal.getName());
+		   if (password == null || password.trim().isEmpty()) {
+		        model.addAttribute("errorMessage", "비밀번호 값이 없습니다.");
+		        model.addAttribute("member", member);
+		        return "member/EditMember";
+		    }
+		    
+		
 		if (passwordEncoder.matches(password, members.getPassword()) == true) {
 			model.addAttribute("errorMessage", "기존 비밀번호와 같습니다.");
 			model.addAttribute("member", member);
 			return "member/EditMember";
-		} else {
+		}
+		
+		else {
 			memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
-			return "redirect:/";
+			return "redirect:/member/mypage";
 		}
 
 	}

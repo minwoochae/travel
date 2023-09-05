@@ -46,12 +46,13 @@ public class PlannerController {
 	private final MemberService memberService;
 	private final ObjectMapper objectMapper;
 
+	//플랜 만들기
 	@GetMapping(value = "/planner")
 	public String plannerMain() {
 		return "planner/plannerMain";
 	}
 
-
+	//플랜 둘러보기
 	@GetMapping(value = { "/planner/list", "/planner/list/{page}" })
 	public String planList(Model model, @PathVariable Optional<Integer> page) {
 		Page<PlanCommunity> planCommunity = planService
@@ -159,7 +160,6 @@ public class PlannerController {
         Member members = principals.getMember();
 
 		String email = members.getEmail();
-		System.out.println(email);
 		Page<Plan> plans = planService.getPlansByEmail(email, PageRequest.of(page.isPresent() ? page.get() : 0, 5));
 		model.addAttribute("plan", plans);
 		model.addAttribute("maxPage", 5);

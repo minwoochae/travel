@@ -1,5 +1,6 @@
 package com.travel.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -33,12 +34,12 @@ import lombok.RequiredArgsConstructor;
 public class CartController {
 	private final CartService cartService;
 	
+	//카트에 상품 추가하기
 	@PostMapping(value = "/addCart")
 	public ResponseEntity<Long> addCart(@RequestBody @Valid CartDto cartDto, BindingResult bindingResult, Authentication authentication) {
 	    if (bindingResult.hasErrors()) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
-	    System.out.println(cartDto.getItemId()+"asdasdjeybfalkwe4al;erhjoerahg");
 	    PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 	    Member member = principalDetails.getMember();
 
@@ -50,23 +51,25 @@ public class CartController {
 	    }
 	}
 	
+	//카트 상품 불러오기
 	@GetMapping(value = {"/cartList", "/cartList/{page}"})
-	public String cartList(@PathVariable("page") Optional<Integer>page, Authentication authentication, Model model) {
+	public String cartList(@PathVariable("page") Optional<Integer>page, Model model, Principal principal) {
 		
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
-	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();
-        Member members = principals.getMember();
-		String email = members.getEmail();
-		Page<CartListDto> cartListDto = cartService.getCartList(email, pageable);
-		System.out.println(cartListDto.getContent());
+
+		Page<CartListDto> cartListDto = cartService.getCartList(principal.getName(), pageable);
 		
+		long cartItemCount = cartService.getCartItemCount(principal.getName());
+
 		model.addAttribute("carts", cartListDto);
+		model.addAttribute("cartItemCount", cartItemCount);
 		model.addAttribute("maxPage", 5);
 		model.addAttribute("page", pageable.getPageNumber());
 		
 		return "/item/cart";
 	}
 	
+	//카트 상품 삭제하기
 	@DeleteMapping("/cartList/{cartId}/delete")
 	public @ResponseBody ResponseEntity deleteCart(@PathVariable("cartId")Long cartId, Authentication authentication) {
 	    PrincipalDetails principals = (PrincipalDetails) authentication.getPrincipal();

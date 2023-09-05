@@ -9,6 +9,26 @@
  th {
         text-align: center;
       }
+      
+button:hover {
+       cursor: pointer;
+    }
+    
+    
+ table th,
+    table td {
+        text-align: center;
+    }
+    
+    /* 테이블 헤더의 너비를 조정 */
+    table th[scope="col"] {
+        width: 10%;
+    }
+    
+    table th[scope="col" style="width: 60%"] {
+        width: 60%;
+    }    
+ 
 </style>
 </th:block>
 
@@ -17,18 +37,22 @@
 	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
-<div layout:fragment="content" style="height:1000px; margin-top:70px; ">
+<div layout:fragment="content" style="height:1000px; margin-top:70px;">
 
 <div class="container">
 
 		<div class="row">
 		
-		
 			<div class="col-md-12">
 				<div
 					style="display: flex; justify-content: space-between; align-items: center;">
 					<h2 class="h3 mb-3 text-black">공지사항</h2>
-					 <a href="/adminInfo/new" style="margin-right: 0;" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">등록하기</a> 
+					<a href="/adminInfo/new" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+					<button class="custom-button" style="width: 120px; background-color: #FF6168; border:none; color: white; height:35px; border-radius:5px;
+					">
+						등록하기
+					</button>
+					</a>
 				</div>
 				<form th:action="@{'/adminInfo/' + ${infos.number}}" method="get"
 					th:object="${infos}">
@@ -38,26 +62,21 @@
 								<th scope="col" style="width: 10%">NO.</th>
 								<th scope="col" style="width: 70%">제목</th>
 								<th scope="col">등록자</th>
-								<th scope="col" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">삭제</th>
+								
 							</tr>
 						</thead>
 						<tbody>
 							<!-- 조회된 데이터를 출력한다. -->
 							 <tr th:each="info, status:${infos.getContent()}">
 								<th th:text="${info.id}" scope="row"></th>
-								<td>
+								<td style="width: 60%">
 								<a
 								
 									th:href="'/info/' + ${info.id}"
 									th:text="${info.infoTitle}"> </a>
 								</td>
-								<td th:text="${info.createBy}"></td>
-								<td><button type="button" class="btn btn-primary"
-										th:id="${info.Id}" th:value="${info.Id}"
-										th:onclick="'javascript:deleteInfo(' + ${info.id} +')'"
-										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
-										style="background-color:#FF6168; border:none;">삭제</button>
-								</td>
+								<td th:text="관리자"></td>
+								
 							</tr>
 						</tbody>
 					</table>

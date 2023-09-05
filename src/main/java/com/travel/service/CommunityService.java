@@ -32,9 +32,6 @@ public class CommunityService {
 	private final PlanCommunityRepository planCommunityRepository;
 	
 	// 커뮤니티 작성
-
-
-
 	public Long saveCommunity(PlanCommunityDto planCommunityDto, String memberId, Long planId) throws Exception {
 		Member member = memberRepository.findByEmail(memberId);
 
@@ -51,6 +48,7 @@ public class CommunityService {
 		return planCommunity.getId();
 	}
 	
+	//검색해서 내용 가져오기
 	public PlanCommunityDto getCommunityDtl(Long communityId) {
 		PlanCommunity planCommunity = planCommunityRepository.findById(communityId).orElseThrow(EntityNotFoundException::new);
 		PlanCommunityDto planCommunityDto = PlanCommunityDto.of(planCommunity);
@@ -59,20 +57,20 @@ public class CommunityService {
 		return planCommunityDto;
 	}
 	
+	//게시글 업데이트
 	public Long updateCommunity(PlanCommunityDto planCommunityDto) {
 		if (planCommunityDto.getId() == null) {
 	        throw new IllegalArgumentException("The given id must not be null");
 	    }
 		
-		System.out.println(planCommunityDto.getId());
 		PlanCommunity planCommunity = planCommunityRepository.findById(planCommunityDto.getId()).orElseThrow(EntityNotFoundException::new);
-		System.out.println(planCommunity + "여긴 뭐야");
 		String regDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 		planCommunity.updatecommunity(planCommunityDto, regDate);
 		
 		return planCommunity.getId();
 	}
 	
+	//게시글 가져오기
 	public PlanCommunity getCommunity(Long communityId) {
 		PlanCommunity planCommunity = planCommunityRepository.findById(communityId).orElseThrow(EntityNotFoundException::new);
 		

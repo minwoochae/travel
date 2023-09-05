@@ -1,10 +1,7 @@
 package com.travel.controller;
 
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,21 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.travel.Dto.KakaoPayApproveDto;
 import com.travel.Dto.KakaoPayReadyDto;
-import com.travel.Dto.OrderDto;
 import com.travel.constant.OrderStatus;
-import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
 import com.travel.entity.Member;
 import com.travel.entity.OrderItem;
@@ -49,7 +41,8 @@ public class KakaoPayController {
 	private final MemberService memberService;
 	private final CartService cartService;
 	private final OrderService orderService;
-	
+
+	//카카오페이 큐알 호출하기
 	@GetMapping("/pay/ready")
 	@ResponseBody
 	public KakaoPayReadyDto kakaoPay(@RequestParam(value = "orderItemIds[]", required = false) Long[] orderItemIds,
@@ -61,7 +54,6 @@ public class KakaoPayController {
 	        @RequestParam("phoneNumber") String phoneNumber,
 	        Model model, HttpSession session, Principal principal) {
 		
-		System.out.println(itemName + totalPrice);
 		Map<String, Object> params = new HashMap<>();
 	    params.put("orderItemIds", orderItemIds);
 	    params.put("totalPrice", totalPrice);
@@ -93,6 +85,7 @@ public class KakaoPayController {
 		return res;
 	}
 	
+	//카카오페이로 결제한 정보 DB저장하기
 	@GetMapping("/pay/success")
 	public String success(@RequestParam("pg_token")String pgToken,HttpSession session, Principal principal, Model model) {
 			String tid = (String) session.getAttribute("tid");
@@ -106,12 +99,9 @@ public class KakaoPayController {
 		    Long[] orderItemIds = (Long[]) session.getAttribute("orderItemIds");
 
 			String email = principal.getName();
-			System.out.println(email);
 			Member member = memberService.findByEmail(email);
-			System.out.println(member + "nnnnnnnnn");
 	        // 카카오 결재 요청하기
 	        KakaoPayApproveDto kakaoPayApproveDto = kakaoPayService.kakaoPayApprove(tid, pgToken);
-	        System.out.println(kakaoPayApproveDto);	        
 	        
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -120,7 +110,6 @@ public class KakaoPayController {
 			Date currentDate = new Date();
 			String currentDateString = dateFormat.format(currentDate); // 현재 시간을 문자열로 변환합니다.
 			
-			//Pay 값 넣어주기
 			Pay pay = new Pay();
 			pay.setPrice(totalPrice);
 			pay.setPayNo(generateRandomPayNo());
@@ -137,27 +126,24 @@ public class KakaoPayController {
 			orders.setTotalPrice(totalPrice);
 			orders.setZipCode(zipCode);
 			orders.setPay(pay);
+			orders.setMember(member);
+			orders.setOrderDate(pay.getPayDate());
 			
-			kakaoPayService.saveOrders(orders);
 			
-			System.out.println(orders.getOrderInfoName());
+
 			for (Long orderItemId : orderItemIds) {
 				CartItem cartItem = orderService.getCartItemById(orderItemId);
 				
 				OrderItem orderItem = OrderItem.createOrderCart(cartItem);
 				orderItem.setOrders(orders);
-				kakaoPayService.saveOrderItem(orderItem);
 				
 				orderService.setOrderItem(cartItem, orderItem);
-				
+				orderItemList.add(orderItem);
+				kakaoPayService.saveOrders(orders);
+				kakaoPayService.saveOrderItem(orderItem);
+				cartService.deleteCart(cartItem.getId());
 			}
-			//Orders 값 넣어주기
-			orders.setOrderItems(orderItemList);
-			
-	        
-	        
-	        
-	        
+
 	        // HTML에 데이터 전달
 	        model.addAttribute("item_name", itemName);
 	        model.addAttribute("total_price", totalPrice);
@@ -179,6 +165,7 @@ public class KakaoPayController {
 	    int randomNumber = random.nextInt(1000000000); // 0에서 999999 사이의 난수 생성
 	    return String.valueOf(randomNumber); // 숫자를 문자열로 변환하여 반환
 	}
+	
 	
 	
 }

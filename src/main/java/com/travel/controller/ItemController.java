@@ -23,6 +23,7 @@ public class ItemController {
 	
 	private final ItemService itemService;
 	
+	//상품 목록 불러오기
 	@GetMapping(value="/item/list")
 	public String itemShopList(Model model, ItemSearchDto itemSearchDto, Optional<Integer> page) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
@@ -36,10 +37,10 @@ public class ItemController {
 		return "/item/itemShopList";
 	}
 	
+	//상품 상세보기
 	@GetMapping(value="/item/{itemId}")
 	public String itemDtl(Model model, @PathVariable("itemId") Long itemId) {
 		ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
-		System.out.println(itemFormDto.getId());
 		model.addAttribute("item", itemFormDto);
 		
 		return "/item/itemDtl";

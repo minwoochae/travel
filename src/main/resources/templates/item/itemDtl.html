@@ -13,12 +13,6 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
   />
 	<style>
-		.item-cover {
-			width: 100%;
-			height: 60px;
-			background-color: black;
-			display: flex;
-		}
 		
 	input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
@@ -47,16 +41,14 @@
 </th:block>
 
 <div layout:fragment="content">
-	<div class="item-cover">
-		<p style="color: white; font-size: 26px;"> <i class="fa-solid fa-chevron-left" style="color: #ffffff;"></i> </p>
-	</div> <!--백그라운드 이미지 활용  -->
+
 	<section class="py-5">
 		<input type="hidden" id="itemId" th:value="${item.id}">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="row gx-4 gx-lg-5 align-items-center">
                     <div class="col-md-6">
                     <img class="card-img-top mb-5 mb-md-0" th:src="${item.itemImgDtoList[0].imgUrl}" th:alt="${item.itemNm}" /></div>
-                    <div class="col-md-6">
+                    <div class="col-md-5" style="margin-left:50px;">
                         <h1 class="display-5 fw-bolder" th:text="${item.itemNm}"></h1>
                         <div class="fs-5 mb-5">
                         	<input id="price" type="hidden" th:value="${item.price}">
@@ -76,11 +68,11 @@
 								     <a class="boxed-btn4" href="#" style="padding: 9px 30px; margin-left: 20px;" onclick="cart()">장바구니에 담기</a>
 								 </div>	
 							</div>
-								 <button class="boxed-btn3" style="height: 42px; display:flex; align-items: center; margin-top: 120px;">구매하기</button>
+								
                     </div>
                 </div>
             </div>
-            <div class="container px-4 px-lg-5 my-5" style="border-top: 1px solid #7a7a7a">
+            <div class="container px-4 px-lg-5 my-5" style="border-top: 0.3px solid #cfcfcf;">
                     <div class="text-center mb_70">
                         <h3 style="margin: 50px 0;">상품 정보</h3>
                         <pre><p th:text="${item.itemDetail}" style=""></p></pre>
@@ -171,6 +163,14 @@
 
         var imgUrl = document.getElementById('itemImg').getAttribute('src');
 
+	    // Input 요소의 값 가져오기
+	    var countValue = parseInt($("#count").val());
+
+	    if (countValue < 1) {
+	        // 최소 주문 수량 조건을 만족하지 않으면 알림창 띄우기
+	        alert("최소 주문 수량은 1개 이상입니다.");
+	        return; // 함수 종료
+	    }
 		// Controller(서버)에 전달할 데이터
 		var paramData = {
 			itemId : $("#itemId").val(), // class_id
@@ -182,6 +182,7 @@
 		// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
 
 		var param = JSON.stringify(paramData);
+		
 		
 		$.ajax({
 			url : url, // request URL 서버에 요청할 url 쓰면 됨 위에서 url이란 변수에 담아놨기 때문에 url 써줌 
@@ -196,7 +197,7 @@
 			cache : false,
 			success : function(result, status) {
 				alert("장바구니에 저장되었습니다.")
-				location.href = '/';
+				
 			},
 			error : function(jqXHR, status, error) {
 				if (jqXHR.status == '401') {
@@ -205,7 +206,7 @@
 				} else {
 					
 					// 에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
-					alert("안돼")
+					
 					alert(jqXHR.responseText); 
 				}
 				
@@ -213,6 +214,53 @@
 		});
 		
 	}
+  
+  function orderItem() {
+		var token = $("meta[name='_csrf']").attr("content"); // meta태그에서 값이 _csrf인 값을 가져오겠다~
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		var url = "/orderItem";
+
+		// Controller(서버)에 전달할 데이터
+		var paramData = {
+			itemId : $("#itemId").val(), // item_id
+			count : $("#count").val() // 수량
+		}
+
+		// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
+
+		var param = JSON.stringify(paramData);
+		alert(param);
+		
+		$.ajax({
+			url : url, // request URL 서버에 요청할 url 쓰면 됨 위에서 url이란 변수에 담아놨기 때문에 url 써줌 
+			type : "POST", // 전송방식
+			contentType : "application/json",
+			data : param, // 서버에 전송할 데이터 var param = JSON.stringify(paramData); item_id, 수량 들어있음
+			beforeSend : function(xhr) {
+				// 데이터를 전송하기 전에 헤더에 csrf 값을 설정해줌
+				xhr.setRequestHeader(header, token);
+			},
+			dataType : "json",
+			cache : false,
+			success : function(result, status) {
+				location.href = '/orderItem/address?itemId=' + itemId + '&count=' + count;
+			},
+			error : function(jqXHR, status, error) {
+				if (jqXHR.status == '401') {
+					alert('로그인 후 이용해 주세요.')
+					location.href = '/members/login';
+				} else {
+					// 에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
+					alert(jqXHR.responseText); 
+				}
+				
+			}
+		});
+		
+	}
+  
+  
 </script>
 </th:block>
 

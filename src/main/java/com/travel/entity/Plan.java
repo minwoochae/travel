@@ -50,6 +50,10 @@ public class Plan {
 			orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PlanContent> planContent = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, 
+			orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<PlanCommunity> PlanCommunity = new ArrayList<>();
+	
 
 	
 	

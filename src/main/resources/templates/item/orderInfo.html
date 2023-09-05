@@ -5,12 +5,45 @@
 
 
 <th:block layout:fragment="css">
+	<style>
+		span {
+			font-size: 20px;
+		}
+
+	</style>
 </th:block>
 
-<div layout:fragment="content">
-	<h1>드디어 왔군 이자식아</h1>
+<div layout:fragment="content" style="padding: 150px;">
+	
+	<div class="container" style="text-align: center; align-items: center;">
+		<div style="margin:0 auto">
+			<img style="margin-right: 20px;" src="/img/주문완료.png" width= "300px;">
+		</div>
+		<div style="margin: 0 auto;">
+			<h2 style=" line-height: 2.0em;">감사합니다. <br/>주문이 정상적으로 완료되었습니다.</h2>
+			<span>주문번호 : </span> <span id="payIdValue"></span>
+		</div>	
+		<div style="display:flex; align-items: center; justify-content: center; margin-top: 30px;">
+		 <div class="text-center" ><a class="btn btn-outline-dark mt-auto boxed-btn4"
+           href="/" style="padding: 10px 27px !important;">홈으로 가기</a></div>
+           <div class="text-center" style="margin-left: 30px;"><a class="btn btn-outline-dark mt-auto boxed-btn4"
+           href="/orders" style="padding: 10px 27px !important;">주문내역 확인하기</a></div>		
+		</div>
+	</div>
 </div>
 
 <th:block layout:fragment="script">
+    <script>
+	 // 현재 페이지의 URL을 가져오기
+	    var currentUrl = window.location.href;
+	
+	    // URL에서 마지막 부분을 추출 (마지막 / 뒤의 숫자)
+	    var parts = currentUrl.split('/');
+	    var payId = parts[parts.length - 1];
+	
+	    // payId 값을 HTML 요소에 표시
+	    var payIdElement = document.getElementById("payIdValue");
+	    payIdElement.textContent = payId;
+    </script>
 </th:block>
 </html>

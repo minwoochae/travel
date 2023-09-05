@@ -77,7 +77,6 @@ public class AdminController {
 
 
 	// 회원 리스트
-
 	@GetMapping(value = { "/admin/list", "/admin/list/{page}" })
 	public String memberManage(@PathVariable("page") Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -89,8 +88,7 @@ public class AdminController {
 		return "admin/memberList";
 	}
 
-	//회원 리스트(회원 프로필)
-	
+	//회원 리스트(회원 프로필)	
 	@GetMapping(value =  {"/admin/profile" , "/admin/profile/{memberId}"})
 	public String  Profilemember(@PathVariable("memberId") Long memberId, Model model) {
 		MemberFormDto memberFormDto = memberService.getmemberDtl(memberId);
@@ -290,8 +288,7 @@ public class AdminController {
 			return "admin/infoRegist";
 		}
 		
-		System.out.println("1111111111");
-			return "redirect:/";
+		return "redirect:/";
 		}
 	
 
@@ -444,7 +441,6 @@ public class AdminController {
 			BindingResult bindingResult, @RequestParam("tourImgFile") List<MultipartFile> tourImgFileList) {
 		
 		if(bindingResult.hasErrors()) {
-			System.out.println("Tid");
 			return "admin/tourRegist";
 		}
 		
@@ -454,14 +450,12 @@ public class AdminController {
 			return "admin/tourRegist";
 		}
 		
-		System.out.println("11111111111");
 		try {
 			tourService.updateTour(tourFormDto, tourImgFileList);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "상품 수정 중 에러가 발생했습니다.");
-			System.out.println("22222222222");
 			return "admin/tourList";
 		}
 		
@@ -496,19 +490,23 @@ public class AdminController {
 		Pageable pageable  = PageRequest.of(page.isPresent() ? page.get() : 0, 6);	
 		Page<AskBoard> asks = askService.getAdminAskPage(askSearchDto, pageable);
 		
+		
+		
 		 // Add askStatus to each AskResponseFormDto in the list
-	    List<AskResponseFormDto> askResponseFormDtos = new ArrayList<>();
+	    //List<AskResponseFormDto> askResponseFormDtos = new ArrayList<>();
 	    for (AskBoard ask : asks.getContent()) {
 	        AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(ask.getId());
 	        if (askResponseFormDto != null) {
 	            askResponseFormDto.setAskStatus(askResponseFormDto.getAskStatus());
+	            model.addAttribute("askResponse", askResponseFormDto);
 	        }
-	        askResponseFormDtos.add(askResponseFormDto);
+	        //askResponseFormDtos.add(askResponseFormDto);
 	    }
 		
 		model.addAttribute("asks", asks);
 		model.addAttribute("askSearchDto", askSearchDto);
-		model.addAttribute("askResponseFormDtos", askResponseFormDtos);
+		
+		//model.addAttribute("askResponseFormDtos", askResponseFormDtos);
 		model.addAttribute("maxPage", 5);
 		
 		return "admin/askList";
@@ -644,20 +642,16 @@ public class AdminController {
 		
 		 askResponseFormDto.setAskBoardId(askBoardId);
 		
-		System.out.println("여기온다");
 		
 		if(bindingResult.hasErrors()) {
-			System.out.println("너냐");
 			return "admin/askResponseRegist";
 		}
 		
 		try {
 			askResponseService.saveAskResponse(askBoardId, askResponseFormDto);		
-			System.out.println("여기오니");
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "답변 등록 중 에러가 발생했습니다.");
-			System.out.println(askResponseFormDto.getAskResponseTitle());
 			return "admin/askResponseRegist";
 		}
 		
@@ -665,8 +659,8 @@ public class AdminController {
 	}
 	
 	// 문의사항 답변 수정보여주기 - 관리자
-	@GetMapping(value = "/ask/response/{askResponseId}")
-	public String askResponseBoardIdModify(@PathVariable("askResponseBoardId") Long askResponseBoardId, Model model) {
+	@GetMapping(value = "/ask/response/{askBoardId}")
+	public String askResponseBoardIdModify(@PathVariable("askBoardId") Long askResponseBoardId, Model model) {
 		
 		try {
 			AskResponseFormDto askResponseFormDto = askResponseService.getAskResponseDtl(askResponseBoardId);
@@ -685,7 +679,7 @@ public class AdminController {
 	
 	
 	// 문의사항 답변 수정하기 - 관리자 
-	@PostMapping(value = "/ask/response/{askResponseBoardId}")
+	@PostMapping(value = "/ask/response/{askBoardId}")
 	public String askResponseUpdate(@Valid AskResponseFormDto askResponseFormDto, Model model,
 			BindingResult bindingResult) {
 		
@@ -694,6 +688,7 @@ public class AdminController {
 		}
 		
 		try {
+	
 			askResponseService.updateAskResponse(askResponseFormDto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -705,8 +700,8 @@ public class AdminController {
 	}
 
 	// 문의사항 답변 삭제 - 관리자 
-	@DeleteMapping("/askResponse/{askResponseBoardId}/delete")
-	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askResponseBoardId") Long askResponseBoardId) {
+	@DeleteMapping("/askResponse/{askBoardId}/delete")
+	public @ResponseBody ResponseEntity deleteAskResponse(@RequestBody @PathVariable("askBoardId") Long askResponseBoardId) {
 		askResponseService.deleteAskResponse(askResponseBoardId);
 		return new ResponseEntity<Long>(askResponseBoardId, HttpStatus.OK);
 	}

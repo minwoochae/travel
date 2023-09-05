@@ -39,6 +39,8 @@
 	white-space: nowrap;
 	overflow-x: auto;
 }
+
+
 </style>
 </th:block>
 
@@ -47,7 +49,7 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
-<div layout:fragment="content">
+<div layout:fragment="content" style="height:1000px;">
 
 	<div class="container">
 		<div class="row">
@@ -55,7 +57,8 @@
 
 			<div
 				th:unless="${isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')')}"
-				class="col-md-12 mb-0">
+				class="col-md-12 mb-0" style="text-align: center; margin-top:300px;">
+				<img alt="금지" src="../img/danger.png" width="280px;">
 				<p>등록한 사용자만 볼 수 있는 페이지입니다.</p>
 			</div>
 		</div>
@@ -87,24 +90,24 @@
 
 
 
+<hr>
+
+
+
 			<!-- 관리자 답변 표시 -->
 
-			<div class="row"
+			<div class="row" style="margin-left:10px; margin-top:50px;"
 				th:if="${askResponse != null and (isOwner or #authorization.expression('hasRole(''ROLE_ADMIN'')'))}">
-				<p>답변보기</p>
+				
 				<input type="hidden" id="askResponseBoardId"
 					th:value="${askResponse.id}">
 				<div class="card" style="margin-bottom: 20px; width: 1140px">
 					<div class="card-body">
 						<strong th:text="${askResponse.askResponseTitle}"></strong>
+						<p th:text="${askResponse.askResponseContent}"></p>
 					</div>
 				</div>
-				<div class="card" style="margin-bottom: 20px; width: 1140px">
-				<div class="card-body">
-						<strong th:text="${askResponse.askResponseContent}"></strong>
-					</div>
-				
-				</div>
+			
 				
 				<div class="row" th:unless="${askResponse != null}">
 					<p>등록된 답변이 없습니다.</p>
@@ -116,47 +119,41 @@
 
 		<div class="d-flex justify-content-center">
     <div class="row" style="margin-left:320px;">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3">
             <a th:href="@{'/ask/' + ${ask.id}}">
-                <button type="button" class="btn btn-primary btn-block"
-                    style="background-color: #FF6168; border: none;"
+                <button type="button" class="btn btn-primary btn-block" 
+                    style="background-color: #FF6168; border: none; width:100px;"
                     sec:authorize="hasAnyAuthority('ROLE_USER')">수정하기</button>
             </a>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3">
             <button type="button" class="btn btn-primary btn-block"
                 th:id="${ask.Id}" th:value="${ask.Id}"
                 th:onclick="'javascript:deleteAsk(' + ${ask.id} +')'"
-                style="background-color: #FF6168; border: none;"
+                style="background-color: #FF6168; border: none; width:100px;"
                 sec:authorize="hasAnyAuthority('ROLE_USER')">삭제</button>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3">
             <a href="/adminAsk/asks">
                 <button type="button" class="btn btn-primary btn-block"
-                    style="background-color: #FF6168; border: none;">
+                    style="background-color: #FF6168; border: none; width:100px;">
                     목록 보기
                 </button>
             </a>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3">
             <a th:href="@{'/response/' + ${ask.id}}">
                 <button type="button" class="btn btn-primary btn-block"
-                    style="background-color: #FF6168; border: none;"
+                    style="background-color: #FF6168; border: none; width:100px; margin-left:30px;"
                     sec:authorize="hasAnyAuthority('ROLE_ADMIN')">답변 달기</button>
             </a>
         </div>
-        <div class="col-md-4 mb-3">
-            <a th:href="@{'/ask/response/' + ${askResponse.id}}">
-                <button type="button" class="btn btn-primary btn-block"
-                    style="background-color: #FF6168; border: none;"
-                    sec:authorize="hasAnyAuthority('ROLE_ADMIN')">답변 수정</button>
-            </a>
-        </div>
-        <div class="col-md-4 mb-3">
+       
+     <!--    <div class="col-md-4 mb-3">
             <button type="button" class="btn btn-primary btn-block"
                 style="background-color: #FF6168; border: none;"
                 sec:authorize="hasAnyAuthority('ROLE_ADMIN')">답변 삭제</button>
-        </div>
+        </div> -->
     </div>
 </div>
 

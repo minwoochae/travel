@@ -30,6 +30,7 @@ public class PayService {
 	  private final CartRepository cartRepository;
 	  private final MemberRepository memberRepository;
 
+	  //결제 정보 생성
 	  public Pay createPay(KakaoPayApproveDto kakaoPayApproveDto, Principal principal) {
 		  
 		  Pay pay = new Pay();
@@ -60,7 +61,7 @@ public class PayService {
 		  
 		 
 	  }
-	  
+	  	//난수생성
 	    private String generateRandomPayNo() {
 	        SecureRandom secureRandom = new SecureRandom();
 	        byte[] randomBytes = new byte[16];

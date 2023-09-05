@@ -123,9 +123,9 @@
                        
                   
                         <td data-th="Quantity">
-							<span style="border: none;" th:text="${orderItem.count}"></span>
+							<span style="border: none;" th:text="${orderItem.count} + ' 개'"></span>
                         </td>
-                        <td data-th="Price"><span th:text="${orderItem.price} * ${orderItem.count}">0</span></td>
+                        <td data-th="Price"><span>[[${#numbers.formatInteger(orderItem.price * orderItem.count, 0, 'COMMA') + '원'}]]</span></td>
                         <td></td>
                     </tr>
                 </tbody>
@@ -139,35 +139,34 @@
     	<div class="menubar" >
 			<span class="menubar-text">받는사람 정보</span>
     	</div>
-    	<div style="height: 400px;">
-    		  <div class="mb-3" style="width: 600px; margin: 30px auto;">
-			    <label for="orderInfoName" class="form-label" style="font-size: 16px; color: black;">이름</label>
-			    <input type="text" class="form-control" id="orderInfoName" aria-describedby="emailHelp">
-			  </div>
-    		  <div class="mb-3" style="width: 600px; margin: 30px auto;">
-			    <label for="orderInfoAddress" class="form-label" style="font-size: 16px; color: black;">주소</label>
-			<div>
-				<div class="input-group mb-3">
-				  <input type="text" id="sample6_postcode" class="form-control" placeholder="우편번호" aria-label="Recipient's username" aria-describedby="button-addon2"
-				  style="margin-right: 20px; border-radius: 5px;">
-				  <button class="btn btn-outline-secondary" onclick="sample6_execDaumPostcode()" type="button" id="button-addon2">우편번호 찾기</button>
-				</div>
-					<input type="text" id="sample6_address" class="form-control" aria-describedby="emailHelp" placeholder="주소" style="margin-bottom:17px;">		
-				<div class="row">
-			  <div class="col">
-			    <input type="text" id="sample6_detailAddress" class="form-control" placeholder="상세주소" aria-label="First name">
-			  </div>
-			  <div class="col">
-			    <input type="text" id="sample6_extraAddress" class="form-control" placeholder="참고항목" aria-label="Last name">
-			  </div>
-			</div>	
-			</div>
-			  </div>
-    		  <div class="mb-3" style="width: 600px; margin: 30px auto;">
-			    <label for="orderInfoPhone" class="form-label" style="font-size: 16px; color: black;">전화번호</label>
-			    <input type="text" placeholder="번호는 - 를 제외하고 입력해주세요" class="form-control" id="orderInfoPhone" aria-describedby="emailHelp">
-			  </div>
-    	</div>
+  <div style="height: 400px;">
+    <div class="mb-3" style="width: 600px; margin: 30px auto;">
+        <label for="orderInfoName" class="form-label" style="font-size: 16px; color: black;">이름<span style="color: red;">*</span></label>
+        <input type="text" class="form-control" id="orderInfoName" aria-describedby="emailHelp" required>
+    </div>
+    <div class="mb-3" style="width: 600px; margin: 30px auto;">
+        <label for="orderInfoAddress" class="form-label" style="font-size: 16px; color: black;">주소<span style="color: red;">*</span></label>
+        <div>
+            <div class="input-group mb-3">
+                <input type="text" id="sample6_postcode" class="form-control" placeholder="우편번호" aria-label="Recipient's username" aria-describedby="button-addon2" style="margin-right: 20px; border-radius: 5px;">
+                <button class="btn btn-outline-secondary" onclick="sample6_execDaumPostcode()" type="button" id="button-addon2">우편번호 찾기</button>
+            </div>
+            <input type="text" id="sample6_address" class="form-control" aria-describedby="emailHelp" placeholder="주소" style="margin-bottom:17px;" required>
+            <div class="row">
+                <div class="col">
+                    <input type="text" id="sample6_detailAddress" class="form-control" placeholder="상세주소(선택입력)" aria-label="First name">
+                </div>
+                <div class="col">
+                    <input type="text" id="sample6_extraAddress" class="form-control" placeholder="참고항목(선택입력)" aria-label="Last name">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3" style="width: 600px; margin: 30px auto;">
+        <label for="orderInfoPhone" class="form-label" style="font-size: 16px; color: black;">전화번호<span style="color: red;">*</span></label>
+        <input type="number" placeholder="번호는 - 를 제외하고 입력해주세요" class="form-control" id="orderInfoPhone" aria-describedby="emailHelp" required>
+    </div>
+</div>
     </div>
         <div style=" border: 1px solid #a3a3a3">
     	<div class="price-menu" style="height:70px;">
@@ -176,13 +175,12 @@
 			<span class="menubar-text">총 결제 금액</span>
     	</div>
     	<div class="price-content">
-	            <span id="totalPrice" class="priceText" th:text="${totalPrice}"></span>
+	            <span id="totalPrice" class="priceText" >[[${#numbers.formatInteger(totalPrice, 0, 'COMMA')}]]</span>
 	            <span class="priceText"> -0 </span>
-	            <span class="priceText" th:text="${'=' + totalPrice}"></span>
+	            <span class="priceText" >[[${'=' + #numbers.formatInteger(totalPrice, 0, 'COMMA') + '원'}]]</span>
     	</div>
-  <input type="text" id="parent">
     </div>
-    <button id="apibtn" style="display: flex; margin: 20px auto; border: none;" >
+    <button id="apibtn" style="display: flex; margin: 20px auto; border: none; padding: 0;" >
 	<div class="kakao-btn" style="margin: 0 auto;">
 		<span class="kakao-text">카카오페이로 결제</span>
     </div>
@@ -244,22 +242,37 @@
             }
         }).open();
     }
+    
+    
+    
+    
     function receiveDataFromChild(data) {
         // 받은 데이터를 처리하거나 원하는 대로 활용
         $("#parent").val(data); // 데이터를 부모 창의 input에 설정
     }
-	$("#apibtn").click(function(){
+	$("#apibtn").click(function(event){
 		var address1 = document.getElementById("sample6_address").value;
 		var address2 = document.getElementById("sample6_detailAddress").value;
 		var address3 = document.getElementById("sample6_extraAddress").value;
 		
 		var itemIndex = document.getElementById("itemIndex").value;
 		var itemName = document.getElementById("itemName").textContent;
-		var totalPrice = document.getElementById("totalPrice").textContent;
+		if (itemIndex > 1) {
+		    itemName = itemName + "외 " + (itemIndex - 1) + "개";
+		}
+		var totalPriceElement = document.getElementById("totalPrice");
+		var totalPriceText = totalPriceElement.textContent; // 또는 totalPriceElement.innerText
+		var totalPriceInt = parseInt(totalPriceText.replace(/[^0-9]/g, ''), 10);
 		var orderName = document.getElementById("orderInfoName").value;
 		var zipCode = document.getElementById("sample6_postcode").value;
 		var orderAddress = address1 + address2 + address3;
 		var phoneNumber = document.getElementById("orderInfoPhone").value;
+		
+	    if (!orderName || !zipCode || !phoneNumber) {
+	        alert('모든 필수 항목을 입력하세요.');
+	        event.preventDefault(); // 클릭 이벤트를 막음
+	        return; // 함수 실행 중지
+	    }
 		
 		
 	    // orderItemId 값들을 저장할 배열 생성
@@ -270,12 +283,11 @@
 	    inputElements.forEach(function(input) {
 	        orderItemIds.push(input.value);
 	    });
-	    
-	    alert(orderItemIds);
+	
 	    var data = {
 	    		orderItemIds : orderItemIds,
-	    		itemName : itemName + "외 " + (itemIndex - 1) + "개",
-	    		totalPrice : totalPrice,
+	    		itemName : itemName,
+	    		totalPrice : totalPriceInt,
 	    		orderName : orderName,
 	    		zipCode : zipCode,
 	    		orderAddress : orderAddress,

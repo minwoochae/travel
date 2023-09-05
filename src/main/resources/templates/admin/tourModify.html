@@ -59,17 +59,17 @@
 			<h5 style="font-weight: bold; font-size: larger;">추천 관광지수정</h5>
 
 			
-				<div class="col-sm-10" style="padding-bottom: 20px;">
+				<div class="col-sm-10" style="padding-bottom: 20px; margin-top:20px;">
 					<label th:for="touristTitle" class="text-black">제목</label> <input
 						type="text" class="form-control" th:field="*{touristTitle}"
 						>
 				</div>
 
 
-				<div class="mb-3" style="margin-top: 50px; margin-bottom: 50px;">
-					<label for="exampleFormControlTextarea1" class="form-label">상세설명</label>
+				<div class="mb-3" style="margin-top: 10px; margin-bottom: 50px;">
+					<label for="exampleFormControlTextarea1" class="form-label" style="margin-left:13px;">상세설명</label>
 					<textarea class="form-control" id="exampleFormControlTextarea1"
-						th:field="*{touristContent}" rows="3" style="width: 895px"></textarea>
+						th:field="*{touristContent}" rows="3" style="width: 895px; margin-left:13px;"></textarea>
 				</div>
 
 
@@ -80,9 +80,9 @@
 					<div class="col-md-12">
 						<label for="formFile" class="form-label"
 							th:text="${not #strings.isEmpty(tourImgDto.oriImgName)}
-  									? ${tourImgDto.oriImgName} : '상품이미지' + ${status.index+1}"></label>
+  									? ${tourImgDto.oriImgName} : '상품이미지' + ${status.index+1}" style="margin-left:13px;"></label>
 						<input type="hidden" name="tourImgIds" th:value="${tourImgDto.id}">
-						<input class="form-control" type="file" id="tourImgFile"
+						<input class="form-control" type="file" id="tourImgFile" style="width: 895px; margin-left:13px;"
 							name="tourImgFile">
 					</div>
 				</div>

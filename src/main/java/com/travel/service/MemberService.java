@@ -47,9 +47,7 @@ public class MemberService implements UserDetailsService {
 	}
 
 	public Member findByEmail(String email) {
-		System.out.println(email + "왜애애ㅐ애애애");
 		Member member = memberRepository.findByEmail(email);
-		System.out.println(member + "ㅏㅉ장ㅇ나나아아");
 	    return member;
 	}
 	
