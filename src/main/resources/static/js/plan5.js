@@ -88,7 +88,7 @@ document.getElementById("searchButton2").addEventListener("click", function() {
                 };
 			
             searchResultsElement.appendChild(resultItem);
-            addClickListener(resultItem, data.placeName, data.placeAddress, data.placeTel, data.placeimg, data.placeLatitude, data.placeLongitude);
+            addClickListener2(resultItem, data.placeName, data.placeAddress, data.placeTel, data.placeimg, data.placeLatitude, data.placeLongitude);
         	}
         	
         	// 이미지 지연 로딩 처리
@@ -103,7 +103,7 @@ document.getElementById("searchButton2").addEventListener("click", function() {
 
 });
 
-    function addClickListener(element, placeName, placeAddress, placeTel, placeimg, placeLatitude, placeLongitude) {
+    function addClickListener2(element, placeName, placeAddress, placeTel, placeimg, placeLatitude, placeLongitude) {
         element.addEventListener("click", function() {
             currentData = {
                 placeName: placeName,
@@ -137,7 +137,7 @@ document.getElementById("searchButton2").addEventListener("click", function() {
         	</div>
         	
         	<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:20px;">
-    			<button onclick="insertContent1()" type="button" class="btn btn-outline-danger">일정 추가하기</button>
+    			<button onclick="insertContent2()" type="button" class="btn btn-outline-danger">일정 추가하기</button>
     		</div>
     	
     	</div>
@@ -177,7 +177,7 @@ function insertContent2() {
     
     // dataList 클래스를 가진 새로운 div 생성 및 내용 설정
     let dataListDiv = document.createElement("div");
-    dataListDiv.className = "dataList1";
+    dataListDiv.className = "dataList2";
     dataListDiv.style = "display:flex;  padding:10px; border-bottom:1px solid black;";
     
     dataListDiv.innerHTML = `
@@ -187,7 +187,8 @@ function insertContent2() {
     <input type="hidden" class="placeTel" name="placeTel" value="${currentData.placeTel}">
     <input type="hidden" class="placeLongitude" name="placeLongitude" value="${currentData.placeLongitude}">
     <input type="hidden" class="placeLatitude" name="placeLatitude" value="${currentData.placeLatitude}">
-    <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent1(event)" style="height:30px; line-height: 0;">-</button>
+    <button type="button" class="btn btn-outline-secondary align-self-center justify-content-md-end" onclick="deleteContent2(event)" style="height:30px; line-height: 0; 
+     margin-top:100px;"><i class="fas fa-trash"></i></button>
     `;
     
 
