@@ -1,10 +1,7 @@
 package com.travel.controller;
 
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,22 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.hibernate.internal.build.AllowSysOut;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.travel.Dto.KakaoPayApproveDto;
 import com.travel.Dto.KakaoPayReadyDto;
-import com.travel.Dto.OrderDto;
 import com.travel.constant.OrderStatus;
-import com.travel.entity.Cart;
 import com.travel.entity.CartItem;
 import com.travel.entity.Member;
 import com.travel.entity.OrderItem;
