@@ -85,9 +85,7 @@ a {
 </style>
 </th:block>
 <div layout:fragment="content">
-<div  class="alert alert-success">
-    <span th:text="${param.message}"></span>
-</div>
+	<div id="alertContainer"></div>
 	<div class="login-cover"></div>
 	<!--백그라운드 이미지 활용  -->
 	<div class="site-section">
@@ -165,6 +163,28 @@ a {
 	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js"
 		integrity="sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh"
 		crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // 페이지 로드 시 실행할 스크립트
+    $(document).ready(function () {
+        // 메시지 파라미터 값을 가져옵니다.
+        var message = "[[${param.message}]]";
+
+        // 메시지가 비어있지 않다면 알림을 표시합니다.
+        if (message.trim() !== "") {
+            var alertDiv = $('<div class="alert alert-success" role="alert"></div>');
+            alertDiv.append('<span>' + message + '</span>');
+            $('#alertContainer').append(alertDiv);
+
+            // 3초 후에 알림을 숨깁니다.
+            setTimeout(function () {
+                alertDiv.fadeOut(500, function () {
+                    alertDiv.remove();
+                });
+            }, 3000);
+        }
+    });
+</script>
 	<script>Kakao.init('97207c88fb92b7d1bbd5719ab5b56ffe'); // 사용하려는 앱의 JavaScript 키 입력</script>
 	<script th:inline="javascript">
 	let errorMessage = [[${errorMessage}]]
