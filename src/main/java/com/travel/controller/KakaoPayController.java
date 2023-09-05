@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -106,12 +107,9 @@ public class KakaoPayController {
 		    Long[] orderItemIds = (Long[]) session.getAttribute("orderItemIds");
 
 			String email = principal.getName();
-			System.out.println(email);
 			Member member = memberService.findByEmail(email);
-			System.out.println(member + "nnnnnnnnn");
 	        // 카카오 결재 요청하기
 	        KakaoPayApproveDto kakaoPayApproveDto = kakaoPayService.kakaoPayApprove(tid, pgToken);
-	        System.out.println(kakaoPayApproveDto);	        
 	        
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -120,7 +118,6 @@ public class KakaoPayController {
 			Date currentDate = new Date();
 			String currentDateString = dateFormat.format(currentDate); // 현재 시간을 문자열로 변환합니다.
 			
-			//Pay 값 넣어주기
 			Pay pay = new Pay();
 			pay.setPrice(totalPrice);
 			pay.setPayNo(generateRandomPayNo());
@@ -136,25 +133,25 @@ public class KakaoPayController {
 			orders.setOrderStatus(OrderStatus.ORDER);
 			orders.setTotalPrice(totalPrice);
 			orders.setZipCode(zipCode);
+			orders.setPay(pay);
 			orders.setMember(member);
 			orders.setOrderDate(pay.getPayDate());
-			orders.setPay(pay);
 			
-			kakaoPayService.saveOrders(orders);
 			
-			System.out.println(orders.getOrderInfoName());
+
 			for (Long orderItemId : orderItemIds) {
 				CartItem cartItem = orderService.getCartItemById(orderItemId);
 				
 				OrderItem orderItem = OrderItem.createOrderCart(cartItem);
 				orderItem.setOrders(orders);
-				kakaoPayService.saveOrderItem(orderItem);
 				
-
+				orderService.setOrderItem(cartItem, orderItem);
+				orderItemList.add(orderItem);
+				System.out.println(orderItemList);
+				kakaoPayService.saveOrders(orders);
+				kakaoPayService.saveOrderItem(orderItem);
+				cartService.deleteCart(cartItem.getId());
 			}
-			//Orders 값 넣어주기
-			orders.setOrderItems(orderItemList);
-			
 
 	        // HTML에 데이터 전달
 	        model.addAttribute("item_name", itemName);

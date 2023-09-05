@@ -86,6 +86,7 @@
 									<button type="submit" class="btn btn-primary mb-3"
 										style="background-color: #FF4A52; border: none; width: 100px;">가입하기</button>
 								</div>
+							
 							<input type="hidden" th:name="${_csrf.parameterName}"
 								th:value="${_csrf.token}">
 						</form>
@@ -106,13 +107,7 @@
 			alert(errorMessage);
 		}
 		
-		
-		var message = [[${message}]];
-		
-		if(message != null){
-			alert(message);
-			
-		}
+	
 	</script>
 </th:block>
 </html>

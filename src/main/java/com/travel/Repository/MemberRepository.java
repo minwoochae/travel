@@ -10,8 +10,6 @@ import com.travel.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, Long>{
 	Member findByEmail(String name);
 	
-
-	
 	
 	Member findByNameAndPhoneNumber(String name, String  phoneNumber);
 	

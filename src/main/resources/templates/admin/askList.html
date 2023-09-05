@@ -10,6 +10,10 @@
  th {
         text-align: center;
       }
+      
+button:hover {
+       cursor: pointer;
+    }      
 </style>
 </th:block>
 
@@ -70,10 +74,11 @@
 									th:text="${ask.askTitle}"> </a></td>
 								<td th:text="${ask.createBy}"> </td>
 								<td>
-								<span th:if="${askResponse != null and askResponse.askBoardId == ask.id}" th:text="${askResponse.askStatus}">
+								<span th:if="${askResponse != null and askResponse.askBoardId == ask.id}">
+								답변 완료
 								</span>
 								<span th:unless="${askResponse != null and askResponse.askBoardId == ask.id}">
-								PROCESSING
+								답변 대기
 								</span>
 								</td>
 						

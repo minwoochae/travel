@@ -61,15 +61,16 @@ public class MemberController {
 
 	// 회원가입
 	@PostMapping(value = "/members/new")
-	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model ) {
+	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model,	RedirectAttributes rttr) {
 		if (bindingResult.hasErrors()) {
 			return "member/memberForm";
 		}
 
 		try {
 			Member member = Member.createMember(memberFormDto, passwordEncoder);
-			
 
+		    String message ="회원가입이 완료 되었습니다.";
+		    rttr.addAttribute("message", message);
 			memberservice.saveMember(member);
 
 			
@@ -77,7 +78,6 @@ public class MemberController {
 			model.addAttribute("errorMessage", e.getMessage());
 			return "member/memberForm";
 		}
-	
 		return "redirect:/members/login";
 	}
 
@@ -127,7 +127,10 @@ public class MemberController {
 		HashMap<String, String> msg = new HashMap<>();
 
 		try {
-			   if (member == null) {
+				if(email == ""){
+					 throw new IllegalStateException("이메일을 입력해주세요.");
+				}
+				else if (member == null) {
 		            throw new IllegalStateException("존재하지 않은 계정입니다. 아이디 찾기 혹은 회원가입 후 이용해주세요.");
 		        }
 			if (member.getDivision() == Division.NORMAL) {
@@ -255,7 +258,7 @@ public class MemberController {
 			return "member/EditMember";
 		} else {
 			memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
-			return "redirect:/";
+			return "redirect:/member/mypage";
 		}
 
 	}

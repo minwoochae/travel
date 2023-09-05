@@ -19,6 +19,8 @@ public class OrderHistDto {
 	
 	private OrderStatus orderStatus;
 	
+	private String payNo;
+	
 	private List<OrderItemDto> orderItemDtoList = new ArrayList<>();
 	
 	public void addOrderItemDto(OrderItemDto orderItemDto) {
@@ -26,9 +28,12 @@ public class OrderHistDto {
 	}
 	
 	public OrderHistDto(Orders orders) {
+		
+		this.payNo = orders.getPay().getPayNo();
 		this.orderId = orders.getId();
 		this.orderDate = orders.getPay().getPayDate()
 				.formatted(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
+		System.out.println(orders.getOrderStatus());
 		this.orderStatus = orders.getOrderStatus();
 	}
 	

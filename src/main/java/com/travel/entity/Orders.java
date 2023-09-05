@@ -3,6 +3,7 @@ package com.travel.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.travel.Dto.OrderDto;
 import com.travel.constant.OrderStatus;
@@ -29,7 +30,6 @@ import lombok.ToString;
 @Table(name="orders")
 @Getter
 @Setter
-@ToString
 public class Orders{
 
 	@Id
@@ -82,5 +82,32 @@ public class Orders{
     public void removeOrderItem(OrderItem orderItem) {
         orderItems.remove(orderItem);
         orderItem.setOrders(null);
+    }
+    
+	//order객체를 생성해준다.
+	public static Orders createOrder(Member member, List<OrderItem> orderItemList) {
+		Orders order = new Orders();
+		order.setMember(member);
+		
+		for(OrderItem otderItem : orderItemList) {
+			order.addOrderItem(otderItem);
+		}
+		
+		order.setOrderStatus(OrderStatus.ORDER);
+		
+		return order;
+	}
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Orders orders = (Orders) o;
+        return Objects.equals(id, orders.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

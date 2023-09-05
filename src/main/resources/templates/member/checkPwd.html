@@ -13,7 +13,9 @@
 .slider {
 	width: 100%;
 	height: 300px;
-	background: #ccc;
+	background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url('/img/boat-4899802_1920.jpg'); 
+	background-size: cover;
+	
 }
 
 .link {
@@ -35,15 +37,6 @@
 	border-radius: 50%;
 }
 
-ul {
-	display: flex;
-	justify-content: center;
-}
-
-li {
-	list-style: none;
-	margin-right: 10px;
-}
 
 .vertical-dots::before {
 	content: "\22EE";
@@ -108,7 +101,7 @@ li {
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
 	
-	let errorMessage = [[${errorMessage}]]
+	let errorMessage = [[${errorMessages}]]
 	
 	$(document).ready(function () {
 		if(errorMessage != null) {
