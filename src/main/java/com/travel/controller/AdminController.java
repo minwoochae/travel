@@ -249,7 +249,7 @@ public class AdminController {
 			model.addAttribute("infoSearchDto", infoSearchDto);
 			model.addAttribute("maxPage", 5); // 상품관리페이지 하단에 보여줄 최대 페이지 번호
 
-			return "/admin/infoList";
+			return "admin/infoList";
 
 		}
 	
@@ -372,7 +372,7 @@ public class AdminController {
 		model.addAttribute("tourSearchDto", tourSearchDto);
 		model.addAttribute("maxPage", 5); //상품관리페이지 하단에 보여줄 최대 페이지 번호
 		
-		return "/admin/tourList";
+		return "admin/tourList";
 	}
 	
 	
@@ -381,7 +381,7 @@ public class AdminController {
 	@GetMapping(value = "/adminTour/new")
 	public String adminTour(Model model) {
 		model.addAttribute("tourFormDto", new TourFormDto());
-		return "/admin/tourRegist";
+		return "admin/tourRegist";
 	}
 	
 	// 추천관광지 등록
