@@ -1,6 +1,9 @@
 <img src="./images/logo.png" alt="Logo of the project" align="right">
 
-# 개발중
+# 배포완료 (수정중)
+
+# 도메인주소
+http://ec2-3-34-190-252.ap-northeast-2.compute.amazonaws.com/
 
 # 이젠어때
 
