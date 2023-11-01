@@ -8,6 +8,7 @@ http://ec2-3-34-190-252.ap-northeast-2.compute.amazonaws.com/
 # 이젠어때
 
 > 국내 여행계획을 세우고 여행상품을 구매할 수 있는 웹 사이트
+> https://docs.google.com/presentation/d/1apK6nsJc7gg_E3sAJbjPiI-DnfH6-_NlUcIixyS5VFU/edit?usp=sharing
 
 ## 소개:
 
