@@ -3,7 +3,7 @@
 # 배포완료 (수정중)
 
 # 도메인주소
-http://ec2-3-34-190-252.ap-northeast-2.compute.amazonaws.com/
+http://3.36.71.164/
 
 # 이젠어때
 
