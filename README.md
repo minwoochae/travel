@@ -1,7 +1,3 @@
-<img src="./images/logo.png" alt="Logo of the project" align="right">
-
-# 배포완료 (수정중)
-
 # 도메인주소
 http://3.36.71.164/
 
